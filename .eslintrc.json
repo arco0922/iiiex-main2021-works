@@ -2,12 +2,12 @@
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint", "react", "react-hooks", "eslint-plugin-import", "prettier"],
   "env": {
-    "browser": true
+    "browser": true,
+    "node": true
   },
   "extends": ["plugin:@typescript-eslint/recommended", "plugin:react/recommended", "plugin:prettier/recommended"],
   "parserOptions": {
-    "project": ["tsconfig.json"],
-    "ecmaVersion": 2020,
+    "ecmaVersion": 11,
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
