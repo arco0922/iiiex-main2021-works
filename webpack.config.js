@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -16,16 +17,28 @@ module.exports = {
         test: /\.[jt]sx?$/,
         use: [
           {
-            loader: 'babel-loader',
+            loader: 'ts-loader',
           },
         ],
         exclude: /node_modules/,
       },
       {
-        test: /\.(?:ico|gif|png|jpg|jpeg)$/i,
+        test: /\.html$/,
+        use: [
+          {
+            loader: 'html-loader',
+          },
+        ],
+      },
+      {
+        test: /\.(gif|png|jpg|jpeg|svg)$/,
         use: [
           {
             loader: 'file-loader',
+            options: {
+              name: '[name].[hash].[ext]',
+              outputPath: 'static/images',
+            },
           },
         ],
       },
@@ -33,6 +46,7 @@ module.exports = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx'],
+    plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, 'tsconfig.json') })],
   },
   plugins: [
     new HtmlWebpackPlugin({
