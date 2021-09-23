@@ -10,7 +10,7 @@ module.exports = {
   entry: path.resolve(__dirname, 'src', 'index.tsx'),
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'static/js/index.[hash].js',
+    filename: 'static/js/index.[contenthash].js',
   },
   module: {
     rules: [
@@ -37,7 +37,7 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              name: '[name].[hash].[ext]',
+              name: '[name].[contenthash].[ext]',
               outputPath: 'static/images',
             },
           },
