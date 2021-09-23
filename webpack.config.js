@@ -29,7 +29,7 @@ module.exports = (_, argv) => {
               loader: 'ts-loader',
             },
           ],
-          exclude: /node_modules/,
+          exclude: /[\\/]node_modules[\\/]/,
         },
         {
           test: /\.html$/,
@@ -40,7 +40,38 @@ module.exports = (_, argv) => {
           ],
         },
         {
-          test: /\.(gif|png|jpg|jpeg|svg)$/,
+          test: /[\\/]public[\\/]/,
+          type: 'asset/resource',
+          exclude: /\.html$/,
+        },
+        {
+          test: /\.css$/,
+          use: [
+            {
+              loader: 'style-loader',
+            },
+            {
+              loader: 'css-loader',
+            },
+          ],
+          exclude: /[\\/]public[\\/]/,
+        },
+        {
+          test: /\.scss$/,
+          use: [
+            {
+              loader: 'style-loader',
+            },
+            {
+              loader: 'css-loader',
+            },
+            {
+              loader: 'sass-loader',
+            },
+          ],
+        },
+        {
+          test: /\.(ico|gif|png|jpg|jpeg|svg)$/i,
           use: [
             {
               loader: 'file-loader',
@@ -50,6 +81,7 @@ module.exports = (_, argv) => {
               },
             },
           ],
+          exclude: /[\\/]public[\\/]/,
         },
       ],
     },
