@@ -17,13 +17,13 @@ module.exports = (_, argv) => {
     },
     output: {
       path: path.resolve(__dirname, 'dist'),
-      filename: 'static/js/[name].[contenthash].js',
-      chunkFilename: 'static/js/[name].[contenthash].js',
+      filename: `static/js/[name].${isProd ? '[contenthash]' : 'bundle'}.js`,
+      chunkFilename: `static/js/[name].${isProd ? '[contenthash]' : 'bundle'}.js`,
     },
     module: {
       rules: [
         {
-          test: /\.[jt]sx?$/,
+          test: /\.tsx?$/,
           use: [
             {
               loader: 'ts-loader',
@@ -45,7 +45,7 @@ module.exports = (_, argv) => {
             {
               loader: 'file-loader',
               options: {
-                name: '[name].[contenthash].[ext]',
+                name: `[name]${isProd ? '.[contenthash]' : ''}.[ext]`,
                 outputPath: 'static/images',
               },
             },
@@ -85,7 +85,7 @@ module.exports = (_, argv) => {
       ],
     },
     plugins: [
-      new CleanWebpackPlugin(),
+      isProd ? new CleanWebpackPlugin() : undefined,
       new HtmlWebpackPlugin({
         template: path.resolve(__dirname, './public/index.html'),
       }),
