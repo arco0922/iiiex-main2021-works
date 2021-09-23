@@ -6,9 +6,8 @@
   "author": "arco0922 <k9o2u2ta@icloud.com>",
   "license": "MIT",
   "scripts": {
-    "clean": "rm -rf dist",
     "start": "webpack serve --config webpack.config.js --env env=development",
-    "build": "yarn clean && webpack --config webpack.config.js --env env=production"
+    "build": "webpack --config webpack.config.js --env env=production"
   },
   "devDependencies": {
     "@types/node": "^16.9.4",
@@ -16,6 +15,7 @@
     "@types/react-dom": "^17.0.9",
     "@typescript-eslint/eslint-plugin": "^4.31.2",
     "@typescript-eslint/parser": "^4.31.2",
+    "clean-webpack-plugin": "^4.0.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.24.2",
