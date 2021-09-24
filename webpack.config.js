@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const analyzeBundle = false;
 
@@ -45,22 +46,10 @@ module.exports = (_, argv) => {
           exclude: /\.html$/,
         },
         {
-          test: /\.css$/,
+          test: /\.(sa|sc|c)ss$/,
           use: [
             {
-              loader: 'style-loader',
-            },
-            {
-              loader: 'css-loader',
-            },
-          ],
-          exclude: /[\\/]public[\\/]/,
-        },
-        {
-          test: /\.scss$/,
-          use: [
-            {
-              loader: 'style-loader',
+              loader: isProd ? MiniCssExtractPlugin.loader : 'style-loader',
             },
             {
               loader: 'css-loader',
@@ -69,6 +58,7 @@ module.exports = (_, argv) => {
               loader: 'sass-loader',
             },
           ],
+          exclude: /[\\/]public[\\/]/,
         },
         {
           test: /\.(ico|gif|png|jpg|jpeg|svg)$/i,
@@ -118,6 +108,11 @@ module.exports = (_, argv) => {
     },
     plugins: [
       isProd ? new CleanWebpackPlugin() : undefined,
+      isProd
+        ? new MiniCssExtractPlugin({
+            filename: `static/css/[name].[contenthash].css`,
+          })
+        : undefined,
       new HtmlWebpackPlugin({
         template: path.resolve(__dirname, './public/index.html'),
       }),
