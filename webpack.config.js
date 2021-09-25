@@ -24,8 +24,11 @@ module.exports = (_, argv) => {
     module: {
       rules: [
         {
-          test: /\.tsx?$/,
+          test: /\.[jt]sx?$/,
           use: [
+            {
+              loader: 'babel-loader',
+            },
             {
               loader: 'ts-loader',
             },
