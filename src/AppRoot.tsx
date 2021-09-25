@@ -1,5 +1,5 @@
 import React from 'react';
 
 export const AppRoot: React.VFC = () => {
-  return <p>Hello React</p>;
+  return <p>開発環境</p>;
 };
