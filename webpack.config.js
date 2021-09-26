@@ -20,6 +20,7 @@ module.exports = (_, argv) => {
       path: path.resolve(__dirname, 'dist'),
       filename: `static/js/[name].${isProd ? '[contenthash]' : 'bundle'}.js`,
       chunkFilename: `static/js/[name].${isProd ? '[contenthash]' : 'bundle'}.js`,
+      publicPath: '/',
     },
     module: {
       rules: [
@@ -129,6 +130,7 @@ module.exports = (_, argv) => {
       compress: true,
       hot: true,
       open: true,
+      historyApiFallback: true,
     },
   };
 
