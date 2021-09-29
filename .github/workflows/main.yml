@@ -1,0 +1,17 @@
+name: type-check and lint
+
+on: [push]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: yarn install
+        run: yarn install
+      - name: Run eslint
+        run: yarn lint
+      - name: Run type check
+        run: yarn type-check
+      - name: Run build
+        run: yarn build
