@@ -5,21 +5,34 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const webpack = require('webpack');
 
 const analyzeBundle = false;
 
 module.exports = (_, argv) => {
-  const isProd = argv.mode === 'production';
+  /** phaseは、local | development | production */
+  const phase = argv.env.phase;
+
+  /** modeは、phaseがlocalならdevelopment、それ以外ならproduction */
+  const mode = phase === 'local' ? 'development' : 'production';
+
+  /** isBuildは、modeがproductionかどうか */
+  const isBuild = mode === 'production';
+
+  /** 環境変数の設定 */
+  const envConfig = require('dotenv').config({
+    path: path.resolve(__dirname, `./config/.env.${phase}`),
+  });
 
   const config = {
-    mode: isProd ? 'production' : 'development',
+    mode: mode,
     entry: {
       index: path.resolve(__dirname, 'src', 'index.tsx'),
     },
     output: {
       path: path.resolve(__dirname, 'dist'),
-      filename: `static/js/[name].${isProd ? '[contenthash]' : 'bundle'}.js`,
-      chunkFilename: `static/js/[name].${isProd ? '[contenthash]' : 'bundle'}.js`,
+      filename: `static/js/[name].${isBuild ? '[contenthash]' : 'bundle'}.js`,
+      chunkFilename: `static/js/[name].${isBuild ? '[contenthash]' : 'bundle'}.js`,
       publicPath: '/',
     },
     module: {
@@ -53,7 +66,7 @@ module.exports = (_, argv) => {
           test: /\.(sa|sc|c)ss$/,
           use: [
             {
-              loader: isProd ? MiniCssExtractPlugin.loader : 'style-loader',
+              loader: isBuild ? MiniCssExtractPlugin.loader : 'style-loader',
             },
             {
               loader: 'css-loader',
@@ -70,7 +83,7 @@ module.exports = (_, argv) => {
             {
               loader: 'file-loader',
               options: {
-                name: `[name]${isProd ? '.[contenthash]' : ''}.[ext]`,
+                name: `[name]${isBuild ? '.[contenthash]' : ''}.[ext]`,
                 outputPath: 'static/images',
               },
             },
@@ -84,7 +97,7 @@ module.exports = (_, argv) => {
       plugins: [new TsconfigPathsPlugin({ configFile: path.resolve(__dirname, 'tsconfig.json') })],
     },
     optimization: {
-      splitChunks: isProd
+      splitChunks: isBuild
         ? {
             cacheGroups: {
               default: false,
@@ -96,7 +109,7 @@ module.exports = (_, argv) => {
             },
           }
         : false,
-      minimize: isProd,
+      minimize: isBuild,
       minimizer: [
         new TerserPlugin({
           terserOptions: {
@@ -104,15 +117,20 @@ module.exports = (_, argv) => {
               comments: false,
             },
             compress: {
-              drop_console: isProd,
+              drop_console: isBuild,
             },
           },
         }),
       ],
     },
     plugins: [
-      isProd ? new CleanWebpackPlugin() : undefined,
-      isProd
+      new webpack.DefinePlugin({
+        'process.env': JSON.stringify({
+          ...envConfig.parsed,
+        }),
+      }),
+      isBuild ? new CleanWebpackPlugin() : undefined,
+      isBuild
         ? new MiniCssExtractPlugin({
             filename: `static/css/[name].[contenthash].css`,
           })

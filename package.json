@@ -6,8 +6,9 @@
   "author": "arco0922 <k9o2u2ta@icloud.com>",
   "license": "MIT",
   "scripts": {
-    "start": "webpack serve --config webpack.config.js --mode development",
-    "build": "webpack --config webpack.config.js --mode production",
+    "start": "webpack serve --config webpack.config.js --env phase=local",
+    "build:dev": "webpack --config webpack.config.js --env phase=development",
+    "build": "webpack --config webpack.config.js --env phase=production",
     "type-check": "tsc --noEmit",
     "lint": "eslint 'src/**/*.{ts, tsx, js, jsx, json}'"
   },
@@ -28,6 +29,7 @@
     "babel-loader": "^8.2.2",
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.3.0",
+    "dotenv": "^10.0.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.24.2",
