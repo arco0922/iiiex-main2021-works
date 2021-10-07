@@ -1,6 +1,6 @@
 name: type-check and lint
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   status-check:
