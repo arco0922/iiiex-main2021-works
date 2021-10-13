@@ -5,13 +5,15 @@ import { WorksWindow } from './WorksWindow';
 export const TestPage: React.VFC = () => {
   const srcUrlInputRef = React.useRef<HTMLInputElement>(null);
   const [srcUrl, setSrcUrl] = React.useState<string>('');
-  const setSrcUrlHandler = React.useCallback(() => {
+  const setSrcUrlHandler = React.useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     if (srcUrlInputRef.current === null) {
       return;
     }
     setSrcUrl(srcUrlInputRef.current.value);
   }, []);
-  const clearSrcUrlHandler = React.useCallback(() => {
+  const clearSrcUrlHandler = React.useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setSrcUrl('');
     if (srcUrlInputRef.current !== null) {
       srcUrlInputRef.current.value = '';
@@ -24,7 +26,7 @@ export const TestPage: React.VFC = () => {
         <StyledTitle>動作確認ページ</StyledTitle>
         <StyledLabel htmlFor="urlInput">URLを打ち込んで埋め込みの動作を確認</StyledLabel>
         <StyledForm>
-          <StyledInput type="text" placeholder="urlを入力" ref={srcUrlInputRef} id="urlInput"></StyledInput>
+          <StyledInput type="text" placeholder="urlを入力" ref={srcUrlInputRef} id="urlInput" name="url"></StyledInput>
           <StyledSetButton onClick={setSrcUrlHandler}>動作を確認</StyledSetButton>
           <StyledClearButton onClick={clearSrcUrlHandler}>クリア</StyledClearButton>
         </StyledForm>
@@ -52,7 +54,7 @@ const StyledTitle = styled.h1`
   margin: 20px 0px 5px 0px;
 `;
 
-const StyledForm = styled.div`
+const StyledForm = styled.form`
   display: flex;
   width: 100%;
   margin-bottom: 20px;
