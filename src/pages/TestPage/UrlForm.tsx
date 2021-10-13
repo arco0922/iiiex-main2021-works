@@ -7,19 +7,21 @@ interface Props {
 
 export const UrlForm: React.VFC<Props> = ({ setSrcUrl }) => {
   const srcUrlInputRef = React.useRef<HTMLInputElement>(null);
+  const [inputValue, setInputValue] = React.useState<string>('');
+  const inputHandler = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  }, []);
   const setSrcUrlHandler = React.useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
-      if (srcUrlInputRef.current === null) {
-        return;
-      }
-      setSrcUrl(srcUrlInputRef.current.value);
+      setSrcUrl(inputValue);
     },
-    [setSrcUrl],
+    [inputValue, setSrcUrl],
   );
   const clearSrcUrlHandler = React.useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
+      setInputValue('');
       setSrcUrl('');
       if (srcUrlInputRef.current !== null) {
         srcUrlInputRef.current.value = '';
@@ -31,10 +33,18 @@ export const UrlForm: React.VFC<Props> = ({ setSrcUrl }) => {
     <StyledForm>
       <StyledLabel htmlFor="urlInput">URLを打ち込んで埋め込みの動作を確認</StyledLabel>
       <StyledInputSection>
-        <StyledInput type="text" placeholder="urlを入力" ref={srcUrlInputRef} id="urlInput" name="url"></StyledInput>
+        <StyledInput
+          type="text"
+          placeholder="urlを入力"
+          ref={srcUrlInputRef}
+          id="urlInput"
+          name="url"
+          onChange={inputHandler}
+        ></StyledInput>
         <StyledSetButton onClick={setSrcUrlHandler}>動作を確認</StyledSetButton>
         <StyledClearButton onClick={clearSrcUrlHandler}>クリア</StyledClearButton>
       </StyledInputSection>
+      <StyledDialog>{inputValue ? '' : 'URLが空文字列です'}</StyledDialog>
     </StyledForm>
   );
 };
@@ -49,7 +59,7 @@ const StyledForm = styled.form`
 const StyledInputSection = styled.div`
   display: flex;
   width: 100%;
-  margin-bottom: 20px;
+  padding-bottom: 10px;
 `;
 
 const StyledLabel = styled.label`
@@ -101,4 +111,13 @@ const StyledClearButton = styled.button`
   &:hover {
     background-color: #000081;
   }
+`;
+
+const StyledDialog = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 20px;
+  color: red;
 `;
