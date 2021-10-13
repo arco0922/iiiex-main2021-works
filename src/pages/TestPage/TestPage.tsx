@@ -24,11 +24,19 @@ export const TestPage: React.VFC = () => {
     <StyledRoot>
       <StyledContainer>
         <StyledTitle>動作確認ページ</StyledTitle>
-        <StyledLabel htmlFor="urlInput">URLを打ち込んで埋め込みの動作を確認</StyledLabel>
         <StyledForm>
-          <StyledInput type="text" placeholder="urlを入力" ref={srcUrlInputRef} id="urlInput" name="url"></StyledInput>
-          <StyledSetButton onClick={setSrcUrlHandler}>動作を確認</StyledSetButton>
-          <StyledClearButton onClick={clearSrcUrlHandler}>クリア</StyledClearButton>
+          <StyledLabel htmlFor="urlInput">URLを打ち込んで埋め込みの動作を確認</StyledLabel>
+          <StyledInputSection>
+            <StyledInput
+              type="text"
+              placeholder="urlを入力"
+              ref={srcUrlInputRef}
+              id="urlInput"
+              name="url"
+            ></StyledInput>
+            <StyledSetButton onClick={setSrcUrlHandler}>動作を確認</StyledSetButton>
+            <StyledClearButton onClick={clearSrcUrlHandler}>クリア</StyledClearButton>
+          </StyledInputSection>
         </StyledForm>
         <WorksWindow srcUrl={srcUrl}></WorksWindow>
       </StyledContainer>
@@ -55,6 +63,13 @@ const StyledTitle = styled.h1`
 `;
 
 const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+`;
+
+const StyledInputSection = styled.div`
   display: flex;
   width: 100%;
   margin-bottom: 20px;
