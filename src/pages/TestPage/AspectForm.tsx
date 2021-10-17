@@ -45,14 +45,13 @@ const StyledForm = styled.form`
   flex-direction: column;
   width: 100%;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 5px;
 `;
 
 const StyledInputSection = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  padding-bottom: 10px;
 `;
 
 const StyledLabel = styled.label`
@@ -90,4 +89,5 @@ const StyledDialog = styled.div`
   width: 100%;
   height: 20px;
   color: red;
+  padding-bottom: 10px;
 `;
