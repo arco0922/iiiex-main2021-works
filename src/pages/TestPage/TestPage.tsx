@@ -5,13 +5,19 @@ import { WorksWindow } from './WorksWindow';
 
 export const TestPage: React.VFC = () => {
   const [srcUrl, setSrcUrl] = React.useState<string>('');
-
+  const [isFull, setFull] = React.useState<boolean>(false);
   return (
     <StyledRoot>
       <StyledContainer>
-        <StyledTitle>動作確認ページ</StyledTitle>
-        <UrlForm setSrcUrl={setSrcUrl}></UrlForm>
-        <WorksWindow srcUrl={srcUrl}></WorksWindow>
+        {isFull ? (
+          <></>
+        ) : (
+          <>
+            <StyledTitle>動作確認ページ</StyledTitle>
+            <UrlForm setSrcUrl={setSrcUrl}></UrlForm>
+          </>
+        )}
+        <WorksWindow srcUrl={srcUrl} isFull={isFull} setFull={setFull}></WorksWindow>
       </StyledContainer>
     </StyledRoot>
   );
