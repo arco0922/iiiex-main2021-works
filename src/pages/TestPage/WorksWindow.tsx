@@ -3,51 +3,45 @@ import styled, { css } from 'styled-components';
 
 interface Props {
   srcUrl: string;
+  iframeHeight: string;
   isFull: boolean;
-  setFull: (isfull: boolean) => void;
+  setIsFull: (isfull: boolean) => void;
 }
 
-export const WorksWindow: React.VFC<Props> = ({ srcUrl, isFull, setFull }) => {
-  const [windowWidth, setWindowWidth] = React.useState<string>('100%');
-  const [windowHeight, setWindowHeight] = React.useState<string>('500px');
-  const fullScreen = React.useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.preventDefault();
-      setFull(true);
-      setWindowWidth('100vw');
-      setWindowHeight('100vh');
-    },
-    [setFull],
-  );
-  const exitfullScreen = React.useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.preventDefault();
-      setFull(false);
-      setWindowWidth('100%');
-      setWindowHeight('500px');
-    },
-    [setFull],
-  );
+export const WorksWindow: React.VFC<Props> = ({ srcUrl, iframeHeight, isFull, setIsFull }) => {
+  const makeFullScreen = React.useCallback(() => {
+    setIsFull(true);
+  }, [setIsFull]);
+  const exitFullScreen = React.useCallback(() => {
+    setIsFull(false);
+  }, [setIsFull]);
   return (
-    <>
-      <StyledContainer width={windowWidth} height={windowHeight}>
+    <StyledRoot>
+      <StyledContainer height={iframeHeight}>
         {srcUrl ? <StyledIframe src={srcUrl}></StyledIframe> : <StyledSkeleton></StyledSkeleton>}
+        {isFull ? <StyledExitFullScreenButton onClick={exitFullScreen}>全画面解除</StyledExitFullScreenButton> : <></>}
       </StyledContainer>
-      {isFull ? <></> : <StyledFullScreenButton onClick={fullScreen}>全画面表示</StyledFullScreenButton>}
-      {isFull ? <StyledExitFullScreenButton onClick={exitfullScreen}>全画面解除</StyledExitFullScreenButton> : <></>}
-    </>
+      {isFull ? <></> : <StyledFullScreenButton onClick={makeFullScreen}>全画面表示</StyledFullScreenButton>}
+    </StyledRoot>
   );
 };
 
-interface ContainerProps {
-  width: string;
+const StyledRoot = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+`;
+
+interface StyledContainerProps {
   height: string;
 }
 
-const StyledContainer = styled.div<ContainerProps>`
+const StyledContainer = styled.div<StyledContainerProps>`
   margin-top: 0px;
-  width: ${({ width }) => width};
+  width: 100%;
   height: ${({ height }) => height};
+  position: relative;
 `;
 
 const StyledIframe = styled.iframe`
@@ -60,7 +54,7 @@ const StyledIframe = styled.iframe`
 
 const StyledSkeleton = styled.div`
   width: 100%;
-  height: 500px;
+  height: 100%;
   background-color: #e7e7e7;
 `;
 
@@ -88,5 +82,4 @@ const StyledExitFullScreenButton = styled.button`
   position: absolute;
   right: 10px;
   bottom: 10px;
-  margin-top: 0px;
 `;
