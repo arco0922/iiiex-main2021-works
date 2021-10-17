@@ -28,11 +28,13 @@ export const AspectForm: React.VFC<Props> = ({ setAspectRatio }) => {
   );
   return (
     <StyledForm>
-      <StyledLabel>アスペクト比を調節 → 横：縦 = </StyledLabel>
-      <StyledInput type="text" placeholder="1" onChange={aspectWidthHandler}></StyledInput>
-      <StyledLabel> : </StyledLabel>
-      <StyledInput type="text" placeholder="1" onChange={aspectHeightHandler}></StyledInput>
-      <StyledButton onClick={setAspectRatioHandler}>確定</StyledButton>
+      <StyledInputSection>
+        <StyledLabel>アスペクト比を調節 → 横：縦 = </StyledLabel>
+        <StyledInput type="text" placeholder="1" onChange={aspectWidthHandler}></StyledInput>
+        <StyledLabel> : </StyledLabel>
+        <StyledInput type="text" placeholder="1" onChange={aspectHeightHandler}></StyledInput>
+        <StyledButton onClick={setAspectRatioHandler}>確定</StyledButton>
+      </StyledInputSection>
       <StyledDialog>{isAspectWidthValid && isAspectHeightValid ? '' : '有効な値を入力して下さい'}</StyledDialog>
     </StyledForm>
   );
@@ -43,10 +45,19 @@ const StyledForm = styled.form`
   flex-direction: column;
   width: 100%;
   align-items: center;
-  margin-top: 5px;
+  margin-top: 10px;
 `;
 
-const StyledLabel = styled.label``;
+const StyledInputSection = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding-bottom: 10px;
+`;
+
+const StyledLabel = styled.label`
+  margin-right: 10px;
+`;
 
 const StyledInput = styled.input`
   width: 2em;
@@ -55,6 +66,7 @@ const StyledInput = styled.input`
   border: none;
   border: solid 1px #ccc;
   border-radius: 3px;
+  margin-right: 10px;
 `;
 
 const StyledButton = styled.button`
@@ -78,5 +90,4 @@ const StyledDialog = styled.div`
   width: 100%;
   height: 20px;
   color: red;
-  margin-top: 5px;
 `;
