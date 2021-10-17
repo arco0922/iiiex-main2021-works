@@ -24,7 +24,7 @@ export const AspectForm: React.VFC<Props> = ({ setAspectRatio }) => {
       e.preventDefault();
       isAspectWidthValid && isAspectHeightValid ? setAspectRatio(aspectHeight / aspectWidth) : console.log('Error');
     },
-    [aspectHeight, setAspectRatio],
+    [aspectHeight, aspectWidth, isAspectHeightValid, isAspectWidthValid, setAspectRatio],
   );
   return (
     <StyledForm>
