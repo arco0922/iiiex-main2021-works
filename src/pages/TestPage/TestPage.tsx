@@ -10,8 +10,6 @@ export const TestPage: React.VFC = () => {
   const [aspectRatio, setAspectRatio] = React.useState<number>(1 / 1);
   const iframeWidth = isFull ? '100vw' : '600px';
   const iframeHeight = isFull ? '100vh' : 500 * aspectRatio + 'px';
-  console.log(iframeHeight);
-  console.log(aspectRatio);
   return (
     <StyledRoot>
       <StyledContainer width={iframeWidth}>
