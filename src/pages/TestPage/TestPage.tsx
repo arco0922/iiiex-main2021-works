@@ -9,7 +9,7 @@ export const TestPage: React.VFC = () => {
   const [isFull, setIsFull] = React.useState<boolean>(false);
   const [aspectRatio, setAspectRatio] = React.useState<number>(1 / 1);
   const iframeWidth = isFull ? '100vw' : '600px';
-  const iframeHeight = isFull ? '100vh' : 500 * aspectRatio + 'px';
+  const iframeHeight = isFull ? '100vh' : `calc( ${iframeWidth} * ${aspectRatio} )`;
   return (
     <StyledRoot>
       <StyledContainer width={iframeWidth}>
@@ -19,10 +19,10 @@ export const TestPage: React.VFC = () => {
           <>
             <StyledTitle>動作確認ページ</StyledTitle>
             <UrlForm setSrcUrl={setSrcUrl}></UrlForm>
+            <AspectForm setAspectRatio={setAspectRatio}></AspectForm>
           </>
         )}
         <WorksWindow srcUrl={srcUrl} iframeHeight={iframeHeight} isFull={isFull} setIsFull={setIsFull}></WorksWindow>
-        <AspectForm setAspectRatio={setAspectRatio}></AspectForm>
       </StyledContainer>
     </StyledRoot>
   );
