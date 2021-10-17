@@ -1,13 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
+import { AspectForm } from './AspectForm';
 import { UrlForm } from './UrlForm';
 import { WorksWindow } from './WorksWindow';
 
 export const TestPage: React.VFC = () => {
   const [srcUrl, setSrcUrl] = React.useState<string>('');
   const [isFull, setIsFull] = React.useState<boolean>(false);
+  const [aspectRatio, setAspectRatio] = React.useState<number>(1 / 1);
   const iframeWidth = isFull ? '100vw' : '600px';
-  const iframeHeight = isFull ? '100vh' : '500px';
+  const iframeHeight = isFull ? '100vh' : 500 * aspectRatio + 'px';
+  console.log(iframeHeight);
+  console.log(aspectRatio);
   return (
     <StyledRoot>
       <StyledContainer width={iframeWidth}>
@@ -20,6 +24,7 @@ export const TestPage: React.VFC = () => {
           </>
         )}
         <WorksWindow srcUrl={srcUrl} iframeHeight={iframeHeight} isFull={isFull} setIsFull={setIsFull}></WorksWindow>
+        <AspectForm setAspectRatio={setAspectRatio}></AspectForm>
       </StyledContainer>
     </StyledRoot>
   );
