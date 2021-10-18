@@ -35,7 +35,7 @@ const StyledRoot = styled.div<StyledRootProps>`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-top: ${({ isFull }) => (isFull ? '0' : '15px')};
+  margin: ${({ isFull }) => (isFull ? '0' : '15px 0 30px 0')};
 `;
 
 interface StyledContainerProps {
