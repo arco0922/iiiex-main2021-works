@@ -5,7 +5,7 @@ interface Props {
   srcUrl: string;
   iframeHeight: string;
   isFull: boolean;
-  setIsFull: (isfull: boolean) => void;
+  setIsFull: (isFull: boolean) => void;
 }
 
 export const WorksWindow: React.VFC<Props> = ({ srcUrl, iframeHeight, isFull, setIsFull }) => {
