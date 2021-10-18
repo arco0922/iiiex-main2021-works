@@ -13,15 +13,11 @@ export const TestPage: React.VFC = () => {
   return (
     <StyledRoot>
       <StyledContainer width={iframeWidth}>
-        {isFull ? (
-          <></>
-        ) : (
-          <>
-            <StyledTitle>動作確認ページ</StyledTitle>
-            <UrlForm setSrcUrl={setSrcUrl}></UrlForm>
-            <AspectForm setAspectRatio={setAspectRatio}></AspectForm>
-          </>
-        )}
+        <StyledSettingSection isFull={isFull}>
+          <StyledTitle>動作確認ページ</StyledTitle>
+          <UrlForm setSrcUrl={setSrcUrl}></UrlForm>
+          <AspectForm setAspectRatio={setAspectRatio}></AspectForm>
+        </StyledSettingSection>
         <WorksWindow srcUrl={srcUrl} iframeHeight={iframeHeight} isFull={isFull} setIsFull={setIsFull}></WorksWindow>
       </StyledContainer>
     </StyledRoot>
@@ -43,6 +39,17 @@ const StyledContainer = styled.div<StyledContainerProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+interface StyledSettingSectionProps {
+  isFull: boolean;
+}
+
+const StyledSettingSection = styled.div<StyledSettingSectionProps>`
+  display: ${({ isFull }) => (isFull ? 'none' : 'flex')};
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 `;
 
 const StyledTitle = styled.h1`
