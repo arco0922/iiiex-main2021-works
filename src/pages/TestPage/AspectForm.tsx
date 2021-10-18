@@ -6,8 +6,8 @@ interface Props {
 }
 
 export const AspectForm: React.VFC<Props> = ({ setAspectRatio }) => {
-  const [aspectWidth, setAspectWidth] = React.useState<number>(1);
-  const [aspectHeight, setAspectHeight] = React.useState<number>(1);
+  const [aspectWidth, setAspectWidth] = React.useState<number>(16);
+  const [aspectHeight, setAspectHeight] = React.useState<number>(9);
   const [isAspectWidthValid, setIsAspectWidthValid] = React.useState<boolean>(true);
   const [isAspectHeightValid, setIsAspectHeightValid] = React.useState<boolean>(true);
   const aspectWidthHandler = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,9 +30,9 @@ export const AspectForm: React.VFC<Props> = ({ setAspectRatio }) => {
     <StyledForm>
       <StyledInputSection>
         <StyledSpan>アスペクト比を調節 → 横：縦 = </StyledSpan>
-        <StyledInput type="text" placeholder="横の値" onChange={aspectWidthHandler} defaultValue="1"></StyledInput>
+        <StyledInput type="text" placeholder="横の値" onChange={aspectWidthHandler} defaultValue="16"></StyledInput>
         <StyledSpan> : </StyledSpan>
-        <StyledInput type="text" placeholder="縦の値" onChange={aspectHeightHandler} defaultValue="1"></StyledInput>
+        <StyledInput type="text" placeholder="縦の値" onChange={aspectHeightHandler} defaultValue="9"></StyledInput>
         <StyledButton onClick={setAspectRatioHandler}>確定</StyledButton>
       </StyledInputSection>
       <StyledDialog>{isAspectWidthValid && isAspectHeightValid ? '' : '有効な値を入力して下さい'}</StyledDialog>

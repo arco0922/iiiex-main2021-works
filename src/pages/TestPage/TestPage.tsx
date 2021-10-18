@@ -7,7 +7,7 @@ import { WorksWindow } from './WorksWindow';
 export const TestPage: React.VFC = () => {
   const [srcUrl, setSrcUrl] = React.useState<string>('');
   const [isFull, setIsFull] = React.useState<boolean>(false);
-  const [aspectRatio, setAspectRatio] = React.useState<number>(1 / 1);
+  const [aspectRatio, setAspectRatio] = React.useState<number>(9 / 16);
   const iframeWidth = isFull ? '100vw' : '600px';
   const iframeHeight = isFull ? '100vh' : `calc( ${iframeWidth} * ${aspectRatio} )`;
   return (
