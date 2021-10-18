@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 interface Props {
   setAspectRatio: (aspectRatio: number) => void;
@@ -29,10 +29,10 @@ export const AspectForm: React.VFC<Props> = ({ setAspectRatio }) => {
   return (
     <StyledForm>
       <StyledInputSection>
-        <StyledLabel>アスペクト比を調節 → 横：縦 = </StyledLabel>
-        <StyledInput type="text" placeholder="1" onChange={aspectWidthHandler}></StyledInput>
-        <StyledLabel> : </StyledLabel>
-        <StyledInput type="text" placeholder="1" onChange={aspectHeightHandler}></StyledInput>
+        <StyledSpan>アスペクト比を調節 → 横：縦 = </StyledSpan>
+        <StyledInput type="text" placeholder="横の値" onChange={aspectWidthHandler} defaultValue="1"></StyledInput>
+        <StyledSpan> : </StyledSpan>
+        <StyledInput type="text" placeholder="縦の値" onChange={aspectHeightHandler} defaultValue="1"></StyledInput>
         <StyledButton onClick={setAspectRatioHandler}>確定</StyledButton>
       </StyledInputSection>
       <StyledDialog>{isAspectWidthValid && isAspectHeightValid ? '' : '有効な値を入力して下さい'}</StyledDialog>
@@ -54,7 +54,7 @@ const StyledInputSection = styled.div`
   width: 100%;
 `;
 
-const StyledLabel = styled.label`
+const StyledSpan = styled.span`
   margin-right: 10px;
 `;
 
