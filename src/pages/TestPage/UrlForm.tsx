@@ -44,7 +44,7 @@ export const UrlForm: React.VFC<Props> = ({ setSrcUrl }) => {
         <StyledSetButton onClick={setSrcUrlHandler}>動作を確認</StyledSetButton>
         <StyledClearButton onClick={clearSrcUrlHandler}>クリア</StyledClearButton>
       </StyledInputSection>
-      <StyledDialog>{inputValue ? '' : 'URLが空文字列です'}</StyledDialog>
+      <StyledDialog isShow={!inputValue}>URLが空文字列です</StyledDialog>
     </StyledForm>
   );
 };
@@ -113,11 +113,15 @@ const StyledClearButton = styled.button`
   }
 `;
 
-const StyledDialog = styled.div`
-  display: flex;
+interface StyledDialogProps {
+  isShow: boolean;
+}
+
+const StyledDialog = styled.div<StyledDialogProps>`
+  display: ${({ isShow }) => (isShow ? 'flex' : 'none')};
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 20px;
+  font-size: 14px;
   color: red;
 `;

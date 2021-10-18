@@ -30,12 +30,12 @@ export const AspectForm: React.VFC<Props> = ({ setAspectRatio }) => {
     <StyledForm>
       <StyledInputSection>
         <StyledSpan>アスペクト比を調節 → 横：縦 = </StyledSpan>
-        <StyledInput type="text" placeholder="横の値" onChange={aspectWidthHandler} defaultValue="16"></StyledInput>
+        <StyledInput type="text" onChange={aspectWidthHandler} defaultValue="16"></StyledInput>
         <StyledSpan> : </StyledSpan>
-        <StyledInput type="text" placeholder="縦の値" onChange={aspectHeightHandler} defaultValue="9"></StyledInput>
+        <StyledInput type="text" onChange={aspectHeightHandler} defaultValue="9"></StyledInput>
         <StyledButton onClick={setAspectRatioHandler}>確定</StyledButton>
       </StyledInputSection>
-      <StyledDialog>{isAspectWidthValid && isAspectHeightValid ? '' : '有効な値を入力して下さい'}</StyledDialog>
+      <StyledDialog isShow={!(isAspectWidthValid && isAspectHeightValid)}>正の数値を入力して下さい</StyledDialog>
     </StyledForm>
   );
 };
@@ -45,13 +45,14 @@ const StyledForm = styled.form`
   flex-direction: column;
   width: 100%;
   align-items: center;
-  margin-top: 5px;
+  margin-top: 10px;
 `;
 
 const StyledInputSection = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
+  padding-bottom: 8px;
 `;
 
 const StyledSpan = styled.span`
@@ -59,13 +60,15 @@ const StyledSpan = styled.span`
 `;
 
 const StyledInput = styled.input`
-  width: 2em;
+  width: 3em;
   font-size: 16px;
   outline: none;
   border: none;
   border: solid 1px #ccc;
   border-radius: 3px;
   margin-right: 10px;
+  padding: 0 3px;
+  text-align: center;
 `;
 
 const StyledButton = styled.button`
@@ -82,12 +85,15 @@ const StyledButton = styled.button`
   }
 `;
 
-const StyledDialog = styled.div`
-  display: flex;
+interface StyledDialogProps {
+  isShow: boolean;
+}
+
+const StyledDialog = styled.div<StyledDialogProps>`
+  display: ${({ isShow }) => (isShow ? 'flex' : 'none')};
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 20px;
+  font-size: 14px;
   color: red;
-  padding-bottom: 10px;
 `;
