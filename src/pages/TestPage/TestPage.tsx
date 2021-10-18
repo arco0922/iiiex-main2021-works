@@ -5,13 +5,21 @@ import { WorksWindow } from './WorksWindow';
 
 export const TestPage: React.VFC = () => {
   const [srcUrl, setSrcUrl] = React.useState<string>('');
-
+  const [isFull, setIsFull] = React.useState<boolean>(false);
+  const iframeWidth = isFull ? '100vw' : '600px';
+  const iframeHeight = isFull ? '100vh' : '500px';
   return (
     <StyledRoot>
-      <StyledContainer>
-        <StyledTitle>動作確認ページ</StyledTitle>
-        <UrlForm setSrcUrl={setSrcUrl}></UrlForm>
-        <WorksWindow srcUrl={srcUrl}></WorksWindow>
+      <StyledContainer width={iframeWidth}>
+        {isFull ? (
+          <></>
+        ) : (
+          <>
+            <StyledTitle>動作確認ページ</StyledTitle>
+            <UrlForm setSrcUrl={setSrcUrl}></UrlForm>
+          </>
+        )}
+        <WorksWindow srcUrl={srcUrl} iframeHeight={iframeHeight} isFull={isFull} setIsFull={setIsFull}></WorksWindow>
       </StyledContainer>
     </StyledRoot>
   );
@@ -23,8 +31,12 @@ const StyledRoot = styled.div`
   align-items: center;
 `;
 
-const StyledContainer = styled.div`
-  width: 600px;
+interface StyledContainerProps {
+  width: string;
+}
+
+const StyledContainer = styled.div<StyledContainerProps>`
+  width: ${({ width }) => width};
   display: flex;
   flex-direction: column;
   align-items: center;
