@@ -13,6 +13,8 @@ interface Props {
 export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'black', padding = 5 }) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
 
+  let particleSystem: ParticleSystem;
+
   const setup = (p5: p5Types, canvasParentRef: Element) => {
     if (!containerRef.current) {
       return;
@@ -21,6 +23,8 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
       containerRef.current.clientWidth - padding * 2,
       containerRef.current.clientHeight - padding * 2,
     ).parent(canvasParentRef);
+
+    particleSystem = new ParticleSystem(p5, 100);
   };
 
   const windowResized = (p5: p5Types) => {
@@ -32,7 +36,105 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
 
   const draw = (p5: p5Types) => {
     p5.background(bgcolor);
+    particleSystem.display();
   };
+
+  class ParticleSystem {
+    p5: p5Types;
+    particles: Particle[];
+    distThreshold: number;
+
+    constructor(p5: p5Types, distThreshold: number) {
+      this.p5 = p5;
+      this.particles = [];
+      this.distThreshold = distThreshold;
+    }
+
+    display() {
+      this.displayParticles();
+    }
+
+    addParticle(x: number, y: number) {
+      this.particles.push(new Particle(this.p5, x, y));
+    }
+
+    updateParticles() {
+      this.particles.forEach((particle) => {
+        particle.update();
+        this.bounseAtWall(particle);
+      });
+    }
+
+    displayParticles() {
+      this.particles.forEach((particle) => {
+        particle.display();
+      });
+    }
+
+    bounseAtWall(p: Particle) {
+      if (p.radius <= p.x && p.x <= this.p5.width - p.radius && p.radius <= p.y && p.y <= this.p5.height - p.radius) {
+        return;
+      }
+      if (p.x - p.radius < 0) {
+        p.x += 2 * (p.radius - p.x);
+        p.velX *= -1;
+      }
+      if (p.x + p.radius > this.p5.width) {
+        p.x -= 2 * (p.radius + p.x - this.p5.width);
+        p.velX *= -1;
+      }
+      if (p.y - p.radius < 0) {
+        p.y += 2 * (p.radius - p.y);
+        p.velY *= -1;
+      }
+      if (p.y + p.radius > this.p5.height) {
+        p.y -= 2 * (p.radius + p.y - this.p5.height);
+        p.velY *= -1;
+      }
+    }
+  }
+
+  class Particle {
+    p5: p5Types;
+    x: number;
+    y: number;
+    velX: number;
+    velY: number;
+    accX: number;
+    accY: number;
+    radius: number;
+    mass: number;
+    neighbors: Particle[];
+
+    constructor(p5: p5Types, x: number, y: number) {
+      this.p5 = p5;
+      this.x = x;
+      this.y = y;
+      this.radius = (this.p5.random(1, 3) * this.p5.width) / 600;
+      this.velX = this.p5.random(-5, 5);
+      this.velY = this.p5.random(-5, 5);
+      this.accX = 0;
+      this.accY = 0;
+      this.mass = this.radius * this.radius;
+      this.neighbors = [];
+    }
+
+    update() {
+      this.x += this.velX;
+      this.y += this.velY;
+      this.velX += this.accX;
+      this.velY += this.accY;
+    }
+
+    addNeighbor(particle: Particle) {
+      this.neighbors.push(particle);
+    }
+
+    display() {
+      this.p5.fill(255);
+      this.p5.ellipse(this.x, this.y, this.radius * 2, this.radius * 2);
+    }
+  }
 
   return (
     <StyledContainer canvasWidth={width} canvasHeight={height} bgcolor={bgcolor} padding={padding} ref={containerRef}>
