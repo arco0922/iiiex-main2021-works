@@ -6,6 +6,9 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 export const AppRoot: React.VFC = () => {
+  /** 本番環境用のビルドの場合は、/testのルーティングは作らない */
+  const isProd = process.env.PHASE === 'production';
+
   return (
     <Router>
       <Switch>
@@ -15,9 +18,11 @@ export const AppRoot: React.VFC = () => {
         <Route path="/works/:id" exact>
           <IndividualPage />
         </Route>
-        <Route path="/test" exact>
-          <TestPage />
-        </Route>
+        {!isProd && (
+          <Route path="/test" exact>
+            <TestPage />
+          </Route>
+        )}
         <Route path="*">
           <ErrorPage />
         </Route>
