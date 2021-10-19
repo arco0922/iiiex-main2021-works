@@ -56,7 +56,9 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
 
     display() {
       this.updateParticles();
+      this.findNeighbors();
       this.displayParticles();
+      this.drawConnections();
     }
 
     addParticle(x: number, y: number) {
@@ -73,6 +75,33 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
     displayParticles() {
       this.particles.forEach((particle) => {
         particle.display();
+      });
+    }
+
+    drawConnections() {
+      this.p5.stroke(150);
+      this.p5.strokeWeight(1);
+      this.p5.fill(102, 255, 255, 40);
+      this.particles.forEach((particle) => {
+        if (particle.neighbors.length === 1) {
+          this.p5.beginShape(this.p5.LINES);
+          this.p5.vertex(particle.x, particle.y);
+          this.p5.vertex(particle.neighbors[0].x, particle.neighbors[0].y);
+          this.p5.endShape();
+        }
+        if (particle.neighbors.length >= 2) {
+          for (let i = 0; i < particle.neighbors.length; i++) {
+            for (let j = 0; j < particle.neighbors.length; j++) {
+              const p1 = particle.neighbors[i];
+              const p2 = particle.neighbors[j];
+              this.p5.beginShape(this.p5.TRIANGLES);
+              this.p5.vertex(particle.x, particle.y);
+              this.p5.vertex(p1.x, p1.y);
+              this.p5.vertex(p2.x, p2.y);
+              this.p5.endShape();
+            }
+          }
+        }
       });
     }
 
@@ -95,6 +124,24 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
       if (p.y + p.radius > this.p5.height) {
         p.y -= 2 * (p.radius + p.y - this.p5.height);
         p.velY *= -1;
+      }
+    }
+
+    calcSquaredDist(p1: Particle, p2: Particle) {
+      return (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y);
+    }
+
+    findNeighbors() {
+      for (let i = 0; i < this.particles.length; i++) {
+        const p1 = this.particles[i];
+        p1.clearNeighbors();
+        for (let j = i + 1; j < this.particles.length; j++) {
+          const p2 = this.particles[j];
+          const squaredDist = this.calcSquaredDist(p1, p2);
+          if (squaredDist < this.distThreshold * this.distThreshold) {
+            p1.addNeighbor(p2);
+          }
+        }
       }
     }
   }
@@ -131,11 +178,16 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
       this.velY += this.accY;
     }
 
+    clearNeighbors() {
+      this.neighbors = [];
+    }
+
     addNeighbor(particle: Particle) {
       this.neighbors.push(particle);
     }
 
     display() {
+      this.p5.noStroke();
       this.p5.fill(255);
       this.p5.ellipse(this.x, this.y, this.radius * 2, this.radius * 2);
     }
