@@ -34,6 +34,10 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
     p5.resizeCanvas(containerRef.current.clientWidth - padding * 2, containerRef.current.clientHeight - padding * 2);
   };
 
+  const mouseClicked = (p5: p5Types) => {
+    particleSystem.addParticle(p5.mouseX, p5.mouseY);
+  };
+
   const draw = (p5: p5Types) => {
     p5.background(bgcolor);
     particleSystem.display();
@@ -51,6 +55,7 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
     }
 
     display() {
+      this.updateParticles();
       this.displayParticles();
     }
 
@@ -138,7 +143,7 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
 
   return (
     <StyledContainer canvasWidth={width} canvasHeight={height} bgcolor={bgcolor} padding={padding} ref={containerRef}>
-      <Sketch setup={setup} draw={draw} windowResized={windowResized} />
+      <Sketch setup={setup} draw={draw} windowResized={windowResized} mouseClicked={mouseClicked} />
     </StyledContainer>
   );
 };
