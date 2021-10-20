@@ -18,7 +18,11 @@ export const WorksWindow: React.VFC<Props> = ({ srcUrl, iframeHeight, isFull, se
   return (
     <StyledRoot isFull={isFull}>
       <StyledContainer height={iframeHeight}>
-        {srcUrl ? <StyledIframe src={srcUrl}></StyledIframe> : <StyledSkeleton></StyledSkeleton>}
+        {srcUrl ? (
+          <StyledIframe src={srcUrl} allow="fullscreen *; autoplay *; camera *; microphone *"></StyledIframe>
+        ) : (
+          <StyledSkeleton></StyledSkeleton>
+        )}
         {isFull ? <StyledExitFullScreenButton onClick={exitFullScreen}>全画面解除</StyledExitFullScreenButton> : <></>}
       </StyledContainer>
       {isFull ? <></> : <StyledFullScreenButton onClick={makeFullScreen}>全画面表示</StyledFullScreenButton>}
