@@ -81,7 +81,7 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
     drawConnections() {
       this.p5.stroke(150);
       this.p5.strokeWeight(1);
-      this.p5.fill(102, 255, 255, 40);
+      this.p5.fill(255, 40);
       this.particles.forEach((particle) => {
         if (particle.neighbors.length === 1) {
           this.p5.beginShape(this.p5.LINES);
@@ -162,9 +162,9 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
       this.p5 = p5;
       this.x = x;
       this.y = y;
-      this.radius = (this.p5.random(1, 3) * this.p5.width) / 600;
-      this.velX = this.p5.random(-5, 5);
-      this.velY = this.p5.random(-5, 5);
+      this.radius = Math.max(this.p5.width / 600, 2);
+      this.velX = this.p5.random(-3, 3);
+      this.velY = this.p5.random(-3, 3);
       this.accX = 0;
       this.accY = 0;
       this.mass = this.radius * this.radius;

@@ -11,6 +11,6 @@ export const TopPage: React.VFC = () => {
 };
 
 const StyledContainer = styled.div`
-  width: 100vw;
+  width: 30vw;
   height: 100vh;
 `;
