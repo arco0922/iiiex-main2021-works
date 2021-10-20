@@ -5,7 +5,7 @@ interface Props {
   srcUrl: string;
   iframeHeight: string;
   isFull: boolean;
-  setIsFull: (isfull: boolean) => void;
+  setIsFull: (isFull: boolean) => void;
 }
 
 export const WorksWindow: React.VFC<Props> = ({ srcUrl, iframeHeight, isFull, setIsFull }) => {
@@ -16,9 +16,13 @@ export const WorksWindow: React.VFC<Props> = ({ srcUrl, iframeHeight, isFull, se
     setIsFull(false);
   }, [setIsFull]);
   return (
-    <StyledRoot>
+    <StyledRoot isFull={isFull}>
       <StyledContainer height={iframeHeight}>
-        {srcUrl ? <StyledIframe src={srcUrl}></StyledIframe> : <StyledSkeleton></StyledSkeleton>}
+        {srcUrl ? (
+          <StyledIframe src={srcUrl} allow="fullscreen *; autoplay *; camera *; microphone *"></StyledIframe>
+        ) : (
+          <StyledSkeleton></StyledSkeleton>
+        )}
         {isFull ? <StyledExitFullScreenButton onClick={exitFullScreen}>全画面解除</StyledExitFullScreenButton> : <></>}
       </StyledContainer>
       {isFull ? <></> : <StyledFullScreenButton onClick={makeFullScreen}>全画面表示</StyledFullScreenButton>}
@@ -26,11 +30,16 @@ export const WorksWindow: React.VFC<Props> = ({ srcUrl, iframeHeight, isFull, se
   );
 };
 
-const StyledRoot = styled.div`
+interface StyledRootProps {
+  isFull: boolean;
+}
+
+const StyledRoot = styled.div<StyledRootProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
+  margin: ${({ isFull }) => (isFull ? '0' : '15px 0 30px 0')};
 `;
 
 interface StyledContainerProps {
