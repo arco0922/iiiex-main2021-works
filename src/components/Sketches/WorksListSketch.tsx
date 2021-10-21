@@ -13,6 +13,21 @@ interface Props {
 export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'black', padding = 5 }) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
 
+  /**
+   * basicMovementTypeは、マウスによってParticleがドラッグされていないときの挙動のタイプ を表す。
+   * Inertia: 物理法則にしたがう
+   *  Static: 動かない
+   */
+  type BasicMovementType = 'Inertia' | 'Static';
+
+  /**
+   * dragMovementTypeは、マウスによってParticleがドラッグされているときの挙動のタイプ を表す。
+   * Pos-Vel: 位置と速度を変化させられる(ドラッグ状態でなくなると、その時の速度がParticleに与えられる)
+   *     Pos: 位置のみを変化させられる(ドラッグ状態でなくなると、速度はドラッグされる前のものになる)
+   *    None: ドラッグによって動かすことはできず、ドラッグしていない時と同様の挙動をする
+   */
+  type DragMovementType = 'Pos-Vel' | 'Pos' | 'None';
+
   let particleSystem: ParticleSystem;
 
   const setup = (p5: p5Types, canvasParentRef: Element) => {
@@ -25,6 +40,13 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
     ).parent(canvasParentRef);
 
     particleSystem = new ParticleSystem(p5, 100);
+    for (let i = 0; i < 15; i++) {
+      const x = p5.random(10, p5.width - 10);
+      const y = p5.random(10, p5.height - 10);
+      const velX = p5.random(-2, 2);
+      const velY = p5.random(-2, 2);
+      particleSystem.addParticle(x, y, 30, velX, velY, 'Inertia', 'None');
+    }
   };
 
   const windowResized = (p5: p5Types) => {
@@ -34,13 +56,17 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
     p5.resizeCanvas(containerRef.current.clientWidth - padding * 2, containerRef.current.clientHeight - padding * 2);
   };
 
-  const mouseClicked = (p5: p5Types) => {
-    particleSystem.addParticle(p5.mouseX, p5.mouseY);
-  };
-
   const draw = (p5: p5Types) => {
     p5.background(bgcolor);
     particleSystem.display();
+  };
+
+  const mousePressed = () => {
+    particleSystem.catchParticles();
+  };
+
+  const mouseReleased = () => {
+    particleSystem.releaseParticles();
   };
 
   class ParticleSystem {
@@ -61,8 +87,16 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
       this.drawConnections();
     }
 
-    addParticle(x: number, y: number) {
-      this.particles.push(new Particle(this.p5, x, y));
+    addParticle(
+      x: number,
+      y: number,
+      r: number,
+      velX = 0,
+      velY = 0,
+      basicMovementType: BasicMovementType = 'Inertia',
+      dragMovementType: DragMovementType = 'None',
+    ) {
+      this.particles.push(new Particle(this.p5, x, y, r, velX, velY, basicMovementType, dragMovementType));
     }
 
     updateParticles() {
@@ -105,30 +139,54 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
       });
     }
 
-    bounseAtWall(p: Particle) {
-      if (p.radius <= p.x && p.x <= this.p5.width - p.radius && p.radius <= p.y && p.y <= this.p5.height - p.radius) {
+    bounseAtWall(particle: Particle) {
+      if (
+        particle.radius <= particle.x &&
+        particle.x <= this.p5.width - particle.radius &&
+        particle.radius <= particle.y &&
+        particle.y <= this.p5.height - particle.radius
+      ) {
         return;
       }
-      if (p.x - p.radius < 0) {
-        p.x += 2 * (p.radius - p.x);
-        p.velX *= -1;
+      if (particle.isDragged) {
+        this.releaseParticle(particle);
       }
-      if (p.x + p.radius > this.p5.width) {
-        p.x -= 2 * (p.radius + p.x - this.p5.width);
-        p.velX *= -1;
+      if (particle.x - particle.radius < 0) {
+        if (particle.basicMovementType === 'Static') {
+          particle.x = particle.radius;
+        } else {
+          particle.x += 2 * (particle.radius - particle.x);
+          particle.velX *= -1;
+        }
       }
-      if (p.y - p.radius < 0) {
-        p.y += 2 * (p.radius - p.y);
-        p.velY *= -1;
+      if (particle.x + particle.radius > this.p5.width) {
+        if (particle.basicMovementType === 'Static') {
+          particle.x = this.p5.width - particle.radius;
+        } else {
+          particle.x -= 2 * (particle.radius + particle.x - this.p5.width);
+          particle.velX *= -1;
+        }
       }
-      if (p.y + p.radius > this.p5.height) {
-        p.y -= 2 * (p.radius + p.y - this.p5.height);
-        p.velY *= -1;
+      if (particle.y - particle.radius < 0) {
+        if (particle.basicMovementType === 'Static') {
+          particle.y = particle.radius;
+        } else {
+          particle.y += 2 * (particle.radius - particle.y);
+          particle.velY *= -1;
+        }
+      }
+      if (particle.y + particle.radius > this.p5.height) {
+        if (particle.basicMovementType === 'Static') {
+          particle.y = this.p5.height - particle.radius;
+        } else {
+          particle.y -= 2 * (particle.radius + particle.y - this.p5.height);
+          particle.velY *= -1;
+        }
       }
     }
 
-    calcSquaredDist(p1: Particle, p2: Particle) {
-      return (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y);
+    calcSquaredDist(x1: number, y1: number, x2: number, y2: number) {
+      return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
     }
 
     findNeighbors() {
@@ -137,12 +195,45 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
         p1.clearNeighbors();
         for (let j = i + 1; j < this.particles.length; j++) {
           const p2 = this.particles[j];
-          const squaredDist = this.calcSquaredDist(p1, p2);
+          const squaredDist = this.calcSquaredDist(p1.x, p1.y, p2.x, p2.y);
           if (squaredDist < this.distThreshold * this.distThreshold) {
             p1.addNeighbor(p2);
           }
         }
       }
+    }
+
+    catchParticle(particle: Particle) {
+      particle.isDragged = true;
+      particle.dragOffsetX = this.p5.mouseX - particle.x;
+      particle.dragOffsetY = this.p5.mouseY - particle.y;
+    }
+
+    catchParticles() {
+      this.particles.forEach((particle) => {
+        if (
+          this.calcSquaredDist(this.p5.mouseX, this.p5.mouseY, particle.x, particle.y) <
+          particle.radius * particle.radius
+        ) {
+          this.catchParticle(particle);
+        }
+      });
+    }
+
+    releaseParticle(particle: Particle) {
+      particle.isDragged = false;
+      particle.dragOffsetX = 0;
+      particle.dragOffsetY = 0;
+    }
+
+    releaseParticles() {
+      this.particles.forEach((particle) => {
+        this.releaseParticle(particle);
+      });
+    }
+
+    checkIsIntersectStatic(p: Particle) {
+      /** 自分以外のStaticのParticleとの干渉を */
     }
   }
 
@@ -157,25 +248,72 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
     radius: number;
     mass: number;
     neighbors: Particle[];
+    basicMovementType: BasicMovementType;
+    dragMovementType: DragMovementType;
+    isDragged: boolean;
+    dragOffsetX: number;
+    dragOffsetY: number;
 
-    constructor(p5: p5Types, x: number, y: number) {
+    constructor(
+      p5: p5Types,
+      x: number,
+      y: number,
+      r: number,
+      velX: number,
+      velY: number,
+      basicMovementType: BasicMovementType,
+      dragMovementType: DragMovementType,
+    ) {
       this.p5 = p5;
       this.x = x;
       this.y = y;
-      this.radius = Math.max(this.p5.width / 600, 2);
-      this.velX = this.p5.random(-3, 3);
-      this.velY = this.p5.random(-3, 3);
+      this.radius = r;
+      this.velX = velX;
+      this.velY = velY;
       this.accX = 0;
       this.accY = 0;
       this.mass = this.radius * this.radius;
       this.neighbors = [];
+      this.basicMovementType = basicMovementType;
+      this.dragMovementType = dragMovementType;
+      this.isDragged = false;
+      this.dragOffsetX = 0;
+      this.dragOffsetY = 0;
     }
 
     update() {
-      this.x += this.velX;
-      this.y += this.velY;
-      this.velX += this.accX;
-      this.velY += this.accY;
+      if (this.isDragged) {
+        this.dragUpdate();
+      } else {
+        this.basicUpdate();
+      }
+    }
+
+    basicUpdate() {
+      if (this.basicMovementType === 'Inertia') {
+        this.x += this.velX;
+        this.y += this.velY;
+        this.velX += this.accX;
+        this.velY += this.accY;
+      } else {
+        this.velX = 0;
+        this.velY = 0;
+      }
+    }
+
+    dragUpdate() {
+      if (this.dragMovementType === 'None') {
+        this.basicUpdate();
+        return;
+      }
+      const newX = this.p5.mouseX - this.dragOffsetX;
+      const newY = this.p5.mouseY - this.dragOffsetY;
+      if (this.dragMovementType === 'Pos-Vel') {
+        this.velX = newX - this.x;
+        this.velY = newY - this.y;
+      }
+      this.x = newX;
+      this.y = newY;
     }
 
     clearNeighbors() {
@@ -195,7 +333,13 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
 
   return (
     <StyledContainer canvasWidth={width} canvasHeight={height} bgcolor={bgcolor} padding={padding} ref={containerRef}>
-      <Sketch setup={setup} draw={draw} windowResized={windowResized} mouseClicked={mouseClicked} />
+      <Sketch
+        setup={setup}
+        draw={draw}
+        windowResized={windowResized}
+        mousePressed={mousePressed}
+        mouseReleased={mouseReleased}
+      />
     </StyledContainer>
   );
 };
