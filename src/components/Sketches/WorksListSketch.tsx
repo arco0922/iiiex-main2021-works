@@ -10,13 +10,13 @@ interface Props {
   padding?: number;
 }
 
-export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'black', padding = 5 }) => {
+export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'black', padding = 5 }) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   /**
    * basicMovementTypeは、マウスによってParticleがドラッグされていないときの挙動のタイプ を表す。
-   * Inertia: 物理法則にしたがう
-   *  Static: 動かない
+   * Inertia: 物理法則にしたがう → dragMovementTypeはNoneかPos-Velを想定
+   *  Static: 動かない → dragMovementTypeはNoneかPosを想定
    */
   type BasicMovementType = 'Inertia' | 'Static';
 
@@ -40,12 +40,17 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
     ).parent(canvasParentRef);
 
     particleSystem = new ParticleSystem(p5, 100);
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 70; i++) {
       const x = p5.random(10, p5.width - 10);
       const y = p5.random(10, p5.height - 10);
       const velX = p5.random(-2, 2);
       const velY = p5.random(-2, 2);
-      particleSystem.addParticle(x, y, 30, velX, velY, 'Inertia', 'None');
+      particleSystem.addParticle(x, y, 2, velX, velY, 7, 'Inertia', 'None');
+    }
+    for (let i = 0; i < 10; i++) {
+      const x = p5.random(10, p5.width - 10);
+      const y = p5.random(10, p5.height - 10);
+      particleSystem.addParticle(x, y, 30, 0, 0, 1, 'Static', 'Pos');
     }
   };
 
@@ -83,8 +88,8 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
     display() {
       this.updateParticles();
       this.findNeighbors();
-      this.displayParticles();
       this.drawConnections();
+      this.displayParticles();
     }
 
     addParticle(
@@ -93,17 +98,29 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
       r: number,
       velX = 0,
       velY = 0,
+      mass = 1,
       basicMovementType: BasicMovementType = 'Inertia',
       dragMovementType: DragMovementType = 'None',
     ) {
-      this.particles.push(new Particle(this.p5, x, y, r, velX, velY, basicMovementType, dragMovementType));
+      this.particles.push(new Particle(this.p5, x, y, r, velX, velY, mass, basicMovementType, dragMovementType));
     }
 
     updateParticles() {
-      this.particles.forEach((particle) => {
+      for (let i = 0; i < this.particles.length; i++) {
+        const particle = this.particles[i];
         particle.update();
         particle.bounseAtWall();
-      });
+        for (let j = i + 1; j < this.particles.length; j++) {
+          const other = this.particles[j];
+          const [isIntersect, disanceVect, interSectLength] = particle.calcIntersection(other);
+          if (!isIntersect) {
+            continue;
+          }
+          particle.correctIntersection(other);
+          particle.collideWithOther(other);
+          particle.correctIntersection(other);
+        }
+      }
     }
 
     displayParticles() {
@@ -113,9 +130,10 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
     }
 
     drawConnections() {
-      this.p5.stroke(150);
-      this.p5.strokeWeight(1);
-      this.p5.fill(255, 40);
+      //this.p5.stroke(30);
+      //this.p5.strokeWeight(1);
+      this.p5.noStroke();
+      this.p5.fill(200, 20);
       this.particles.forEach((particle) => {
         if (particle.neighbors.length === 1) {
           this.p5.beginShape(this.p5.LINES);
@@ -170,7 +188,9 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
 
     releaseParticles() {
       this.particles.forEach((particle) => {
-        particle.release();
+        if (particle.isDragged) {
+          particle.release();
+        }
       });
     }
   }
@@ -186,6 +206,7 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
     radius: number;
     mass: number;
     neighbors: Particle[];
+    initialBasicMovementType: BasicMovementType;
     basicMovementType: BasicMovementType;
     dragMovementType: DragMovementType;
     isDragged: boolean;
@@ -199,6 +220,7 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
       r: number,
       velX: number,
       velY: number,
+      mass: number,
       basicMovementType: BasicMovementType,
       dragMovementType: DragMovementType,
     ) {
@@ -210,8 +232,9 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
       this.velY = velY;
       this.accX = 0;
       this.accY = 0;
-      this.mass = this.radius * this.radius;
+      this.mass = mass;
       this.neighbors = [];
+      this.initialBasicMovementType = basicMovementType;
       this.basicMovementType = basicMovementType;
       this.dragMovementType = dragMovementType;
       this.isDragged = false;
@@ -246,10 +269,9 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
       }
       const newX = this.p5.mouseX - this.dragOffsetX;
       const newY = this.p5.mouseY - this.dragOffsetY;
-      if (this.dragMovementType === 'Pos-Vel') {
-        this.velX = newX - this.x;
-        this.velY = newY - this.y;
-      }
+
+      this.velX = newX - this.x;
+      this.velY = newY - this.y;
       this.x = newX;
       this.y = newY;
     }
@@ -300,6 +322,124 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
       }
     }
 
+    calcIntersection(other: Particle): [boolean, p5Types.Vector, number] {
+      const dx = other.x - this.x;
+      const dy = other.y - this.y;
+      const rSum = this.radius + other.radius;
+      const distanceVect = this.p5.createVector(dx, dy);
+      const distance = distanceVect.mag();
+      const intersectLength = rSum - distance;
+      const isIntersect = intersectLength > 0;
+      return [isIntersect, distanceVect, intersectLength];
+    }
+
+    correctIntersection(other: Particle) {
+      const [isIntersect, distanceVect, intersectLength] = this.calcIntersection(other);
+      if (intersectLength <= 0) {
+        return;
+      }
+      if (this.isDragged) {
+        if (other.basicMovementType === 'Static') {
+          if (intersectLength > 1) {
+            this.release();
+          }
+        }
+      }
+      if (other.isDragged) {
+        if (this.basicMovementType === 'Static') {
+          if (intersectLength > 1) {
+            other.release();
+          }
+        }
+      }
+
+      let selfCorrectionLength = 0;
+      let otherCorrectionLength = 0;
+      if (this.basicMovementType === other.basicMovementType) {
+        selfCorrectionLength = intersectLength / 2;
+        otherCorrectionLength = intersectLength / 2;
+      } else if (this.basicMovementType === 'Inertia') {
+        selfCorrectionLength = intersectLength;
+      } else {
+        otherCorrectionLength = intersectLength;
+      }
+      const selfD = distanceVect.copy();
+      const otherD = distanceVect.copy();
+      const selfCorrectionVec = selfD.normalize().mult(selfCorrectionLength);
+      const otherCorrectionVec = otherD.normalize().mult(otherCorrectionLength);
+      this.x -= selfCorrectionVec.x;
+      this.y -= selfCorrectionVec.y;
+      other.x += otherCorrectionVec.x;
+      other.y += otherCorrectionVec.y;
+    }
+
+    collideWithOther(other: Particle) {
+      const [isIntersect, distanceVect, interSectLength] = this.calcIntersection(other);
+
+      if (this.basicMovementType === 'Static' && other.basicMovementType === 'Static') {
+        return;
+      }
+      const theta = distanceVect.heading();
+      const sine = this.p5.sin(theta);
+      const cosine = this.p5.cos(theta);
+
+      const bTemp: p5Types.Vector[] = [this.p5.createVector(), this.p5.createVector()];
+
+      bTemp[1].x = cosine * distanceVect.x + sine * distanceVect.y;
+      bTemp[1].y = cosine * distanceVect.y - sine * distanceVect.x;
+
+      const vTemp: p5Types.Vector[] = [this.p5.createVector(), this.p5.createVector()];
+
+      vTemp[0].x = cosine * this.velX + sine * this.velY;
+      vTemp[0].y = -sine * this.velX + cosine * this.velY;
+      vTemp[1].x = cosine * other.velX + sine * other.velY;
+      vTemp[1].y = -sine * other.velX + cosine * other.velY;
+
+      const vFinal: p5Types.Vector[] = [this.p5.createVector(), this.p5.createVector()];
+
+      if (this.basicMovementType === 'Static' && other.basicMovementType === 'Inertia') {
+        if (this.isDragged) {
+          vFinal[1].x = ((other.mass - this.mass) * vTemp[1].x + 2 * this.mass * vTemp[0].x) / (this.mass + other.mass);
+        } else {
+          vFinal[1].x = -vTemp[1].x;
+        }
+      } else if (this.basicMovementType === 'Inertia' && other.basicMovementType === 'Static') {
+        if (other.isDragged) {
+          vFinal[0].x =
+            ((this.mass - other.mass) * vTemp[0].x + 2 * other.mass * vTemp[1].x) / (this.mass + other.mass);
+        } else {
+          vFinal[0].x = -vTemp[0].x;
+        }
+      } else {
+        vFinal[0].x = ((this.mass - other.mass) * vTemp[0].x + 2 * other.mass * vTemp[1].x) / (this.mass + other.mass);
+        vFinal[1].x = ((other.mass - this.mass) * vTemp[1].x + 2 * this.mass * vTemp[0].x) / (this.mass + other.mass);
+      }
+
+      vFinal[0].y = vTemp[0].y;
+      vFinal[1].y = vTemp[1].y;
+
+      bTemp[0].x += vFinal[0].x;
+      bTemp[1].x += vFinal[1].x;
+
+      const bFinal: p5Types.Vector[] = [this.p5.createVector(), this.p5.createVector()];
+
+      bFinal[0].x = cosine * bTemp[0].x - sine * bTemp[0].y;
+      bFinal[0].y = sine * bTemp[0].x + cosine * bTemp[0].y;
+      bFinal[1].x = cosine * bTemp[1].x - sine * bTemp[1].y;
+      bFinal[1].y = sine * bTemp[1].x + cosine * bTemp[1].y;
+
+      other.x = this.x + bFinal[1].x;
+      other.y = this.y + bFinal[1].y;
+
+      this.x += bFinal[0].x;
+      this.y += bFinal[0].y;
+
+      this.velX = cosine * vFinal[0].x - sine * vFinal[0].y;
+      this.velY = sine * vFinal[0].x + cosine * vFinal[0].y;
+      other.velX = cosine * vFinal[1].x - sine * vFinal[1].y;
+      other.velY = sine * vFinal[1].x + cosine * vFinal[1].y;
+    }
+
     clearNeighbors() {
       this.neighbors = [];
     }
@@ -310,18 +450,26 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
 
     display() {
       this.p5.noStroke();
-      this.p5.fill(255);
+      this.p5.fill(100);
       this.p5.ellipse(this.x, this.y, this.radius * 2, this.radius * 2);
     }
 
     catch(x: number, y: number) {
-      this.isDragged = true;
-      this.dragOffsetX = x - this.x;
-      this.dragOffsetY = y - this.y;
+      if (this.dragMovementType !== 'None') {
+        this.isDragged = true;
+        this.basicMovementType = 'Static';
+        this.dragOffsetX = x - this.x;
+        this.dragOffsetY = y - this.y;
+      }
     }
 
     release() {
       this.isDragged = false;
+      if (this.dragMovementType === 'Pos' || this.initialBasicMovementType === 'Static') {
+        this.velX = 0;
+        this.velY = 0;
+      }
+      this.basicMovementType = this.initialBasicMovementType;
       this.dragOffsetX = 0;
       this.dragOffsetY = 0;
     }
@@ -338,7 +486,7 @@ export const WorksListSketch: React.VFC<Props> = ({ width, height, bgcolor = 'bl
       />
     </StyledContainer>
   );
-};
+});
 
 interface StyledContainerProps {
   canvasWidth: string;
