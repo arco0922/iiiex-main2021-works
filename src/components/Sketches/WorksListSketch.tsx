@@ -58,7 +58,7 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
 
   const obstacleColor = 'rgba(255,255,255,1)';
   const obstacleStrokeColor = 'rgba(255,255,255,1)';
-  const obstacleTriangleColor = 'rgba(150,150,150,0.3)';
+  const obstacleTriangleColor = 'rgba(220,220,220,0.4)';
 
   const selectColor = 'rgba(255,100,100,1)';
 
@@ -74,9 +74,9 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
       containerRef.current.clientHeight - padding * 2,
     ).parent(canvasParentRef);
 
-    particleSystem = new ParticleSystem(p5, particleStrokeColor, particleTriangleColor, 130);
-    particleSystem2 = new ParticleSystem(p5, particleStrokeColor2, particleTriangleColor2, 130);
-    obstacleSystem = new ParticleSystem(p5, obstacleStrokeColor, obstacleTriangleColor, 300);
+    particleSystem = new ParticleSystem(p5, particleStrokeColor, particleTriangleColor, 180, 2);
+    particleSystem2 = new ParticleSystem(p5, particleStrokeColor2, particleTriangleColor2, 180, 2);
+    obstacleSystem = new ParticleSystem(p5, obstacleStrokeColor, obstacleTriangleColor, 300, 15);
     for (let i = 0; i < 150; i++) {
       const x = p5.random(10, p5.width - 10);
       const y = p5.random(10, p5.height - 10);
@@ -127,14 +127,23 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
     strokeColor: string;
     triangleColor: string;
     distThreshold: number;
+    connectionLimit: number;
     selectId: number;
 
-    constructor(p5: p5Types, strokeColor: string, triangleColor: string, distThreshold: number, selectId = -1) {
+    constructor(
+      p5: p5Types,
+      strokeColor: string,
+      triangleColor: string,
+      distThreshold: number,
+      connectionLimit: number,
+      selectId = -1,
+    ) {
       this.p5 = p5;
       this.particles = [];
       this.strokeColor = strokeColor;
       this.triangleColor = triangleColor;
       this.distThreshold = distThreshold;
+      this.connectionLimit = connectionLimit;
       this.selectId = selectId;
     }
 
@@ -232,6 +241,9 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
         const p1 = this.particles[i];
         p1.clearNeighbors();
         for (let j = i + 1; j < this.particles.length; j++) {
+          if (p1.neighbors.length > this.connectionLimit) {
+            break;
+          }
           const p2 = this.particles[j];
           const squaredDist = calcSquaredDist(p1.x, p1.y, p2.x, p2.y);
           if (squaredDist < this.distThreshold * this.distThreshold) {
