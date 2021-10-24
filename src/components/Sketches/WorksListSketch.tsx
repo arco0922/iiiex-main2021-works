@@ -12,6 +12,22 @@ interface Props {
 
 export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'black', padding = 5 }) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
+  // modern Chrome requires { passive: false } when adding event
+  let supportsPassive = false;
+  try {
+    window.addEventListener(
+      'test',
+      () => null,
+      Object.defineProperty({}, 'passive', {
+        get: function () {
+          supportsPassive = true;
+        },
+      }),
+    );
+  } catch (e) {}
+
+  const wheelOpt: boolean | AddEventListenerOptions = supportsPassive ? { passive: false } : false;
+  const preventDefault = (e: TouchEvent) => e.preventDefault();
 
   /**
    * basicMovementTypeは、マウスによってParticleがドラッグされていないときの挙動のタイプ を表す。
@@ -29,6 +45,25 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
   type DragMovementType = 'Pos-Vel' | 'Pos' | 'None';
 
   let particleSystem: ParticleSystem;
+  let particleSystem2: ParticleSystem;
+  let obstacleSystem: ParticleSystem;
+
+  const particleColor = 'rgba(255,255,255,0)';
+  const particleStrokeColor = 'rgba(120,120,120,0.05)';
+  const particleTriangleColor = 'rgba(255,255,255,0.03)';
+
+  const particleColor2 = 'rgba(255,255,255,0)';
+  const particleStrokeColor2 = 'rgba(255,100,100,0.05)';
+  const particleTriangleColor2 = 'rgba(255,100,100,0.03)';
+
+  const obstacleColor = 'rgba(255,255,255,1)';
+  const obstacleStrokeColor = 'rgba(255,255,255,1)';
+  const obstacleTriangleColor = 'rgba(150,150,150,0.3)';
+
+  const selectColor = 'rgba(255,100,100,1)';
+
+  const calcSquaredDist = (x1: number, y1: number, x2: number, y2: number) =>
+    (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
 
   const setup = (p5: p5Types, canvasParentRef: Element) => {
     if (!containerRef.current) {
@@ -39,18 +74,28 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
       containerRef.current.clientHeight - padding * 2,
     ).parent(canvasParentRef);
 
-    particleSystem = new ParticleSystem(p5, 100);
-    for (let i = 0; i < 70; i++) {
+    particleSystem = new ParticleSystem(p5, particleStrokeColor, particleTriangleColor, 130);
+    particleSystem2 = new ParticleSystem(p5, particleStrokeColor2, particleTriangleColor2, 130);
+    obstacleSystem = new ParticleSystem(p5, obstacleStrokeColor, obstacleTriangleColor, 300);
+    for (let i = 0; i < 150; i++) {
       const x = p5.random(10, p5.width - 10);
       const y = p5.random(10, p5.height - 10);
       const velX = p5.random(-2, 2);
       const velY = p5.random(-2, 2);
-      particleSystem.addParticle(x, y, 2, velX, velY, 7, 'Inertia', 'None');
+      particleSystem.addParticle(i, x, y, 1, velX, velY, 7, particleColor, 'Inertia', 'None');
     }
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 150; i++) {
       const x = p5.random(10, p5.width - 10);
       const y = p5.random(10, p5.height - 10);
-      particleSystem.addParticle(x, y, 30, 0, 0, 1, 'Static', 'Pos');
+      const velX = p5.random(-2, 2);
+      const velY = p5.random(-2, 2);
+      particleSystem2.addParticle(i, x, y, 1, velX, velY, 7, particleColor2, 'Inertia', 'None');
+    }
+
+    for (let i = 0; i < 15; i++) {
+      const x = p5.random(10, p5.width - 10);
+      const y = p5.random(10, p5.height - 10);
+      obstacleSystem.addParticle(i, x, y, 70, 0, 0, 1, obstacleColor, 'Static', 'Pos');
     }
   };
 
@@ -64,25 +109,33 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
   const draw = (p5: p5Types) => {
     p5.background(bgcolor);
     particleSystem.display();
+    particleSystem2.display();
+    obstacleSystem.display();
   };
 
   const mousePressed = () => {
-    particleSystem.catchParticles();
+    obstacleSystem.catchParticles();
   };
 
   const mouseReleased = () => {
-    particleSystem.releaseParticles();
+    obstacleSystem.releaseParticles();
   };
 
   class ParticleSystem {
     p5: p5Types;
     particles: Particle[];
+    strokeColor: string;
+    triangleColor: string;
     distThreshold: number;
+    selectId: number;
 
-    constructor(p5: p5Types, distThreshold: number) {
+    constructor(p5: p5Types, strokeColor: string, triangleColor: string, distThreshold: number, selectId = -1) {
       this.p5 = p5;
       this.particles = [];
+      this.strokeColor = strokeColor;
+      this.triangleColor = triangleColor;
       this.distThreshold = distThreshold;
+      this.selectId = selectId;
     }
 
     display() {
@@ -93,16 +146,20 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
     }
 
     addParticle(
+      id: number,
       x: number,
       y: number,
       r: number,
       velX = 0,
       velY = 0,
       mass = 1,
+      color = 'rgba(0,0,0,0)',
       basicMovementType: BasicMovementType = 'Inertia',
       dragMovementType: DragMovementType = 'None',
     ) {
-      this.particles.push(new Particle(this.p5, x, y, r, velX, velY, mass, basicMovementType, dragMovementType));
+      this.particles.push(
+        new Particle(this.p5, id, x, y, r, velX, velY, mass, color, basicMovementType, dragMovementType),
+      );
     }
 
     updateParticles() {
@@ -120,20 +177,20 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
           particle.collideWithOther(other);
           particle.correctIntersection(other);
         }
+        particle.bounseAtWall();
       }
     }
 
     displayParticles() {
       this.particles.forEach((particle) => {
-        particle.display();
+        particle.display(particle.id === this.selectId);
       });
     }
 
     drawConnections() {
-      //this.p5.stroke(30);
-      //this.p5.strokeWeight(1);
-      this.p5.noStroke();
-      this.p5.fill(200, 20);
+      this.p5.stroke(this.strokeColor);
+      this.p5.strokeWeight(1);
+      this.p5.fill(this.triangleColor);
       this.particles.forEach((particle) => {
         if (particle.neighbors.length === 1) {
           this.p5.beginShape(this.p5.LINES);
@@ -146,19 +203,28 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
             for (let j = 0; j < particle.neighbors.length; j++) {
               const p1 = particle.neighbors[i];
               const p2 = particle.neighbors[j];
-              this.p5.beginShape(this.p5.TRIANGLES);
-              this.p5.vertex(particle.x, particle.y);
-              this.p5.vertex(p1.x, p1.y);
-              this.p5.vertex(p2.x, p2.y);
-              this.p5.endShape();
+              if (calcSquaredDist(p1.x, p1.y, p2.x, p2.y) < this.distThreshold * this.distThreshold) {
+                this.p5.beginShape(this.p5.TRIANGLES);
+                this.p5.vertex(particle.x, particle.y);
+                this.p5.vertex(p1.x, p1.y);
+                this.p5.vertex(p2.x, p2.y);
+                this.p5.endShape();
+              } else {
+                this.p5.beginShape(this.p5.LINES);
+                if (p1.neighbors.length >= 2) {
+                  this.p5.vertex(particle.x, particle.y);
+                  this.p5.vertex(p1.x, p1.y);
+                }
+                if (p2.neighbors.length >= 2) {
+                  this.p5.vertex(particle.x, particle.y);
+                  this.p5.vertex(p2.x, p2.y);
+                }
+                this.p5.endShape();
+              }
             }
           }
         }
       });
-    }
-
-    calcSquaredDist(x1: number, y1: number, x2: number, y2: number) {
-      return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
     }
 
     findNeighbors() {
@@ -167,7 +233,7 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
         p1.clearNeighbors();
         for (let j = i + 1; j < this.particles.length; j++) {
           const p2 = this.particles[j];
-          const squaredDist = this.calcSquaredDist(p1.x, p1.y, p2.x, p2.y);
+          const squaredDist = calcSquaredDist(p1.x, p1.y, p2.x, p2.y);
           if (squaredDist < this.distThreshold * this.distThreshold) {
             p1.addNeighbor(p2);
           }
@@ -178,9 +244,11 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
     catchParticles() {
       this.particles.forEach((particle) => {
         if (
-          this.calcSquaredDist(this.p5.mouseX, this.p5.mouseY, particle.x, particle.y) <
+          calcSquaredDist(this.p5.mouseX, this.p5.mouseY, particle.x, particle.y) <
           particle.radius * particle.radius
         ) {
+          window.addEventListener('touchmove', preventDefault, wheelOpt); // mobile
+          this.selectId = particle.id;
           particle.catch(this.p5.mouseX, this.p5.mouseY);
         }
       });
@@ -189,6 +257,7 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
     releaseParticles() {
       this.particles.forEach((particle) => {
         if (particle.isDragged) {
+          window.removeEventListener('touchmove', preventDefault, wheelOpt); // mobile
           particle.release();
         }
       });
@@ -197,6 +266,7 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
 
   class Particle {
     p5: p5Types;
+    id: number;
     x: number;
     y: number;
     velX: number;
@@ -205,6 +275,7 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
     accY: number;
     radius: number;
     mass: number;
+    color: string;
     neighbors: Particle[];
     initialBasicMovementType: BasicMovementType;
     basicMovementType: BasicMovementType;
@@ -215,16 +286,19 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
 
     constructor(
       p5: p5Types,
+      id: number,
       x: number,
       y: number,
       r: number,
       velX: number,
       velY: number,
       mass: number,
+      color: string,
       basicMovementType: BasicMovementType,
       dragMovementType: DragMovementType,
     ) {
       this.p5 = p5;
+      this.id = id;
       this.x = x;
       this.y = y;
       this.radius = r;
@@ -233,6 +307,7 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
       this.accX = 0;
       this.accY = 0;
       this.mass = mass;
+      this.color = color;
       this.neighbors = [];
       this.initialBasicMovementType = basicMovementType;
       this.basicMovementType = basicMovementType;
@@ -285,9 +360,6 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
       ) {
         return;
       }
-      if (this.isDragged) {
-        this.release();
-      }
 
       if (this.basicMovementType === 'Static') {
         if (this.x - this.radius < 0) {
@@ -320,6 +392,15 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
           this.velY *= -1;
         }
       }
+
+      if (this.isDragged) {
+        if (calcSquaredDist(this.p5.mouseX, this.p5.mouseY, this.x, this.y) < this.radius * this.radius) {
+          this.dragOffsetX = this.p5.mouseX - this.x;
+          this.dragOffsetY = this.p5.mouseY - this.y;
+        } else {
+          this.release();
+        }
+      }
     }
 
     calcIntersection(other: Particle): [boolean, p5Types.Vector, number] {
@@ -340,14 +421,14 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
       }
       if (this.isDragged) {
         if (other.basicMovementType === 'Static') {
-          if (intersectLength > 1) {
+          if (intersectLength > 50) {
             this.release();
           }
         }
       }
       if (other.isDragged) {
         if (this.basicMovementType === 'Static') {
-          if (intersectLength > 1) {
+          if (intersectLength > 50) {
             other.release();
           }
         }
@@ -356,8 +437,14 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
       let selfCorrectionLength = 0;
       let otherCorrectionLength = 0;
       if (this.basicMovementType === other.basicMovementType) {
-        selfCorrectionLength = intersectLength / 2;
-        otherCorrectionLength = intersectLength / 2;
+        if (this.isDragged) {
+          otherCorrectionLength = intersectLength;
+        } else if (other.isDragged) {
+          selfCorrectionLength = intersectLength;
+        } else {
+          selfCorrectionLength = intersectLength / 2;
+          otherCorrectionLength = intersectLength / 2;
+        }
       } else if (this.basicMovementType === 'Inertia') {
         selfCorrectionLength = intersectLength;
       } else {
@@ -448,10 +535,16 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
       this.neighbors.push(particle);
     }
 
-    display() {
+    display(isSelected: boolean) {
       this.p5.noStroke();
-      this.p5.fill(100);
+      this.p5.fill(this.color);
       this.p5.ellipse(this.x, this.y, this.radius * 2, this.radius * 2);
+      if (isSelected) {
+        this.p5.stroke(selectColor);
+        this.p5.strokeWeight(5);
+        this.p5.noFill();
+        this.p5.ellipse(this.x, this.y, this.radius * 2 + 20, this.radius * 2 + 20);
+      }
     }
 
     catch(x: number, y: number) {
