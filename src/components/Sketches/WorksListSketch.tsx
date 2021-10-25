@@ -108,9 +108,16 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
 
   const draw = (p5: p5Types) => {
     p5.background(bgcolor);
+
     particleSystem.display();
     particleSystem2.display();
     obstacleSystem.display();
+
+    if (obstacleSystem.isCursorOnParticles()) {
+      p5.cursor('grab');
+    } else {
+      p5.cursor('move');
+    }
   };
 
   const mousePressed = () => {
@@ -182,7 +189,6 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
           if (!isIntersect) {
             continue;
           }
-          particle.correctIntersection(other);
           particle.collideWithOther(other);
           particle.correctIntersection(other);
         }
@@ -251,6 +257,15 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
           }
         }
       }
+    }
+
+    isCursorOnParticles() {
+      // どれか一つのParticleの上に乗っていればtrue
+      let flg = false;
+      this.particles.forEach((particle) => {
+        flg = flg || particle.isCursorOn();
+      });
+      return flg;
     }
 
     catchParticles() {
@@ -433,14 +448,14 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
       }
       if (this.isDragged) {
         if (other.basicMovementType === 'Static') {
-          if (intersectLength > 50) {
+          if (intersectLength > 100) {
             this.release();
           }
         }
       }
       if (other.isDragged) {
         if (this.basicMovementType === 'Static') {
-          if (intersectLength > 50) {
+          if (intersectLength > 100) {
             other.release();
           }
         }
@@ -557,6 +572,10 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
         this.p5.noFill();
         this.p5.ellipse(this.x, this.y, this.radius * 2 + 20, this.radius * 2 + 20);
       }
+    }
+
+    isCursorOn() {
+      return calcSquaredDist(this.p5.mouseX, this.p5.mouseY, this.x, this.y) < this.radius * this.radius;
     }
 
     catch(x: number, y: number) {
