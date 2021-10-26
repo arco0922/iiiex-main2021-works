@@ -12,6 +12,7 @@ interface Props {
 
 export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'black', padding = 5 }) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
+
   // modern Chrome requires { passive: false } when adding event
   let supportsPassive = false;
   try {
@@ -62,6 +63,10 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
 
   const selectColor = 'rgba(255,100,100,1)';
 
+  let worldOffsetX: number; // ワールドの中心がスクリーンのどこにあるか
+  let worldOffsetY: number; // ワールドの中心がスクリーンのどこにあるか
+  let worldOffsetScale: number; // ワールドのスクリーン上での縮尺
+
   const calcSquaredDist = (x1: number, y1: number, x2: number, y2: number) =>
     (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
 
@@ -74,27 +79,31 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
       containerRef.current.clientHeight - padding * 2,
     ).parent(canvasParentRef);
 
-    particleSystem = new ParticleSystem(p5, particleStrokeColor, particleTriangleColor, 180, 2);
-    particleSystem2 = new ParticleSystem(p5, particleStrokeColor2, particleTriangleColor2, 180, 2);
-    obstacleSystem = new ParticleSystem(p5, obstacleStrokeColor, obstacleTriangleColor, 300, 15);
+    worldOffsetX = p5.width / 2;
+    worldOffsetY = p5.height / 2;
+    worldOffsetScale = 1;
+
+    particleSystem = new ParticleSystem(p5, particleStrokeColor, particleTriangleColor, 180, 2, p5.width, p5.height);
+    particleSystem2 = new ParticleSystem(p5, particleStrokeColor2, particleTriangleColor2, 180, 2, p5.width, p5.height);
+    obstacleSystem = new ParticleSystem(p5, obstacleStrokeColor, obstacleTriangleColor, 300, 15, p5.width, p5.height);
     for (let i = 0; i < 150; i++) {
-      const x = p5.random(10, p5.width - 10);
-      const y = p5.random(10, p5.height - 10);
+      const x = p5.random(-p5.width / 2 + 10, p5.width / 2 - 10);
+      const y = p5.random(-p5.height / 2 + 10, p5.height / 2 - 10);
       const velX = p5.random(-2, 2);
       const velY = p5.random(-2, 2);
       particleSystem.addParticle(i, x, y, 1, velX, velY, 7, particleColor, 'Inertia', 'None');
     }
     for (let i = 0; i < 150; i++) {
-      const x = p5.random(10, p5.width - 10);
-      const y = p5.random(10, p5.height - 10);
+      const x = p5.random(-p5.width / 2 + 10, p5.width / 2 - 10);
+      const y = p5.random(-p5.height / 2 + 10, p5.height / 2 - 10);
       const velX = p5.random(-2, 2);
       const velY = p5.random(-2, 2);
       particleSystem2.addParticle(i, x, y, 1, velX, velY, 7, particleColor2, 'Inertia', 'None');
     }
 
     for (let i = 0; i < 15; i++) {
-      const x = p5.random(10, p5.width - 10);
-      const y = p5.random(10, p5.height - 10);
+      const x = p5.random(-p5.width / 2 + 10, p5.width / 2 - 10);
+      const y = p5.random(-p5.height / 2 + 10, p5.height / 2 - 10);
       obstacleSystem.addParticle(i, x, y, 70, 0, 0, 1, obstacleColor, 'Static', 'Pos');
     }
   };
@@ -109,9 +118,18 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
   const draw = (p5: p5Types) => {
     p5.background(bgcolor);
 
+    p5.push();
+    p5.translate(p5.width / 2, p5.height / 2);
     particleSystem.display();
     particleSystem2.display();
+    p5.pop();
+
+    p5.push();
+    p5.translate(worldOffsetX, worldOffsetY);
+    p5.scale(worldOffsetScale);
+    obstacleSystem.changeWorldOffset(worldOffsetX, worldOffsetY, worldOffsetScale);
     obstacleSystem.display();
+    p5.pop();
 
     if (obstacleSystem.isCursorOnParticles()) {
       p5.cursor('grab');
@@ -135,6 +153,12 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
     triangleColor: string;
     distThreshold: number;
     connectionLimit: number;
+    worldWidth: number;
+    worldHeight: number;
+    /** worldOffsetは、壁との判定や、マウスが入っているかの判定のみに使う */
+    worldOffsetX: number;
+    worldOffsetY: number;
+    worldOffsetScale: number;
     selectId: number;
 
     constructor(
@@ -143,6 +167,8 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
       triangleColor: string,
       distThreshold: number,
       connectionLimit: number,
+      worldWidth: number,
+      worldHeight: number,
       selectId = -1,
     ) {
       this.p5 = p5;
@@ -151,6 +177,11 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
       this.triangleColor = triangleColor;
       this.distThreshold = distThreshold;
       this.connectionLimit = connectionLimit;
+      this.worldWidth = worldWidth;
+      this.worldHeight = worldHeight;
+      this.worldOffsetX = 0;
+      this.worldOffsetY = 0;
+      this.worldOffsetScale = 1;
       this.selectId = selectId;
     }
 
@@ -174,7 +205,22 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
       dragMovementType: DragMovementType = 'None',
     ) {
       this.particles.push(
-        new Particle(this.p5, id, x, y, r, velX, velY, mass, color, basicMovementType, dragMovementType),
+        new Particle(
+          this.p5,
+          id,
+          x,
+          y,
+          r,
+          velX,
+          velY,
+          mass,
+          color,
+          basicMovementType,
+          dragMovementType,
+          this.worldOffsetX,
+          this.worldOffsetY,
+          this.worldOffsetScale,
+        ),
       );
     }
 
@@ -182,7 +228,7 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
       for (let i = 0; i < this.particles.length; i++) {
         const particle = this.particles[i];
         particle.update();
-        particle.bounseAtWall();
+        particle.bounseAtWall(-this.worldWidth / 2, this.worldWidth / 2, -this.worldHeight / 2, this.worldHeight / 2);
         for (let j = i + 1; j < this.particles.length; j++) {
           const other = this.particles[j];
           const [isIntersect, disanceVect, interSectLength] = particle.calcIntersection(other);
@@ -192,7 +238,7 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
           particle.collideWithOther(other);
           particle.correctIntersection(other);
         }
-        particle.bounseAtWall();
+        particle.bounseAtWall(-this.worldWidth / 2, this.worldWidth / 2, -this.worldHeight / 2, this.worldHeight / 2);
       }
     }
 
@@ -268,15 +314,21 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
       return flg;
     }
 
+    changeWorldOffset(newOffsetX: number, newOffsetY: number, newOffsetScale: number) {
+      this.worldOffsetX = newOffsetX;
+      this.worldOffsetY = newOffsetY;
+      this.worldOffsetScale = newOffsetScale;
+      this.particles.forEach((particle) => {
+        particle.changeWorldOffset(this.worldOffsetX, this.worldOffsetY, this.worldOffsetScale);
+      });
+    }
+
     catchParticles() {
       this.particles.forEach((particle) => {
-        if (
-          calcSquaredDist(this.p5.mouseX, this.p5.mouseY, particle.x, particle.y) <
-          particle.radius * particle.radius
-        ) {
+        if (particle.isCursorOn()) {
           window.addEventListener('touchmove', preventDefault, wheelOpt); // mobile
           this.selectId = particle.id;
-          particle.catch(this.p5.mouseX, this.p5.mouseY);
+          particle.catch();
         }
       });
     }
@@ -310,6 +362,9 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
     isDragged: boolean;
     dragOffsetX: number;
     dragOffsetY: number;
+    worldOffsetX: number;
+    worldOffsetY: number;
+    worldOffsetScale: number;
 
     constructor(
       p5: p5Types,
@@ -323,6 +378,9 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
       color: string,
       basicMovementType: BasicMovementType,
       dragMovementType: DragMovementType,
+      worldOffsetX: number,
+      worldOffsetY: number,
+      worldOffsetScale: number,
     ) {
       this.p5 = p5;
       this.id = id;
@@ -342,6 +400,9 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
       this.isDragged = false;
       this.dragOffsetX = 0;
       this.dragOffsetY = 0;
+      this.worldOffsetX = worldOffsetX;
+      this.worldOffsetY = worldOffsetY;
+      this.worldOffsetScale = worldOffsetScale;
     }
 
     update() {
@@ -369,8 +430,9 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
         this.basicUpdate();
         return;
       }
-      const newX = this.p5.mouseX - this.dragOffsetX;
-      const newY = this.p5.mouseY - this.dragOffsetY;
+      const mousePos = this.calcCoord(this.p5.mouseX, this.p5.mouseY);
+      const newX = mousePos.x - this.dragOffsetX;
+      const newY = mousePos.y - this.dragOffsetY;
 
       this.velX = newX - this.x;
       this.velY = newY - this.y;
@@ -378,52 +440,53 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
       this.y = newY;
     }
 
-    bounseAtWall() {
+    bounseAtWall(left: number, right: number, bottom: number, top: number) {
       if (
-        this.radius <= this.x &&
-        this.x <= this.p5.width - this.radius &&
-        this.radius <= this.y &&
-        this.y <= this.p5.height - this.radius
+        this.x - this.radius >= left &&
+        this.x + this.radius <= right &&
+        this.y - this.radius >= bottom &&
+        this.y + this.radius <= top
       ) {
         return;
       }
 
       if (this.basicMovementType === 'Static') {
-        if (this.x - this.radius < 0) {
-          this.x = this.radius;
+        if (this.x - this.radius < left) {
+          this.x = left + this.radius;
         }
-        if (this.x + this.radius > this.p5.width) {
-          this.x = this.p5.width - this.radius;
+        if (this.x + this.radius > right) {
+          this.x = right - this.radius;
         }
-        if (this.y - this.radius < 0) {
-          this.y = this.radius;
+        if (this.y - this.radius < bottom) {
+          this.y = bottom + this.radius;
         }
-        if (this.y + this.radius > this.p5.height) {
-          this.y = this.p5.height - this.radius;
+        if (this.y + this.radius > top) {
+          this.y = top - this.radius;
         }
       } else {
-        if (this.x - this.radius < 0) {
-          this.x += 2 * (this.radius - this.x);
+        if (this.x - this.radius < left) {
+          this.x += 2 * (left - this.x + this.radius);
           this.velX *= -1;
         }
-        if (this.x + this.radius > this.p5.width) {
-          this.x -= 2 * (this.radius + this.x - this.p5.width);
+        if (this.x + this.radius > right) {
+          this.x -= 2 * (this.x + this.radius - right);
           this.velX *= -1;
         }
-        if (this.y - this.radius < 0) {
-          this.y += 2 * (this.radius - this.y);
+        if (this.y - this.radius < bottom) {
+          this.y += 2 * (bottom - this.y + this.radius);
           this.velY *= -1;
         }
-        if (this.y + this.radius > this.p5.height) {
-          this.y -= 2 * (this.radius + this.y - this.p5.height);
+        if (this.y + this.radius > top) {
+          this.y -= 2 * (this.y + this.radius - top);
           this.velY *= -1;
         }
       }
 
       if (this.isDragged) {
-        if (calcSquaredDist(this.p5.mouseX, this.p5.mouseY, this.x, this.y) < this.radius * this.radius) {
-          this.dragOffsetX = this.p5.mouseX - this.x;
-          this.dragOffsetY = this.p5.mouseY - this.y;
+        if (this.isCursorOn()) {
+          const mousePos = this.calcCoord(this.p5.mouseX, this.p5.mouseY);
+          this.dragOffsetX = mousePos.x - this.x;
+          this.dragOffsetY = mousePos.y - this.y;
         } else {
           this.release();
         }
@@ -448,14 +511,14 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
       }
       if (this.isDragged) {
         if (other.basicMovementType === 'Static') {
-          if (intersectLength > 100) {
+          if (intersectLength > this.radius) {
             this.release();
           }
         }
       }
       if (other.isDragged) {
         if (this.basicMovementType === 'Static') {
-          if (intersectLength > 100) {
+          if (intersectLength > this.radius) {
             other.release();
           }
         }
@@ -575,15 +638,31 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
     }
 
     isCursorOn() {
-      return calcSquaredDist(this.p5.mouseX, this.p5.mouseY, this.x, this.y) < this.radius * this.radius;
+      const mousePos = this.calcCoord(this.p5.mouseX, this.p5.mouseY);
+      return calcSquaredDist(mousePos.x, mousePos.y, this.x, this.y) < this.radius * this.radius;
     }
 
-    catch(x: number, y: number) {
+    changeWorldOffset(newOffsetX: number, newOffsetY: number, newOffsetScale: number) {
+      this.worldOffsetX = newOffsetX;
+      this.worldOffsetY = newOffsetY;
+      this.worldOffsetScale = newOffsetScale;
+    }
+
+    calcCoord(x: number, y: number) {
+      /** スクリーン座標→ワールド座標への計算 */
+      return {
+        x: (x - this.worldOffsetX) / this.worldOffsetScale,
+        y: (y - this.worldOffsetY) / this.worldOffsetScale,
+      };
+    }
+
+    catch() {
       if (this.dragMovementType !== 'None') {
         this.isDragged = true;
         this.basicMovementType = 'Static';
-        this.dragOffsetX = x - this.x;
-        this.dragOffsetY = y - this.y;
+        const mousePos = this.calcCoord(this.p5.mouseX, this.p5.mouseY);
+        this.dragOffsetX = mousePos.x - this.x;
+        this.dragOffsetY = mousePos.y - this.y;
       }
     }
 
