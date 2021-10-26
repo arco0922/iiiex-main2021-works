@@ -23,7 +23,7 @@ export const worksInfoArr: WorksInfo[] = [
   {
     id: 3,
     title: 'on my . (オン マイ ピリオド)',
-    thumbnailName: '3_mochizuki.jpg',
+    thumbnailName: '3_mochizuki.jpeg',
   },
   {
     id: 4,
