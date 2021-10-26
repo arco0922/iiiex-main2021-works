@@ -15,20 +15,24 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
 
   // modern Chrome requires { passive: false } when adding event
   let supportsPassive = false;
-  try {
-    window.addEventListener(
-      'test',
-      () => null,
-      Object.defineProperty({}, 'passive', {
-        get: function () {
-          supportsPassive = true;
-        },
-      }),
-    );
-  } catch (e) {}
+
+  React.useEffect(() => {
+    try {
+      window.addEventListener(
+        'test',
+        () => null,
+        Object.defineProperty({}, 'passive', {
+          get: function () {
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            supportsPassive = true;
+          },
+        }),
+      );
+    } catch (e) {}
+  }, []);
 
   const wheelOpt: boolean | AddEventListenerOptions = supportsPassive ? { passive: false } : false;
-  const preventDefault = (e: TouchEvent) => e.preventDefault();
+  const preventDefault = (e: MouseEvent | WheelEvent | TouchEvent) => e.preventDefault();
 
   /**
    * basicMovementTypeは、マウスによってParticleがドラッグされていないときの挙動のタイプ を表す。
@@ -76,6 +80,34 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
 
   const calcSquaredDist = (x1: number, y1: number, x2: number, y2: number) =>
     (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
+
+  const zoom = (centerX: number, centerY: number, scaleDiff: number) => {
+    const newOffsetScale = worldOffsetScale * (1 + scaleDiff);
+    if (newOffsetScale > 4 || newOffsetScale < 0.1) {
+      return;
+    }
+    worldOffsetX = (newOffsetScale * worldOffsetX - (newOffsetScale - worldOffsetScale) * centerX) / worldOffsetScale;
+    worldOffsetY = (newOffsetScale * worldOffsetY - (newOffsetScale - worldOffsetScale) * centerY) / worldOffsetScale;
+    worldOffsetScale = newOffsetScale;
+  };
+
+  const mouseWheel = (e: WheelEvent) => {
+    preventDefault(e);
+    zoom(e.clientX, e.clientY, -e.deltaY * 0.001);
+  };
+
+  React.useEffect(() => {
+    const container = containerRef.current;
+    if (container !== null) {
+      container.addEventListener('wheel', mouseWheel);
+    }
+    return () => {
+      if (container !== null) {
+        container.removeEventListener('wheel', mouseWheel);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const setup = (p5: p5Types, canvasParentRef: Element) => {
     if (!containerRef.current) {
@@ -156,10 +188,14 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
     }
   };
 
+  const isCursorOnCanvas = (p5: p5Types) => {
+    return p5.mouseX >= 0 && p5.mouseX <= p5.width && p5.mouseY >= 0 && p5.mouseY <= p5.height;
+  };
+
   const mousePressed = (p5: p5Types) => {
     if (obstacleSystem.isCursorOnParticles()) {
       obstacleSystem.catchParticles();
-    } else {
+    } else if (isCursorOnCanvas(p5)) {
       worldLokked = true;
       oldMouseX = p5.mouseX;
       oldMouseY = p5.mouseY;
@@ -360,7 +396,7 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
     catchParticles() {
       this.particles.forEach((particle) => {
         if (particle.isCursorOn()) {
-          window.addEventListener('touchmove', preventDefault, wheelOpt); // mobile
+          document.addEventListener('touchmove', preventDefault, wheelOpt); // mobile
           this.selectId = particle.id;
           particle.catch();
         }
@@ -370,7 +406,7 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
     releaseParticles() {
       this.particles.forEach((particle) => {
         if (particle.isDragged) {
-          window.removeEventListener('touchmove', preventDefault, wheelOpt); // mobile
+          document.removeEventListener('touchmove', preventDefault, wheelOpt); // mobile
           particle.release();
         }
       });
