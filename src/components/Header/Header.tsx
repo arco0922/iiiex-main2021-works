@@ -1,15 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
+import logo from 'assets/logo/logo.png';
+
+export const headerHeight = 48;
 
 export const Header: React.VFC = () => {
   return (
     <StyledContainer>
-      <StyledTitle>東京大学制作展2021</StyledTitle>
+      <StyledLink href="https://iiiexhibition.com/">
+        <img src={logo} height={`${headerHeight - 18}px`} />
+      </StyledLink>
     </StyledContainer>
   );
 };
-
-export const headerHeight = 40;
 
 const StyledContainer = styled.div`
   height: ${headerHeight}px;
@@ -19,9 +22,8 @@ const StyledContainer = styled.div`
   padding-left: 20px;
 `;
 
-const StyledTitle = styled.h1`
-  color: white;
-  font-size: 20px;
-  font-weight: 700;
-  line-height: ${headerHeight}px;
+const StyledLink = styled.a`
+  display: flex;
+  align-items: center;
+  height: 100%;
 `;
