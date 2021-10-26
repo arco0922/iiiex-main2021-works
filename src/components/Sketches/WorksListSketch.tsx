@@ -54,16 +54,16 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
   let obstacleSystem: ParticleSystem;
 
   const particleColor = 'rgba(255,255,255,0)';
-  const particleStrokeColor = 'rgba(120,120,120,0.05)';
-  const particleTriangleColor = 'rgba(255,255,255,0.03)';
+  const particleStrokeColor = 'rgba(120,120,120,0.02)';
+  const particleTriangleColor = 'rgba(255,255,255,0.01)';
 
   const particleColor2 = 'rgba(255,255,255,0)';
-  const particleStrokeColor2 = 'rgba(255,100,100,0.05)';
-  const particleTriangleColor2 = 'rgba(255,100,100,0.03)';
+  const particleStrokeColor2 = 'rgba(255,100,100,0.02)';
+  const particleTriangleColor2 = 'rgba(255,100,100,0.01)';
 
   const obstacleColor = 'rgba(255,255,255,1)';
   const obstacleStrokeColor = 'rgba(255,255,255,1)';
-  const obstacleTriangleColor = 'rgba(220,220,220,0.4)';
+  const obstacleTriangleColor = 'rgba(220,220,220,0.2)';
 
   const selectColor = 'rgba(255,100,100,1)';
 
@@ -93,7 +93,9 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
 
   const mouseWheel = (e: WheelEvent) => {
     preventDefault(e);
-    zoom(e.clientX, e.clientY, -e.deltaY * 0.001);
+    const top = containerRef.current?.getBoundingClientRect().top || 0;
+    const left = containerRef.current?.getBoundingClientRect().left || 0;
+    zoom(e.clientX - left, e.clientY - top, -e.deltaY * 0.001);
   };
 
   React.useEffect(() => {
@@ -120,7 +122,7 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
 
     worldOffsetX = p5.width / 2;
     worldOffsetY = p5.height / 2;
-    worldOffsetScale = 1;
+    worldOffsetScale = p5.width / worldWidth;
 
     particleSystem = new ParticleSystem(p5, particleStrokeColor, particleTriangleColor, 180, 2, p5.width, p5.height);
     particleSystem2 = new ParticleSystem(p5, particleStrokeColor2, particleTriangleColor2, 180, 2, p5.width, p5.height);
@@ -128,7 +130,7 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
       p5,
       obstacleStrokeColor,
       obstacleTriangleColor,
-      300,
+      450,
       15,
       worldWidth,
       worldHeight,
@@ -149,8 +151,8 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
     }
 
     for (let i = 0; i < 15; i++) {
-      const x = p5.random(-worldWidth / 2 + 10, worldWidth / 2 - 10);
-      const y = p5.random(-worldHeight / 2 + 10, worldHeight / 2 - 10);
+      const x = p5.random(-worldWidth / 2 + 70, worldWidth / 2 - 70);
+      const y = p5.random(-worldHeight / 2 + 70, worldHeight / 2 - 70);
       obstacleSystem.addParticle(i, x, y, 70, 0, 0, 1, obstacleColor, 'Static', 'Pos');
     }
   };
@@ -174,9 +176,6 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
     p5.push();
     p5.translate(worldOffsetX, worldOffsetY);
     p5.scale(worldOffsetScale);
-    p5.stroke(255);
-    p5.line(-worldWidth / 2, 0, worldWidth / 2, 0);
-    p5.line(0, -worldHeight / 2, 0, worldHeight / 2);
     obstacleSystem.changeWorldOffset(worldOffsetX, worldOffsetY, worldOffsetScale);
     obstacleSystem.display();
     p5.pop();
@@ -770,6 +769,7 @@ interface StyledContainerProps {
 }
 
 const StyledContainer = styled.div<StyledContainerProps>`
+  box-sizing: content-box;
   width: ${({ canvasWidth, padding }) => `calc(${canvasWidth} - ${padding * 2}px)`};
   height: ${({ canvasHeight, padding }) => `calc(${canvasHeight} - ${padding * 2}px)`};
   padding: ${({ padding }) => `${padding}px`};
