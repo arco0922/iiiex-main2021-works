@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import logo from 'assets/logo/logo.png';
 
 export const headerHeight = 48;
 
@@ -8,7 +7,7 @@ export const Header: React.VFC = () => {
   return (
     <StyledContainer>
       <StyledLink href="https://iiiexhibition.com/">
-        <img src={logo} height={`${headerHeight - 18}px`} />
+        <img src="/static/assets/logo/LOGO.png" height={`${headerHeight - 18}px`} />
       </StyledLink>
     </StyledContainer>
   );
