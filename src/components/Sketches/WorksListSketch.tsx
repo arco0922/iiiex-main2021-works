@@ -67,6 +67,13 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
   let worldOffsetY: number; // ワールドの中心がスクリーンのどこにあるか
   let worldOffsetScale: number; // ワールドのスクリーン上での縮尺
 
+  const worldWidth = 2000; // ワールドの横幅 ※canvasの横幅とは異なる
+  const worldHeight = 1500; // ワールドの縦幅 ※canvasの縦幅とは異なる
+
+  let worldLokked = false;
+  let oldMouseX = 0;
+  let oldMouseY = 0;
+
   const calcSquaredDist = (x1: number, y1: number, x2: number, y2: number) =>
     (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
 
@@ -85,7 +92,15 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
 
     particleSystem = new ParticleSystem(p5, particleStrokeColor, particleTriangleColor, 180, 2, p5.width, p5.height);
     particleSystem2 = new ParticleSystem(p5, particleStrokeColor2, particleTriangleColor2, 180, 2, p5.width, p5.height);
-    obstacleSystem = new ParticleSystem(p5, obstacleStrokeColor, obstacleTriangleColor, 300, 15, p5.width, p5.height);
+    obstacleSystem = new ParticleSystem(
+      p5,
+      obstacleStrokeColor,
+      obstacleTriangleColor,
+      300,
+      15,
+      worldWidth,
+      worldHeight,
+    );
     for (let i = 0; i < 150; i++) {
       const x = p5.random(-p5.width / 2 + 10, p5.width / 2 - 10);
       const y = p5.random(-p5.height / 2 + 10, p5.height / 2 - 10);
@@ -102,8 +117,8 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
     }
 
     for (let i = 0; i < 15; i++) {
-      const x = p5.random(-p5.width / 2 + 10, p5.width / 2 - 10);
-      const y = p5.random(-p5.height / 2 + 10, p5.height / 2 - 10);
+      const x = p5.random(-worldWidth / 2 + 10, worldWidth / 2 - 10);
+      const y = p5.random(-worldHeight / 2 + 10, worldHeight / 2 - 10);
       obstacleSystem.addParticle(i, x, y, 70, 0, 0, 1, obstacleColor, 'Static', 'Pos');
     }
   };
@@ -127,6 +142,9 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
     p5.push();
     p5.translate(worldOffsetX, worldOffsetY);
     p5.scale(worldOffsetScale);
+    p5.stroke(255);
+    p5.line(-worldWidth / 2, 0, worldWidth / 2, 0);
+    p5.line(0, -worldHeight / 2, 0, worldHeight / 2);
     obstacleSystem.changeWorldOffset(worldOffsetX, worldOffsetY, worldOffsetScale);
     obstacleSystem.display();
     p5.pop();
@@ -138,12 +156,28 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
     }
   };
 
-  const mousePressed = () => {
-    obstacleSystem.catchParticles();
+  const mousePressed = (p5: p5Types) => {
+    if (obstacleSystem.isCursorOnParticles()) {
+      obstacleSystem.catchParticles();
+    } else {
+      worldLokked = true;
+      oldMouseX = p5.mouseX;
+      oldMouseY = p5.mouseY;
+    }
+  };
+
+  const mouseDragged = (p5: p5Types) => {
+    if (worldLokked) {
+      worldOffsetX += p5.mouseX - oldMouseX;
+      worldOffsetY += p5.mouseY - oldMouseY;
+      oldMouseX = p5.mouseX;
+      oldMouseY = p5.mouseY;
+    }
   };
 
   const mouseReleased = () => {
     obstacleSystem.releaseParticles();
+    worldLokked = false;
   };
 
   class ParticleSystem {
@@ -685,6 +719,7 @@ export const WorksListSketch = React.memo<Props>(({ width, height, bgcolor = 'bl
         draw={draw}
         windowResized={windowResized}
         mousePressed={mousePressed}
+        mouseDragged={mouseDragged}
         mouseReleased={mouseReleased}
       />
     </StyledContainer>
