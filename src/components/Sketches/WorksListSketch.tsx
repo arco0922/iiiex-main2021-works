@@ -125,7 +125,7 @@ export const WorksListSketch = React.memo<Props>(
 
       worldOffsetX = p5.width / 2;
       worldOffsetY = p5.height / 2;
-      worldOffsetScale = p5.width / worldWidth;
+      worldOffsetScale = p5.width / (worldWidth * 1.2);
 
       particleSystem = new ParticleSystem(p5, particleStrokeColor, particleTriangleColor, 180, 2, p5.width, p5.height);
       particleSystem2 = new ParticleSystem(
