@@ -6,15 +6,16 @@ import { WorksDetail } from './WorksDetail';
 import { WorksListMenu } from './WorksListMenu';
 
 export const TopPage: React.VFC = () => {
+  const [hoverId, setHoverId] = React.useState<number>(0);
   return (
     <StyledRoot>
       <Header></Header>
       <StyledContentContainer>
-        <WorksListMenu></WorksListMenu>
         <StyledSketchContainer>
           <WorksListSketch width="100%" height="100%" bgcolor="#0e0e0e"></WorksListSketch>
         </StyledSketchContainer>
-        <WorksDetail></WorksDetail>
+        <WorksListMenu hoverId={hoverId} setHoverId={setHoverId}></WorksListMenu>
+        <WorksDetail hoverId={hoverId}></WorksDetail>
       </StyledContentContainer>
     </StyledRoot>
   );
