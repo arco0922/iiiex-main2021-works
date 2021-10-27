@@ -74,8 +74,8 @@ export const WorksListSketch = React.memo<Props>(
     let worldOffsetY: number; // ワールドの中心がスクリーンのどこにあるか
     let worldOffsetScale: number; // ワールドのスクリーン上での縮尺
 
-    const worldWidth = 2000; // ワールドの横幅 ※canvasの横幅とは異なる
-    const worldHeight = 1500; // ワールドの縦幅 ※canvasの縦幅とは異なる
+    const worldWidth = 2500; // ワールドの横幅 ※canvasの横幅とは異なる
+    const worldHeight = 2500; // ワールドの縦幅 ※canvasの縦幅とは異なる
 
     let worldLokked = false;
     let oldMouseX = 0;
@@ -125,7 +125,7 @@ export const WorksListSketch = React.memo<Props>(
 
       worldOffsetX = p5.width / 2;
       worldOffsetY = p5.height / 2;
-      worldOffsetScale = p5.width / (worldWidth * 1.2);
+      worldOffsetScale = p5.width / worldWidth;
 
       particleSystem = new ParticleSystem(p5, particleStrokeColor, particleTriangleColor, 180, 2, p5.width, p5.height);
       particleSystem2 = new ParticleSystem(
@@ -162,8 +162,8 @@ export const WorksListSketch = React.memo<Props>(
       }
 
       for (let i = 0; i < 14; i++) {
-        const x = p5.random(-worldWidth / 2 + 70, worldWidth / 2 - 70);
-        const y = p5.random(-worldHeight / 2 + 70, worldHeight / 2 - 70);
+        const x = p5.random(-worldWidth / 3 + 70, worldWidth / 3 - 70);
+        const y = p5.random(-worldHeight / 3 + 70, worldHeight / 3 - 70);
         obstacleSystem.addParticle(i, x, y, 70, 0, 0, 1, obstacleColor, 'Static', 'Pos');
       }
     };
