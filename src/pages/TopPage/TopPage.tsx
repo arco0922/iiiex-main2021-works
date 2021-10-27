@@ -6,16 +6,26 @@ import { WorksDetail } from './WorksDetail';
 import { WorksListMenu } from './WorksListMenu';
 
 export const TopPage: React.VFC = () => {
-  const [hoverId, setHoverId] = React.useState<number>(0);
+  const [selectId, setSelectId] = React.useState<number>(0);
+  const selectIdRef = React.useRef<number>(0);
+  React.useEffect(() => {
+    selectIdRef.current = selectId;
+  }, [selectId]);
   return (
     <StyledRoot>
       <Header></Header>
       <StyledContentContainer>
         <StyledSketchContainer>
-          <WorksListSketch width="100%" height="100%" bgcolor="#0e0e0e"></WorksListSketch>
+          <WorksListSketch
+            width="100%"
+            height="100%"
+            selectIdRef={selectIdRef}
+            setSelectId={setSelectId}
+            bgcolor="#0e0e0e"
+          ></WorksListSketch>
         </StyledSketchContainer>
-        <WorksListMenu hoverId={hoverId} setHoverId={setHoverId}></WorksListMenu>
-        <WorksDetail hoverId={hoverId}></WorksDetail>
+        <WorksListMenu selectId={selectId} setSelectId={setSelectId}></WorksListMenu>
+        <WorksDetail selectId={selectId}></WorksDetail>
       </StyledContentContainer>
     </StyledRoot>
   );

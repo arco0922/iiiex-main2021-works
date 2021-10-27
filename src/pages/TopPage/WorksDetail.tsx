@@ -3,11 +3,11 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface Props {
-  hoverId: number;
+  selectId: number;
 }
 
-export const WorksDetail: React.VFC<Props> = ({ hoverId }) => {
-  const info = React.useMemo(() => worksInfoArr.filter((worksInfo) => worksInfo.id === hoverId)[0], [hoverId]);
+export const WorksDetail: React.VFC<Props> = ({ selectId }) => {
+  const info = React.useMemo(() => worksInfoArr.filter((worksInfo) => worksInfo.id === selectId)[0], [selectId]);
   return (
     <StyledContainer>
       <StyledTitle>作品詳細</StyledTitle>

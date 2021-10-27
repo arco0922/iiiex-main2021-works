@@ -4,18 +4,23 @@ import styled from 'styled-components';
 import { WorksCard } from './WorksCard';
 
 interface Props {
-  hoverId: number;
-  setHoverId: (id: number) => void;
+  selectId: number;
+  setSelectId: (id: number) => void;
 }
 
-export const WorksListMenu: React.VFC<Props> = ({ hoverId, setHoverId }) => {
+export const WorksListMenu: React.VFC<Props> = ({ selectId, setSelectId }) => {
   return (
     <StyledContainer>
       <StyledTitle>作品一覧</StyledTitle>
       <StyledCardsContainer>
         {worksInfoArr.map((worksInfo) => {
           return (
-            <WorksCard worksInfo={worksInfo} key={worksInfo.id} hoverId={hoverId} setHoverId={setHoverId}></WorksCard>
+            <WorksCard
+              worksInfo={worksInfo}
+              key={worksInfo.id}
+              selectId={selectId}
+              setSelectId={setSelectId}
+            ></WorksCard>
           );
         })}
       </StyledCardsContainer>

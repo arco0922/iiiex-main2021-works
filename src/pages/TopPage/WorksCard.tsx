@@ -4,13 +4,13 @@ import styled from 'styled-components';
 
 interface Props {
   worksInfo: WorksInfo;
-  hoverId: number;
-  setHoverId: (id: number) => void;
+  selectId: number;
+  setSelectId: (id: number) => void;
 }
 
-export const WorksCard: React.VFC<Props> = ({ worksInfo, hoverId, setHoverId }) => {
+export const WorksCard: React.VFC<Props> = ({ worksInfo, selectId, setSelectId }) => {
   return (
-    <StyledContainer onMouseEnter={() => setHoverId(worksInfo.id)} isHover={worksInfo.id === hoverId}>
+    <StyledContainer onClick={() => setSelectId(worksInfo.id)} isSelect={worksInfo.id === selectId}>
       <StyledThumbnail src={`/static/assets/thumbnails/${worksInfo.thumbnailName}`} height="100%"></StyledThumbnail>
       <p>{worksInfo.title}</p>
     </StyledContainer>
@@ -18,7 +18,7 @@ export const WorksCard: React.VFC<Props> = ({ worksInfo, hoverId, setHoverId }) 
 };
 
 interface StyledContainerProps {
-  isHover: boolean;
+  isSelect: boolean;
 }
 
 const StyledContainer = styled.div<StyledContainerProps>`
@@ -28,9 +28,10 @@ const StyledContainer = styled.div<StyledContainerProps>`
   border-bottom: 1px solid #2a2a2a;
   padding-top: 1px;
   padding-bottom: 1px;
-  background-color: ${({ isHover }) => (isHover ? '#4a4a4a' : '')};
+  border: ${({ isSelect }) => (isSelect ? '3px solid rgba(255,100,100,1)' : '')};
   &:hover {
     cursor: pointer;
+    background-color: #4a4a4a;
   }
 `;
 
