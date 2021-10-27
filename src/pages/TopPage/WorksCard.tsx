@@ -9,8 +9,18 @@ interface Props {
 }
 
 export const WorksCard: React.VFC<Props> = ({ worksInfo, selectId, setSelectId }) => {
+  const cardContainerRef = React.useRef<HTMLDivElement>(null);
+  React.useEffect(() => {
+    if (worksInfo.id === selectId && cardContainerRef.current) {
+      cardContainerRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [worksInfo, selectId]);
   return (
-    <StyledContainer onClick={() => setSelectId(worksInfo.id)} isSelect={worksInfo.id === selectId}>
+    <StyledContainer
+      onClick={() => setSelectId(worksInfo.id)}
+      isSelect={worksInfo.id === selectId}
+      ref={cardContainerRef}
+    >
       <StyledThumbnail src={`/static/assets/thumbnails/${worksInfo.thumbnailName}`} height="100%"></StyledThumbnail>
       <p>{worksInfo.title}</p>
     </StyledContainer>
