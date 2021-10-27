@@ -3,13 +3,20 @@ import React from 'react';
 import styled from 'styled-components';
 import { WorksCard } from './WorksCard';
 
-export const WorksListMenu: React.VFC = () => {
+interface Props {
+  hoverId: number;
+  setHoverId: (id: number) => void;
+}
+
+export const WorksListMenu: React.VFC<Props> = ({ hoverId, setHoverId }) => {
   return (
     <StyledContainer>
       <StyledTitle>作品一覧</StyledTitle>
       <StyledCardsContainer>
         {worksInfoArr.map((worksInfo) => {
-          return <WorksCard worksInfo={worksInfo} key={worksInfo.id}></WorksCard>;
+          return (
+            <WorksCard worksInfo={worksInfo} key={worksInfo.id} hoverId={hoverId} setHoverId={setHoverId}></WorksCard>
+          );
         })}
       </StyledCardsContainer>
     </StyledContainer>
