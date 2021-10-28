@@ -1,78 +1,78 @@
 export interface WorksInfo {
   id: number;
   title: string;
-  thumbnailName: string;
+  thumbnailBaseName: string;
 }
 
 export const worksInfoArr: WorksInfo[] = [
   {
     id: 0,
     title: 'offline on line',
-    thumbnailName: '0_nakagawa.jpg',
+    thumbnailBaseName: '0_nakagawa',
   },
   {
     id: 1,
     title: '僕と、生きる',
-    thumbnailName: '1_miyake.jpg',
+    thumbnailBaseName: '1_miyake',
   },
   {
     id: 2,
     title: 'ゼロマインド～0歳児パンク～',
-    thumbnailName: '2_baby-thumbnail.jpg',
+    thumbnailBaseName: '2_baby-thumbnail',
   },
   {
     id: 3,
     title: 'on my . (オン マイ ピリオド)',
-    thumbnailName: '3_mochizuki.jpeg',
+    thumbnailBaseName: '3_mochizuki',
   },
   {
     id: 4,
     title: '#FiK握手会',
-    thumbnailName: '4_ueno_thumbnail.jpg',
+    thumbnailBaseName: '4_ueno_thumbnail',
   },
   {
     id: 5,
     title: 'puppeTuber',
-    thumbnailName: '5_aramaki_puppeTuber.jpg',
+    thumbnailBaseName: '5_aramaki_puppeTuber',
   },
   {
     id: 6,
     title: '(s)hukan',
-    thumbnailName: '6_(s)hukan.jpg',
+    thumbnailBaseName: '6_(s)hukan',
   },
   {
     id: 7,
     title: '確率であそぼ、',
-    thumbnailName: '7_kurata_picture.jpg',
+    thumbnailBaseName: '7_kurata_picture',
   },
   {
     id: 8,
     title: 'ENDRAGON',
-    thumbnailName: '8_ENDRAGON.jpg',
+    thumbnailBaseName: '8_ENDRAGON',
   },
   {
     id: 9,
     title: 'KABUKU!',
-    thumbnailName: '9_kabuku_tmb800.jpg',
+    thumbnailBaseName: '9_kabuku_tmb800',
   },
   {
     id: 10,
     title: 'I-mage',
-    thumbnailName: '10_I-mage.jpg',
+    thumbnailBaseName: '10_I-mage',
   },
   {
     id: 11,
     title: 'Home-Gallery',
-    thumbnailName: '11_Siyuan_Home-Gallery.jpg',
+    thumbnailBaseName: '11_Siyuan_Home-Gallery',
   },
   {
     id: 12,
     title: 'Tap Your Life',
-    thumbnailName: '12_mikami_tapyourlife.jpg',
+    thumbnailBaseName: '12_mikami_tapyourlife',
   },
   {
     id: 13,
     title: 'Animal clock',
-    thumbnailName: '13_akiyama.jpg',
+    thumbnailBaseName: '13_akiyama',
   },
 ];

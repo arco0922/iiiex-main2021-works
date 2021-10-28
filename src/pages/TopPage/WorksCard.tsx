@@ -21,7 +21,10 @@ export const WorksCard: React.VFC<Props> = ({ worksInfo, selectId, setSelectId }
       isSelect={worksInfo.id === selectId}
       ref={cardContainerRef}
     >
-      <StyledThumbnail src={`/static/assets/thumbnails/${worksInfo.thumbnailName}`} height="100%"></StyledThumbnail>
+      <StyledThumbnail
+        src={`/static/assets/thumbnails/${worksInfo.thumbnailBaseName}.jpg`}
+        height="100%"
+      ></StyledThumbnail>
       <p>{worksInfo.title}</p>
     </StyledContainer>
   );

@@ -12,7 +12,10 @@ export const WorksDetail: React.VFC<Props> = ({ selectId }) => {
     <StyledContainer>
       <StyledTitle>作品詳細</StyledTitle>
       <StyledDetailContainer>
-        <StyledThumbnail src={`/static/assets/thumbnails/${info?.thumbnailName}`} width="100%"></StyledThumbnail>
+        <StyledThumbnail
+          src={`/static/assets/thumbnails/${info?.thumbnailBaseName}.jpg`}
+          width="100%"
+        ></StyledThumbnail>
         <StyledSection>
           <h4>作品名</h4>
           <p>{info.title}</p>
