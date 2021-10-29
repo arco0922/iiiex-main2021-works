@@ -2,6 +2,7 @@ import React from 'react';
 import Sketch from 'react-p5';
 import p5Types from 'p5';
 import styled from 'styled-components';
+import { worksInfoArr } from 'constants/WorksInfo';
 
 interface Props {
   width: string;
@@ -10,6 +11,11 @@ interface Props {
   setSelectId: (id: number) => void;
   bgcolor?: string;
   padding?: number;
+}
+
+interface ParticleImage {
+  id: number;
+  img: p5Types.Image;
 }
 
 export const WorksListSketch = React.memo<Props>(
@@ -114,6 +120,17 @@ export const WorksListSketch = React.memo<Props>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    let thumbnails: ParticleImage[];
+
+    const preload = (p5: p5Types) => {
+      thumbnails = worksInfoArr.map((worksInfo) => {
+        return {
+          id: worksInfo.id,
+          img: p5.loadImage(`/static/assets/thumbnails-cropped/${worksInfo.thumbnailBaseName}.png`),
+        };
+      });
+    };
+
     const setup = (p5: p5Types, canvasParentRef: Element) => {
       if (!containerRef.current) {
         return;
@@ -166,6 +183,7 @@ export const WorksListSketch = React.memo<Props>(
         const y = p5.random(-worldHeight / 3 + 70, worldHeight / 3 - 70);
         obstacleSystem.addParticle(i, x, y, 70, 0, 0, 1, obstacleColor, 'Static', 'Pos');
       }
+      obstacleSystem.setTextures(thumbnails);
     };
 
     const windowResized = (p5: p5Types) => {
@@ -241,6 +259,7 @@ export const WorksListSketch = React.memo<Props>(
       worldOffsetY: number;
       worldOffsetScale: number;
       selectId: number;
+      textures: ParticleImage[];
 
       constructor(
         p5: p5Types,
@@ -264,10 +283,15 @@ export const WorksListSketch = React.memo<Props>(
         this.worldOffsetY = 0;
         this.worldOffsetScale = 1;
         this.selectId = selectId;
+        this.textures = [];
       }
 
       setSelectId(id: number) {
         this.selectId = id;
+      }
+
+      setTextures(textures: ParticleImage[]) {
+        this.textures = textures;
       }
 
       display() {
@@ -329,7 +353,14 @@ export const WorksListSketch = React.memo<Props>(
 
       displayParticles() {
         this.particles.forEach((particle) => {
-          particle.display(particle.id === this.selectId);
+          const matchingTexture = this.textures.filter(({ id, img }) => id === particle.id)[0];
+          const texture = matchingTexture ? matchingTexture.img : null;
+          particle.display(texture);
+        });
+        this.particles.forEach((particle) => {
+          if (particle.id === this.selectId) {
+            particle.displaySelection();
+          }
         });
       }
 
@@ -713,16 +744,26 @@ export const WorksListSketch = React.memo<Props>(
         this.neighbors.push(particle);
       }
 
-      display(isSelected: boolean) {
+      display(texture: p5Types.Image | null) {
         this.p5.noStroke();
         this.p5.fill(this.color);
         this.p5.ellipse(this.x, this.y, this.radius * 2, this.radius * 2);
-        if (isSelected) {
-          this.p5.stroke(selectColor);
-          this.p5.strokeWeight(10);
-          this.p5.noFill();
-          this.p5.ellipse(this.x, this.y, this.radius * 2 + 20, this.radius * 2 + 20);
+        if (texture) {
+          this.p5.image(
+            texture,
+            this.x - this.radius + 5,
+            this.y - this.radius + 5,
+            this.radius * 2 - 10,
+            this.radius * 2 - 10,
+          );
         }
+      }
+
+      displaySelection() {
+        this.p5.stroke(selectColor);
+        this.p5.strokeWeight(10);
+        this.p5.noFill();
+        this.p5.ellipse(this.x, this.y, this.radius * 2 + 20, this.radius * 2 + 20);
       }
 
       isCursorOn() {
@@ -769,6 +810,7 @@ export const WorksListSketch = React.memo<Props>(
     return (
       <StyledContainer canvasWidth={width} canvasHeight={height} bgcolor={bgcolor} padding={padding} ref={containerRef}>
         <Sketch
+          preload={preload}
           setup={setup}
           draw={draw}
           windowResized={windowResized}
