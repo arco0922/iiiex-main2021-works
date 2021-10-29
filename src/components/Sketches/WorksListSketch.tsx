@@ -3,6 +3,7 @@ import Sketch from 'react-p5';
 import p5Types from 'p5';
 import styled from 'styled-components';
 import { worksInfoArr } from 'constants/WorksInfo';
+import { theme } from 'constants/Theme';
 
 interface Props {
   width: string;
@@ -74,7 +75,7 @@ export const WorksListSketch = React.memo<Props>(
     const obstacleStrokeColor = 'rgba(255,255,255,1)';
     const obstacleTriangleColor = 'rgba(220,220,220,0.2)';
 
-    const selectColor = 'rgba(255,100,100,1)';
+    const selectColor = theme.color.primary;
 
     let worldOffsetX: number; // ワールドの中心がスクリーンのどこにあるか
     let worldOffsetY: number; // ワールドの中心がスクリーンのどこにあるか

@@ -77,7 +77,7 @@ const StyledThumbnail = styled.img`
 `;
 
 const StyledButton = styled.button`
-  background-color: ${theme.color.accent};
+  background-color: ${theme.color.primary};
   color: white;
   text-decoration: none;
   outline: none;
@@ -89,7 +89,7 @@ const StyledButton = styled.button`
   transform: translateX(10%);
   &:hover {
     cursor: pointer;
-    background-color: ${theme.color.activeAccent};
+    background-color: ${theme.color.activePrimary};
   }
 `;
 
