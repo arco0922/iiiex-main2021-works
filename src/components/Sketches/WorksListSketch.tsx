@@ -179,7 +179,7 @@ export const WorksListSketch = React.memo<Props>(
         particleSystem2.addParticle(i, x, y, 1, velX, velY, 7, particleColor2, 'Inertia', 'None');
       }
 
-      for (let i = 0; i < 14; i++) {
+      for (let i = 0; i < worksInfoArr.length; i++) {
         const x = p5.random(-worldWidth / 3 + 70, worldWidth / 3 - 70);
         const y = p5.random(-worldHeight / 3 + 70, worldHeight / 3 - 70);
         obstacleSystem.addParticle(i, x, y, 70, 0, 0, 1, obstacleColor, 'Static', 'Pos');
