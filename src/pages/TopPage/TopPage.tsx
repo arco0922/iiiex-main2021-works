@@ -23,6 +23,9 @@ export const TopPage: React.VFC = () => {
             setSelectId={setSelectId}
             bgcolor="#0e0e0e"
           ></WorksListSketch>
+          <StyledLoading id="p5_loading">
+            <p>Loading...</p>
+          </StyledLoading>
         </StyledSketchContainer>
         <WorksListMenu selectId={selectId} setSelectId={setSelectId}></WorksListMenu>
         <WorksDetail selectId={selectId}></WorksDetail>
@@ -51,4 +54,21 @@ const StyledContentContainer = styled.div`
 const StyledSketchContainer = styled.div`
   flex: 1;
   min-width: 400px;
+  position: relative;
+`;
+
+const StyledLoading = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & > p {
+    color: white;
+    font-size: 15px;
+  }
 `;
