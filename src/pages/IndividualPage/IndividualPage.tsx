@@ -15,18 +15,24 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params>> = ({ match
   const worksId = Number(match.params.id);
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
   const [isFull, setIsFull] = React.useState<boolean>(false);
-  const iframeWidth = isFull ? '100vw' : '60vw';
+  const iframeWidth = isFull ? '100vw' : 'max(60vw , 500px)';
   const iframeHeight = isFull
     ? '100vh'
     : `calc( ${iframeWidth} * ${worksInfo.aspectRatio ? worksInfo.aspectRatio : 9 / 16} )`;
 
   return (
     <StyledRoot>
-      <Header showNavigationToTop={true} />
-      <StyledContentContainer>
+      <Header showNavigationToTop={true} isFull={isFull} setIsFull={setIsFull} />
+      <StyledContentContainer isFull={isFull}>
         <StyledWorksContainer>
-          <IndividualWorksWindow srcUrl={worksInfo.srcUrlPc} iframeHeight={iframeHeight} iframeWidth={iframeWidth} />
-          <IndividualWorksCaption worksInfo={worksInfo} />
+          <IndividualWorksWindow
+            srcUrl={worksInfo.srcUrlPc}
+            iframeHeight={iframeHeight}
+            iframeWidth={iframeWidth}
+            isFull={isFull}
+            setIsFull={setIsFull}
+          />
+          {!isFull && <IndividualWorksCaption worksInfo={worksInfo} />}
         </StyledWorksContainer>
       </StyledContentContainer>
     </StyledRoot>
@@ -42,10 +48,14 @@ const StyledRoot = styled.div`
   overflow-y: hidden;
 `;
 
-const StyledContentContainer = styled.div`
+interface StyledContentContainerProps {
+  isFull: boolean;
+}
+
+const StyledContentContainer = styled.div<StyledContentContainerProps>`
   width: 100%;
   height: calc(100vh - ${headerHeight}px);
-  padding: 20px 10px;
+  padding: ${({ isFull }) => (isFull ? '0' : '20px 10px')};
   overflow-y: auto;
 `;
 

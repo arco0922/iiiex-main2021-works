@@ -6,9 +6,11 @@ export const headerHeight = 48;
 
 interface Props {
   showNavigationToTop?: boolean;
+  isFull?: boolean;
+  setIsFull?: (isFull: boolean) => void;
 }
 
-export const Header: React.VFC<Props> = ({ showNavigationToTop = false }) => {
+export const Header: React.VFC<Props> = ({ showNavigationToTop = false, isFull = false, setIsFull }) => {
   return (
     <StyledContainer>
       <StyledLogo href="https://iiiexhibition.com/">
@@ -29,6 +31,14 @@ export const Header: React.VFC<Props> = ({ showNavigationToTop = false }) => {
             <StyledUnderBar id="underbar"></StyledUnderBar>
           </StyledLinkToOuterPage>
         </StyledButton>
+        {isFull && setIsFull && (
+          <StyledButton onClick={() => setIsFull(false)}>
+            <StyledExitFullScreen>
+              <p>全画面表示終了</p>
+              <StyledUnderBar id="underbar"></StyledUnderBar>
+            </StyledExitFullScreen>
+          </StyledButton>
+        )}
       </StyledNavigationContainer>
     </StyledContainer>
   );
@@ -98,6 +108,15 @@ const StyledLinkToOuterPage = styled.a`
 `;
 
 const StyledLinkToTop = styled(Link)`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-decoration: none;
+  color: white;
+`;
+
+const StyledExitFullScreen = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;

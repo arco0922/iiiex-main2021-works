@@ -8,9 +8,11 @@ interface Props {
   srcUrl?: string;
   iframeWidth: string;
   iframeHeight: string;
+  isFull: boolean;
+  setIsFull: (isFull: boolean) => void;
 }
 
-export const IndividualWorksWindow: React.VFC<Props> = ({ srcUrl, iframeWidth, iframeHeight }) => {
+export const IndividualWorksWindow: React.VFC<Props> = ({ srcUrl, iframeWidth, iframeHeight, isFull, setIsFull }) => {
   const iframeRef = React.useRef<HTMLIFrameElement>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const loadHandler = React.useCallback(() => setIsLoading(false), [setIsLoading]);
@@ -26,6 +28,14 @@ export const IndividualWorksWindow: React.VFC<Props> = ({ srcUrl, iframeWidth, i
       }
     };
   }, [srcUrl, loadHandler]);
+
+  const makeFullScreen = React.useCallback(() => {
+    setIsFull(true);
+  }, [setIsFull]);
+
+  const exitFullScreen = React.useCallback(() => {
+    setIsFull(false);
+  }, [setIsFull]);
 
   return (
     <StyledRoot>
@@ -44,10 +54,17 @@ export const IndividualWorksWindow: React.VFC<Props> = ({ srcUrl, iframeWidth, i
             <p>メンテナンス中</p>
           </StyledSkeleton>
         )}
+        {isFull ? (
+          <StyledExitFullScreenButton onClick={exitFullScreen}>全画面表示を終了する</StyledExitFullScreenButton>
+        ) : (
+          <StyledFullScreenButton onClick={makeFullScreen}>作品を全画面で表示する</StyledFullScreenButton>
+        )}
       </StyledContainer>
-      <StyledButton>
-        <StyledLink to="/">作品一覧へ戻る</StyledLink>
-      </StyledButton>
+      <StyledNavigationArea isFull={isFull}>
+        <StyledButton>
+          <StyledLink to="/">作品一覧へ戻る</StyledLink>
+        </StyledButton>
+      </StyledNavigationArea>
     </StyledRoot>
   );
 };
@@ -64,8 +81,10 @@ interface StyledContainerProps {
 }
 
 const StyledContainer = styled.div<StyledContainerProps>`
+  min-width: ${({ iframeWidth }) => iframeWidth};
   width: ${({ iframeWidth }) => iframeWidth};
   height: ${({ iframeHeight }) => iframeHeight};
+  position: relative;
 `;
 
 const StyledIframeContainer = styled.div`
@@ -109,9 +128,57 @@ const StyledSkeleton = styled.div`
   background-color: #b4b4b4;
 `;
 
+const StyledFullScreenButton = styled.button`
+  position: absolute;
+  bottom: -28px;
+  right: 0px;
+  display: block;
+  height: 25px;
+  background-color: white;
+  outline: none;
+  border: none;
+  border-radius: 3px;
+  padding: 3px;
+  &:hover {
+    cursor: pointer;
+    background-color: gray;
+    color: white;
+  }
+`;
+
+const StyledExitFullScreenButton = styled.button`
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+  display: block;
+  height: 25px;
+  background-color: ${theme.color.primary};
+  color: white;
+  outline: none;
+  border: none;
+  border-radius: 3px;
+  padding: 3px;
+  &:hover {
+    cursor: pointer;
+    background-color: ${theme.color.activePrimary};
+  }
+`;
+
+interface StyledNavigationAreaProps {
+  isFull: boolean;
+}
+
+const StyledNavigationArea = styled.div<StyledNavigationAreaProps>`
+  width: 100%;
+  margin-top: 40px;
+  display: ${({ isFull }) => (isFull ? 'none' : 'flex')};
+  align-items: center;
+  justify-content: center;
+`;
+
 const StyledButton = styled.button`
   display: block;
-  margin-top: 15px;
+
   background-color: ${theme.color.primary};
   outline: none;
   border: none;
