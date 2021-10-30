@@ -2,6 +2,9 @@ export interface WorksInfo {
   id: number;
   title: string;
   thumbnailBaseName: string;
+  srcUrlPc?: string;
+  srcUrlSp?: string;
+  aspectRatio?: number;
 }
 
 export const worksInfoArr: WorksInfo[] = [
@@ -9,6 +12,8 @@ export const worksInfoArr: WorksInfo[] = [
     id: 0,
     title: 'offline on line',
     thumbnailBaseName: '0_nakagawa',
+    srcUrlPc: 'https://tiger0ym.github.io/WorksPageExample/',
+    srcUrlSp: 'https://tiger0ym.github.io/WorksPageExample/',
   },
   {
     id: 1,
