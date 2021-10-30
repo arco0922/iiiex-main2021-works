@@ -1,12 +1,34 @@
 import { worksInfoArr } from 'constants/WorksInfo';
 import React from 'react';
+import styled from 'styled-components';
 
 interface Props {
-  worksId: number;
+  srcUrl?: string;
+  iframeWidth: string;
+  iframeHeight: string;
 }
 
-export const IndividualWorksWindow: React.VFC<Props> = ({ worksId }) => {
-  const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
-
-  return <div>{worksInfo.srcUrlPc && <iframe src={worksInfo.srcUrlPc}></iframe>}</div>;
+export const IndividualWorksWindow: React.VFC<Props> = ({ srcUrl, iframeWidth, iframeHeight }) => {
+  return (
+    <div>
+      <StyledContainer iframeWidth={iframeWidth} iframeHeight={iframeHeight}>
+        {srcUrl && <StyledIframe src={srcUrl}></StyledIframe>}
+      </StyledContainer>
+    </div>
+  );
 };
+
+interface StyledContainerProps {
+  iframeWidth: string;
+  iframeHeight: string;
+}
+
+const StyledContainer = styled.div<StyledContainerProps>`
+  width: ${({ iframeWidth }) => iframeWidth};
+  height: ${({ iframeHeight }) => iframeHeight};
+`;
+
+const StyledIframe = styled.iframe`
+  width: 100%;
+  height: 100%;
+`;
