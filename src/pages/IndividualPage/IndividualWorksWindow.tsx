@@ -31,4 +31,8 @@ const StyledContainer = styled.div<StyledContainerProps>`
 const StyledIframe = styled.iframe`
   width: 100%;
   height: 100%;
+  outline: none;
+  border: none;
+  display: block;
+  background-color: white;
 `;

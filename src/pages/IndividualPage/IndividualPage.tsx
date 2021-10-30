@@ -21,18 +21,24 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params>> = ({ match
     : `calc( ${iframeWidth} * ${worksInfo.aspectRatio ? worksInfo.aspectRatio : 9 / 16} )`;
 
   return (
-    <div>
+    <StyledRoot>
       <Header />
       <p>作品ページ：作品IDは{worksId}</p>
       <IndividualWorksWindow srcUrl={worksInfo.srcUrlPc} iframeHeight={iframeHeight} iframeWidth={iframeWidth} />
       <StyledButton>
         <StyledLink to="/">作品一覧へ</StyledLink>
       </StyledButton>
-    </div>
+    </StyledRoot>
   );
 };
 
 export const IndividualPage = withRouter(IndividualPageComponent);
+
+const StyledRoot = styled.div`
+  background-color: ${theme.color.darkGrey};
+  width: 100vw;
+  height: 100vh;
+`;
 
 const StyledButton = styled.button`
   background-color: ${theme.color.primary};
