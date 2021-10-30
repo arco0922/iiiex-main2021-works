@@ -1,5 +1,7 @@
+import { theme } from 'constants/Theme';
 import { worksInfoArr } from 'constants/WorksInfo';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 interface Props {
@@ -10,13 +12,22 @@ interface Props {
 
 export const IndividualWorksWindow: React.VFC<Props> = ({ srcUrl, iframeWidth, iframeHeight }) => {
   return (
-    <div>
+    <StyledRoot>
       <StyledContainer iframeWidth={iframeWidth} iframeHeight={iframeHeight}>
         {srcUrl && <StyledIframe src={srcUrl} allow="fullscreen *; autoplay *; camera *; microphone *"></StyledIframe>}
       </StyledContainer>
-    </div>
+      <StyledButton>
+        <StyledLink to="/">作品一覧へ戻る</StyledLink>
+      </StyledButton>
+    </StyledRoot>
   );
 };
+
+const StyledRoot = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 interface StyledContainerProps {
   iframeWidth: string;
@@ -35,4 +46,25 @@ const StyledIframe = styled.iframe`
   border: none;
   display: block;
   background-color: white;
+`;
+
+const StyledButton = styled.button`
+  display: block;
+  margin-top: 15px;
+  background-color: ${theme.color.primary};
+  outline: none;
+  border: none;
+  border-radius: 3px;
+  &:hover {
+    cursor: pointer;
+    background-color: ${theme.color.activePrimary};
+  }
+`;
+
+const StyledLink = styled(Link)`
+  display: block;
+  padding: 10px;
+  font-size: 15px;
+  text-decoration: none;
+  color: white;
 `;

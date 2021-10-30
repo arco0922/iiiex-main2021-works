@@ -30,7 +30,9 @@ export const IndividualWorksCaption: React.VFC<Props> = ({ worksInfo }) => {
 };
 
 const StyledContainer = styled.div`
-  margin-left: 10px;
+  margin-left: 20px;
+  margin-top: 20px;
+  min-width: 250px;
 `;
 
 const StyledSection = styled.section`

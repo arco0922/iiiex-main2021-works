@@ -1,9 +1,8 @@
-import { Header } from 'components/Header/Header';
+import { Header, headerHeight } from 'components/Header/Header';
 import { theme } from 'constants/Theme';
 import { worksInfoArr } from 'constants/WorksInfo';
 import React from 'react';
-import { RouteComponentProps, useParams, withRouter } from 'react-router';
-import { Link } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router';
 import styled from 'styled-components';
 import { IndividualWorksCaption } from './IndividualWorksCaption';
 import { IndividualWorksWindow } from './IndividualWorksWindow';
@@ -23,14 +22,13 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params>> = ({ match
 
   return (
     <StyledRoot>
-      <Header />
-      <StyledWorksContainer>
-        <IndividualWorksWindow srcUrl={worksInfo.srcUrlPc} iframeHeight={iframeHeight} iframeWidth={iframeWidth} />
-        <IndividualWorksCaption worksInfo={worksInfo} />
-      </StyledWorksContainer>
-      <StyledButton>
-        <StyledLink to="/">作品一覧へ</StyledLink>
-      </StyledButton>
+      <Header showNavigationToTop={true} />
+      <StyledContentContainer>
+        <StyledWorksContainer>
+          <IndividualWorksWindow srcUrl={worksInfo.srcUrlPc} iframeHeight={iframeHeight} iframeWidth={iframeWidth} />
+          <IndividualWorksCaption worksInfo={worksInfo} />
+        </StyledWorksContainer>
+      </StyledContentContainer>
     </StyledRoot>
   );
 };
@@ -39,28 +37,20 @@ export const IndividualPage = withRouter(IndividualPageComponent);
 
 const StyledRoot = styled.div`
   background-color: ${theme.color.darkGrey};
-  width: 100vw;
-  height: 100vh;
+  min-width: 100vw;
+  min-height: 100vh;
+  overflow-y: hidden;
+`;
+
+const StyledContentContainer = styled.div`
+  width: 100%;
+  height: calc(100vh - ${headerHeight}px);
+  padding: 20px 10px;
+  overflow-y: auto;
 `;
 
 const StyledWorksContainer = styled.div`
+  height: 100%;
   display: flex;
-`;
-
-const StyledButton = styled.button`
-  background-color: ${theme.color.primary};
-  color: white;
-  text-decoration: none;
-  outline: none;
-  border: none;
-  padding: 3px;
-  border-radius: 3px;
-  &:hover {
-    background-color: ${theme.color.activePrimary};
-  }
-`;
-
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  color: white;
+  justify-content: center;
 `;

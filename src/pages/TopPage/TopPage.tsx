@@ -49,6 +49,7 @@ const StyledContentContainer = styled.div`
   flex: 1;
   height: calc(100vh - ${headerHeight}px);
   display: flex;
+  overflow-y: hidden;
 `;
 
 const StyledSketchContainer = styled.div`
