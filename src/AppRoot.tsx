@@ -9,14 +9,16 @@ export const AppRoot: React.VFC = () => {
   /** 本番環境用のビルドの場合は、/testのルーティングは作らない */
   const isProd = process.env.PHASE === 'production';
 
+  const [selectId, setSelectId] = React.useState<number>(0);
+
   return (
     <Router>
       <Switch>
         <Route path="/" exact>
-          <TopPage />
+          <TopPage selectId={selectId} setSelectId={setSelectId} />
         </Route>
         <Route path="/works/:id" exact>
-          <IndividualPage />
+          <IndividualPage setSelectId={setSelectId} />
         </Route>
         {!isProd && (
           <Route path="/test" exact>

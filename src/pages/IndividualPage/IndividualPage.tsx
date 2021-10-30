@@ -11,7 +11,11 @@ interface Params {
   id: string;
 }
 
-const IndividualPageComponent: React.VFC<RouteComponentProps<Params>> = ({ match }) => {
+interface Props {
+  setSelectId: (selectId: number) => void;
+}
+
+const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = ({ match, setSelectId }) => {
   const worksId = Number(match.params.id);
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
   const [isFull, setIsFull] = React.useState<boolean>(false);
@@ -19,6 +23,10 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params>> = ({ match
   const iframeHeight = isFull
     ? '100vh'
     : `calc( ${iframeWidth} * ${worksInfo.aspectRatio ? worksInfo.aspectRatio : 9 / 16} )`;
+
+  React.useEffect(() => {
+    setSelectId(worksId);
+  }, [worksId, setSelectId]);
 
   return (
     <StyledRoot>

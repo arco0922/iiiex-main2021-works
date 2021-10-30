@@ -5,8 +5,12 @@ import styled from 'styled-components';
 import { WorksDetail } from './WorksDetail';
 import { WorksListMenu } from './WorksListMenu';
 
-export const TopPage: React.VFC = () => {
-  const [selectId, setSelectId] = React.useState<number>(0);
+interface Props {
+  selectId: number;
+  setSelectId: (selectId: number) => void;
+}
+
+export const TopPage: React.VFC<Props> = ({ selectId, setSelectId }) => {
   const selectIdRef = React.useRef<number>(0);
   React.useEffect(() => {
     selectIdRef.current = selectId;
