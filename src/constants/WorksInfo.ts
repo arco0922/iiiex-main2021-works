@@ -39,6 +39,7 @@ export const worksInfoArr: WorksInfo[] = [
     id: 5,
     title: 'puppeTuber',
     thumbnailBaseName: '5_aramaki_puppeTuber',
+    srcUrlPc: 'https://damakoo.github.io/PuppeTuber_WebGL/',
   },
   {
     id: 6,
