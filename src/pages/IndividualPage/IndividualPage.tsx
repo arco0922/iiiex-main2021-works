@@ -5,6 +5,7 @@ import React from 'react';
 import { RouteComponentProps, useParams, withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { IndividualWorksCaption } from './IndividualWorksCaption';
 import { IndividualWorksWindow } from './IndividualWorksWindow';
 
 interface Params {
@@ -15,7 +16,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params>> = ({ match
   const worksId = Number(match.params.id);
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
   const [isFull, setIsFull] = React.useState<boolean>(false);
-  const iframeWidth = isFull ? '100vw' : '600px';
+  const iframeWidth = isFull ? '100vw' : '60vw';
   const iframeHeight = isFull
     ? '100vh'
     : `calc( ${iframeWidth} * ${worksInfo.aspectRatio ? worksInfo.aspectRatio : 9 / 16} )`;
@@ -23,8 +24,10 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params>> = ({ match
   return (
     <StyledRoot>
       <Header />
-      <p>作品ページ：作品IDは{worksId}</p>
-      <IndividualWorksWindow srcUrl={worksInfo.srcUrlPc} iframeHeight={iframeHeight} iframeWidth={iframeWidth} />
+      <StyledWorksContainer>
+        <IndividualWorksWindow srcUrl={worksInfo.srcUrlPc} iframeHeight={iframeHeight} iframeWidth={iframeWidth} />
+        <IndividualWorksCaption worksInfo={worksInfo} />
+      </StyledWorksContainer>
       <StyledButton>
         <StyledLink to="/">作品一覧へ</StyledLink>
       </StyledButton>
@@ -38,6 +41,10 @@ const StyledRoot = styled.div`
   background-color: ${theme.color.darkGrey};
   width: 100vw;
   height: 100vh;
+`;
+
+const StyledWorksContainer = styled.div`
+  display: flex;
 `;
 
 const StyledButton = styled.button`
