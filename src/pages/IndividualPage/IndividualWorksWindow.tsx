@@ -12,7 +12,7 @@ export const IndividualWorksWindow: React.VFC<Props> = ({ srcUrl, iframeWidth, i
   return (
     <div>
       <StyledContainer iframeWidth={iframeWidth} iframeHeight={iframeHeight}>
-        {srcUrl && <StyledIframe src={srcUrl}></StyledIframe>}
+        {srcUrl && <StyledIframe src={srcUrl} allow="fullscreen *; autoplay *; camera *; microphone *"></StyledIframe>}
       </StyledContainer>
     </div>
   );
