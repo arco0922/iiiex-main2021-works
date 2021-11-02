@@ -4,12 +4,27 @@ import { TestPage } from 'pages/TestPage/TestPage';
 import { TopPage } from 'pages/TopPage/TopPage';
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { worksInfoArr } from 'constants/WorksInfo';
+import useLocalStorage from 'use-local-storage';
+
+export interface Visited {
+  [key: string]: boolean;
+}
+
+const initailVisited = (() => {
+  const tmp: Visited = {};
+  worksInfoArr.forEach((worksInfo) => {
+    tmp[worksInfo.id] = false;
+  });
+  return tmp;
+})();
 
 export const AppRoot: React.VFC = () => {
   /** 本番環境用のビルドの場合は、/testのルーティングは作らない */
   const isProd = process.env.PHASE === 'production';
 
   const [selectId, setSelectId] = React.useState<number>(0);
+  const [visited, setVisited] = useLocalStorage<Visited>('visited', initailVisited);
 
   return (
     <Router>
@@ -18,7 +33,7 @@ export const AppRoot: React.VFC = () => {
           <TopPage selectId={selectId} setSelectId={setSelectId} />
         </Route>
         <Route path="/works/:id" exact>
-          <IndividualPage setSelectId={setSelectId} />
+          <IndividualPage visited={visited} setVisited={setVisited} setSelectId={setSelectId} />
         </Route>
         {!isProd && (
           <Route path="/test" exact>

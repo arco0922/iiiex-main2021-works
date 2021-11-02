@@ -7,16 +7,23 @@ import styled from 'styled-components';
 import { IndividualWorksCaption } from './IndividualWorksDetail';
 import { IndividualWorksWindow } from './IndividualWorksWindow';
 import { isMobile } from 'react-device-detect';
+import { Visited } from 'AppRoot';
 
 interface Params {
   id: string;
 }
-
 interface Props {
   setSelectId: (selectId: number) => void;
+  setVisited: (visited: Visited) => void;
+  visited: Visited;
 }
 
-const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = ({ match, setSelectId }) => {
+const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = ({
+  match,
+  setSelectId,
+  setVisited,
+  visited,
+}) => {
   const worksId = Number(match.params.id);
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
   const [isFull, setIsFull] = React.useState<boolean>(false);
@@ -28,6 +35,10 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   React.useEffect(() => {
     setSelectId(worksId);
   }, [worksId, setSelectId]);
+  React.useEffect(() => {
+    setVisited({ ...visited, [worksId.toString()]: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [worksId, setVisited]);
 
   return (
     <StyledRoot>
