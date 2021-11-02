@@ -14,7 +14,7 @@ export interface Visited {
 const initailVisited = (() => {
   const tmp: Visited = {};
   worksInfoArr.forEach((worksInfo) => {
-    tmp[worksInfo.id] = false;
+    tmp[worksInfo.id.toString()] = false;
   });
   return tmp;
 })();
