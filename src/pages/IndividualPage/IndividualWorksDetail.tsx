@@ -1,3 +1,4 @@
+import { Caption } from 'components/Caption/Caption';
 import { WorksInfo } from 'constants/WorksInfo';
 import React from 'react';
 import styled from 'styled-components';
@@ -7,10 +8,6 @@ interface Props {
 }
 
 export const IndividualWorksCaption: React.VFC<Props> = ({ worksInfo }) => {
-  const caption = worksInfo.caption.split(/(\n)/).map((item, index) => {
-    return <React.Fragment key={index}>{item.match(/\n/) ? <br /> : item}</React.Fragment>;
-  });
-
   return (
     <StyledContainer>
       <StyledSection>
@@ -23,7 +20,7 @@ export const IndividualWorksCaption: React.VFC<Props> = ({ worksInfo }) => {
       </StyledSection>
       <StyledSection>
         <h4>作品説明</h4>
-        <p>{caption}</p>
+        <Caption captionText={worksInfo.caption}></Caption>
       </StyledSection>
       <StyledSection>
         <h4>近くにある作品</h4>

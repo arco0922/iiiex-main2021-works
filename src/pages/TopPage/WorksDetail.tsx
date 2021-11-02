@@ -1,3 +1,4 @@
+import { Caption } from 'components/Caption/Caption';
 import { theme } from 'constants/Theme';
 import { worksInfoArr } from 'constants/WorksInfo';
 import React from 'react';
@@ -13,9 +14,6 @@ export const WorksDetail: React.VFC<Props> = ({ selectId }) => {
   if (!info) {
     return <></>;
   }
-  const caption = info.caption.split(/(\n)/).map((item, index) => {
-    return <React.Fragment key={index}>{item.match(/\n/) ? <br /> : item}</React.Fragment>;
-  });
   return (
     <StyledContainer>
       <StyledTitle>作品詳細</StyledTitle>
@@ -34,7 +32,7 @@ export const WorksDetail: React.VFC<Props> = ({ selectId }) => {
         </StyledSection>
         <StyledSection>
           <h4>作品説明</h4>
-          <p>{caption}</p>
+          <Caption captionText={info.caption}></Caption>
         </StyledSection>
         <StyledSection>
           <h4>近くにある作品</h4>
