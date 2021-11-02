@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { IndividualWorksCaption } from './IndividualWorksDetail';
 import { IndividualWorksWindow } from './IndividualWorksWindow';
 import { isMobile } from 'react-device-detect';
+import { useWindowDimensions } from 'hooks/useWindowDimensions';
 
 interface Params {
   id: string;
@@ -20,20 +21,23 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   const worksId = Number(match.params.id);
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
   const [isFull, setIsFull] = React.useState<boolean>(false);
-  const iframeWidth = isFull ? '100vw' : 'max(60vw , 500px)';
+  const { height, width } = useWindowDimensions();
+  const iframeWidth = isFull ? '100vw' : width < 800 ? '95vw' : 'max(60vw , 500px)';
   const iframeHeight = isFull
-    ? '100vh'
+    ? `calc(100vh - ${headerHeight}px)`
     : `calc( ${iframeWidth} * ${worksInfo.aspectRatio ? worksInfo.aspectRatio : 9 / 16} )`;
 
   React.useEffect(() => {
     setSelectId(worksId);
   }, [worksId, setSelectId]);
 
+  const isNarrowLayout = width < 800;
+
   return (
     <StyledRoot>
       <Header showNavigationToTop={true} isFull={isFull} setIsFull={setIsFull} />
       <StyledContentContainer isFull={isFull}>
-        <StyledWorksContainer>
+        <StyledWorksContainer isNarrowLayout={isNarrowLayout}>
           <IndividualWorksWindow
             srcUrl={isMobile ? worksInfo.srcUrlSp : worksInfo.srcUrlPc}
             iframeHeight={iframeHeight}
@@ -68,8 +72,12 @@ const StyledContentContainer = styled.div<StyledContentContainerProps>`
   overflow-y: auto;
 `;
 
-const StyledWorksContainer = styled.div`
-  height: 100%;
+interface StyledWorksContainerProps {
+  isNarrowLayout: boolean;
+}
+
+const StyledWorksContainer = styled.div<StyledWorksContainerProps>`
   display: flex;
   justify-content: center;
+  flex-direction: ${({ isNarrowLayout }) => (isNarrowLayout ? 'column' : 'row')};
 `;
