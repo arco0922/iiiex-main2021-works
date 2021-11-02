@@ -164,7 +164,7 @@ export const WorksListSketch = React.memo<Props>(
       navigationBtn = p5.createButton('作品ページへ');
       navigationBtn.parent(containerRef.current);
       navigationBtn.style(
-        `padding: 2px; border: none; transform: translateX(-50%); width: fit-content; border: 1px solid ${selectColor}; border-radius: 5px; display: block; background-color: white`,
+        `padding: 2px; border: none; transform: translateX(-50%); width: fit-content; border: 1px solid ${selectColor}; border-radius: 5px; background-color: white`,
       );
       navigationBtn.mouseOver(() => navigationBtnStyleChange(p5, true));
       navigationBtn.mouseOut(() => navigationBtnStyleChange(p5, false));
@@ -247,8 +247,12 @@ export const WorksListSketch = React.memo<Props>(
       }
     };
 
+    const isPointOnCanvas = (p5: p5Types, x: number, y: number) => {
+      return x >= 0 && x <= p5.width && y >= 0 && y <= p5.height;
+    };
+
     const isCursorOnCanvas = (p5: p5Types) => {
-      return p5.mouseX >= 0 && p5.mouseX <= p5.width && p5.mouseY >= 0 && p5.mouseY <= p5.height;
+      return isPointOnCanvas(p5, p5.mouseX, p5.mouseY);
     };
 
     const mousePressed = (p5: p5Types) => {
@@ -262,7 +266,7 @@ export const WorksListSketch = React.memo<Props>(
     };
 
     const mouseDragged = (p5: p5Types) => {
-      if (worldLokked) {
+      if (isCursorOnCanvas(p5) && worldLokked) {
         worldOffsetX += p5.mouseX - oldMouseX;
         worldOffsetY += p5.mouseY - oldMouseY;
         oldMouseX = p5.mouseX;
@@ -796,6 +800,11 @@ export const WorksListSketch = React.memo<Props>(
         this.p5.ellipse(this.x, this.y, this.radius * 2 + 20, this.radius * 2 + 20);
         const navPos = this.calcCanvasCoord(this.x, this.y + this.radius);
         navigationBtn.style(`font-size: ${this.worldOffsetScale * 12}px;`);
+        if (isPointOnCanvas(this.p5, navPos.x, navPos.y)) {
+          navigationBtn.style('display: block');
+        } else {
+          navigationBtn.style('display: none');
+        }
         navigationBtn.position(navPos.x + padding, navPos.y + padding);
       }
 
