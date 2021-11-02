@@ -6,6 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import styled from 'styled-components';
 import { IndividualWorksCaption } from './IndividualWorksDetail';
 import { IndividualWorksWindow } from './IndividualWorksWindow';
+import { isMobile } from 'react-device-detect';
 
 interface Params {
   id: string;
@@ -34,7 +35,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
       <StyledContentContainer isFull={isFull}>
         <StyledWorksContainer>
           <IndividualWorksWindow
-            srcUrl={worksInfo.srcUrlPc}
+            srcUrl={isMobile ? worksInfo.srcUrlSp : worksInfo.srcUrlPc}
             iframeHeight={iframeHeight}
             iframeWidth={iframeWidth}
             isFull={isFull}
