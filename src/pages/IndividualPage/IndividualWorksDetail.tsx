@@ -1,3 +1,4 @@
+import { Caption } from 'components/Caption/Caption';
 import { WorksInfo } from 'constants/WorksInfo';
 import React from 'react';
 import styled from 'styled-components';
@@ -15,11 +16,11 @@ export const IndividualWorksCaption: React.VFC<Props> = ({ worksInfo }) => {
       </StyledSection>
       <StyledSection>
         <h4>制作者</h4>
-        <p>だれだれ</p>
+        <p>{worksInfo.creators.join(', ')}</p>
       </StyledSection>
       <StyledSection>
         <h4>作品説明</h4>
-        <p>キャプション</p>
+        <Caption captionText={worksInfo.caption}></Caption>
       </StyledSection>
       <StyledSection>
         <h4>近くにある作品</h4>
