@@ -4,7 +4,7 @@ import { worksInfoArr } from 'constants/WorksInfo';
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import styled from 'styled-components';
-import { IndividualWorksCaption } from './IndividualWorksCaption';
+import { IndividualWorksCaption } from './IndividualWorksDetail';
 import { IndividualWorksWindow } from './IndividualWorksWindow';
 
 interface Params {
