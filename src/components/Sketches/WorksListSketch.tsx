@@ -4,6 +4,7 @@ import p5Types from 'p5';
 import styled from 'styled-components';
 import { worksInfoArr } from 'constants/WorksInfo';
 import { theme } from 'constants/Theme';
+import { useHistory } from 'react-router';
 
 interface Props {
   width: string;
@@ -22,6 +23,7 @@ interface ParticleImage {
 export const WorksListSketch = React.memo<Props>(
   ({ width, height, selectIdRef, setSelectId, bgcolor = 'black', padding = 5 }) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
+    const history = useHistory();
 
     // modern Chrome requires { passive: false } when adding event
     let supportsPassive = false;
@@ -88,6 +90,23 @@ export const WorksListSketch = React.memo<Props>(
     let oldMouseX = 0;
     let oldMouseY = 0;
 
+    let navigationBtn: p5Types.Element;
+
+    const navigationBtnStyleChange = (p5: p5Types, isHover: boolean) => {
+      if (isHover) {
+        navigationBtn.style(`cursor: pointer; background-color: #3f3f3f; color: white;`);
+      } else {
+        navigationBtn.style(`cursor: default; background-color: white; color: black;`);
+      }
+    };
+
+    const navigateToIndividual = () => {
+      if (selectIdRef.current === null) {
+        return;
+      }
+      history.push(`/works/${selectIdRef.current}`);
+    };
+
     const calcSquaredDist = (x1: number, y1: number, x2: number, y2: number) =>
       (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
 
@@ -136,10 +155,20 @@ export const WorksListSketch = React.memo<Props>(
       if (!containerRef.current) {
         return;
       }
+
       p5.createCanvas(
         containerRef.current.clientWidth - padding * 2,
         containerRef.current.clientHeight - padding * 2,
       ).parent(canvasParentRef);
+
+      navigationBtn = p5.createButton('作品ページへ');
+      navigationBtn.parent(containerRef.current);
+      navigationBtn.style(
+        `padding: 2px; border: none; transform: translateX(-50%); width: fit-content; border: 1px solid ${selectColor}; border-radius: 5px; display: block; background-color: white`,
+      );
+      navigationBtn.mouseOver(() => navigationBtnStyleChange(p5, true));
+      navigationBtn.mouseOut(() => navigationBtnStyleChange(p5, false));
+      navigationBtn.mouseClicked(() => navigateToIndividual());
 
       worldOffsetX = p5.width / 2;
       worldOffsetY = p5.height / 2;
@@ -548,7 +577,7 @@ export const WorksListSketch = React.memo<Props>(
           this.basicUpdate();
           return;
         }
-        const mousePos = this.calcCoord(this.p5.mouseX, this.p5.mouseY);
+        const mousePos = this.calcWorldCoord(this.p5.mouseX, this.p5.mouseY);
         const newX = mousePos.x - this.dragOffsetX;
         const newY = mousePos.y - this.dragOffsetY;
 
@@ -602,7 +631,7 @@ export const WorksListSketch = React.memo<Props>(
 
         if (this.isDragged) {
           if (this.isCursorOn()) {
-            const mousePos = this.calcCoord(this.p5.mouseX, this.p5.mouseY);
+            const mousePos = this.calcWorldCoord(this.p5.mouseX, this.p5.mouseY);
             this.dragOffsetX = mousePos.x - this.x;
             this.dragOffsetY = mousePos.y - this.y;
           } else {
@@ -765,10 +794,13 @@ export const WorksListSketch = React.memo<Props>(
         this.p5.strokeWeight(10);
         this.p5.noFill();
         this.p5.ellipse(this.x, this.y, this.radius * 2 + 20, this.radius * 2 + 20);
+        const navPos = this.calcCanvasCoord(this.x, this.y + this.radius);
+        navigationBtn.style(`font-size: ${this.worldOffsetScale * 12}px;`);
+        navigationBtn.position(navPos.x + padding, navPos.y + padding);
       }
 
       isCursorOn() {
-        const mousePos = this.calcCoord(this.p5.mouseX, this.p5.mouseY);
+        const mousePos = this.calcWorldCoord(this.p5.mouseX, this.p5.mouseY);
         return calcSquaredDist(mousePos.x, mousePos.y, this.x, this.y) < this.radius * this.radius;
       }
 
@@ -778,11 +810,19 @@ export const WorksListSketch = React.memo<Props>(
         this.worldOffsetScale = newOffsetScale;
       }
 
-      calcCoord(x: number, y: number) {
-        /** スクリーン座標→ワールド座標への計算 */
+      calcWorldCoord(x: number, y: number) {
+        /** canvas座標 → ワールド座標の計算 */
         return {
           x: (x - this.worldOffsetX) / this.worldOffsetScale,
           y: (y - this.worldOffsetY) / this.worldOffsetScale,
+        };
+      }
+
+      calcCanvasCoord(x: number, y: number) {
+        /** ワールド座標 → canvas座標の計算*/
+        return {
+          x: x * this.worldOffsetScale + this.worldOffsetX,
+          y: y * this.worldOffsetScale + this.worldOffsetY,
         };
       }
 
@@ -790,7 +830,7 @@ export const WorksListSketch = React.memo<Props>(
         if (this.dragMovementType !== 'None') {
           this.isDragged = true;
           this.basicMovementType = 'Static';
-          const mousePos = this.calcCoord(this.p5.mouseX, this.p5.mouseY);
+          const mousePos = this.calcWorldCoord(this.p5.mouseX, this.p5.mouseY);
           this.dragOffsetX = mousePos.x - this.x;
           this.dragOffsetY = mousePos.y - this.y;
         }

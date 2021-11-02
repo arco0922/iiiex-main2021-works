@@ -52,6 +52,7 @@ const StyledContainer = styled.div`
   color: white;
   display: flex;
   flex-direction: column;
+  z-index: 2;
 `;
 
 const StyledTitle = styled.h2`
