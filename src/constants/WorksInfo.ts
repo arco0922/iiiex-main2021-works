@@ -36,7 +36,7 @@ export const worksInfoArr: WorksInfo[] = [
   },
   {
     id: 2,
-    title: 'ゼロマインド～0歳児パンク～',
+    title: 'ゼロマインド～1歳児キャリブレーション～',
     thumbnailBaseName: '2_baby-thumbnail',
     creators: ['小山このか'],
     caption: ``,
