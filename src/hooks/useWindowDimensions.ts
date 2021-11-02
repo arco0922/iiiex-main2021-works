@@ -28,7 +28,7 @@ const getWindowDimensions = () => {
   };
 };
 
-export const useWindowDimensions = () => {
+export const useWindowDimensions = (): WindowDimensions => {
   const [windowDimensions, setWindowDimensions] = useState<WindowDimensions>(getWindowDimensions());
 
   useEffect(() => {
