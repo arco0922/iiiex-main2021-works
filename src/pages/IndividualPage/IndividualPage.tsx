@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { IndividualWorksCaption } from './IndividualWorksDetail';
 import { IndividualWorksWindow } from './IndividualWorksWindow';
 import { isMobile } from 'react-device-detect';
+import { useWindowDimensions } from 'hooks/useWindowDimensions';
 
 interface Params {
   id: string;
@@ -20,7 +21,8 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   const worksId = Number(match.params.id);
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
   const [isFull, setIsFull] = React.useState<boolean>(false);
-  const iframeWidth = isFull ? '100vw' : 'max(60vw , 500px)';
+  const { height, width } = useWindowDimensions();
+  const iframeWidth = isFull ? '100vw' : width < 800 ? '95vw' : 'max(60vw , 500px)';
   const iframeHeight = isFull
     ? '100vh'
     : `calc( ${iframeWidth} * ${worksInfo.aspectRatio ? worksInfo.aspectRatio : 9 / 16} )`;
@@ -29,6 +31,23 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
     setSelectId(worksId);
   }, [worksId, setSelectId]);
 
+  if (width < 800) {
+    return (
+      <StyledRoot>
+        <Header showNavigationToTop={true} isFull={isFull} setIsFull={setIsFull} />
+        <StyledContentContainer isFull={isFull}>
+          <IndividualWorksWindow
+            srcUrl={isMobile ? worksInfo.srcUrlSp : worksInfo.srcUrlPc}
+            iframeHeight={iframeHeight}
+            iframeWidth={iframeWidth}
+            isFull={isFull}
+            setIsFull={setIsFull}
+          />
+          {!isFull && <IndividualWorksCaption worksInfo={worksInfo} />}
+        </StyledContentContainer>
+      </StyledRoot>
+    );
+  }
   return (
     <StyledRoot>
       <Header showNavigationToTop={true} isFull={isFull} setIsFull={setIsFull} />
