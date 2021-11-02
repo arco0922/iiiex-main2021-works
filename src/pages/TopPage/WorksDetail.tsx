@@ -1,3 +1,4 @@
+import { Caption } from 'components/Caption/Caption';
 import { theme } from 'constants/Theme';
 import { worksInfoArr } from 'constants/WorksInfo';
 import React from 'react';
@@ -27,11 +28,11 @@ export const WorksDetail: React.VFC<Props> = ({ selectId }) => {
         </StyledSection>
         <StyledSection>
           <h4>制作者</h4>
-          <p>だれだれ</p>
+          <p>{info.creators.join(', ')}</p>
         </StyledSection>
         <StyledSection>
           <h4>作品説明</h4>
-          <p>キャプション</p>
+          <Caption captionText={info.caption}></Caption>
         </StyledSection>
         <StyledSection>
           <h4>近くにある作品</h4>
