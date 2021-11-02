@@ -29,7 +29,8 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
   const [isFull, setIsFull] = React.useState<boolean>(false);
   const { height, width } = useWindowDimensions();
-  const iframeWidth = isFull ? '100vw' : width < 800 ? '95vw' : 'max(60vw , 500px)';
+  const isNarrowLayout = width < 800;
+  const iframeWidth = isFull ? '100vw' : isNarrowLayout ? '95vw' : 'max(60vw , 500px)';
   const iframeHeight = isFull
     ? `calc(100vh - ${headerHeight}px)`
     : `calc( ${iframeWidth} * ${worksInfo.aspectRatio ? worksInfo.aspectRatio : 9 / 16} )`;
@@ -41,8 +42,6 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
     setVisited({ ...visited, [worksId.toString()]: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [worksId, setVisited]);
-
-  const isNarrowLayout = width < 800;
 
   return (
     <StyledRoot>
