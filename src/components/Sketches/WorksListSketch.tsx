@@ -50,8 +50,9 @@ export const WorksListSketch = React.memo<Props>(
      * basicMovementTypeは、マウスによってParticleがドラッグされていないときの挙動のタイプ を表す。
      * Inertia: 物理法則にしたがう → dragMovementTypeはNoneかPos-Velを想定
      *  Static: 動かない → dragMovementTypeはNoneかPosを想定
+     * Gravitational: 衝突は非弾性で、ターゲットにひきつけられる
      */
-    type BasicMovementType = 'Inertia' | 'Static';
+    type BasicMovementType = 'Inertia' | 'Static' | 'Gravitational';
 
     /**
      * dragMovementTypeは、マウスによってParticleがドラッグされているときの挙動のタイプ を表す。
@@ -89,6 +90,9 @@ export const WorksListSketch = React.memo<Props>(
     let worldLokked = false;
     let oldMouseX = 0;
     let oldMouseY = 0;
+
+    const targetPosX = 500;
+    const targetPosY = 500;
 
     let navigationBtn: p5Types.Element;
 
@@ -211,7 +215,12 @@ export const WorksListSketch = React.memo<Props>(
       for (let i = 0; i < worksInfoArr.length; i++) {
         const x = p5.random(-worldWidth / 3 + 70, worldWidth / 3 - 70);
         const y = p5.random(-worldHeight / 3 + 70, worldHeight / 3 - 70);
-        obstacleSystem.addParticle(i, x, y, 70, 0, 0, 1, obstacleColor, 'Static', 'Pos');
+        obstacleSystem.addParticle(i, x, y, 70, 0, 0, 1, obstacleColor, 'Gravitational', 'Pos');
+      }
+      for (let i = 0; i < worksInfoArr.length; i++) {
+        const x = p5.random(-worldWidth / 3 + 70, worldWidth / 3 - 70);
+        const y = p5.random(-worldHeight / 3 + 70, worldHeight / 3 - 70);
+        obstacleSystem.setTargetPos({ id: i, x, y });
       }
       obstacleSystem.setTextures(thumbnails);
     };
@@ -367,6 +376,15 @@ export const WorksListSketch = React.memo<Props>(
         );
       }
 
+      setTargetPos({ id, x, y }: { id: number; x?: number; y?: number }) {
+        this.particles.forEach((particle) => {
+          if (particle.id !== id) {
+            return;
+          }
+          particle.setTargetPos({ x, y });
+        });
+      }
+
       updateParticles() {
         for (let i = 0; i < this.particles.length; i++) {
           const particle = this.particles[i];
@@ -516,6 +534,8 @@ export const WorksListSketch = React.memo<Props>(
       worldOffsetX: number;
       worldOffsetY: number;
       worldOffsetScale: number;
+      targetX: number | undefined;
+      targetY: number | undefined;
 
       constructor(
         p5: p5Types,
@@ -565,14 +585,38 @@ export const WorksListSketch = React.memo<Props>(
       }
 
       basicUpdate() {
-        if (this.basicMovementType === 'Inertia') {
-          this.x += this.velX;
-          this.y += this.velY;
-          this.velX += this.accX;
-          this.velY += this.accY;
-        } else {
-          this.velX = 0;
-          this.velY = 0;
+        switch (this.basicMovementType) {
+          case 'Gravitational':
+            if (this.targetX !== undefined) {
+              this.velX = (this.targetX - this.x) * 0.04;
+            }
+            if (this.targetY !== undefined) {
+              this.velY = (this.targetY - this.y) * 0.04;
+            }
+            this.x += this.velX;
+            this.y += this.velY;
+            this.velX += this.accX;
+            this.velY += this.accY;
+            break;
+          case 'Inertia':
+            this.x += this.velX;
+            this.y += this.velY;
+            this.velX += this.accX;
+            this.velY += this.accY;
+            break;
+          case 'Static':
+            this.velX = 0;
+            this.velY = 0;
+            break;
+        }
+      }
+
+      setTargetPos({ x, y }: { x?: number; y?: number }) {
+        if (x !== undefined) {
+          this.targetX = x;
+        }
+        if (y !== undefined) {
+          this.targetY = y;
         }
       }
 
@@ -677,7 +721,11 @@ export const WorksListSketch = React.memo<Props>(
 
         let selfCorrectionLength = 0;
         let otherCorrectionLength = 0;
-        if (this.basicMovementType === other.basicMovementType) {
+        if (
+          this.basicMovementType === other.basicMovementType ||
+          this.basicMovementType === 'Gravitational' ||
+          other.basicMovementType === 'Gravitational'
+        ) {
           if (this.isDragged) {
             otherCorrectionLength = intersectLength;
           } else if (other.isDragged) {
@@ -686,9 +734,9 @@ export const WorksListSketch = React.memo<Props>(
             selfCorrectionLength = intersectLength / 2;
             otherCorrectionLength = intersectLength / 2;
           }
-        } else if (this.basicMovementType === 'Inertia') {
+        } else if (this.basicMovementType === 'Inertia' && other.basicMovementType === 'Static') {
           selfCorrectionLength = intersectLength;
-        } else {
+        } else if (other.basicMovementType === 'Inertia' && this.basicMovementType === 'Static') {
           otherCorrectionLength = intersectLength;
         }
         const selfD = distanceVect.copy();
@@ -704,7 +752,11 @@ export const WorksListSketch = React.memo<Props>(
       collideWithOther(other: Particle) {
         const [isIntersect, distanceVect, interSectLength] = this.calcIntersection(other);
 
-        if (this.basicMovementType === 'Static' && other.basicMovementType === 'Static') {
+        if (
+          (this.basicMovementType === 'Static' && other.basicMovementType === 'Static') ||
+          this.basicMovementType === 'Gravitational' ||
+          other.basicMovementType === 'Gravitational'
+        ) {
           return;
         }
         const theta = distanceVect.heading();
