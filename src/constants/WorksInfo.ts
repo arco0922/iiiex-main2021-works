@@ -14,8 +14,6 @@ export const worksInfoArr: WorksInfo[] = [
     id: 0,
     title: 'offline on line',
     thumbnailBaseName: '0_nakagawa',
-    srcUrlPc: 'https://tiger0ym.github.io/WorksPageExample/',
-    srcUrlSp: 'https://tiger0ym.github.io/WorksPageExample/',
     creators: ['中川陽介', '渡邊一正'],
     caption: `ぴったり重なることのない、
     私とものとの間には「距離」がある。
@@ -26,6 +24,8 @@ export const worksInfoArr: WorksInfo[] = [
     精度を較正する行為である
     キャリブレーションのように。
     `,
+    srcUrlPc: 'https://gawa4423.github.io/seisakuten/',
+    srcUrlSp: 'https://playcanv.as/p/3d09d3d7/',
   },
   {
     id: 1,
@@ -40,6 +40,8 @@ export const worksInfoArr: WorksInfo[] = [
     thumbnailBaseName: '2_baby-thumbnail',
     creators: ['小山このか'],
     caption: ``,
+    srcUrlPc: 'https://koyama4konoka.github.io/ZeroToOneMind/',
+    srcUrlSp: 'https://koyama4konoka.github.io/ZeroToOneMind/mobile.html',
   },
   {
     id: 3,
@@ -54,14 +56,18 @@ export const worksInfoArr: WorksInfo[] = [
     thumbnailBaseName: '4_ueno_thumbnail',
     creators: ['上野菜津', '馮楽祺'],
     caption: ``,
+    srcUrlPc: 'https://larkin269.github.io/fikpages/',
+    srcUrlSp: 'https://larkin269.github.io/fikpages/',
   },
   {
     id: 5,
     title: 'puppeTuber',
     thumbnailBaseName: '5_aramaki_puppeTuber',
-    srcUrlPc: 'https://damakoo.github.io/PuppeTuber_WebGL/',
     creators: ['荒巻美南海', '児玉大樹'],
     caption: ``,
+    srcUrlPc: 'https://damakoo.github.io/PuppeTuber_WebGL/',
+    srcUrlSp: 'https://damakoo.github.io/PuppeTuber_WebGL/mobile_index.html',
+    aspectRatio: 10 / 16,
   },
   {
     id: 6,
@@ -69,6 +75,8 @@ export const worksInfoArr: WorksInfo[] = [
     thumbnailBaseName: '6_(s)hukan',
     creators: ['久保田愛海', '佐々木竜太郎', '佐倉玲', '覚井優希', '藤波徹柊'],
     caption: ``,
+    srcUrlPc: 'https://y-141.github.io/iiiex_pentagons/',
+    srcUrlSp: 'https://y-141.github.io/iiiex_pentagons/',
   },
   {
     id: 7,
@@ -76,6 +84,8 @@ export const worksInfoArr: WorksInfo[] = [
     thumbnailBaseName: '7_kurata_picture',
     creators: ['倉田将希', '久保田愛海', '富木菜穂', '山田瑞季'],
     caption: ``,
+    srcUrlPc: 'https://kurapyon31.github.io/probUT/',
+    srcUrlSp: 'https://kurapyon31.github.io/probUT/',
   },
   {
     id: 8,
@@ -83,6 +93,8 @@ export const worksInfoArr: WorksInfo[] = [
     thumbnailBaseName: '8_ENDRAGON',
     creators: ['新納大輔'],
     caption: ``,
+    srcUrlPc: 'https://ninonode.github.io/endragon/',
+    srcUrlSp: 'https://ninonode.github.io/endragon/',
   },
   {
     id: 9,
@@ -97,6 +109,8 @@ export const worksInfoArr: WorksInfo[] = [
     thumbnailBaseName: '10_I-mage',
     creators: ['周寧', '市倉愛子', '間宮竜大'],
     caption: ``,
+    srcUrlPc: 'https://flask-325405.de.r.appspot.com/guest',
+    srcUrlSp: 'https://flask-325405.de.r.appspot.com/guest',
   },
   {
     id: 11,
@@ -104,6 +118,8 @@ export const worksInfoArr: WorksInfo[] = [
     thumbnailBaseName: '11_Siyuan_Home-Gallery',
     creators: ['張斯媛', '江子淵'],
     caption: ``,
+    srcUrlPc: 'https://siyuanzh09.github.io/Home_Gallery/',
+    srcUrlSp: 'https://siyuanzh09.github.io/Home_Gallery/',
   },
   {
     id: 12,
@@ -111,6 +127,8 @@ export const worksInfoArr: WorksInfo[] = [
     thumbnailBaseName: '12_mikami_tapyourlife',
     creators: ['三上尚美', '篠田和宏', '李昌', '小山大嘉'],
     caption: ``,
+    srcUrlPc: 'https://tiger0ym.github.io/iiiex/',
+    srcUrlSp: 'https://tiger0ym.github.io/iiiex/',
   },
   {
     id: 13,
@@ -118,5 +136,7 @@ export const worksInfoArr: WorksInfo[] = [
     thumbnailBaseName: '13_akiyama',
     creators: ['秋山真鈴', '韮澤雄太', '倉田将希', '稲津遥太郎'],
     caption: ``,
+    srcUrlPc: 'https://kurapyon31.github.io/animalClock/',
+    srcUrlSp: 'https://kurapyon31.github.io/animalClock/',
   },
 ];
