@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 HOW to use this hooks
 
 1. import this file
-import useWindowDimensions from 'hooks/useWindowDimensions';
+import { useWindowDimensions } from 'hooks/useWindowDimensions';
 
 2. add function before return 
 const { height, width } = useWindowDimensions();
@@ -15,25 +15,30 @@ const { height, width } = useWindowDimensions();
 </div>
 */
 
-function getWindowDimensions() {
+interface WindowDimensions {
+  width: number;
+  height: number;
+}
+
+const getWindowDimensions = () => {
   const { innerWidth: width, innerHeight: height } = window;
   return {
     width,
     height,
   };
-}
+};
 
-export default function useWindowDimensions() {
-  const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+export const useWindowDimensions = () => {
+  const [windowDimensions, setWindowDimensions] = useState<WindowDimensions>(getWindowDimensions());
 
   useEffect(() => {
-    function handleResize() {
+    const handleResize = () => {
       setWindowDimensions(getWindowDimensions());
-    }
+    };
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   return windowDimensions;
-}
+};
