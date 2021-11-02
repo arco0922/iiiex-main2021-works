@@ -40,7 +40,7 @@ export const worksInfoArr: WorksInfo[] = [
     thumbnailBaseName: '2_baby-thumbnail',
     creators: ['小山このか'],
     caption: ``,
-    srcUrlPc: 'https://koyama4konoka.github.io/ZeroToOneMind/',
+    srcUrlPc: 'https://hardcore-nobel-4e99fe.netlify.app/',
     srcUrlSp: 'https://koyama4konoka.github.io/ZeroToOneMind/mobile.html',
   },
   {
