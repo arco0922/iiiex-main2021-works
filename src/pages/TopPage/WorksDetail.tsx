@@ -13,6 +13,9 @@ export const WorksDetail: React.VFC<Props> = ({ selectId }) => {
   if (!info) {
     return <></>;
   }
+  const caption = info.caption.split(/(\n)/).map((item, index) => {
+    return <React.Fragment key={index}>{item.match(/\n/) ? <br /> : item}</React.Fragment>;
+  });
   return (
     <StyledContainer>
       <StyledTitle>作品詳細</StyledTitle>
@@ -27,11 +30,11 @@ export const WorksDetail: React.VFC<Props> = ({ selectId }) => {
         </StyledSection>
         <StyledSection>
           <h4>制作者</h4>
-          <p>だれだれ</p>
+          <p>{info.creators.join(', ')}</p>
         </StyledSection>
         <StyledSection>
           <h4>作品説明</h4>
-          <p>キャプション</p>
+          <p>{caption}</p>
         </StyledSection>
         <StyledSection>
           <h4>近くにある作品</h4>
