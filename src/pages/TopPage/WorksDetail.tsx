@@ -20,7 +20,7 @@ export const WorksDetail: React.VFC<Props> = ({ selectId }) => {
       <StyledDetailContainer>
         <StyledThumbnail src={`/static/assets/thumbnails/${info.thumbnailBaseName}.jpg`} width="100%"></StyledThumbnail>
         <StyledButton>
-          <StyledLink to={`/works/${info.id}`}>この作品を見る</StyledLink>
+          <StyledLink to={`/works/${info.id}`}>作品を見る</StyledLink>
         </StyledButton>
         <StyledSection>
           <h4>作品名</h4>

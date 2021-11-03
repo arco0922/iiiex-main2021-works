@@ -97,9 +97,9 @@ export const WorksListSketch = React.memo<Props>(
 
     const navigationBtnStyleChange = (p5: p5Types, isHover: boolean) => {
       if (isHover) {
-        navigationBtn.style(`cursor: pointer; background-color: #3f3f3f; color: white;`);
+        navigationBtn.style(`cursor: pointer; background-color: ${theme.color.primary}; color: white;`);
       } else {
-        navigationBtn.style(`cursor: default; background-color: white; color: black;`);
+        navigationBtn.style(`cursor: default; background-color: black; color: white;`);
       }
     };
 
@@ -164,10 +164,10 @@ export const WorksListSketch = React.memo<Props>(
         containerRef.current.clientHeight - padding * 2,
       ).parent(canvasParentRef);
 
-      navigationBtn = p5.createButton('作品ページへ');
+      navigationBtn = p5.createButton('作品を見る');
       navigationBtn.parent(containerRef.current);
       navigationBtn.style(
-        `padding: 2px; border: none; transform: translateX(-50%); width: fit-content; border: 1px solid ${selectColor}; border-radius: 5px; background-color: white`,
+        `padding: 4px; border: none; transform: translateX(-50%); width: fit-content; border: 2px solid ${selectColor}; background-color: black; color: white; word-break: keep-all`,
       );
       navigationBtn.mouseOver(() => navigationBtnStyleChange(p5, true));
       navigationBtn.mouseOut(() => navigationBtnStyleChange(p5, false));
@@ -892,7 +892,7 @@ export const WorksListSketch = React.memo<Props>(
         this.p5.noFill();
         this.p5.ellipse(this.x, this.y, this.radius * 2 + 20, this.radius * 2 + 20);
         const navPos = this.calcCanvasCoord(this.x, this.y + this.radius);
-        navigationBtn.style(`font-size: ${this.worldOffsetScale * 12}px;`);
+        navigationBtn.style(`font-size: ${this.worldOffsetScale * 20}px;`);
         if (isPointOnCanvas(this.p5, navPos.x, navPos.y)) {
           navigationBtn.style('display: block');
         } else {
