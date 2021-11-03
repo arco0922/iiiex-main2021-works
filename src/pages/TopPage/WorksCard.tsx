@@ -3,6 +3,7 @@ import { WorksInfo } from 'constants/WorksInfo';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { judgeElementInViewPort } from 'utils/judgeElementInViewPort';
 
 interface Props {
   worksInfo: WorksInfo;
@@ -13,8 +14,8 @@ interface Props {
 export const WorksCard: React.VFC<Props> = ({ worksInfo, selectId, setSelectId }) => {
   const cardContainerRef = React.useRef<HTMLDivElement>(null);
   React.useEffect(() => {
-    if (worksInfo.id === selectId && cardContainerRef.current) {
-      cardContainerRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (worksInfo.id === selectId && cardContainerRef.current && !judgeElementInViewPort(cardContainerRef.current)) {
+      cardContainerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
     }
   }, [worksInfo, selectId]);
   return (
