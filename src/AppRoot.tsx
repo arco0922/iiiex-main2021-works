@@ -19,11 +19,13 @@ const initailVisited = (() => {
   return tmp;
 })();
 
+const initialSelectId = Math.floor(Math.random() * worksInfoArr.length - 1);
+
 export const AppRoot: React.VFC = () => {
   /** 本番環境用のビルドの場合は、/testのルーティングは作らない */
   const isProd = process.env.PHASE === 'production';
 
-  const [selectId, setSelectId] = React.useState<number>(0);
+  const [selectId, setSelectId] = React.useState<number>(initialSelectId);
   const [visited, setVisited] = useLocalStorage<Visited>('visited', initailVisited);
 
   return (
