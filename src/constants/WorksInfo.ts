@@ -124,7 +124,7 @@ export const worksInfoArr: WorksInfo[] = [
   {
     id: 12,
     title: 'デイリズム！',
-    thumbnailBaseName: '12_mikami_tapyourlife',
+    thumbnailBaseName: '12_mikami_dayliyrhythm',
     creators: ['三上尚美', '篠田和宏', '李昌', '小山大嘉'],
     caption: ``,
     srcUrlPc: 'https://tiger0ym.github.io/iiiex/',
