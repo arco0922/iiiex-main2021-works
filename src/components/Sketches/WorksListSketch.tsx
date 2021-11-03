@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { worksInfoArr } from 'constants/WorksInfo';
 import { theme } from 'constants/Theme';
 import { useHistory } from 'react-router';
+import { mapCoordsArr } from 'constants/MapCoords';
 
 interface Props {
   width: string;
@@ -84,15 +85,12 @@ export const WorksListSketch = React.memo<Props>(
     let worldOffsetY: number; // ワールドの中心がスクリーンのどこにあるか
     let worldOffsetScale: number; // ワールドのスクリーン上での縮尺
 
-    const worldWidth = 2500; // ワールドの横幅 ※canvasの横幅とは異なる
-    const worldHeight = 2500; // ワールドの縦幅 ※canvasの縦幅とは異なる
+    const worldWidth = 3000; // ワールドの横幅 ※canvasの横幅とは異なる
+    const worldHeight = 2000; // ワールドの縦幅 ※canvasの縦幅とは異なる
 
     let worldLokked = false;
     let oldMouseX = 0;
     let oldMouseY = 0;
-
-    const targetPosX = 500;
-    const targetPosY = 500;
 
     let navigationBtn: p5Types.Element;
 
@@ -174,6 +172,34 @@ export const WorksListSketch = React.memo<Props>(
       navigationBtn.mouseOut(() => navigationBtnStyleChange(p5, false));
       navigationBtn.mouseClicked(() => navigateToIndividual());
 
+      type Radio = p5Types.Element & { changed: (callback: () => void) => void };
+      const mapToggleRadios: Radio = p5.createRadio() as Radio;
+      mapToggleRadios.parent(containerRef.current);
+      mapToggleRadios.style(
+        'position: absolute; display: flex; top: 0; left: 0; width: 100%; height: 40px; justify-content: center; align-items: center; background-color: #00000040',
+      );
+
+      const radioLabelStyle = 'color: white; margin-right: 10px; margin-left: 3px;';
+
+      const radioDescription = p5.createElement('p', '作品の並べ方：');
+      radioDescription.style(radioLabelStyle);
+      radioDescription.parent(mapToggleRadios);
+
+      mapCoordsArr.forEach(({ mode, coords }, idx) => {
+        const modeRadio = p5.createElement('input');
+        modeRadio.attribute('type', 'radio');
+        modeRadio.attribute('value', idx.toString());
+        modeRadio.attribute('name', 'mapToggle');
+        modeRadio.parent(mapToggleRadios);
+        const modeRadioLabel = p5.createElement('label', mode);
+        modeRadioLabel.parent(mapToggleRadios);
+        modeRadioLabel.style(radioLabelStyle);
+
+        if (idx === 1) {
+          modeRadio.attribute('checked', 'checked');
+        }
+      });
+
       worldOffsetX = p5.width / 2;
       worldOffsetY = p5.height / 2;
       worldOffsetScale = p5.width / worldWidth;
@@ -212,17 +238,17 @@ export const WorksListSketch = React.memo<Props>(
         particleSystem2.addParticle(i, x, y, 1, velX, velY, 7, particleColor2, 'Inertia', 'None');
       }
 
-      for (let i = 0; i < worksInfoArr.length; i++) {
-        const x = p5.random(-worldWidth / 3 + 70, worldWidth / 3 - 70);
-        const y = p5.random(-worldHeight / 3 + 70, worldHeight / 3 - 70);
-        obstacleSystem.addParticle(i, x, y, 70, 0, 0, 1, obstacleColor, 'Gravitational', 'Pos');
-      }
-      for (let i = 0; i < worksInfoArr.length; i++) {
-        const x = p5.random(-worldWidth / 3 + 70, worldWidth / 3 - 70);
-        const y = p5.random(-worldHeight / 3 + 70, worldHeight / 3 - 70);
-        obstacleSystem.setTargetPos({ id: i, x, y });
-      }
+      mapCoordsArr[Number(mapToggleRadios.value())].coords.forEach(({ id, x, y }) => {
+        obstacleSystem.addParticle(id, x, y, 100, 0, 0, 1, obstacleColor, 'Gravitational', 'Pos');
+        obstacleSystem.setTargetPos({ id, x, y });
+      });
       obstacleSystem.setTextures(thumbnails);
+      const changedHandler = () => {
+        mapCoordsArr[Number(mapToggleRadios.value())].coords.forEach(({ id, x, y }) =>
+          obstacleSystem.setTargetPos({ id, x, y }),
+        );
+      };
+      mapToggleRadios.changed(changedHandler);
     };
 
     const windowResized = (p5: p5Types) => {
