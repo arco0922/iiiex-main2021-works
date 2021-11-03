@@ -5,12 +5,14 @@ import styled from 'styled-components';
 import { worksInfoArr } from 'constants/WorksInfo';
 import { theme } from 'constants/Theme';
 import { useHistory } from 'react-router';
+import { mapCoordsArr, MapModeId } from 'constants/MapCoords';
 
 interface Props {
   width: string;
   height: string;
   selectIdRef: React.MutableRefObject<number>;
   setSelectId: (id: number) => void;
+  setMapModeId: (mapMode: MapModeId) => void;
   bgcolor?: string;
   padding?: number;
 }
@@ -21,7 +23,7 @@ interface ParticleImage {
 }
 
 export const WorksListSketch = React.memo<Props>(
-  ({ width, height, selectIdRef, setSelectId, bgcolor = 'black', padding = 5 }) => {
+  ({ width, height, selectIdRef, setSelectId, setMapModeId, bgcolor = 'black', padding = 5 }) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
     const history = useHistory();
 
@@ -50,8 +52,9 @@ export const WorksListSketch = React.memo<Props>(
      * basicMovementTypeは、マウスによってParticleがドラッグされていないときの挙動のタイプ を表す。
      * Inertia: 物理法則にしたがう → dragMovementTypeはNoneかPos-Velを想定
      *  Static: 動かない → dragMovementTypeはNoneかPosを想定
+     * Gravitational: 衝突は非弾性で、ターゲットにひきつけられる
      */
-    type BasicMovementType = 'Inertia' | 'Static';
+    type BasicMovementType = 'Inertia' | 'Static' | 'Gravitational';
 
     /**
      * dragMovementTypeは、マウスによってParticleがドラッグされているときの挙動のタイプ を表す。
@@ -83,8 +86,8 @@ export const WorksListSketch = React.memo<Props>(
     let worldOffsetY: number; // ワールドの中心がスクリーンのどこにあるか
     let worldOffsetScale: number; // ワールドのスクリーン上での縮尺
 
-    const worldWidth = 2500; // ワールドの横幅 ※canvasの横幅とは異なる
-    const worldHeight = 2500; // ワールドの縦幅 ※canvasの縦幅とは異なる
+    const worldWidth = 3000; // ワールドの横幅 ※canvasの横幅とは異なる
+    const worldHeight = 2000; // ワールドの縦幅 ※canvasの縦幅とは異なる
 
     let worldLokked = false;
     let oldMouseX = 0;
@@ -164,11 +167,41 @@ export const WorksListSketch = React.memo<Props>(
       navigationBtn = p5.createButton('作品ページへ');
       navigationBtn.parent(containerRef.current);
       navigationBtn.style(
-        `padding: 2px; border: none; transform: translateX(-50%); width: fit-content; border: 1px solid ${selectColor}; border-radius: 5px; display: block; background-color: white`,
+        `padding: 2px; border: none; transform: translateX(-50%); width: fit-content; border: 1px solid ${selectColor}; border-radius: 5px; background-color: white`,
       );
       navigationBtn.mouseOver(() => navigationBtnStyleChange(p5, true));
       navigationBtn.mouseOut(() => navigationBtnStyleChange(p5, false));
       navigationBtn.mouseClicked(() => navigateToIndividual());
+
+      type Radio = p5Types.Element & { changed: (callback: () => void) => void };
+      const mapToggleRadios: Radio = p5.createRadio() as Radio;
+      mapToggleRadios.parent(containerRef.current);
+      mapToggleRadios.style(
+        'position: absolute; display: flex; top: 0; left: 0; width: 100%; height: 40px; justify-content: center; align-items: center; background-color: #00000040',
+      );
+
+      const radioLabelStyle = 'color: white; margin-right: 10px; margin-left: 3px;';
+
+      const radioDescription = p5.createElement('p', '作品の並べ方：');
+      radioDescription.style(radioLabelStyle);
+      radioDescription.parent(mapToggleRadios);
+
+      const initialMapModeId = Number(localStorage.getItem('mapModeId')) || 2;
+
+      mapCoordsArr.forEach(({ modeId, modeName }) => {
+        const modeRadio = p5.createElement('input');
+        modeRadio.attribute('type', 'radio');
+        modeRadio.attribute('value', modeId.toString());
+        modeRadio.attribute('name', 'mapToggle');
+        modeRadio.parent(mapToggleRadios);
+        const modeRadioLabel = p5.createElement('label', modeName);
+        modeRadioLabel.parent(mapToggleRadios);
+        modeRadioLabel.style(radioLabelStyle);
+
+        if (modeId === initialMapModeId) {
+          modeRadio.attribute('checked', 'checked');
+        }
+      });
 
       worldOffsetX = p5.width / 2;
       worldOffsetY = p5.height / 2;
@@ -208,12 +241,29 @@ export const WorksListSketch = React.memo<Props>(
         particleSystem2.addParticle(i, x, y, 1, velX, velY, 7, particleColor2, 'Inertia', 'None');
       }
 
-      for (let i = 0; i < worksInfoArr.length; i++) {
-        const x = p5.random(-worldWidth / 3 + 70, worldWidth / 3 - 70);
-        const y = p5.random(-worldHeight / 3 + 70, worldHeight / 3 - 70);
-        obstacleSystem.addParticle(i, x, y, 70, 0, 0, 1, obstacleColor, 'Static', 'Pos');
-      }
+      mapCoordsArr
+        .filter(({ modeId }) => modeId === Number(mapToggleRadios.value()))[0]
+        .coords.forEach(({ id, x, y }) => {
+          switch (initialMapModeId) {
+            case 1:
+              const randy = p5.random(-worldHeight / 6, worldHeight / 6);
+              obstacleSystem.addParticle(id, x * 0.8, randy, 100, 0, 0, 1, obstacleColor, 'Gravitational', 'Pos');
+              break;
+            case 2:
+              obstacleSystem.addParticle(id, x * 0.7, y * 0.7, 100, 0, 0, 1, obstacleColor, 'Gravitational', 'Pos');
+              break;
+          }
+          obstacleSystem.setTargetPos({ id, x, y });
+        });
       obstacleSystem.setTextures(thumbnails);
+      const changedHandler = () => {
+        const newVal = Number(mapToggleRadios.value()) as MapModeId;
+        setMapModeId(newVal);
+        mapCoordsArr
+          .filter(({ modeId }) => modeId === newVal)[0]
+          .coords.forEach(({ id, x, y }) => obstacleSystem.setTargetPos({ id, x, y }));
+      };
+      mapToggleRadios.changed(changedHandler);
     };
 
     const windowResized = (p5: p5Types) => {
@@ -247,8 +297,12 @@ export const WorksListSketch = React.memo<Props>(
       }
     };
 
+    const isPointOnCanvas = (p5: p5Types, x: number, y: number) => {
+      return x >= 0 && x <= p5.width && y >= 0 && y <= p5.height;
+    };
+
     const isCursorOnCanvas = (p5: p5Types) => {
-      return p5.mouseX >= 0 && p5.mouseX <= p5.width && p5.mouseY >= 0 && p5.mouseY <= p5.height;
+      return isPointOnCanvas(p5, p5.mouseX, p5.mouseY);
     };
 
     const mousePressed = (p5: p5Types) => {
@@ -262,7 +316,7 @@ export const WorksListSketch = React.memo<Props>(
     };
 
     const mouseDragged = (p5: p5Types) => {
-      if (worldLokked) {
+      if (isCursorOnCanvas(p5) && worldLokked) {
         worldOffsetX += p5.mouseX - oldMouseX;
         worldOffsetY += p5.mouseY - oldMouseY;
         oldMouseX = p5.mouseX;
@@ -361,6 +415,15 @@ export const WorksListSketch = React.memo<Props>(
             this.worldOffsetScale,
           ),
         );
+      }
+
+      setTargetPos({ id, x, y }: { id: number; x?: number; y?: number }) {
+        this.particles.forEach((particle) => {
+          if (particle.id !== id) {
+            return;
+          }
+          particle.setTargetPos({ x, y });
+        });
       }
 
       updateParticles() {
@@ -512,6 +575,8 @@ export const WorksListSketch = React.memo<Props>(
       worldOffsetX: number;
       worldOffsetY: number;
       worldOffsetScale: number;
+      targetX: number | undefined;
+      targetY: number | undefined;
 
       constructor(
         p5: p5Types,
@@ -561,14 +626,38 @@ export const WorksListSketch = React.memo<Props>(
       }
 
       basicUpdate() {
-        if (this.basicMovementType === 'Inertia') {
-          this.x += this.velX;
-          this.y += this.velY;
-          this.velX += this.accX;
-          this.velY += this.accY;
-        } else {
-          this.velX = 0;
-          this.velY = 0;
+        switch (this.basicMovementType) {
+          case 'Gravitational':
+            if (this.targetX !== undefined) {
+              this.velX = (this.targetX - this.x) * 0.04;
+            }
+            if (this.targetY !== undefined) {
+              this.velY = (this.targetY - this.y) * 0.04;
+            }
+            this.x += this.velX;
+            this.y += this.velY;
+            this.velX += this.accX;
+            this.velY += this.accY;
+            break;
+          case 'Inertia':
+            this.x += this.velX;
+            this.y += this.velY;
+            this.velX += this.accX;
+            this.velY += this.accY;
+            break;
+          case 'Static':
+            this.velX = 0;
+            this.velY = 0;
+            break;
+        }
+      }
+
+      setTargetPos({ x, y }: { x?: number; y?: number }) {
+        if (x !== undefined) {
+          this.targetX = x;
+        }
+        if (y !== undefined) {
+          this.targetY = y;
         }
       }
 
@@ -673,7 +762,11 @@ export const WorksListSketch = React.memo<Props>(
 
         let selfCorrectionLength = 0;
         let otherCorrectionLength = 0;
-        if (this.basicMovementType === other.basicMovementType) {
+        if (
+          this.basicMovementType === other.basicMovementType ||
+          this.basicMovementType === 'Gravitational' ||
+          other.basicMovementType === 'Gravitational'
+        ) {
           if (this.isDragged) {
             otherCorrectionLength = intersectLength;
           } else if (other.isDragged) {
@@ -682,9 +775,9 @@ export const WorksListSketch = React.memo<Props>(
             selfCorrectionLength = intersectLength / 2;
             otherCorrectionLength = intersectLength / 2;
           }
-        } else if (this.basicMovementType === 'Inertia') {
+        } else if (this.basicMovementType === 'Inertia' && other.basicMovementType === 'Static') {
           selfCorrectionLength = intersectLength;
-        } else {
+        } else if (other.basicMovementType === 'Inertia' && this.basicMovementType === 'Static') {
           otherCorrectionLength = intersectLength;
         }
         const selfD = distanceVect.copy();
@@ -700,7 +793,11 @@ export const WorksListSketch = React.memo<Props>(
       collideWithOther(other: Particle) {
         const [isIntersect, distanceVect, interSectLength] = this.calcIntersection(other);
 
-        if (this.basicMovementType === 'Static' && other.basicMovementType === 'Static') {
+        if (
+          (this.basicMovementType === 'Static' && other.basicMovementType === 'Static') ||
+          this.basicMovementType === 'Gravitational' ||
+          other.basicMovementType === 'Gravitational'
+        ) {
           return;
         }
         const theta = distanceVect.heading();
@@ -796,6 +893,11 @@ export const WorksListSketch = React.memo<Props>(
         this.p5.ellipse(this.x, this.y, this.radius * 2 + 20, this.radius * 2 + 20);
         const navPos = this.calcCanvasCoord(this.x, this.y + this.radius);
         navigationBtn.style(`font-size: ${this.worldOffsetScale * 12}px;`);
+        if (isPointOnCanvas(this.p5, navPos.x, navPos.y)) {
+          navigationBtn.style('display: block');
+        } else {
+          navigationBtn.style('display: none');
+        }
         navigationBtn.position(navPos.x + padding, navPos.y + padding);
       }
 
