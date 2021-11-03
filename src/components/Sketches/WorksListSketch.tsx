@@ -246,8 +246,8 @@ export const WorksListSketch = React.memo<Props>(
         .coords.forEach(({ id, x, y }) => {
           switch (initialMapModeId) {
             case 1:
-              const randy = p5.random(-worldHeight / 4, worldHeight / 4);
-              obstacleSystem.addParticle(id, x * 0.7, randy, 100, 0, 0, 1, obstacleColor, 'Gravitational', 'Pos');
+              const randy = p5.random(-worldHeight / 6, worldHeight / 6);
+              obstacleSystem.addParticle(id, x * 0.8, randy, 100, 0, 0, 1, obstacleColor, 'Gravitational', 'Pos');
               break;
             case 2:
               obstacleSystem.addParticle(id, x * 0.7, y * 0.7, 100, 0, 0, 1, obstacleColor, 'Gravitational', 'Pos');
