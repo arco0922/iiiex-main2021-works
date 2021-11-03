@@ -18,10 +18,14 @@ export const WorksCard: React.VFC<Props> = ({ worksInfo, selectId, setSelectId }
       cardContainerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
     }
   }, [worksInfo, selectId]);
+  const [isHover, setIsHover] = React.useState<boolean>(false);
+  const isSelect = worksInfo.id === selectId;
   return (
     <StyledContainer
       onClick={() => setSelectId(worksInfo.id)}
-      isSelect={worksInfo.id === selectId}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
+      isSelect={isSelect}
       ref={cardContainerRef}
     >
       <StyledThumbnail
@@ -30,9 +34,11 @@ export const WorksCard: React.VFC<Props> = ({ worksInfo, selectId, setSelectId }
       ></StyledThumbnail>
       <StyledInfoDiv>
         <p>{worksInfo.title}</p>
-        <StyledButton>
-          <StyledLink to={`/works/${worksInfo.id}`}>この作品を見る</StyledLink>
-        </StyledButton>
+        {(isHover || isSelect) && (
+          <StyledButton>
+            <StyledLink to={`/works/${worksInfo.id}`}>作品を見る</StyledLink>
+          </StyledButton>
+        )}
       </StyledInfoDiv>
     </StyledContainer>
   );
@@ -65,27 +71,28 @@ const StyledInfoDiv = styled.div`
   flex: 1;
   height: 100%;
   & > p {
-    font-size: 18px;
+    font-size: 16px;
   }
 `;
 
 const StyledButton = styled.button`
   position: absolute;
-  bottom: 5px;
-  right: 5px;
-  background-color: ${theme.color.primary};
+  bottom: 7px;
+  right: 7px;
+  background-color: ${theme.color.darkGrey};
   color: white;
   text-decoration: none;
   outline: none;
   border: none;
-  padding: 3px;
-  border-radius: 3px;
+  border: 2px solid ${theme.color.primary};
   &:hover {
-    background-color: ${theme.color.activePrimary};
+    background-color: ${theme.color.primary};
   }
 `;
 
 const StyledLink = styled(Link)`
+  display: block;
+  padding: 5px;
   text-decoration: none;
   color: white;
 `;
