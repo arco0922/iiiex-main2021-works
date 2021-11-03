@@ -1,6 +1,6 @@
 import { worksInfoArr } from './WorksInfo';
 
-export type MapMode = '五十音順' | '順路' | 'カテゴリ';
+export type MapMode = '辞書順' | '順路';
 
 export interface Coord {
   id: number;
@@ -44,7 +44,7 @@ const circleCoords = ((particleRadius: number, arrangeRadius: number) => {
 
 export const mapCoordsArr: MapCoords[] = [
   {
-    mode: '五十音順',
+    mode: '辞書順',
     coords: lineCoords,
   },
   {
