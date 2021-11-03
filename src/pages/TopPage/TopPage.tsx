@@ -42,7 +42,6 @@ export const TopPage: React.VFC<Props> = ({ selectId, setSelectId, setMapModeId 
 };
 
 const StyledRoot = styled.div`
-  display: flex;
   flex-direction: column;
   align-items: center;
   width: 100vw;
@@ -53,16 +52,15 @@ const StyledRoot = styled.div`
 
 const StyledContentContainer = styled.div`
   width: 100%;
-  flex: 1;
   height: calc(100vh - ${headerHeight}px);
   display: flex;
-  overflow-y: hidden;
 `;
 
 const StyledSketchContainer = styled.div`
   flex: 1;
   min-width: 400px;
-  position: relative;
+  height: 100%;
+  overflow: hidden;
 `;
 
 const StyledLoading = styled.div`

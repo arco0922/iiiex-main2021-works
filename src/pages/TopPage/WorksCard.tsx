@@ -15,7 +15,7 @@ export const WorksCard: React.VFC<Props> = ({ worksInfo, selectId, setSelectId }
   const cardContainerRef = React.useRef<HTMLDivElement>(null);
   React.useEffect(() => {
     if (worksInfo.id === selectId && cardContainerRef.current && !judgeElementInViewPort(cardContainerRef.current)) {
-      cardContainerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+      cardContainerRef.current.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
     }
   }, [worksInfo, selectId]);
   const [isHover, setIsHover] = React.useState<boolean>(false);
@@ -67,7 +67,6 @@ const StyledThumbnail = styled.img`
 `;
 
 const StyledInfoDiv = styled.div`
-  position: relative;
   flex: 1;
   height: 100%;
   & > p {
