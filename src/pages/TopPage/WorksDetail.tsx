@@ -79,19 +79,19 @@ const StyledThumbnail = styled.img`
 `;
 
 const StyledButton = styled.button`
-  background-color: ${theme.color.primary};
+  background-color: ${theme.color.darkGrey};
   color: white;
   text-decoration: none;
   outline: none;
   border: none;
+  border: 2px solid ${theme.color.primary};
   padding: 3px;
-  border-radius: 3px;
   margin-bottom: 15px;
   width: 80%;
   transform: translateX(10%);
   &:hover {
     cursor: pointer;
-    background-color: ${theme.color.activePrimary};
+    background-color: ${theme.color.primary};
   }
 `;
 
