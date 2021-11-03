@@ -1,7 +1,7 @@
 export const theme = {
   color: {
     darkGrey: '#141414',
-    primary: '#FF6464',
+    primary: '#E94C60',
     activePrimary: '#FF2929',
     accent: '#3080FF',
     activeAccent: '#002fff',
