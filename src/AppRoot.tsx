@@ -6,6 +6,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { worksInfoArr } from 'constants/WorksInfo';
 import useLocalStorage from 'use-local-storage';
+import { MapModeId } from 'constants/MapCoords';
 
 export interface Visited {
   [key: string]: boolean;
@@ -19,7 +20,7 @@ const initailVisited = (() => {
   return tmp;
 })();
 
-const initialSelectId = Math.floor(Math.random() * worksInfoArr.length - 1);
+const initialSelectId = Math.floor(Math.random() * (worksInfoArr.length - 1));
 
 export const AppRoot: React.VFC = () => {
   /** 本番環境用のビルドの場合は、/testのルーティングは作らない */
@@ -27,12 +28,13 @@ export const AppRoot: React.VFC = () => {
 
   const [selectId, setSelectId] = React.useState<number>(initialSelectId);
   const [visited, setVisited] = useLocalStorage<Visited>('visited', initailVisited);
+  const [mapModeId, setMapModeId] = useLocalStorage<MapModeId>('mapModeId', 1);
 
   return (
     <Router>
       <Switch>
         <Route path="/" exact>
-          <TopPage selectId={selectId} setSelectId={setSelectId} />
+          <TopPage selectId={selectId} setSelectId={setSelectId} setMapModeId={setMapModeId} />
         </Route>
         <Route path="/works/:id" exact>
           <IndividualPage visited={visited} setVisited={setVisited} setSelectId={setSelectId} />

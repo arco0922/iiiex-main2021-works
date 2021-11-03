@@ -1,5 +1,6 @@
 import { Header, headerHeight } from 'components/Header/Header';
 import { WorksListSketch } from 'components/Sketches/WorksListSketch';
+import { MapModeId } from 'constants/MapCoords';
 import React from 'react';
 import styled from 'styled-components';
 import { WorksDetail } from './WorksDetail';
@@ -8,9 +9,10 @@ import { WorksListMenu } from './WorksListMenu';
 interface Props {
   selectId: number;
   setSelectId: (selectId: number) => void;
+  setMapModeId: (mapModeId: MapModeId) => void;
 }
 
-export const TopPage: React.VFC<Props> = ({ selectId, setSelectId }) => {
+export const TopPage: React.VFC<Props> = ({ selectId, setSelectId, setMapModeId }) => {
   const selectIdRef = React.useRef<number>(0);
   React.useEffect(() => {
     selectIdRef.current = selectId;
@@ -25,6 +27,7 @@ export const TopPage: React.VFC<Props> = ({ selectId, setSelectId }) => {
             height="100%"
             selectIdRef={selectIdRef}
             setSelectId={setSelectId}
+            setMapModeId={setMapModeId}
             bgcolor="#0e0e0e"
           ></WorksListSketch>
           <StyledLoading id="p5_loading">

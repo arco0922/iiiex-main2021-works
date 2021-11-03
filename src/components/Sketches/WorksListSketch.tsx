@@ -5,13 +5,14 @@ import styled from 'styled-components';
 import { worksInfoArr } from 'constants/WorksInfo';
 import { theme } from 'constants/Theme';
 import { useHistory } from 'react-router';
-import { mapCoordsArr } from 'constants/MapCoords';
+import { mapCoordsArr, MapModeId } from 'constants/MapCoords';
 
 interface Props {
   width: string;
   height: string;
   selectIdRef: React.MutableRefObject<number>;
   setSelectId: (id: number) => void;
+  setMapModeId: (mapMode: MapModeId) => void;
   bgcolor?: string;
   padding?: number;
 }
@@ -22,7 +23,7 @@ interface ParticleImage {
 }
 
 export const WorksListSketch = React.memo<Props>(
-  ({ width, height, selectIdRef, setSelectId, bgcolor = 'black', padding = 5 }) => {
+  ({ width, height, selectIdRef, setSelectId, setMapModeId, bgcolor = 'black', padding = 5 }) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
     const history = useHistory();
 
@@ -185,17 +186,19 @@ export const WorksListSketch = React.memo<Props>(
       radioDescription.style(radioLabelStyle);
       radioDescription.parent(mapToggleRadios);
 
-      mapCoordsArr.forEach(({ mode, coords }, idx) => {
+      const initialMapModeId = Number(localStorage.getItem('mapModeId')) || 2;
+
+      mapCoordsArr.forEach(({ modeId, modeName }) => {
         const modeRadio = p5.createElement('input');
         modeRadio.attribute('type', 'radio');
-        modeRadio.attribute('value', idx.toString());
+        modeRadio.attribute('value', modeId.toString());
         modeRadio.attribute('name', 'mapToggle');
         modeRadio.parent(mapToggleRadios);
-        const modeRadioLabel = p5.createElement('label', mode);
+        const modeRadioLabel = p5.createElement('label', modeName);
         modeRadioLabel.parent(mapToggleRadios);
         modeRadioLabel.style(radioLabelStyle);
 
-        if (idx === 1) {
+        if (modeId === initialMapModeId) {
           modeRadio.attribute('checked', 'checked');
         }
       });
@@ -238,15 +241,27 @@ export const WorksListSketch = React.memo<Props>(
         particleSystem2.addParticle(i, x, y, 1, velX, velY, 7, particleColor2, 'Inertia', 'None');
       }
 
-      mapCoordsArr[Number(mapToggleRadios.value())].coords.forEach(({ id, x, y }) => {
-        obstacleSystem.addParticle(id, x, y, 100, 0, 0, 1, obstacleColor, 'Gravitational', 'Pos');
-        obstacleSystem.setTargetPos({ id, x, y });
-      });
+      mapCoordsArr
+        .filter(({ modeId }) => modeId === Number(mapToggleRadios.value()))[0]
+        .coords.forEach(({ id, x, y }) => {
+          switch (initialMapModeId) {
+            case 1:
+              const randy = p5.random(-worldHeight / 4, worldHeight / 4);
+              obstacleSystem.addParticle(id, x * 0.7, randy, 100, 0, 0, 1, obstacleColor, 'Gravitational', 'Pos');
+              break;
+            case 2:
+              obstacleSystem.addParticle(id, x * 0.7, y * 0.7, 100, 0, 0, 1, obstacleColor, 'Gravitational', 'Pos');
+              break;
+          }
+          obstacleSystem.setTargetPos({ id, x, y });
+        });
       obstacleSystem.setTextures(thumbnails);
       const changedHandler = () => {
-        mapCoordsArr[Number(mapToggleRadios.value())].coords.forEach(({ id, x, y }) =>
-          obstacleSystem.setTargetPos({ id, x, y }),
-        );
+        const newVal = Number(mapToggleRadios.value()) as MapModeId;
+        setMapModeId(newVal);
+        mapCoordsArr
+          .filter(({ modeId }) => modeId === newVal)[0]
+          .coords.forEach(({ id, x, y }) => obstacleSystem.setTargetPos({ id, x, y }));
       };
       mapToggleRadios.changed(changedHandler);
     };
