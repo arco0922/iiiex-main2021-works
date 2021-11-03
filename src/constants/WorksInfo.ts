@@ -123,7 +123,7 @@ export const worksInfoArr: WorksInfo[] = [
   },
   {
     id: 12,
-    title: 'Tap Your Life',
+    title: 'デイリズム！',
     thumbnailBaseName: '12_mikami_tapyourlife',
     creators: ['三上尚美', '篠田和宏', '李昌', '小山大嘉'],
     caption: ``,
