@@ -1,6 +1,7 @@
 import { Visited } from 'AppRoot';
 import { Header, headerHeight } from 'components/Header/Header';
 import { WorksListSketch } from 'components/Sketches/WorksListSketch';
+import { LayoutType } from 'constants/Layout';
 import { MapModeId } from 'constants/MapCoords';
 import React from 'react';
 import styled from 'styled-components';
@@ -12,14 +13,25 @@ interface Props {
   setSelectId: (selectId: number) => void;
   setMapModeId: (mapModeId: MapModeId) => void;
   visited: Visited;
+  layout: LayoutType;
 }
 
-export const TopPage: React.VFC<Props> = ({ selectId, setSelectId, setMapModeId, visited }) => {
+export const TopPage: React.VFC<Props> = ({ selectId, setSelectId, setMapModeId, visited, layout }) => {
   const selectIdRef = React.useRef<number>(0);
+  const [isShowDetail, setIsShowDetail] = React.useState<boolean>(true);
+  const isShowDetailRef = React.useRef<boolean>(true);
+  const layoutRef = React.useRef<LayoutType>('WIDE');
+
   React.useEffect(() => {
     selectIdRef.current = selectId;
   }, [selectId]);
-  const [isShowDetail, setIsShowDetail] = React.useState<boolean>(false);
+  React.useEffect(() => {
+    isShowDetailRef.current = isShowDetail;
+  }, [isShowDetail]);
+  React.useEffect(() => {
+    layoutRef.current = layout;
+  }, [layout]);
+
   return (
     <StyledRoot>
       <Header></Header>
@@ -30,15 +42,34 @@ export const TopPage: React.VFC<Props> = ({ selectId, setSelectId, setMapModeId,
             height="100%"
             selectIdRef={selectIdRef}
             setSelectId={setSelectId}
+            isShowDetailRef={isShowDetailRef}
+            setIsShowDetail={setIsShowDetail}
+            layoutRef={layoutRef}
             setMapModeId={setMapModeId}
             bgcolor="#0e0e0e"
           ></WorksListSketch>
           <StyledLoading id="p5_loading">
             <p>Loading...</p>
           </StyledLoading>
+          {layout !== 'NARROW' ? (
+            <WorksDetail
+              visited={visited}
+              selectId={selectId}
+              isShowDetail={isShowDetail}
+              setIsShowDetail={setIsShowDetail}
+            ></WorksDetail>
+          ) : (
+            <></>
+          )}
         </StyledSketchContainer>
-        <WorksListMenu visited={visited} selectId={selectId} setSelectId={setSelectId}></WorksListMenu>
-        <WorksDetail visited={visited} selectId={selectId}></WorksDetail>
+        {layout === 'WIDE' && (
+          <WorksListMenu
+            visited={visited}
+            selectId={selectId}
+            setSelectId={setSelectId}
+            setIsShowDetail={setIsShowDetail}
+          ></WorksListMenu>
+        )}
       </StyledContentContainer>
     </StyledRoot>
   );

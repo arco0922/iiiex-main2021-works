@@ -5,19 +5,24 @@ import { worksInfoArr } from 'constants/WorksInfo';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import CloseIcon from '@mui/icons-material/Close';
+import { LayoutType } from 'constants/Layout';
 
 interface Props {
   selectId: number;
   visited: Visited;
+  isShowDetail: boolean;
+  setIsShowDetail: (isShowDetail: boolean) => void;
 }
 
-export const WorksDetail: React.VFC<Props> = ({ selectId, visited }) => {
+export const WorksDetail: React.VFC<Props> = ({ selectId, visited, isShowDetail, setIsShowDetail }) => {
   const info = React.useMemo(() => worksInfoArr.filter((worksInfo) => worksInfo.id === selectId)[0], [selectId]);
   if (!info) {
     return <></>;
   }
   return (
-    <StyledContainer>
+    <StyledContainer className={isShowDetail ? 'show' : ''}>
+      <StyledCloseIcon onClick={() => setIsShowDetail(false)}></StyledCloseIcon>
       <StyledTitle>作品詳細</StyledTitle>
       <StyledDetailContainer>
         <StyledImgDiv>
@@ -53,9 +58,11 @@ export const WorksDetail: React.VFC<Props> = ({ selectId, visited }) => {
   );
 };
 
+export const sideDetailWidth = 250;
+
 const StyledContainer = styled.div`
-  min-width: 250px;
-  width: 250px;
+  min-width: ${sideDetailWidth}px;
+  width: ${sideDetailWidth}px;
   height: 100%;
 
   background-color: #141414dc;
@@ -64,8 +71,25 @@ const StyledContainer = styled.div`
   flex-direction: column;
   z-index: 2;
   position: absolute;
-  right: 250px;
+  opacity: 0;
+  transition: all 300ms ease-out;
+
+  left: 100%;
   top: 0px;
+  &.show {
+    opacity: 1;
+    transform: translateX(-100%);
+  }
+`;
+
+const StyledCloseIcon = styled(CloseIcon)`
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  z-index: 3;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const StyledTitle = styled.h2`
@@ -80,7 +104,7 @@ const StyledTitle = styled.h2`
 const StyledDetailContainer = styled.div`
   flex: 1;
   width: 100%;
-  padding: 5px;
+  padding: 5px 5px 5px 10px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;

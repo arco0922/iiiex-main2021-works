@@ -6,12 +6,16 @@ import { worksInfoArr } from 'constants/WorksInfo';
 import { theme } from 'constants/Theme';
 import { useHistory } from 'react-router';
 import { mapCoordsArr, MapModeId } from 'constants/MapCoords';
+import { LayoutType } from 'constants/Layout';
 
 interface Props {
   width: string;
   height: string;
   selectIdRef: React.MutableRefObject<number>;
   setSelectId: (id: number) => void;
+  isShowDetailRef: React.MutableRefObject<boolean>;
+  setIsShowDetail: (isShowDetail: boolean) => void;
+  layoutRef: React.MutableRefObject<LayoutType>;
   setMapModeId: (mapMode: MapModeId) => void;
   bgcolor?: string;
   padding?: number;
@@ -23,7 +27,17 @@ interface ParticleImage {
 }
 
 export const WorksListSketch = React.memo<Props>(
-  ({ width, height, selectIdRef, setSelectId, setMapModeId, bgcolor = 'black', padding = 5 }) => {
+  ({
+    width,
+    height,
+    selectIdRef,
+    setSelectId,
+    isShowDetailRef,
+    setIsShowDetail,
+    setMapModeId,
+    bgcolor = 'black',
+    padding = 5,
+  }) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
     const history = useHistory();
 
@@ -306,9 +320,12 @@ export const WorksListSketch = React.memo<Props>(
     };
 
     const mousePressed = (p5: p5Types) => {
+      if (!isCursorOnCanvas(p5)) {
+        return;
+      }
       if (obstacleSystem.isCursorOnParticles()) {
         obstacleSystem.catchParticles();
-      } else if (isCursorOnCanvas(p5)) {
+      } else {
         worldLokked = true;
         oldMouseX = p5.mouseX;
         oldMouseY = p5.mouseY;
@@ -537,6 +554,7 @@ export const WorksListSketch = React.memo<Props>(
           if (particle.isCursorOn()) {
             document.addEventListener('touchmove', preventDefault, wheelOpt); // mobile
             setSelectId(particle.id);
+            setIsShowDetail(true);
             this.setSelectId(particle.id);
             particle.catch();
           }

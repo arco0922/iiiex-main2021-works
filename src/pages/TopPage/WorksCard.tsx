@@ -11,9 +11,10 @@ interface Props {
   selectId: number;
   setSelectId: (id: number) => void;
   visited: Visited;
+  setIsShowDetail: (isShowDetail: boolean) => void;
 }
 
-export const WorksCard: React.VFC<Props> = ({ worksInfo, selectId, setSelectId, visited }) => {
+export const WorksCard: React.VFC<Props> = ({ worksInfo, selectId, setSelectId, visited, setIsShowDetail }) => {
   const cardContainerRef = React.useRef<HTMLDivElement>(null);
   React.useEffect(() => {
     if (worksInfo.id === selectId && cardContainerRef.current && !judgeElementInViewPort(cardContainerRef.current)) {
@@ -22,9 +23,13 @@ export const WorksCard: React.VFC<Props> = ({ worksInfo, selectId, setSelectId, 
   }, [worksInfo, selectId]);
   const [isHover, setIsHover] = React.useState<boolean>(false);
   const isSelect = worksInfo.id === selectId;
+  const onClickHandler = React.useCallback(() => {
+    setSelectId(worksInfo.id);
+    setIsShowDetail(true);
+  }, [worksInfo, setSelectId, setIsShowDetail]);
   return (
     <StyledContainer
-      onClick={() => setSelectId(worksInfo.id)}
+      onClick={onClickHandler}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
       isSelect={isSelect}

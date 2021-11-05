@@ -8,9 +8,10 @@ interface Props {
   selectId: number;
   setSelectId: (id: number) => void;
   visited: Visited;
+  setIsShowDetail: (isShowDetail: boolean) => void;
 }
 
-export const WorksListMenu: React.VFC<Props> = ({ selectId, setSelectId, visited }) => {
+export const WorksListMenu: React.VFC<Props> = ({ selectId, setSelectId, visited, setIsShowDetail }) => {
   return (
     <StyledContainer>
       <StyledTitle>作品一覧</StyledTitle>
@@ -23,6 +24,7 @@ export const WorksListMenu: React.VFC<Props> = ({ selectId, setSelectId, visited
               selectId={selectId}
               setSelectId={setSelectId}
               visited={visited}
+              setIsShowDetail={setIsShowDetail}
             ></WorksCard>
           );
         })}
@@ -40,7 +42,7 @@ const StyledContainer = styled.div`
   color: white;
   display: flex;
   flex-direction: column;
-  z-index: 2;
+  z-index: 4;
 `;
 
 const StyledTitle = styled.h2`
