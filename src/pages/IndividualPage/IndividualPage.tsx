@@ -8,7 +8,7 @@ import { IndividualWorksCaption } from './IndividualWorksDetail';
 import { IndividualWorksWindow } from './IndividualWorksWindow';
 import { isMobile } from 'react-device-detect';
 import { Visited } from 'AppRoot';
-import { useWindowDimensions } from 'hooks/useWindowDimensions';
+import { LayoutType } from 'constants/Layout';
 
 interface Params {
   id: string;
@@ -17,6 +17,7 @@ interface Props {
   setSelectId: (selectId: number) => void;
   setVisited: (visited: Visited) => void;
   visited: Visited;
+  layout: LayoutType;
 }
 
 const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = ({
@@ -24,6 +25,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   setSelectId,
   setVisited,
   visited,
+  layout,
 }) => {
   const worksId = Number(match.params.id);
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
@@ -35,8 +37,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [worksInfo]);
   const [isFull, setIsFull] = React.useState<boolean>(false);
-  const { height, width } = useWindowDimensions();
-  const isNarrowLayout = width < theme.layoutBorder.individualPage.narrow;
+  const isNarrowLayout = layout === 'MID' || layout === 'NARROW';
   const iframeWidth = isFull ? '100vw' : isNarrowLayout ? '95vw' : 'max(60vw , 500px)';
   const iframeHeight = isFull
     ? `calc(100vh - ${headerHeight}px)`
