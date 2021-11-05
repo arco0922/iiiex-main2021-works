@@ -1,5 +1,6 @@
 import { Visited } from 'AppRoot';
 import { Caption } from 'components/Caption/Caption';
+import { Creator } from 'components/Creator/Creator';
 import { theme } from 'constants/Theme';
 import { worksInfoArr } from 'constants/WorksInfo';
 import React from 'react';
@@ -37,6 +38,11 @@ export const WorksDetail: React.VFC<Props> = ({ selectId, visited }) => {
         <StyledSection>
           <h4>制作者</h4>
           <p>{info.creators.map((creator) => creator.name).join(', ')}</p>
+          <p>{info.creators.map((creator) => creator.affiliation).join(', ')}</p>
+        </StyledSection>
+        <StyledSection>
+          <h4>制作者</h4>
+          <Creator creatorText={info.creators}></Creator>
         </StyledSection>
         <StyledSection>
           <h4>作品説明</h4>
