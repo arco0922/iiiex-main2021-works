@@ -10,4 +10,13 @@ export const theme = {
     bold: 700,
     regular: 400,
   },
+  layoutBorder: {
+    topPage: {
+      midium: 1000,
+      narrow: 650,
+    },
+    individualPage: {
+      narrow: 800,
+    },
+  },
 };
