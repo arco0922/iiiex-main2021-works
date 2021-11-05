@@ -36,7 +36,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   }, [worksInfo]);
   const [isFull, setIsFull] = React.useState<boolean>(false);
   const { height, width } = useWindowDimensions();
-  const isNarrowLayout = width < 800;
+  const isNarrowLayout = width < theme.layoutBorder.individualPage.narrow;
   const iframeWidth = isFull ? '100vw' : isNarrowLayout ? '95vw' : 'max(60vw , 500px)';
   const iframeHeight = isFull
     ? `calc(100vh - ${headerHeight}px)`
