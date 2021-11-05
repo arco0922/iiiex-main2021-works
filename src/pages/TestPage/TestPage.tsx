@@ -1,3 +1,4 @@
+import { useWindowDimensions } from 'hooks/useWindowDimensions';
 import React from 'react';
 import styled from 'styled-components';
 import { AspectForm } from './AspectForm';
@@ -8,7 +9,9 @@ export const TestPage: React.VFC = () => {
   const [srcUrl, setSrcUrl] = React.useState<string>('');
   const [isFull, setIsFull] = React.useState<boolean>(false);
   const [aspectRatio, setAspectRatio] = React.useState<number>(9 / 16);
-  const iframeWidth = isFull ? '100vw' : '600px';
+  const { height, width } = useWindowDimensions();
+  const isNarrowLayout = width < 800;
+  const iframeWidth = isFull ? '100vw' : isNarrowLayout ? '100vw' : 'max(60vw , 800px)';
   const iframeHeight = isFull ? '100vh' : `calc( ${iframeWidth} * ${aspectRatio} )`;
   return (
     <StyledRoot>
