@@ -30,6 +30,18 @@ export const AppRoot: React.VFC = () => {
   const [visited, setVisited] = useLocalStorage<Visited>('visited', initailVisited);
   const [mapModeId, setMapModeId] = useLocalStorage<MapModeId>('mapModeId', 1);
 
+  const [layout, setLayout] = React.useState<LayoutType>('WIDE');
+  const { height, width } = useWindowDimensions();
+  React.useEffect(() => {
+    if (width < layoutBorder.narrow) {
+      setLayout('NARROW');
+    } else if (width < layoutBorder.midium) {
+      setLayout('MID');
+    } else {
+      setLayout('WIDE');
+    }
+  }, [setLayout, width]);
+
   return (
     <Router>
       <Switch>
