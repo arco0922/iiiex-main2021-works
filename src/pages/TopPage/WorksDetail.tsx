@@ -1,3 +1,4 @@
+import { Visited } from 'AppRoot';
 import { Caption } from 'components/Caption/Caption';
 import { theme } from 'constants/Theme';
 import { worksInfoArr } from 'constants/WorksInfo';
@@ -7,9 +8,10 @@ import styled from 'styled-components';
 
 interface Props {
   selectId: number;
+  visited: Visited;
 }
 
-export const WorksDetail: React.VFC<Props> = ({ selectId }) => {
+export const WorksDetail: React.VFC<Props> = ({ selectId, visited }) => {
   const info = React.useMemo(() => worksInfoArr.filter((worksInfo) => worksInfo.id === selectId)[0], [selectId]);
   if (!info) {
     return <></>;
@@ -18,7 +20,13 @@ export const WorksDetail: React.VFC<Props> = ({ selectId }) => {
     <StyledContainer>
       <StyledTitle>作品詳細</StyledTitle>
       <StyledDetailContainer>
-        <StyledThumbnail src={`/static/assets/thumbnails/${info.thumbnailBaseName}.jpg`} width="100%"></StyledThumbnail>
+        <StyledImgDiv>
+          <StyledThumbnail
+            src={`/static/assets/thumbnails/${info.thumbnailBaseName}.jpg`}
+            width="100%"
+          ></StyledThumbnail>
+          {visited[selectId] && <StyledCheck src="/static/assets/check/check_mark.png" height="20%"></StyledCheck>}
+        </StyledImgDiv>
         <StyledButton>
           <StyledLink to={`/works/${info.id}`}>この作品を見る</StyledLink>
         </StyledButton>
@@ -72,10 +80,21 @@ const StyledDetailContainer = styled.div`
   flex-direction: column;
 `;
 
+const StyledImgDiv = styled.div`
+  position: relative;
+`;
+
 const StyledThumbnail = styled.img`
   width: 100%;
   margin-top: 5px;
   margin-bottom: 15px;
+`;
+
+const StyledCheck = styled.img`
+  position: absolute;
+  bottom: 0px;
+  margin-bottom: 20px;
+  right: 0px;
 `;
 
 const StyledButton = styled.button`
