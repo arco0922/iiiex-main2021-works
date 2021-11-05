@@ -34,7 +34,7 @@ export const AppRoot: React.VFC = () => {
     <Router>
       <Switch>
         <Route path="/" exact>
-          <TopPage selectId={selectId} setSelectId={setSelectId} setMapModeId={setMapModeId} />
+          <TopPage visited={visited} selectId={selectId} setSelectId={setSelectId} setMapModeId={setMapModeId} />
         </Route>
         <Route path="/works/:id" exact>
           <IndividualPage visited={visited} setVisited={setVisited} setSelectId={setSelectId} />

@@ -1,3 +1,4 @@
+import { Visited } from 'AppRoot';
 import { Header, headerHeight } from 'components/Header/Header';
 import { WorksListSketch } from 'components/Sketches/WorksListSketch';
 import { MapModeId } from 'constants/MapCoords';
@@ -10,9 +11,10 @@ interface Props {
   selectId: number;
   setSelectId: (selectId: number) => void;
   setMapModeId: (mapModeId: MapModeId) => void;
+  visited: Visited;
 }
 
-export const TopPage: React.VFC<Props> = ({ selectId, setSelectId, setMapModeId }) => {
+export const TopPage: React.VFC<Props> = ({ selectId, setSelectId, setMapModeId, visited }) => {
   const selectIdRef = React.useRef<number>(0);
   React.useEffect(() => {
     selectIdRef.current = selectId;
@@ -35,8 +37,8 @@ export const TopPage: React.VFC<Props> = ({ selectId, setSelectId, setMapModeId 
             <p>Loading...</p>
           </StyledLoading>
         </StyledSketchContainer>
-        <WorksListMenu selectId={selectId} setSelectId={setSelectId} setIsShowDetail={setIsShowDetail}></WorksListMenu>
-        <WorksDetail selectId={selectId}></WorksDetail>
+        <WorksListMenu visited={visited} selectId={selectId} setSelectId={setSelectId}></WorksListMenu>
+        <WorksDetail visited={visited} selectId={selectId}></WorksDetail>
       </StyledContentContainer>
     </StyledRoot>
   );
