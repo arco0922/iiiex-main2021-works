@@ -7,6 +7,8 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { worksInfoArr } from 'constants/WorksInfo';
 import useLocalStorage from 'use-local-storage';
 import { MapModeId } from 'constants/MapCoords';
+import { layoutBorder, LayoutType } from 'constants/Layout';
+import { useWindowDimensions } from 'hooks/useWindowDimensions';
 
 export interface Visited {
   [key: string]: boolean;
@@ -46,10 +48,16 @@ export const AppRoot: React.VFC = () => {
     <Router>
       <Switch>
         <Route path="/" exact>
-          <TopPage visited={visited} selectId={selectId} setSelectId={setSelectId} setMapModeId={setMapModeId} />
+          <TopPage
+            visited={visited}
+            selectId={selectId}
+            setSelectId={setSelectId}
+            setMapModeId={setMapModeId}
+            layout={layout}
+          />
         </Route>
         <Route path="/works/:id" exact>
-          <IndividualPage visited={visited} setVisited={setVisited} setSelectId={setSelectId} />
+          <IndividualPage visited={visited} setVisited={setVisited} setSelectId={setSelectId} layout={layout} />
         </Route>
         {!isProd && (
           <Route path="/test" exact>
