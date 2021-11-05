@@ -1,3 +1,4 @@
+import { Visited } from 'AppRoot';
 import { theme } from 'constants/Theme';
 import { WorksInfo } from 'constants/WorksInfo';
 import React from 'react';
@@ -8,9 +9,10 @@ interface Props {
   worksInfo: WorksInfo;
   selectId: number;
   setSelectId: (id: number) => void;
+  visited: Visited;
 }
 
-export const WorksCard: React.VFC<Props> = ({ worksInfo, selectId, setSelectId }) => {
+export const WorksCard: React.VFC<Props> = ({ worksInfo, selectId, setSelectId, visited }) => {
   const cardContainerRef = React.useRef<HTMLDivElement>(null);
   React.useEffect(() => {
     if (worksInfo.id === selectId && cardContainerRef.current) {
@@ -23,10 +25,13 @@ export const WorksCard: React.VFC<Props> = ({ worksInfo, selectId, setSelectId }
       isSelect={worksInfo.id === selectId}
       ref={cardContainerRef}
     >
-      <StyledThumbnail
-        src={`/static/assets/thumbnails/${worksInfo.thumbnailBaseName}.jpg`}
-        height="100%"
-      ></StyledThumbnail>
+      <StyledImgDiv>
+        <StyledThumbnail
+          src={`/static/assets/thumbnails/${worksInfo.thumbnailBaseName}.jpg`}
+          height="100%"
+        ></StyledThumbnail>
+        {visited[worksInfo.id] && <StyledCheck src="/static/assets/check/check_mark.png" height="30%"></StyledCheck>}
+      </StyledImgDiv>
       <StyledInfoDiv>
         <p>{worksInfo.title}</p>
         <StyledButton>
@@ -55,8 +60,18 @@ const StyledContainer = styled.div<StyledContainerProps>`
   }
 `;
 
+const StyledImgDiv = styled.div`
+  position: relative;
+`;
+
 const StyledThumbnail = styled.img`
   margin-right: 5px;
+`;
+
+const StyledCheck = styled.img`
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
 `;
 
 const StyledInfoDiv = styled.div`

@@ -1,3 +1,4 @@
+import { Visited } from 'AppRoot';
 import { worksInfoArr } from 'constants/WorksInfo';
 import React from 'react';
 import styled from 'styled-components';
@@ -6,9 +7,10 @@ import { WorksCard } from './WorksCard';
 interface Props {
   selectId: number;
   setSelectId: (id: number) => void;
+  visited: Visited;
 }
 
-export const WorksListMenu: React.VFC<Props> = ({ selectId, setSelectId }) => {
+export const WorksListMenu: React.VFC<Props> = ({ selectId, setSelectId, visited }) => {
   return (
     <StyledContainer>
       <StyledTitle>作品一覧</StyledTitle>
@@ -20,6 +22,7 @@ export const WorksListMenu: React.VFC<Props> = ({ selectId, setSelectId }) => {
               key={worksInfo.id}
               selectId={selectId}
               setSelectId={setSelectId}
+              visited={visited}
             ></WorksCard>
           );
         })}
