@@ -50,7 +50,7 @@ interface StyledContainerProps {
 
 const StyledContainer = styled.div<StyledContainerProps>`
   width: 100%;
-  height: 100px;
+  height: 80px;
   display: flex;
   border-bottom: 1px solid #2a2a2a;
   padding-top: 1px;
@@ -70,14 +70,14 @@ const StyledInfoDiv = styled.div`
   flex: 1;
   height: 100%;
   & > p {
-    font-size: 16px;
+    font-size: 14px;
   }
 `;
 
 const StyledButton = styled.button`
   position: absolute;
-  bottom: 7px;
-  right: 7px;
+  bottom: 2px;
+  right: 2px;
   background-color: ${theme.color.darkGrey};
   color: white;
   text-decoration: none;
@@ -91,7 +91,8 @@ const StyledButton = styled.button`
 
 const StyledLink = styled(Link)`
   display: block;
-  padding: 5px;
+  padding: 3px;
   text-decoration: none;
   color: white;
+  font-size: 12px;
 `;

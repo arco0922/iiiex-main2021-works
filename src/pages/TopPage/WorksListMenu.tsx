@@ -6,9 +6,10 @@ import { WorksCard } from './WorksCard';
 interface Props {
   selectId: number;
   setSelectId: (id: number) => void;
+  setIsShowDetail: (isShowDetail: boolean) => void;
 }
 
-export const WorksListMenu: React.VFC<Props> = ({ selectId, setSelectId }) => {
+export const WorksListMenu: React.VFC<Props> = ({ selectId, setSelectId, setIsShowDetail }) => {
   return (
     <StyledContainer>
       <StyledTitle>作品一覧</StyledTitle>
@@ -29,10 +30,10 @@ export const WorksListMenu: React.VFC<Props> = ({ selectId, setSelectId }) => {
 };
 
 const StyledContainer = styled.div`
-  min-width: 300px;
-  width: 300px;
+  min-width: 250px;
+  width: 250px;
   height: 100%;
-  padding: 4px;
+  padding: 4px 0px 4px 4px;
   background-color: #141414;
   color: white;
   display: flex;
@@ -52,5 +53,5 @@ const StyledTitle = styled.h2`
 const StyledCardsContainer = styled.div`
   flex: 1;
   width: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 `;

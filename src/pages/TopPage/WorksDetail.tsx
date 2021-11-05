@@ -22,37 +22,42 @@ export const WorksDetail: React.VFC<Props> = ({ selectId }) => {
         <StyledButton>
           <StyledLink to={`/works/${info.id}`}>作品を見る</StyledLink>
         </StyledButton>
-        <StyledSection>
-          <h4>作品名</h4>
-          <p>{info.title}</p>
-        </StyledSection>
-        <StyledSection>
-          <h4>制作者</h4>
-          <p>{info.creators.join(', ')}</p>
-        </StyledSection>
-        <StyledSection>
-          <h4>作品説明</h4>
-          <Caption captionText={info.caption}></Caption>
-        </StyledSection>
-        <StyledSection>
-          <h4>近くにある作品</h4>
-          <p>作品作品</p>
-        </StyledSection>
+        <StyledDetail>
+          <StyledSection>
+            <h4>作品名</h4>
+            <p>{info.title}</p>
+          </StyledSection>
+          <StyledSection>
+            <h4>制作者</h4>
+            <p>{info.creators.join(', ')}</p>
+          </StyledSection>
+          <StyledSection>
+            <h4>作品説明</h4>
+            <Caption captionText={info.caption}></Caption>
+          </StyledSection>
+          <StyledSection>
+            <h4>近くにある作品</h4>
+            <p>作品作品</p>
+          </StyledSection>
+        </StyledDetail>
       </StyledDetailContainer>
     </StyledContainer>
   );
 };
 
 const StyledContainer = styled.div`
-  min-width: 300px;
-  width: 300px;
+  min-width: 250px;
+  width: 250px;
   height: 100%;
-  padding: 5px;
-  background-color: ${theme.color.darkGrey};
+
+  background-color: #141414dc;
   color: white;
   display: flex;
   flex-direction: column;
   z-index: 2;
+  position: absolute;
+  right: 250px;
+  top: 0px;
 `;
 
 const StyledTitle = styled.h2`
@@ -61,19 +66,21 @@ const StyledTitle = styled.h2`
   font-size: 16px;
   font-weight: 400;
   border-bottom: 1px solid white;
-  margin-bottom: 3px;
+  margin: 5px 5px 3px 5px;
 `;
 
 const StyledDetailContainer = styled.div`
   flex: 1;
-  width: 95%;
+  width: 100%;
+  padding: 5px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 const StyledThumbnail = styled.img`
-  width: 100%;
+  width: 97%;
   margin-top: 5px;
   margin-bottom: 15px;
 `;
@@ -88,7 +95,6 @@ const StyledButton = styled.button`
   padding: 3px;
   margin-bottom: 15px;
   width: 80%;
-  transform: translateX(10%);
   &:hover {
     cursor: pointer;
     background-color: ${theme.color.primary};
@@ -103,6 +109,14 @@ const StyledLink = styled(Link)`
   color: white;
   font-size: 20px;
   font-weight: ${theme.fontWeight.bold};
+`;
+
+const StyledDetail = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px;
 `;
 
 const StyledSection = styled.section`

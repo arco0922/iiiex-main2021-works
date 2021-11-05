@@ -17,6 +17,7 @@ export const TopPage: React.VFC<Props> = ({ selectId, setSelectId, setMapModeId 
   React.useEffect(() => {
     selectIdRef.current = selectId;
   }, [selectId]);
+  const [isShowDetail, setIsShowDetail] = React.useState<boolean>(false);
   return (
     <StyledRoot>
       <Header></Header>
@@ -34,7 +35,7 @@ export const TopPage: React.VFC<Props> = ({ selectId, setSelectId, setMapModeId 
             <p>Loading...</p>
           </StyledLoading>
         </StyledSketchContainer>
-        <WorksListMenu selectId={selectId} setSelectId={setSelectId}></WorksListMenu>
+        <WorksListMenu selectId={selectId} setSelectId={setSelectId} setIsShowDetail={setIsShowDetail}></WorksListMenu>
         <WorksDetail selectId={selectId}></WorksDetail>
       </StyledContentContainer>
     </StyledRoot>
