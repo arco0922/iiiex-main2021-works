@@ -2,7 +2,7 @@ import { Header, headerHeight } from 'components/Header/Header';
 import { theme } from 'constants/Theme';
 import { worksInfoArr } from 'constants/WorksInfo';
 import React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { RouteComponentProps, useHistory, withRouter } from 'react-router';
 import styled from 'styled-components';
 import { IndividualWorksCaption } from './IndividualWorksDetail';
 import { IndividualWorksWindow } from './IndividualWorksWindow';
@@ -27,13 +27,20 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
 }) => {
   const worksId = Number(match.params.id);
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
+  const history = useHistory();
+  React.useEffect(() => {
+    if (worksInfo === undefined) {
+      history.replace('/error');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [worksInfo]);
   const [isFull, setIsFull] = React.useState<boolean>(false);
   const { height, width } = useWindowDimensions();
   const isNarrowLayout = width < 800;
   const iframeWidth = isFull ? '100vw' : isNarrowLayout ? '95vw' : 'max(60vw , 500px)';
   const iframeHeight = isFull
     ? `calc(100vh - ${headerHeight}px)`
-    : `calc( ${iframeWidth} * ${worksInfo.aspectRatio ? worksInfo.aspectRatio : 9 / 16} )`;
+    : `calc( ${iframeWidth} * ${worksInfo?.aspectRatio ? worksInfo.aspectRatio : 9 / 16} )`;
 
   React.useEffect(() => {
     setSelectId(worksId);
@@ -42,6 +49,9 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
     setVisited({ ...visited, [worksId.toString()]: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [worksId, setVisited]);
+  if (worksInfo === undefined) {
+    return <></>;
+  }
 
   return (
     <StyledRoot>
