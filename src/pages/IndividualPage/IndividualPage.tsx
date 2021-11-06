@@ -56,7 +56,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
 
   return (
     <StyledRoot>
-      <Header showNavigationToTop={true} isFull={isFull} setIsFull={setIsFull} />
+      <Header showNavigationToTop={true} isFull={isFull} setIsFull={setIsFull} layout={layout} />
       <StyledContentContainer isFull={isFull}>
         <StyledWorksContainer isNarrowLayout={isNarrowLayout}>
           <IndividualWorksWindow

@@ -34,7 +34,7 @@ export const TopPage: React.VFC<Props> = ({ selectId, setSelectId, setMapModeId,
 
   return (
     <StyledRoot>
-      <Header></Header>
+      <Header layout={layout}></Header>
       <StyledContentContainer>
         <StyledSketchContainer>
           <WorksListSketch
@@ -92,7 +92,7 @@ const StyledContentContainer = styled.div`
 
 const StyledSketchContainer = styled.div`
   flex: 1;
-  min-width: 400px;
+  min-width: 300px;
   height: 100%;
   overflow: hidden;
 `;
