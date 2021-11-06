@@ -26,10 +26,7 @@ export const WorksDetail: React.VFC<Props> = ({ selectId, visited, isShowDetail,
       <StyledTitle>作品詳細</StyledTitle>
       <StyledDetailContainer>
         <StyledImgDiv>
-          <StyledThumbnail
-            src={`/static/assets/thumbnails/${info.thumbnailBaseName}.jpg`}
-            width="100%"
-          ></StyledThumbnail>
+          <StyledThumbnail src={`/static/assets/thumbnails/${info.thumbnailBaseName}.jpg`}></StyledThumbnail>
           {visited[selectId] && <StyledCheck src="/static/assets/check/check_mark.png" height="20%"></StyledCheck>}
         </StyledImgDiv>
         <StyledButton>
@@ -69,6 +66,7 @@ const StyledContainer = styled.div`
   color: white;
   display: flex;
   flex-direction: column;
+  align-items: center;
   z-index: 2;
   position: absolute;
   opacity: 0;
@@ -112,19 +110,23 @@ const StyledDetailContainer = styled.div`
 `;
 
 const StyledImgDiv = styled.div`
-  position: relative;
-`;
-
-const StyledThumbnail = styled.img`
-  width: 97%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-top: 5px;
   margin-bottom: 15px;
 `;
 
+const StyledThumbnail = styled.img`
+  width: 97%;
+  display: block;
+`;
+
 const StyledCheck = styled.img`
   position: absolute;
+  display: block;
   bottom: 0px;
-  margin-bottom: 20px;
   right: 0px;
 `;
 
