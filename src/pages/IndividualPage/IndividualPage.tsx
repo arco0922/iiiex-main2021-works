@@ -87,7 +87,7 @@ const StyledRoot = styled.div`
   background-color: ${theme.color.darkGrey};
   width: 100%;
   height: 100%;
-  overflow-y: hidden;
+  overflow: hidden;
 `;
 
 interface StyledContentContainerProps {
