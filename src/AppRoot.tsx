@@ -106,6 +106,18 @@ const StyledRoot = styled.div<StyledRootProps>`
   width: ${({ containerWidth }) => `${containerWidth}px`};
   height: ${({ containerHeight }) => `${containerHeight}px`};
   overflow: hidden;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  touch-action: none;
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -webkit-touch-callout: none;
 `;
 
 const HamburgerBackground = styled.div`
