@@ -14,9 +14,17 @@ interface Props {
   setMapModeId: (mapModeId: MapModeId) => void;
   visited: Visited;
   layout: LayoutType;
+  setIsHamburgerShow: (isHamburgerShow: boolean) => void;
 }
 
-export const TopPage: React.VFC<Props> = ({ selectId, setSelectId, setMapModeId, visited, layout }) => {
+export const TopPage: React.VFC<Props> = ({
+  selectId,
+  setSelectId,
+  setMapModeId,
+  visited,
+  layout,
+  setIsHamburgerShow,
+}) => {
   const selectIdRef = React.useRef<number>(0);
   const [isShowDetail, setIsShowDetail] = React.useState<boolean>(true);
   const isShowDetailRef = React.useRef<boolean>(true);
@@ -34,7 +42,7 @@ export const TopPage: React.VFC<Props> = ({ selectId, setSelectId, setMapModeId,
 
   return (
     <StyledRoot>
-      <Header layout={layout}></Header>
+      <Header layout={layout} setIsHamburgerShow={setIsHamburgerShow}></Header>
       <StyledContentContainer>
         <StyledSketchContainer>
           <WorksListSketch
@@ -76,8 +84,6 @@ export const TopPage: React.VFC<Props> = ({ selectId, setSelectId, setMapModeId,
 };
 
 const StyledRoot = styled.div`
-  flex-direction: column;
-  align-items: center;
   width: 100%;
   height: 100%;
   background-color: #111111;

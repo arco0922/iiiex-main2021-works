@@ -11,9 +11,16 @@ interface Props {
   isFull?: boolean;
   setIsFull?: (isFull: boolean) => void;
   layout: LayoutType;
+  setIsHamburgerShow?: (isHamburgerShow: boolean) => void;
 }
 
-export const Header: React.VFC<Props> = ({ showNavigationToTop = false, isFull = false, setIsFull, layout }) => {
+export const Header: React.VFC<Props> = ({
+  showNavigationToTop = false,
+  isFull = false,
+  setIsFull,
+  layout,
+  setIsHamburgerShow,
+}) => {
   const isNarrowLayout = layout === 'MID' || layout === 'NARROW';
   if (isNarrowLayout) {
     return (
@@ -23,7 +30,7 @@ export const Header: React.VFC<Props> = ({ showNavigationToTop = false, isFull =
         </StyledLogo>
         <StyledNavigationContainer className="narrow">
           <StyledLeftHalf>
-            <StyledMenuIcon></StyledMenuIcon>
+            <StyledMenuIcon onClick={() => setIsHamburgerShow && setIsHamburgerShow(true)}></StyledMenuIcon>
           </StyledLeftHalf>
           <StyledRightHalf>
             {(layout === 'MID' || !isFull) && (

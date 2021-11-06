@@ -18,6 +18,7 @@ interface Props {
   setVisited: (visited: Visited) => void;
   visited: Visited;
   layout: LayoutType;
+  setIsHamburgerShow: (isHamburgerShow: boolean) => void;
 }
 
 const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = ({
@@ -26,6 +27,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   setVisited,
   visited,
   layout,
+  setIsHamburgerShow,
 }) => {
   const worksId = Number(match.params.id);
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
@@ -56,7 +58,13 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
 
   return (
     <StyledRoot>
-      <Header showNavigationToTop={true} isFull={isFull} setIsFull={setIsFull} layout={layout} />
+      <Header
+        showNavigationToTop={true}
+        isFull={isFull}
+        setIsFull={setIsFull}
+        layout={layout}
+        setIsHamburgerShow={setIsHamburgerShow}
+      />
       <StyledContentContainer isFull={isFull}>
         <StyledWorksContainer isNarrowLayout={isNarrowLayout}>
           <IndividualWorksWindow

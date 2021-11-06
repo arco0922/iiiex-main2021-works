@@ -10,6 +10,7 @@ import { MapModeId } from 'constants/MapCoords';
 import { layoutBorder, LayoutType } from 'constants/Layout';
 import { useWindowDimensions } from 'hooks/useWindowDimensions';
 import styled from 'styled-components';
+import { HamburgerMenu } from 'components/HamburgerMenu/HamburgerMenu';
 
 export interface Visited {
   [key: string]: boolean;
@@ -45,9 +46,16 @@ export const AppRoot: React.VFC = () => {
     }
   }, [setLayout, width]);
 
+  const [isHamburgerShow, setIsHamburgerShow] = React.useState<boolean>(false);
+
   return (
     <StyledRoot containerWidth={width} containerHeight={height}>
       <Router>
+        <HamburgerMenu
+          isHamburgerShow={isHamburgerShow}
+          setIsHamburgerShow={setIsHamburgerShow}
+          visited={visited}
+        ></HamburgerMenu>
         <Switch>
           <Route path="/" exact>
             <TopPage
@@ -56,10 +64,17 @@ export const AppRoot: React.VFC = () => {
               setSelectId={setSelectId}
               setMapModeId={setMapModeId}
               layout={layout}
+              setIsHamburgerShow={setIsHamburgerShow}
             />
           </Route>
           <Route path="/works/:id" exact>
-            <IndividualPage visited={visited} setVisited={setVisited} setSelectId={setSelectId} layout={layout} />
+            <IndividualPage
+              visited={visited}
+              setVisited={setVisited}
+              setSelectId={setSelectId}
+              layout={layout}
+              setIsHamburgerShow={setIsHamburgerShow}
+            />
           </Route>
           {!isProd && (
             <Route path="/test" exact>
