@@ -36,10 +36,7 @@ export const WorksCard: React.VFC<Props> = ({ worksInfo, selectId, setSelectId, 
       ref={cardContainerRef}
     >
       <StyledImgDiv>
-        <StyledThumbnail
-          src={`/static/assets/thumbnails/${worksInfo.thumbnailBaseName}.jpg`}
-          height="100%"
-        ></StyledThumbnail>
+        <StyledThumbnail src={`/static/assets/thumbnails/${worksInfo.thumbnailBaseName}.jpg`}></StyledThumbnail>
         {visited[worksInfo.id] && <StyledCheck src="/static/assets/check/check_mark.png" height="30%"></StyledCheck>}
       </StyledImgDiv>
       <StyledInfoDiv>
@@ -54,13 +51,15 @@ export const WorksCard: React.VFC<Props> = ({ worksInfo, selectId, setSelectId, 
   );
 };
 
+const worksCardHeight = 80;
+
 interface StyledContainerProps {
   isSelect: boolean;
 }
 
 const StyledContainer = styled.div<StyledContainerProps>`
   width: 100%;
-  height: 80px;
+  height: ${worksCardHeight}px;
   display: flex;
   border-bottom: 1px solid #2a2a2a;
   padding-top: 1px;
@@ -73,17 +72,21 @@ const StyledContainer = styled.div<StyledContainerProps>`
 `;
 
 const StyledImgDiv = styled.div`
-  position: relative;
+  height: 100%;
+  margin-right: 5px;
 `;
 
 const StyledThumbnail = styled.img`
-  margin-right: 5px;
+  display: block;
+  height: 100%;
 `;
 
 const StyledCheck = styled.img`
   position: absolute;
+  display: block;
+  z-index: 6;
   bottom: 0px;
-  right: 0px;
+  right: -5px;
 `;
 
 const StyledInfoDiv = styled.div`
