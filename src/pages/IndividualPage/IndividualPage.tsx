@@ -40,9 +40,9 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   }, [worksInfo]);
   const [isFull, setIsFull] = React.useState<boolean>(false);
   const isNarrowLayout = layout === 'MID' || layout === 'NARROW';
-  const iframeWidth = isFull ? '100vw' : isNarrowLayout ? '95vw' : 'max(60vw , 500px)';
+  const iframeWidth = isFull ? '' : isNarrowLayout ? '95vw' : 'max(60vw , 500px)';
   const iframeHeight = isFull
-    ? `calc(100vh - ${headerHeight}px)`
+    ? ''
     : `calc( ${iframeWidth} * ${worksInfo?.aspectRatio ? worksInfo.aspectRatio : 9 / 16} )`;
 
   React.useEffect(() => {
