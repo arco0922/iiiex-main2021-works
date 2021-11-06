@@ -77,8 +77,8 @@ export const IndividualPage = withRouter(IndividualPageComponent);
 
 const StyledRoot = styled.div`
   background-color: ${theme.color.darkGrey};
-  min-width: 100%;
-  min-height: 100%;
+  width: 100%;
+  height: 100%;
   overflow-y: hidden;
 `;
 
