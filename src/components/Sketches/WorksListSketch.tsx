@@ -288,6 +288,17 @@ export const WorksListSketch = React.memo<Props>(
     };
 
     const draw = (p5: p5Types) => {
+      if (
+        containerRef.current !== null &&
+        (p5.width !== containerRef.current.clientWidth - padding * 2 ||
+          p5.height !== containerRef.current.clientHeight - padding * 2)
+      ) {
+        p5.resizeCanvas(
+          containerRef.current.clientWidth - padding * 2,
+          containerRef.current.clientHeight - padding * 2,
+        );
+      }
+
       p5.background(bgcolor);
 
       p5.push();

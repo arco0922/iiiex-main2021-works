@@ -26,8 +26,8 @@ export const TopPage: React.VFC<Props> = ({
   setIsHamburgerShow,
 }) => {
   const selectIdRef = React.useRef<number>(0);
-  const [isShowDetail, setIsShowDetail] = React.useState<boolean>(true);
-  const isShowDetailRef = React.useRef<boolean>(true);
+  const [isShowDetail, setIsShowDetail] = React.useState<boolean>(false);
+  const isShowDetailRef = React.useRef<boolean>(false);
   const layoutRef = React.useRef<LayoutType>('WIDE');
 
   React.useEffect(() => {
@@ -39,6 +39,9 @@ export const TopPage: React.VFC<Props> = ({
   React.useEffect(() => {
     layoutRef.current = layout;
   }, [layout]);
+  React.useEffect(() => {
+    setTimeout(() => setIsShowDetail(true), 300);
+  }, []);
 
   return (
     <StyledRoot>
@@ -59,17 +62,18 @@ export const TopPage: React.VFC<Props> = ({
           <StyledLoading id="p5_loading">
             <p>Loading...</p>
           </StyledLoading>
-          {layout !== 'NARROW' ? (
-            <WorksDetail
-              visited={visited}
-              selectId={selectId}
-              isShowDetail={isShowDetail}
-              setIsShowDetail={setIsShowDetail}
-            ></WorksDetail>
-          ) : (
-            <></>
-          )}
         </StyledSketchContainer>
+        {layout !== 'NARROW' ? (
+          <WorksDetail
+            visited={visited}
+            selectId={selectId}
+            isShowDetail={isShowDetail}
+            setIsShowDetail={setIsShowDetail}
+            layout={layout}
+          ></WorksDetail>
+        ) : (
+          <></>
+        )}
         {layout === 'WIDE' && (
           <WorksListMenu
             visited={visited}
@@ -87,7 +91,7 @@ const StyledRoot = styled.div`
   width: 100%;
   height: 100%;
   background-color: #111111;
-  overflow-y: hidden;
+  overflow: hidden;
 `;
 
 const StyledContentContainer = styled.div`

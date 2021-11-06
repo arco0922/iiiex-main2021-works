@@ -6,21 +6,24 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import CloseIcon from '@mui/icons-material/Close';
+import { sideMenuWidth } from './WorksListMenu';
+import { LayoutType } from 'constants/Layout';
 
 interface Props {
   selectId: number;
   visited: Visited;
   isShowDetail: boolean;
   setIsShowDetail: (isShowDetail: boolean) => void;
+  layout: LayoutType;
 }
 
-export const WorksDetail: React.VFC<Props> = ({ selectId, visited, isShowDetail, setIsShowDetail }) => {
+export const WorksDetail: React.VFC<Props> = ({ selectId, visited, isShowDetail, setIsShowDetail, layout }) => {
   const info = React.useMemo(() => worksInfoArr.filter((worksInfo) => worksInfo.id === selectId)[0], [selectId]);
   if (!info) {
     return <></>;
   }
   return (
-    <StyledContainer className={isShowDetail ? 'show' : ''}>
+    <StyledContainer className={isShowDetail ? 'show' : ''} isWideLayout={layout === 'WIDE'}>
       <StyledCloseIcon onClick={() => setIsShowDetail(false)}></StyledCloseIcon>
       <StyledTitle>作品詳細</StyledTitle>
       <StyledDetailContainer>
@@ -56,26 +59,27 @@ export const WorksDetail: React.VFC<Props> = ({ selectId, visited, isShowDetail,
 
 export const sideDetailWidth = 250;
 
-const StyledContainer = styled.div`
+interface StyledContainerProps {
+  isWideLayout: boolean;
+}
+
+const StyledContainer = styled.div<StyledContainerProps>`
   min-width: ${sideDetailWidth}px;
   width: ${sideDetailWidth}px;
   height: 100%;
-
+  margin-right: ${({ isWideLayout }) => (isWideLayout ? 0 : `${-sideDetailWidth}px`)};
   background-color: #141414dc;
   color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
   z-index: 2;
-  position: absolute;
+  position: relative;
   opacity: 0;
   transition: all 300ms ease-out;
-
-  left: 100%;
-  top: 0px;
   &.show {
     opacity: 1;
-    transform: translateX(-100%);
+    margin-right: ${({ isWideLayout }) => (isWideLayout ? `${sideMenuWidth}px` : 0)};
   }
 `;
 
