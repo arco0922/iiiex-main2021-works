@@ -4,6 +4,7 @@ import { HamburgerWorksCard } from './HamburgerWorksCard';
 import styled from 'styled-components';
 import CloseIcon from '@mui/icons-material/Close';
 import { worksInfoArr } from 'constants/WorksInfo';
+import { Link } from 'react-router-dom';
 
 interface Props {
   isShowHamburger: boolean;
@@ -19,19 +20,39 @@ export const HamburgerMenu = React.memo<Props>(function HamburgerMenu({
   return (
     <StyledContainer className={isShowHamburger ? 'show' : ''}>
       <StyledCloseIcon onClick={() => setIsShowHamburger(false)}></StyledCloseIcon>
-      <StyledTitle>作品一覧</StyledTitle>
-      <StyledCardsContainer>
-        {worksInfoArr.map((worksInfo) => {
-          return (
-            <HamburgerWorksCard
-              worksInfo={worksInfo}
-              key={worksInfo.id}
-              visited={visited}
-              setIsShowHamburger={setIsShowHamburger}
-            ></HamburgerWorksCard>
-          );
-        })}
-      </StyledCardsContainer>
+      <StyledNavSection>
+        <StyledTitle>ナビゲーション一覧</StyledTitle>
+        <StyledButton>
+          <StyledLink to="/" onClick={() => setIsShowHamburger(false)}>
+            展示空間TOP
+          </StyledLink>
+        </StyledButton>
+        <StyledButton>
+          <StyledOutLink href="https://iiiexhibition.com/" onClick={() => setIsShowHamburger(false)}>
+            制作展ホームページ
+          </StyledOutLink>
+        </StyledButton>
+        <StyledButton>
+          <StyledOutLink href="https://iiiexhibition.com/" onClick={() => setIsShowHamburger(false)}>
+            全体アンケート
+          </StyledOutLink>
+        </StyledButton>
+      </StyledNavSection>
+      <StyledWorksSection>
+        <StyledTitle>作品一覧</StyledTitle>
+        <StyledCardsContainer>
+          {worksInfoArr.map((worksInfo) => {
+            return (
+              <HamburgerWorksCard
+                worksInfo={worksInfo}
+                key={worksInfo.id}
+                visited={visited}
+                setIsShowHamburger={setIsShowHamburger}
+              ></HamburgerWorksCard>
+            );
+          })}
+        </StyledCardsContainer>
+      </StyledWorksSection>
     </StyledContainer>
   );
 });
@@ -39,7 +60,7 @@ export const HamburgerMenu = React.memo<Props>(function HamburgerMenu({
 const StyledContainer = styled.div`
   position: absolute;
   height: 100%;
-  width: 300px;
+  width: 250px;
 
   display: flex;
   flex-direction: column;
@@ -63,12 +84,51 @@ const StyledContainer = styled.div`
 
 const StyledCloseIcon = styled(CloseIcon)`
   position: absolute;
-  top: 3px;
+  top: 5px;
   right: 5px;
   z-index: 23;
   &:hover {
     cursor: pointer;
   }
+`;
+
+const StyledNavSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+`;
+
+const StyledWorksSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+  overflow-y: auto;
+`;
+
+const StyledButton = styled.button`
+  display: block;
+  outline: none;
+  border: none;
+  background-color: black;
+  border-bottom: 1px solid #aaaaaa;
+`;
+
+const StyledLink = styled(Link)`
+  padding: 20px 5px 5px 5px;
+  text-decoration: none;
+  color: white;
+  display: block;
+`;
+
+const StyledOutLink = styled.a`
+  padding: 20px 5px 5px 5px;
+  text-decoration: none;
+  color: white;
+  display: block;
 `;
 
 const StyledTitle = styled.h2`
@@ -77,11 +137,12 @@ const StyledTitle = styled.h2`
   font-size: 16px;
   font-weight: 400;
   border-bottom: 1px solid white;
-  margin: 5px 5px 3px 5px;
+  margin: 8px 5px 3px 5px;
 `;
 
 const StyledCardsContainer = styled.div`
   flex: 1;
   width: 100%;
   overflow-y: auto;
+  padding: 10px;
 `;
