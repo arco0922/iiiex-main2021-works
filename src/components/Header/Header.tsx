@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import MenuIcon from '@mui/icons-material/Menu';
+import { HOMEPAGE_URL, QUESTIONNAIRE_URL } from 'constants/OutUrls';
 
 export const headerHeight = 48;
 
@@ -25,7 +26,7 @@ export const Header: React.VFC<Props> = ({
   if (isNarrowLayout) {
     return (
       <StyledContainer>
-        <StyledLogo href="https://iiiexhibition.com/" className="narrow">
+        <StyledLogo href={HOMEPAGE_URL} className="narrow">
           <img src="/static/assets/logo/LOGO.png" height={`${headerHeight - 18}px`} />
         </StyledLogo>
         <StyledNavigationContainer className="narrow">
@@ -35,7 +36,7 @@ export const Header: React.VFC<Props> = ({
           <StyledRightHalf>
             {(layout === 'MID' || !isFull) && (
               <StyledButton>
-                <StyledLinkToOuterPage href="https://iiiexhibition.com/">
+                <StyledLinkToOuterPage href={QUESTIONNAIRE_URL}>
                   <p className="narrow">全体アンケート</p>
                   <StyledUnderBar id="underbar"></StyledUnderBar>
                 </StyledLinkToOuterPage>
@@ -56,7 +57,7 @@ export const Header: React.VFC<Props> = ({
   }
   return (
     <StyledContainer>
-      <StyledLogo href="https://iiiexhibition.com/">
+      <StyledLogo href={HOMEPAGE_URL}>
         <img src="/static/assets/logo/LOGO.png" height={`${headerHeight - 18}px`} />
       </StyledLogo>
       <StyledNavigationContainer>
@@ -69,7 +70,7 @@ export const Header: React.VFC<Props> = ({
           </StyledButton>
         )}
         <StyledButton>
-          <StyledLinkToOuterPage href="https://iiiexhibition.com/">
+          <StyledLinkToOuterPage href={QUESTIONNAIRE_URL}>
             <p>全体アンケート</p>
             <StyledUnderBar id="underbar"></StyledUnderBar>
           </StyledLinkToOuterPage>

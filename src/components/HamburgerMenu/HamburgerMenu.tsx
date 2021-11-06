@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import CloseIcon from '@mui/icons-material/Close';
 import { worksInfoArr } from 'constants/WorksInfo';
 import { Link } from 'react-router-dom';
+import { HOMEPAGE_URL, QUESTIONNAIRE_URL } from 'constants/OutUrls';
 
 interface Props {
   isShowHamburger: boolean;
@@ -28,12 +29,12 @@ export const HamburgerMenu = React.memo<Props>(function HamburgerMenu({
           </StyledLink>
         </StyledButton>
         <StyledButton>
-          <StyledOutLink href="https://iiiexhibition.com/" onClick={() => setIsShowHamburger(false)}>
+          <StyledOutLink href={HOMEPAGE_URL} onClick={() => setIsShowHamburger(false)}>
             制作展ホームページ
           </StyledOutLink>
         </StyledButton>
         <StyledButton>
-          <StyledOutLink href="https://iiiexhibition.com/" onClick={() => setIsShowHamburger(false)}>
+          <StyledOutLink href={QUESTIONNAIRE_URL} onClick={() => setIsShowHamburger(false)}>
             全体アンケート
           </StyledOutLink>
         </StyledButton>
