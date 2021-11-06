@@ -1,16 +1,19 @@
 import { Header } from 'components/Header/Header';
+import { LayoutType } from 'constants/Layout';
 import { theme } from 'constants/Theme';
-import { useWindowDimensions } from 'hooks/useWindowDimensions';
 import React from 'react';
 import styled from 'styled-components';
 
-export const ErrorPage: React.VFC = () => {
-  const { height, width } = useWindowDimensions();
-  const isNarrowLayout = width < 800;
+interface Props {
+  layout: LayoutType;
+}
+
+export const ErrorPage: React.VFC<Props> = ({ layout }) => {
+  const isNarrowLayout = layout !== 'WIDE';
 
   return (
     <StyledRoot>
-      <Header showNavigationToTop={true} />
+      <Header showNavigationToTop={true} layout={layout} />
       <StyledSection>
         <StyledContainer>
           <StyledTitle isNarrowLayout={isNarrowLayout}>ページが見つかりません</StyledTitle>
