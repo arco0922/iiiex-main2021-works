@@ -9,6 +9,7 @@ import useLocalStorage from 'use-local-storage';
 import { MapModeId } from 'constants/MapCoords';
 import { layoutBorder, LayoutType } from 'constants/Layout';
 import { useWindowDimensions } from 'hooks/useWindowDimensions';
+import styled from 'styled-components';
 
 export interface Visited {
   [key: string]: boolean;
@@ -45,29 +46,42 @@ export const AppRoot: React.VFC = () => {
   }, [setLayout, width]);
 
   return (
-    <Router>
-      <Switch>
-        <Route path="/" exact>
-          <TopPage
-            visited={visited}
-            selectId={selectId}
-            setSelectId={setSelectId}
-            setMapModeId={setMapModeId}
-            layout={layout}
-          />
-        </Route>
-        <Route path="/works/:id" exact>
-          <IndividualPage visited={visited} setVisited={setVisited} setSelectId={setSelectId} layout={layout} />
-        </Route>
-        {!isProd && (
-          <Route path="/test" exact>
-            <TestPage />
+    <StyledRoot containerWidth={width} containerHeight={height}>
+      <Router>
+        <Switch>
+          <Route path="/" exact>
+            <TopPage
+              visited={visited}
+              selectId={selectId}
+              setSelectId={setSelectId}
+              setMapModeId={setMapModeId}
+              layout={layout}
+            />
           </Route>
-        )}
-        <Route path="*">
-          <ErrorPage layout={layout} />
-        </Route>
-      </Switch>
-    </Router>
+          <Route path="/works/:id" exact>
+            <IndividualPage visited={visited} setVisited={setVisited} setSelectId={setSelectId} layout={layout} />
+          </Route>
+          {!isProd && (
+            <Route path="/test" exact>
+              <TestPage />
+            </Route>
+          )}
+          <Route path="*">
+            <ErrorPage layout={layout} />
+          </Route>
+        </Switch>
+      </Router>
+    </StyledRoot>
   );
 };
+
+interface StyledRootProps {
+  containerWidth: number;
+  containerHeight: number;
+}
+
+const StyledRoot = styled.div<StyledRootProps>`
+  width: ${({ containerWidth }) => `${containerWidth}px`};
+  height: ${({ containerHeight }) => `${containerHeight}px`};
+  overflow: hidden;
+`;

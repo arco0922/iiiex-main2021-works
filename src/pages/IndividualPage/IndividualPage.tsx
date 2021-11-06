@@ -77,8 +77,8 @@ export const IndividualPage = withRouter(IndividualPageComponent);
 
 const StyledRoot = styled.div`
   background-color: ${theme.color.darkGrey};
-  min-width: 100vw;
-  min-height: 100vh;
+  min-width: 100%;
+  min-height: 100%;
   overflow-y: hidden;
 `;
 
@@ -88,7 +88,7 @@ interface StyledContentContainerProps {
 
 const StyledContentContainer = styled.div<StyledContentContainerProps>`
   width: 100%;
-  height: calc(100vh - ${headerHeight}px);
+  height: calc(100% - ${headerHeight}px);
   padding: ${({ isFull }) => (isFull ? '0' : '20px 10px')};
   overflow-y: auto;
 `;

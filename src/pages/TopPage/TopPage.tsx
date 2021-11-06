@@ -78,15 +78,15 @@ export const TopPage: React.VFC<Props> = ({ selectId, setSelectId, setMapModeId,
 const StyledRoot = styled.div`
   flex-direction: column;
   align-items: center;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-color: #111111;
   overflow-y: hidden;
 `;
 
 const StyledContentContainer = styled.div`
   width: 100%;
-  height: calc(100vh - ${headerHeight}px);
+  height: calc(100% - ${headerHeight}px);
   display: flex;
 `;
 

@@ -29,8 +29,8 @@ const StyledRoot = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: ${theme.color.darkGrey};
-  min-width: 100vw;
-  min-height: 100vh;
+  min-width: 100%;
+  min-height: 100%;
   overflow-y: hidden;
 `;
 
