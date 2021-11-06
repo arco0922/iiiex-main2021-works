@@ -56,6 +56,7 @@ export const AppRoot: React.VFC = () => {
           setIsHamburgerShow={setIsHamburgerShow}
           visited={visited}
         ></HamburgerMenu>
+        {isHamburgerShow && <HamburgerBackground onClick={() => setIsHamburgerShow(false)} />}
         <Switch>
           <Route path="/" exact>
             <TopPage
@@ -99,4 +100,14 @@ const StyledRoot = styled.div<StyledRootProps>`
   width: ${({ containerWidth }) => `${containerWidth}px`};
   height: ${({ containerHeight }) => `${containerHeight}px`};
   overflow: hidden;
+`;
+
+const HamburgerBackground = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: #000000c8;
+  z-index: 8;
+  position: absolute;
+  top: 0;
+  left: 0;
 `;

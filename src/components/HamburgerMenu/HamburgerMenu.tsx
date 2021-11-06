@@ -53,7 +53,7 @@ const StyledContainer = styled.div`
 
   right: 100%;
   top: 0px;
-  z-index: 10;
+  z-index: 20;
 
   &.show {
     opacity: 1;
@@ -65,7 +65,7 @@ const StyledCloseIcon = styled(CloseIcon)`
   position: absolute;
   top: 3px;
   right: 5px;
-  z-index: 3;
+  z-index: 23;
   &:hover {
     cursor: pointer;
   }
