@@ -8,9 +8,10 @@ interface Props {
   selectId: number;
   setSelectId: (id: number) => void;
   visited: Visited;
+  setIsShowDetail: (isShowDetail: boolean) => void;
 }
 
-export const WorksListMenu: React.VFC<Props> = ({ selectId, setSelectId, visited }) => {
+export const WorksListMenu: React.VFC<Props> = ({ selectId, setSelectId, visited, setIsShowDetail }) => {
   return (
     <StyledContainer>
       <StyledTitle>作品一覧</StyledTitle>
@@ -23,6 +24,7 @@ export const WorksListMenu: React.VFC<Props> = ({ selectId, setSelectId, visited
               selectId={selectId}
               setSelectId={setSelectId}
               visited={visited}
+              setIsShowDetail={setIsShowDetail}
             ></WorksCard>
           );
         })}
@@ -31,16 +33,21 @@ export const WorksListMenu: React.VFC<Props> = ({ selectId, setSelectId, visited
   );
 };
 
+export const sideMenuWidth = 250;
+
 const StyledContainer = styled.div`
-  min-width: 300px;
-  width: 300px;
+  min-width: ${sideMenuWidth}px;
+  width: ${sideMenuWidth}px;
   height: 100%;
-  padding: 4px;
+  padding: 4px 0px 4px 4px;
   background-color: #141414;
   color: white;
   display: flex;
   flex-direction: column;
-  z-index: 2;
+  z-index: 4;
+  position: absolute;
+  right: 0px;
+  top: 0px;
 `;
 
 const StyledTitle = styled.h2`
@@ -55,5 +62,5 @@ const StyledTitle = styled.h2`
 const StyledCardsContainer = styled.div`
   flex: 1;
   width: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 `;

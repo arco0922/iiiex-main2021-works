@@ -6,12 +6,17 @@ import { worksInfoArr } from 'constants/WorksInfo';
 import { theme } from 'constants/Theme';
 import { useHistory } from 'react-router';
 import { mapCoordsArr, MapModeId } from 'constants/MapCoords';
+import { LayoutType } from 'constants/Layout';
 
 interface Props {
   width: string;
   height: string;
   selectIdRef: React.MutableRefObject<number>;
   setSelectId: (id: number) => void;
+  isShowDetailRef: React.MutableRefObject<boolean>;
+  setIsShowDetail: (isShowDetail: boolean) => void;
+  isShowHamburgerRef: React.MutableRefObject<boolean>;
+  layoutRef: React.MutableRefObject<LayoutType>;
   setMapModeId: (mapMode: MapModeId) => void;
   bgcolor?: string;
   padding?: number;
@@ -23,7 +28,18 @@ interface ParticleImage {
 }
 
 export const WorksListSketch = React.memo<Props>(
-  ({ width, height, selectIdRef, setSelectId, setMapModeId, bgcolor = 'black', padding = 5 }) => {
+  ({
+    width,
+    height,
+    selectIdRef,
+    setSelectId,
+    isShowDetailRef,
+    setIsShowDetail,
+    isShowHamburgerRef,
+    setMapModeId,
+    bgcolor = 'black',
+    padding = 5,
+  }) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
     const history = useHistory();
 
@@ -97,9 +113,9 @@ export const WorksListSketch = React.memo<Props>(
 
     const navigationBtnStyleChange = (p5: p5Types, isHover: boolean) => {
       if (isHover) {
-        navigationBtn.style(`cursor: pointer; background-color: #3f3f3f; color: white;`);
+        navigationBtn.style(`cursor: pointer; background-color: ${theme.color.primary}; color: white;`);
       } else {
-        navigationBtn.style(`cursor: default; background-color: white; color: black;`);
+        navigationBtn.style(`cursor: default; background-color: black; color: white;`);
       }
     };
 
@@ -164,10 +180,10 @@ export const WorksListSketch = React.memo<Props>(
         containerRef.current.clientHeight - padding * 2,
       ).parent(canvasParentRef);
 
-      navigationBtn = p5.createButton('作品ページへ');
+      navigationBtn = p5.createButton('作品を見る');
       navigationBtn.parent(containerRef.current);
       navigationBtn.style(
-        `padding: 2px; border: none; transform: translateX(-50%); width: fit-content; border: 1px solid ${selectColor}; border-radius: 5px; background-color: white`,
+        `padding: 4px; border: none; transform: translateX(-50%); width: fit-content; border: 2px solid ${selectColor}; background-color: black; color: white; word-break: keep-all`,
       );
       navigationBtn.mouseOver(() => navigationBtnStyleChange(p5, true));
       navigationBtn.mouseOut(() => navigationBtnStyleChange(p5, false));
@@ -274,6 +290,17 @@ export const WorksListSketch = React.memo<Props>(
     };
 
     const draw = (p5: p5Types) => {
+      if (
+        containerRef.current !== null &&
+        (p5.width !== containerRef.current.clientWidth - padding * 2 ||
+          p5.height !== containerRef.current.clientHeight - padding * 2)
+      ) {
+        p5.resizeCanvas(
+          containerRef.current.clientWidth - padding * 2,
+          containerRef.current.clientHeight - padding * 2,
+        );
+      }
+
       p5.background(bgcolor);
 
       p5.push();
@@ -306,9 +333,12 @@ export const WorksListSketch = React.memo<Props>(
     };
 
     const mousePressed = (p5: p5Types) => {
+      if (!isCursorOnCanvas(p5) || isShowHamburgerRef.current) {
+        return;
+      }
       if (obstacleSystem.isCursorOnParticles()) {
         obstacleSystem.catchParticles();
-      } else if (isCursorOnCanvas(p5)) {
+      } else {
         worldLokked = true;
         oldMouseX = p5.mouseX;
         oldMouseY = p5.mouseY;
@@ -537,6 +567,7 @@ export const WorksListSketch = React.memo<Props>(
           if (particle.isCursorOn()) {
             document.addEventListener('touchmove', preventDefault, wheelOpt); // mobile
             setSelectId(particle.id);
+            setIsShowDetail(true);
             this.setSelectId(particle.id);
             particle.catch();
           }
@@ -892,7 +923,7 @@ export const WorksListSketch = React.memo<Props>(
         this.p5.noFill();
         this.p5.ellipse(this.x, this.y, this.radius * 2 + 20, this.radius * 2 + 20);
         const navPos = this.calcCanvasCoord(this.x, this.y + this.radius);
-        navigationBtn.style(`font-size: ${this.worldOffsetScale * 12}px;`);
+        navigationBtn.style(`font-size: ${this.worldOffsetScale * 20}px;`);
         if (isPointOnCanvas(this.p5, navPos.x, navPos.y)) {
           navigationBtn.style('display: block');
         } else {

@@ -8,7 +8,7 @@ import { IndividualWorksCaption } from './IndividualWorksDetail';
 import { IndividualWorksWindow } from './IndividualWorksWindow';
 import { isMobile } from 'react-device-detect';
 import { Visited } from 'AppRoot';
-import { useWindowDimensions } from 'hooks/useWindowDimensions';
+import { LayoutType } from 'constants/Layout';
 
 interface Params {
   id: string;
@@ -17,6 +17,8 @@ interface Props {
   setSelectId: (selectId: number) => void;
   setVisited: (visited: Visited) => void;
   visited: Visited;
+  layout: LayoutType;
+  setIsShowHamburger: (isShowHamburger: boolean) => void;
 }
 
 const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = ({
@@ -24,6 +26,8 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   setSelectId,
   setVisited,
   visited,
+  layout,
+  setIsShowHamburger,
 }) => {
   const worksId = Number(match.params.id);
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
@@ -35,8 +39,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [worksInfo]);
   const [isFull, setIsFull] = React.useState<boolean>(false);
-  const { height, width } = useWindowDimensions();
-  const isNarrowLayout = width < 800;
+  const isNarrowLayout = layout === 'MID' || layout === 'NARROW';
   const iframeWidth = isFull ? '100vw' : isNarrowLayout ? '95vw' : 'max(60vw , 500px)';
   const iframeHeight = isFull
     ? `calc(100vh - ${headerHeight}px)`
@@ -55,7 +58,13 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
 
   return (
     <StyledRoot>
-      <Header showNavigationToTop={true} isFull={isFull} setIsFull={setIsFull} />
+      <Header
+        showNavigationToTop={true}
+        isFull={isFull}
+        setIsFull={setIsFull}
+        layout={layout}
+        setIsShowHamburger={setIsShowHamburger}
+      />
       <StyledContentContainer isFull={isFull}>
         <StyledWorksContainer isNarrowLayout={isNarrowLayout}>
           <IndividualWorksWindow
@@ -76,9 +85,9 @@ export const IndividualPage = withRouter(IndividualPageComponent);
 
 const StyledRoot = styled.div`
   background-color: ${theme.color.darkGrey};
-  min-width: 100vw;
-  min-height: 100vh;
-  overflow-y: hidden;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 `;
 
 interface StyledContentContainerProps {
@@ -87,7 +96,7 @@ interface StyledContentContainerProps {
 
 const StyledContentContainer = styled.div<StyledContentContainerProps>`
   width: 100%;
-  height: calc(100vh - ${headerHeight}px);
+  height: calc(100% - ${headerHeight}px);
   padding: ${({ isFull }) => (isFull ? '0' : '20px 10px')};
   overflow-y: auto;
 `;

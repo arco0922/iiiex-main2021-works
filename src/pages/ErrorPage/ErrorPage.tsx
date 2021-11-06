@@ -1,16 +1,20 @@
 import { Header } from 'components/Header/Header';
+import { LayoutType } from 'constants/Layout';
 import { theme } from 'constants/Theme';
-import { useWindowDimensions } from 'hooks/useWindowDimensions';
 import React from 'react';
 import styled from 'styled-components';
 
-export const ErrorPage: React.VFC = () => {
-  const { height, width } = useWindowDimensions();
-  const isNarrowLayout = width < 800;
+interface Props {
+  layout: LayoutType;
+  setIsShowHamburger: (isShowHamburger: boolean) => void;
+}
+
+export const ErrorPage: React.VFC<Props> = ({ layout, setIsShowHamburger }) => {
+  const isNarrowLayout = layout !== 'WIDE';
 
   return (
     <StyledRoot>
-      <Header showNavigationToTop={true} />
+      <Header showNavigationToTop={true} layout={layout} setIsShowHamburger={setIsShowHamburger} />
       <StyledSection>
         <StyledContainer>
           <StyledTitle isNarrowLayout={isNarrowLayout}>ページが見つかりません</StyledTitle>
@@ -26,8 +30,8 @@ const StyledRoot = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: ${theme.color.darkGrey};
-  min-width: 100vw;
-  min-height: 100vh;
+  min-width: 100%;
+  min-height: 100%;
   overflow-y: hidden;
 `;
 

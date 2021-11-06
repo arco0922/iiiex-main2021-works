@@ -1,6 +1,9 @@
+import { LayoutType } from 'constants/Layout';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import MenuIcon from '@mui/icons-material/Menu';
+import { HOMEPAGE_URL, QUESTIONNAIRE_URL } from 'constants/OutUrls';
 
 export const headerHeight = 48;
 
@@ -8,12 +11,53 @@ interface Props {
   showNavigationToTop?: boolean;
   isFull?: boolean;
   setIsFull?: (isFull: boolean) => void;
+  layout: LayoutType;
+  setIsShowHamburger?: (isShowHamburger: boolean) => void;
 }
 
-export const Header: React.VFC<Props> = ({ showNavigationToTop = false, isFull = false, setIsFull }) => {
+export const Header: React.VFC<Props> = ({
+  showNavigationToTop = false,
+  isFull = false,
+  setIsFull,
+  layout,
+  setIsShowHamburger,
+}) => {
+  const isNarrowLayout = layout === 'MID' || layout === 'NARROW';
+  if (isNarrowLayout) {
+    return (
+      <StyledContainer>
+        <StyledLogo href={HOMEPAGE_URL} className="narrow">
+          <img src="/static/assets/logo/LOGO.png" height={`${headerHeight - 18}px`} />
+        </StyledLogo>
+        <StyledNavigationContainer className="narrow">
+          <StyledLeftHalf>
+            <StyledMenuIcon onClick={() => setIsShowHamburger && setIsShowHamburger(true)}></StyledMenuIcon>
+          </StyledLeftHalf>
+          <StyledRightHalf>
+            {(layout === 'MID' || !isFull) && (
+              <StyledButton>
+                <StyledLinkToOuterPage href={QUESTIONNAIRE_URL}>
+                  <p className="narrow">全体アンケート</p>
+                  <StyledUnderBar id="underbar"></StyledUnderBar>
+                </StyledLinkToOuterPage>
+              </StyledButton>
+            )}
+            {isFull && setIsFull && (
+              <StyledButton onClick={() => setIsFull(false)}>
+                <StyledExitFullScreen>
+                  <p className="narrow">全画面表示終了</p>
+                  <StyledUnderBar id="underbar"></StyledUnderBar>
+                </StyledExitFullScreen>
+              </StyledButton>
+            )}
+          </StyledRightHalf>
+        </StyledNavigationContainer>
+      </StyledContainer>
+    );
+  }
   return (
     <StyledContainer>
-      <StyledLogo href="https://iiiexhibition.com/">
+      <StyledLogo href={HOMEPAGE_URL}>
         <img src="/static/assets/logo/LOGO.png" height={`${headerHeight - 18}px`} />
       </StyledLogo>
       <StyledNavigationContainer>
@@ -26,8 +70,8 @@ export const Header: React.VFC<Props> = ({ showNavigationToTop = false, isFull =
           </StyledButton>
         )}
         <StyledButton>
-          <StyledLinkToOuterPage href="https://iiiexhibition.com/">
-            <p>アンケート</p>
+          <StyledLinkToOuterPage href={QUESTIONNAIRE_URL}>
+            <p>全体アンケート</p>
             <StyledUnderBar id="underbar"></StyledUnderBar>
           </StyledLinkToOuterPage>
         </StyledButton>
@@ -51,7 +95,12 @@ const StyledContainer = styled.div`
   background-color: #000000;
   display: flex;
   align-items: center;
-  position: relative;
+`;
+
+const StyledMenuIcon = styled(MenuIcon)`
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const StyledLogo = styled.a`
@@ -62,6 +111,13 @@ const StyledLogo = styled.a`
   position: absolute;
   left: 0px;
   top: 0px;
+  z-index: 5;
+
+  &.narrow {
+    padding: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 `;
 
 const StyledNavigationContainer = styled.div`
@@ -70,6 +126,27 @@ const StyledNavigationContainer = styled.div`
   flex: 1;
   height: 100%;
   margin-left: 130px;
+
+  &.narrow {
+    margin-left: 15px;
+    margin-right: 10px;
+    justify-content: space-between;
+  }
+`;
+
+const StyledLeftHalf = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  color: white;
+`;
+
+const StyledRightHalf = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: end;
 `;
 
 const StyledButton = styled.button`
@@ -88,6 +165,9 @@ const StyledButton = styled.button`
     #underbar {
       width: 100%;
     }
+  }
+  & p.narrow {
+    font-size: 11px;
   }
 `;
 

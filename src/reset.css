@@ -4,5 +4,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  position: relative;
   font-family: 'M PLUS 1p', sans-serif;
 }
