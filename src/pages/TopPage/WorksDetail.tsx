@@ -6,7 +6,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import CloseIcon from '@mui/icons-material/Close';
-import { LayoutType } from 'constants/Layout';
 
 interface Props {
   selectId: number;
