@@ -1,5 +1,6 @@
+import { headerHeight } from 'components/Header/Header';
 import { theme } from 'constants/Theme';
-import { worksInfoArr } from 'constants/WorksInfo';
+import { useWindowDimensions } from 'hooks/useWindowDimensions';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -16,6 +17,7 @@ export const IndividualWorksWindow: React.VFC<Props> = ({ srcUrl, iframeWidth, i
   const iframeRef = React.useRef<HTMLIFrameElement>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const loadHandler = React.useCallback(() => setIsLoading(false), [setIsLoading]);
+  const { width, height } = useWindowDimensions();
   React.useEffect(() => {
     setIsLoading(true);
     const iframe = iframeRef.current;
@@ -39,7 +41,10 @@ export const IndividualWorksWindow: React.VFC<Props> = ({ srcUrl, iframeWidth, i
 
   return (
     <StyledRoot>
-      <StyledContainer iframeWidth={iframeWidth} iframeHeight={iframeHeight}>
+      <StyledContainer
+        iframeWidth={iframeWidth || `${width}px`}
+        iframeHeight={iframeHeight || `${height - headerHeight}px`}
+      >
         {srcUrl ? (
           <StyledIframeContainer>
             <StyledIframe
