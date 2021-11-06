@@ -82,7 +82,7 @@ export const AppRoot: React.VFC = () => {
             </Route>
           )}
           <Route path="*">
-            <ErrorPage layout={layout} />
+            <ErrorPage layout={layout} setIsHamburgerShow={setIsHamburgerShow} />
           </Route>
         </Switch>
       </Router>

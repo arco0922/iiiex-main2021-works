@@ -6,14 +6,15 @@ import styled from 'styled-components';
 
 interface Props {
   layout: LayoutType;
+  setIsHamburgerShow: (isHamburgerShow: boolean) => void;
 }
 
-export const ErrorPage: React.VFC<Props> = ({ layout }) => {
+export const ErrorPage: React.VFC<Props> = ({ layout, setIsHamburgerShow }) => {
   const isNarrowLayout = layout !== 'WIDE';
 
   return (
     <StyledRoot>
-      <Header showNavigationToTop={true} layout={layout} />
+      <Header showNavigationToTop={true} layout={layout} setIsHamburgerShow={setIsHamburgerShow} />
       <StyledSection>
         <StyledContainer>
           <StyledTitle isNarrowLayout={isNarrowLayout}>ページが見つかりません</StyledTitle>
