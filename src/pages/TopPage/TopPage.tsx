@@ -14,7 +14,8 @@ interface Props {
   setMapModeId: (mapModeId: MapModeId) => void;
   visited: Visited;
   layout: LayoutType;
-  setIsHamburgerShow: (isHamburgerShow: boolean) => void;
+  isShowHamburgerRef: React.MutableRefObject<boolean>;
+  setIsShowHamburger: (isShowHamburger: boolean) => void;
 }
 
 export const TopPage: React.VFC<Props> = ({
@@ -23,7 +24,8 @@ export const TopPage: React.VFC<Props> = ({
   setMapModeId,
   visited,
   layout,
-  setIsHamburgerShow,
+  isShowHamburgerRef,
+  setIsShowHamburger,
 }) => {
   const selectIdRef = React.useRef<number>(0);
   const [isShowDetail, setIsShowDetail] = React.useState<boolean>(false);
@@ -39,13 +41,14 @@ export const TopPage: React.VFC<Props> = ({
   React.useEffect(() => {
     layoutRef.current = layout;
   }, [layout]);
+
   React.useEffect(() => {
     setTimeout(() => setIsShowDetail(true), 300);
   }, []);
 
   return (
     <StyledRoot>
-      <Header layout={layout} setIsHamburgerShow={setIsHamburgerShow}></Header>
+      <Header layout={layout} setIsShowHamburger={setIsShowHamburger}></Header>
       <StyledContentContainer>
         <StyledSketchContainer>
           <WorksListSketch
@@ -55,6 +58,7 @@ export const TopPage: React.VFC<Props> = ({
             setSelectId={setSelectId}
             isShowDetailRef={isShowDetailRef}
             setIsShowDetail={setIsShowDetail}
+            isShowHamburgerRef={isShowHamburgerRef}
             layoutRef={layoutRef}
             setMapModeId={setMapModeId}
             bgcolor="#0e0e0e"

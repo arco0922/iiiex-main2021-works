@@ -8,13 +8,13 @@ import { Link } from 'react-router-dom';
 interface Props {
   worksInfo: WorksInfo;
   visited: Visited;
-  setIsHamburgerShow: (isHamburgerShow: boolean) => void;
+  setIsShowHamburger: (isShowHamburger: boolean) => void;
 }
 
 export const HamburgerWorksCard = React.memo<Props>(function HamburgerWorksCard({
   worksInfo,
   visited,
-  setIsHamburgerShow,
+  setIsShowHamburger,
 }) {
   const [isHover, setIsHover] = React.useState<boolean>(false);
 
@@ -22,7 +22,7 @@ export const HamburgerWorksCard = React.memo<Props>(function HamburgerWorksCard(
     <StyledContainer
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
-      onClick={() => setIsHamburgerShow(false)}
+      onClick={() => setIsShowHamburger(false)}
       to={`/works/${worksInfo.id}`}
     >
       {isHover && (

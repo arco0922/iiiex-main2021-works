@@ -6,19 +6,19 @@ import CloseIcon from '@mui/icons-material/Close';
 import { worksInfoArr } from 'constants/WorksInfo';
 
 interface Props {
-  isHamburgerShow: boolean;
-  setIsHamburgerShow: (isHamburgerShow: boolean) => void;
+  isShowHamburger: boolean;
+  setIsShowHamburger: (isShowHamburger: boolean) => void;
   visited: Visited;
 }
 
 export const HamburgerMenu = React.memo<Props>(function HamburgerMenu({
-  isHamburgerShow,
-  setIsHamburgerShow,
+  isShowHamburger,
+  setIsShowHamburger,
   visited,
 }) {
   return (
-    <StyledContainer className={isHamburgerShow ? 'show' : ''}>
-      <StyledCloseIcon onClick={() => setIsHamburgerShow(false)}></StyledCloseIcon>
+    <StyledContainer className={isShowHamburger ? 'show' : ''}>
+      <StyledCloseIcon onClick={() => setIsShowHamburger(false)}></StyledCloseIcon>
       <StyledTitle>作品一覧</StyledTitle>
       <StyledCardsContainer>
         {worksInfoArr.map((worksInfo) => {
@@ -27,7 +27,7 @@ export const HamburgerMenu = React.memo<Props>(function HamburgerMenu({
               worksInfo={worksInfo}
               key={worksInfo.id}
               visited={visited}
-              setIsHamburgerShow={setIsHamburgerShow}
+              setIsShowHamburger={setIsShowHamburger}
             ></HamburgerWorksCard>
           );
         })}

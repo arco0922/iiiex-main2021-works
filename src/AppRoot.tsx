@@ -46,17 +46,22 @@ export const AppRoot: React.VFC = () => {
     }
   }, [setLayout, width]);
 
-  const [isHamburgerShow, setIsHamburgerShow] = React.useState<boolean>(false);
+  const [isShowHamburger, setIsShowHamburger] = React.useState<boolean>(false);
+  const isShowHamburgerRef = React.useRef<boolean>(false);
+
+  React.useEffect(() => {
+    isShowHamburgerRef.current = isShowHamburger;
+  }, [isShowHamburger]);
 
   return (
     <StyledRoot containerWidth={width} containerHeight={height}>
       <Router>
         <HamburgerMenu
-          isHamburgerShow={isHamburgerShow}
-          setIsHamburgerShow={setIsHamburgerShow}
+          isShowHamburger={isShowHamburger}
+          setIsShowHamburger={setIsShowHamburger}
           visited={visited}
         ></HamburgerMenu>
-        {isHamburgerShow && <HamburgerBackground onClick={() => setIsHamburgerShow(false)} />}
+        {isShowHamburger && <HamburgerBackground onClick={() => setIsShowHamburger(false)} />}
         <Switch>
           <Route path="/" exact>
             <TopPage
@@ -65,7 +70,8 @@ export const AppRoot: React.VFC = () => {
               setSelectId={setSelectId}
               setMapModeId={setMapModeId}
               layout={layout}
-              setIsHamburgerShow={setIsHamburgerShow}
+              isShowHamburgerRef={isShowHamburgerRef}
+              setIsShowHamburger={setIsShowHamburger}
             />
           </Route>
           <Route path="/works/:id" exact>
@@ -74,7 +80,7 @@ export const AppRoot: React.VFC = () => {
               setVisited={setVisited}
               setSelectId={setSelectId}
               layout={layout}
-              setIsHamburgerShow={setIsHamburgerShow}
+              setIsShowHamburger={setIsShowHamburger}
             />
           </Route>
           {!isProd && (
@@ -83,7 +89,7 @@ export const AppRoot: React.VFC = () => {
             </Route>
           )}
           <Route path="*">
-            <ErrorPage layout={layout} setIsHamburgerShow={setIsHamburgerShow} />
+            <ErrorPage layout={layout} setIsShowHamburger={setIsShowHamburger} />
           </Route>
         </Switch>
       </Router>

@@ -15,6 +15,7 @@ interface Props {
   setSelectId: (id: number) => void;
   isShowDetailRef: React.MutableRefObject<boolean>;
   setIsShowDetail: (isShowDetail: boolean) => void;
+  isShowHamburgerRef: React.MutableRefObject<boolean>;
   layoutRef: React.MutableRefObject<LayoutType>;
   setMapModeId: (mapMode: MapModeId) => void;
   bgcolor?: string;
@@ -34,6 +35,7 @@ export const WorksListSketch = React.memo<Props>(
     setSelectId,
     isShowDetailRef,
     setIsShowDetail,
+    isShowHamburgerRef,
     setMapModeId,
     bgcolor = 'black',
     padding = 5,
@@ -331,7 +333,7 @@ export const WorksListSketch = React.memo<Props>(
     };
 
     const mousePressed = (p5: p5Types) => {
-      if (!isCursorOnCanvas(p5)) {
+      if (!isCursorOnCanvas(p5) || isShowHamburgerRef.current) {
         return;
       }
       if (obstacleSystem.isCursorOnParticles()) {
