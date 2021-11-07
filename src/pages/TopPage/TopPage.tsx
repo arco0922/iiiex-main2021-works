@@ -6,7 +6,7 @@ import { MapModeId } from 'constants/MapCoords';
 import React from 'react';
 import styled from 'styled-components';
 import { WorksDetail } from './WorksDetail';
-import { WorksDetailBottom } from './WorksDetailBottom';
+import { bottomDetailHeight, WorksDetailBottom } from './WorksDetailBottom';
 import { WorksListMenu } from './WorksListMenu';
 
 interface Props {
@@ -67,7 +67,7 @@ export const TopPage: React.VFC<Props> = ({
             mapModeIdRef={mapModeIdRef}
             bgcolor="#0e0e0e"
           ></WorksListSketch>
-          <StyledLoading id="p5_loading">
+          <StyledLoading isNarrowLayout={layout === 'NARROW'} id="p5_loading">
             <p>Loading...</p>
           </StyledLoading>
           {layout === 'NARROW' ? (
@@ -125,12 +125,16 @@ const StyledSketchContainer = styled.div`
   overflow: hidden;
 `;
 
-const StyledLoading = styled.div`
+interface StyledLoadingProps {
+  isNarrowLayout: boolean;
+}
+
+const StyledLoading = styled.div<StyledLoadingProps>`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: ${({ isNarrowLayout }) => (isNarrowLayout ? `calc(100% - ${bottomDetailHeight}px)` : '100%')};
   display: flex;
   align-items: center;
   justify-content: center;
