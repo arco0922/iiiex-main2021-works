@@ -13,6 +13,7 @@ interface Props {
   selectId: number;
   setSelectId: (selectId: number) => void;
   setMapModeId: (mapModeId: MapModeId) => void;
+  mapModeIdRef: React.MutableRefObject<MapModeId>;
   visited: Visited;
   layout: LayoutType;
   isShowHamburgerRef: React.MutableRefObject<boolean>;
@@ -23,6 +24,7 @@ export const TopPage: React.VFC<Props> = ({
   selectId,
   setSelectId,
   setMapModeId,
+  mapModeIdRef,
   visited,
   layout,
   isShowHamburgerRef,
@@ -62,6 +64,7 @@ export const TopPage: React.VFC<Props> = ({
             isShowHamburgerRef={isShowHamburgerRef}
             layoutRef={layoutRef}
             setMapModeId={setMapModeId}
+            mapModeIdRef={mapModeIdRef}
             bgcolor="#0e0e0e"
           ></WorksListSketch>
           <StyledLoading id="p5_loading">
