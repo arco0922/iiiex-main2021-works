@@ -120,6 +120,7 @@ export const WorksListSketch = React.memo<Props>(
       (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
 
     const zoom = (centerX: number, centerY: number, scaleDiff: number) => {
+      /** centerX, centerY は canvas座標 */
       const newOffsetScale = worldOffsetScale * (1 + scaleDiff);
       if (newOffsetScale > 4 || newOffsetScale < 0.1) {
         return;
