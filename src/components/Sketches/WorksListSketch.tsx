@@ -95,7 +95,7 @@ export const WorksListSketch = React.memo<Props>(
     const worldWidth = 3000; // ワールドの横幅 ※canvasの横幅とは異なる
     const worldHeight = 2000; // ワールドの縦幅 ※canvasの縦幅とは異なる
 
-    let worldLokked = false;
+    let isWorldLokked = false;
     let oldMouseX = 0;
     let oldMouseY = 0;
 
@@ -112,7 +112,7 @@ export const WorksListSketch = React.memo<Props>(
     };
 
     const navigateToIndividual = () => {
-      if (selectIdRef.current === null || worldLokked) {
+      if (selectIdRef.current === null || isWorldLokked) {
         return;
       }
       history.push(`/works/${selectIdRef.current}`);
@@ -301,7 +301,7 @@ export const WorksListSketch = React.memo<Props>(
       }
       if (p5.touches.length === 2) {
         obstacleSystem.releaseParticles();
-        worldLokked = true;
+        isWorldLokked = true;
         const x1 = (p5.touches[0] as p5Types.Vector).x;
         const y1 = (p5.touches[0] as p5Types.Vector).y;
         const x2 = (p5.touches[1] as p5Types.Vector).x;
@@ -312,14 +312,14 @@ export const WorksListSketch = React.memo<Props>(
       if (obstacleSystem.isCursorOnParticles()) {
         obstacleSystem.catchParticles();
       } else {
-        worldLokked = true;
+        isWorldLokked = true;
         oldMouseX = p5.mouseX;
         oldMouseY = p5.mouseY;
       }
     };
 
     const mouseDragged = (p5: p5Types) => {
-      if (!isCursorOnCanvas(p5) || !worldLokked) {
+      if (!isCursorOnCanvas(p5) || !isWorldLokked) {
         return;
       }
       if (p5.touches.length === 2) {
@@ -345,7 +345,7 @@ export const WorksListSketch = React.memo<Props>(
         oldMouseY = (p5.touches[0] as p5Types.Vector).y;
       }
       if (p5.touches.length === 0) {
-        worldLokked = false;
+        isWorldLokked = false;
       }
     };
 
