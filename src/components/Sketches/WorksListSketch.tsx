@@ -130,7 +130,7 @@ export const WorksListSketch = React.memo<Props>(
 
     const initWorldPosScale = (p5: p5Types) => {
       const mapCoord = mapCoordsArr.filter(({ modeId }) => modeId === mapModeIdRef.current)[0];
-      const width = layoutRef.current === 'WIDE' ? p5.width - sideDetailWidth : p5.width;
+      const width = p5.width;
       const height = layoutRef.current === 'NARROW' ? p5.height - bottomDetailHeight : p5.height;
       worldOffsetX = width / 2 - mapCoord.center.x;
       worldOffsetY = height / 2 - mapCoord.center.y;
