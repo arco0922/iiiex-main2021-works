@@ -7,6 +7,8 @@ import { theme } from 'constants/Theme';
 import { useHistory } from 'react-router';
 import { mapCoordsArr, MapModeId } from 'constants/MapCoords';
 import { LayoutType } from 'constants/Layout';
+import { sideDetailWidth } from 'pages/TopPage/WorksDetail';
+import { bottomDetailHeight } from 'pages/TopPage/WorksDetailBottom';
 
 interface Props {
   width: string;
@@ -18,6 +20,7 @@ interface Props {
   isShowHamburgerRef: React.MutableRefObject<boolean>;
   layoutRef: React.MutableRefObject<LayoutType>;
   setMapModeId: (mapMode: MapModeId) => void;
+  mapModeIdRef: React.MutableRefObject<MapModeId>;
   bgcolor?: string;
   padding?: number;
 }
@@ -36,7 +39,9 @@ export const WorksListSketch = React.memo<Props>(
     isShowDetailRef,
     setIsShowDetail,
     isShowHamburgerRef,
+    layoutRef,
     setMapModeId,
+    mapModeIdRef,
     bgcolor = 'black',
     padding = 5,
   }) => {
@@ -123,6 +128,18 @@ export const WorksListSketch = React.memo<Props>(
     const calcSquaredDist = (x1: number, y1: number, x2: number, y2: number) =>
       (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
 
+    const initWorldPosScale = (p5: p5Types) => {
+      const mapCoord = mapCoordsArr.filter(({ modeId }) => modeId === mapModeIdRef.current)[0];
+      const width = layoutRef.current === 'WIDE' ? p5.width - sideDetailWidth : p5.width;
+      const height = layoutRef.current === 'NARROW' ? p5.height - bottomDetailHeight : p5.height;
+      worldOffsetX = width / 2 - mapCoord.center.x;
+      worldOffsetY = height / 2 - mapCoord.center.y;
+      worldOffsetScale = p5.min(
+        width / p5.max(mapCoord.border.maxX - mapCoord.border.minX, 1),
+        height / p5.max(mapCoord.border.maxY - mapCoord.border.minY, 1),
+      );
+    };
+
     const zoom = (centerX: number, centerY: number, scaleDiff: number) => {
       /** centerX, centerY は canvas座標 */
       const newOffsetScale = worldOffsetScale * (1 + scaleDiff);
@@ -197,7 +214,7 @@ export const WorksListSketch = React.memo<Props>(
       radioDescription.style(radioLabelStyle);
       radioDescription.parent(mapToggleRadios);
 
-      const initialMapModeId = Number(localStorage.getItem('mapModeId')) || 2;
+      const initialMapModeId = mapModeIdRef.current;
 
       mapCoordsArr.forEach(({ modeId, modeName }) => {
         const modeRadio = p5.createElement('input');
@@ -214,9 +231,7 @@ export const WorksListSketch = React.memo<Props>(
         }
       });
 
-      worldOffsetX = p5.width / 2;
-      worldOffsetY = p5.height / 2;
-      worldOffsetScale = p5.width / 3000;
+      initWorldPosScale(p5);
 
       grid = new Grid(p5, worldWidth, worldHeight, 100);
 
