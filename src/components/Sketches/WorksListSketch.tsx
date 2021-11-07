@@ -82,6 +82,8 @@ export const WorksListSketch = React.memo<Props>(
 
     let obstacleSystem: ParticleSystem;
 
+    let grid: Grid;
+
     const obstacleColor = 'rgba(255,255,255,1)';
     const obstacleStrokeColor = 'rgba(255,255,255,1)';
     const obstacleTriangleColor = 'rgba(220,220,220,0.2)';
@@ -92,8 +94,8 @@ export const WorksListSketch = React.memo<Props>(
     let worldOffsetY: number; // ワールドの中心がスクリーンのどこにあるか
     let worldOffsetScale: number; // ワールドのスクリーン上での縮尺
 
-    const worldWidth = 3000; // ワールドの横幅 ※canvasの横幅とは異なる
-    const worldHeight = 2000; // ワールドの縦幅 ※canvasの縦幅とは異なる
+    const worldWidth = 20000; // ワールドの横幅 ※canvasの横幅とは異なる
+    const worldHeight = 20000; // ワールドの縦幅 ※canvasの縦幅とは異なる
 
     let isWorldLokked = false;
     let oldMouseX = 0;
@@ -214,7 +216,9 @@ export const WorksListSketch = React.memo<Props>(
 
       worldOffsetX = p5.width / 2;
       worldOffsetY = p5.height / 2;
-      worldOffsetScale = p5.width / worldWidth;
+      worldOffsetScale = p5.width / 3000;
+
+      grid = new Grid(p5, worldWidth, worldHeight, 100);
 
       obstacleSystem = new ParticleSystem(
         p5,
@@ -275,6 +279,7 @@ export const WorksListSketch = React.memo<Props>(
       p5.push();
       p5.translate(worldOffsetX, worldOffsetY);
       p5.scale(worldOffsetScale);
+      grid.display();
       obstacleSystem.changeWorldOffset(worldOffsetX, worldOffsetY, worldOffsetScale);
       obstacleSystem.setSelectId(selectIdRef.current);
       obstacleSystem.display();
@@ -968,6 +973,34 @@ export const WorksListSketch = React.memo<Props>(
         this.basicMovementType = this.initialBasicMovementType;
         this.dragOffsetX = 0;
         this.dragOffsetY = 0;
+      }
+    }
+
+    class Grid {
+      p5: p5Types;
+      width: number;
+      height: number;
+      interval: number;
+
+      constructor(p5: p5Types, width: number, height: number, interval: number) {
+        this.p5 = p5;
+        this.width = width;
+        this.height = height;
+        this.interval = interval;
+      }
+
+      display() {
+        this.p5.stroke(80);
+        this.p5.beginShape(this.p5.LINES);
+        for (let i = 0; i < this.width; i += this.interval) {
+          this.p5.vertex(i - this.width / 2, -this.height / 2);
+          this.p5.vertex(i - this.width / 2, this.height / 2);
+        }
+        for (let j = 0; j < this.height; j += this.interval) {
+          this.p5.vertex(-this.width / 2, j - this.height / 2);
+          this.p5.vertex(this.width / 2, j - this.height / 2);
+        }
+        this.p5.endShape();
       }
     }
 
