@@ -99,6 +99,8 @@ export const WorksListSketch = React.memo<Props>(
     let oldMouseX = 0;
     let oldMouseY = 0;
 
+    let oldTouchInterval = 0;
+
     let navigationBtn: p5Types.Element;
 
     const navigationBtnStyleChange = (p5: p5Types, isHover: boolean) => {
@@ -110,7 +112,7 @@ export const WorksListSketch = React.memo<Props>(
     };
 
     const navigateToIndividual = () => {
-      if (selectIdRef.current === null) {
+      if (selectIdRef.current === null || worldLokked) {
         return;
       }
       history.push(`/works/${selectIdRef.current}`);
@@ -271,10 +273,6 @@ export const WorksListSketch = React.memo<Props>(
       p5.background(bgcolor);
 
       p5.push();
-      p5.translate(p5.width / 2, p5.height / 2);
-      p5.pop();
-
-      p5.push();
       p5.translate(worldOffsetX, worldOffsetY);
       p5.scale(worldOffsetScale);
       obstacleSystem.changeWorldOffset(worldOffsetX, worldOffsetY, worldOffsetScale);
@@ -301,6 +299,16 @@ export const WorksListSketch = React.memo<Props>(
       if (!isCursorOnCanvas(p5) || isShowHamburgerRef.current) {
         return;
       }
+      if (p5.touches.length === 2) {
+        obstacleSystem.releaseParticles();
+        worldLokked = true;
+        const x1 = (p5.touches[0] as p5Types.Vector).x;
+        const y1 = (p5.touches[0] as p5Types.Vector).y;
+        const x2 = (p5.touches[1] as p5Types.Vector).x;
+        const y2 = (p5.touches[1] as p5Types.Vector).y;
+        oldTouchInterval = Math.sqrt(calcSquaredDist(x1, y1, x2, y2));
+        return;
+      }
       if (obstacleSystem.isCursorOnParticles()) {
         obstacleSystem.catchParticles();
       } else {
@@ -311,17 +319,34 @@ export const WorksListSketch = React.memo<Props>(
     };
 
     const mouseDragged = (p5: p5Types) => {
-      if (isCursorOnCanvas(p5) && worldLokked) {
-        worldOffsetX += p5.mouseX - oldMouseX;
-        worldOffsetY += p5.mouseY - oldMouseY;
-        oldMouseX = p5.mouseX;
-        oldMouseY = p5.mouseY;
+      if (!isCursorOnCanvas(p5) || !worldLokked) {
+        return;
       }
+      if (p5.touches.length === 2) {
+        const x1 = (p5.touches[0] as p5Types.Vector).x;
+        const y1 = (p5.touches[0] as p5Types.Vector).y;
+        const x2 = (p5.touches[1] as p5Types.Vector).x;
+        const y2 = (p5.touches[1] as p5Types.Vector).y;
+        const touchInterval = Math.sqrt(calcSquaredDist(x1, y1, x2, y2));
+        zoom((x1 + x2) / 2, (y1 + y2) / 2, touchInterval / oldTouchInterval - 1);
+        oldTouchInterval = touchInterval;
+        return;
+      }
+      worldOffsetX += p5.mouseX - oldMouseX;
+      worldOffsetY += p5.mouseY - oldMouseY;
+      oldMouseX = p5.mouseX;
+      oldMouseY = p5.mouseY;
     };
 
-    const mouseReleased = () => {
+    const mouseReleased = (p5: p5Types) => {
       obstacleSystem.releaseParticles();
-      worldLokked = false;
+      if (p5.touches.length === 1) {
+        oldMouseX = (p5.touches[0] as p5Types.Vector).x;
+        oldMouseY = (p5.touches[0] as p5Types.Vector).y;
+      }
+      if (p5.touches.length === 0) {
+        worldLokked = false;
+      }
     };
 
     class ParticleSystem {
