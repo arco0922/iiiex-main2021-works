@@ -80,17 +80,7 @@ export const WorksListSketch = React.memo<Props>(
      */
     type DragMovementType = 'Pos-Vel' | 'Pos' | 'None';
 
-    let particleSystem: ParticleSystem;
-    let particleSystem2: ParticleSystem;
     let obstacleSystem: ParticleSystem;
-
-    const particleColor = 'rgba(255,255,255,0)';
-    const particleStrokeColor = 'rgba(120,120,120,0.02)';
-    const particleTriangleColor = 'rgba(255,255,255,0.01)';
-
-    const particleColor2 = 'rgba(255,255,255,0)';
-    const particleStrokeColor2 = 'rgba(255,100,100,0.02)';
-    const particleTriangleColor2 = 'rgba(255,100,100,0.01)';
 
     const obstacleColor = 'rgba(255,255,255,1)';
     const obstacleStrokeColor = 'rgba(255,255,255,1)';
@@ -223,16 +213,6 @@ export const WorksListSketch = React.memo<Props>(
       worldOffsetY = p5.height / 2;
       worldOffsetScale = p5.width / worldWidth;
 
-      particleSystem = new ParticleSystem(p5, particleStrokeColor, particleTriangleColor, 180, 2, p5.width, p5.height);
-      particleSystem2 = new ParticleSystem(
-        p5,
-        particleStrokeColor2,
-        particleTriangleColor2,
-        180,
-        2,
-        p5.width,
-        p5.height,
-      );
       obstacleSystem = new ParticleSystem(
         p5,
         obstacleStrokeColor,
@@ -242,20 +222,6 @@ export const WorksListSketch = React.memo<Props>(
         worldWidth,
         worldHeight,
       );
-      for (let i = 0; i < 150; i++) {
-        const x = p5.random(-p5.width / 2 + 10, p5.width / 2 - 10);
-        const y = p5.random(-p5.height / 2 + 10, p5.height / 2 - 10);
-        const velX = p5.random(-2, 2);
-        const velY = p5.random(-2, 2);
-        particleSystem.addParticle(i, x, y, 1, velX, velY, 7, particleColor, 'Inertia', 'None');
-      }
-      for (let i = 0; i < 150; i++) {
-        const x = p5.random(-p5.width / 2 + 10, p5.width / 2 - 10);
-        const y = p5.random(-p5.height / 2 + 10, p5.height / 2 - 10);
-        const velX = p5.random(-2, 2);
-        const velY = p5.random(-2, 2);
-        particleSystem2.addParticle(i, x, y, 1, velX, velY, 7, particleColor2, 'Inertia', 'None');
-      }
 
       mapCoordsArr
         .filter(({ modeId }) => modeId === Number(mapToggleRadios.value()))[0]
@@ -305,8 +271,6 @@ export const WorksListSketch = React.memo<Props>(
 
       p5.push();
       p5.translate(p5.width / 2, p5.height / 2);
-      particleSystem.display();
-      particleSystem2.display();
       p5.pop();
 
       p5.push();
