@@ -33,6 +33,11 @@ export const AppRoot: React.VFC = () => {
   const [selectId, setSelectId] = React.useState<number>(initialSelectId);
   const [visited, setVisited] = useLocalStorage<Visited>('visited', initailVisited);
   const [mapModeId, setMapModeId] = useLocalStorage<MapModeId>('mapModeId', 1);
+  const mapModeIdRef = React.useRef<MapModeId>(1);
+
+  React.useEffect(() => {
+    mapModeIdRef.current = mapModeId;
+  }, [mapModeId]);
 
   const [layout, setLayout] = React.useState<LayoutType>('WIDE');
   const { height, width } = useWindowDimensions();
@@ -69,6 +74,7 @@ export const AppRoot: React.VFC = () => {
               selectId={selectId}
               setSelectId={setSelectId}
               setMapModeId={setMapModeId}
+              mapModeIdRef={mapModeIdRef}
               layout={layout}
               isShowHamburgerRef={isShowHamburgerRef}
               setIsShowHamburger={setIsShowHamburger}
