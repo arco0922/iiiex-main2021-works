@@ -12,6 +12,16 @@ export interface MapCoords {
   modeId: MapModeId;
   modeName: string;
   coords: Coord[];
+  center: {
+    x: number;
+    y: number;
+  };
+  border: {
+    minX: number;
+    maxX: number;
+    minY: number;
+    maxY: number;
+  };
 }
 
 /** 1直線の座標 */
@@ -48,10 +58,30 @@ export const mapCoordsArr: MapCoords[] = [
     modeId: 1,
     modeName: '文字コード順',
     coords: lineCoords,
+    center: {
+      x: 0,
+      y: 0,
+    },
+    border: {
+      minX: -1500,
+      maxX: 1500,
+      minY: -50,
+      maxY: 50,
+    },
   },
   {
     modeId: 2,
     modeName: '順路',
     coords: circleCoords,
+    center: {
+      x: 0,
+      y: 0,
+    },
+    border: {
+      minX: -800,
+      maxX: 800,
+      minY: -800,
+      maxY: 800,
+    },
   },
 ];
