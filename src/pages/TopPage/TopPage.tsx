@@ -6,6 +6,7 @@ import { MapModeId } from 'constants/MapCoords';
 import React from 'react';
 import styled from 'styled-components';
 import { WorksDetail } from './WorksDetail';
+import { WorksDetailBottom } from './WorksDetailBottom';
 import { WorksListMenu } from './WorksListMenu';
 
 interface Props {
@@ -66,6 +67,16 @@ export const TopPage: React.VFC<Props> = ({
           <StyledLoading id="p5_loading">
             <p>Loading...</p>
           </StyledLoading>
+          {layout === 'NARROW' ? (
+            <WorksDetailBottom
+              selectId={selectId}
+              visited={visited}
+              isShowDetail={isShowDetail}
+              setIsShowDetail={setIsShowDetail}
+            ></WorksDetailBottom>
+          ) : (
+            <></>
+          )}
         </StyledSketchContainer>
         {layout !== 'NARROW' ? (
           <WorksDetail
