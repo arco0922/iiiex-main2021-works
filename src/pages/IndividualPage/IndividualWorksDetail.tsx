@@ -1,13 +1,17 @@
+import { Visited } from 'AppRoot';
 import { Caption } from 'components/Caption/Caption';
 import { WorksInfo } from 'constants/WorksInfo';
 import React from 'react';
 import styled from 'styled-components';
+import { SuggestedWorks } from './SuggestedWorks';
 
 interface Props {
   worksInfo: WorksInfo;
+  suggestIds: number[];
+  visited: Visited;
 }
 
-export const IndividualWorksDetail: React.VFC<Props> = ({ worksInfo }) => {
+export const IndividualWorksDetail: React.VFC<Props> = ({ worksInfo, suggestIds, visited }) => {
   return (
     <StyledContainer>
       <StyledSection>
@@ -24,7 +28,11 @@ export const IndividualWorksDetail: React.VFC<Props> = ({ worksInfo }) => {
       </StyledSection>
       <StyledSection>
         <h4>近くにある作品</h4>
-        <p>作品作品</p>
+        <StyledSuggestWorksContainer>
+          {suggestIds.slice(0, 4).map((worksId) => {
+            return <SuggestedWorks worksId={worksId} isVisited={visited[worksId]} key={worksId}></SuggestedWorks>;
+          })}
+        </StyledSuggestWorksContainer>
       </StyledSection>
     </StyledContainer>
   );
@@ -43,4 +51,9 @@ const StyledSection = styled.section`
   & > h4 {
     margin-bottom: 3px;
   }
+`;
+
+const StyledSuggestWorksContainer = styled.div`
+  width: 100%;
+  display: flex;
 `;

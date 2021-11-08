@@ -84,7 +84,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
             isFull={isFull}
             setIsFull={setIsFull}
           />
-          {!isFull && <IndividualWorksDetail worksInfo={worksInfo} />}
+          {!isFull && <IndividualWorksDetail worksInfo={worksInfo} suggestIds={suggestIds} visited={visited} />}
         </StyledWorksContainer>
       </StyledContentContainer>
     </StyledRoot>
