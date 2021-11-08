@@ -92,6 +92,7 @@ export const AppRoot: React.VFC = () => {
               setSelectId={setSelectId}
               layout={layout}
               setIsShowHamburger={setIsShowHamburger}
+              coords={coords}
             />
           </Route>
           {!isProd && (

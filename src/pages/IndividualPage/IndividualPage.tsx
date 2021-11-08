@@ -9,6 +9,8 @@ import { IndividualWorksWindow } from './IndividualWorksWindow';
 import { isMobile } from 'react-device-detect';
 import { Visited } from 'AppRoot';
 import { LayoutType } from 'constants/Layout';
+import { Coord } from 'constants/MapCoords';
+import { sortWorksByDistance } from 'utils/sortWorks';
 
 interface Params {
   id: string;
@@ -19,6 +21,7 @@ interface Props {
   visited: Visited;
   layout: LayoutType;
   setIsShowHamburger: (isShowHamburger: boolean) => void;
+  coords: Coord[];
 }
 
 const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = ({
@@ -28,6 +31,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   visited,
   layout,
   setIsShowHamburger,
+  coords,
 }) => {
   const worksId = Number(match.params.id);
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
@@ -55,7 +59,6 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   if (worksInfo === undefined) {
     return <></>;
   }
-
   return (
     <StyledRoot>
       <Header

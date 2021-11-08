@@ -1,10 +1,10 @@
 import { Coord } from 'constants/MapCoords';
 
-export const sortWorksByDistance = (id: number, coordsArray: Coord[]): number[] => {
-  const myCoord = coordsArray.filter(({ id }) => id === id)[0];
-  const sortedCoordsArray = coordsArray.sort(
-    (coord1, coord2) => calcSquaredDistance(myCoord, coord1) - calcSquaredDistance(myCoord, coord2),
-  );
+export const sortWorksByDistance = (worksId: number, coordsArray: Coord[]): number[] => {
+  const myCoord = coordsArray.filter(({ id }) => id === worksId)[0];
+  const sortedCoordsArray = coordsArray
+    .slice()
+    .sort((coord1, coord2) => calcSquaredDistance(myCoord, coord1) - calcSquaredDistance(myCoord, coord2));
   const sortedId = sortedCoordsArray.map((coord) => coord.id);
   return sortedId;
 };
