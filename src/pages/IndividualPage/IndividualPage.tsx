@@ -56,6 +56,13 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
     setVisited({ ...visited, [worksId.toString()]: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [worksId, setVisited]);
+
+  const suggestIds = React.useMemo<number[]>(() => {
+    const notVisitedSortedIds = sortWorksByDistance(worksId, coords).filter((id) => !visited[id] && id !== worksId);
+    const visitedSortedIds = sortWorksByDistance(worksId, coords).filter((id) => visited[id] && id !== worksId);
+    return notVisitedSortedIds.concat(visitedSortedIds);
+  }, [worksId, coords, visited]);
+
   if (worksInfo === undefined) {
     return <></>;
   }
