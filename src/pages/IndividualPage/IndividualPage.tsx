@@ -4,7 +4,7 @@ import { worksInfoArr } from 'constants/WorksInfo';
 import React from 'react';
 import { RouteComponentProps, useHistory, withRouter } from 'react-router';
 import styled from 'styled-components';
-import { IndividualWorksCaption } from './IndividualWorksDetail';
+import { IndividualWorksDetail } from './IndividualWorksDetail';
 import { IndividualWorksWindow } from './IndividualWorksWindow';
 import { isMobile } from 'react-device-detect';
 import { Visited } from 'AppRoot';
@@ -84,7 +84,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
             isFull={isFull}
             setIsFull={setIsFull}
           />
-          {!isFull && <IndividualWorksCaption worksInfo={worksInfo} />}
+          {!isFull && <IndividualWorksDetail worksInfo={worksInfo} />}
         </StyledWorksContainer>
       </StyledContentContainer>
     </StyledRoot>

@@ -7,7 +7,7 @@ interface Props {
   worksInfo: WorksInfo;
 }
 
-export const IndividualWorksCaption: React.VFC<Props> = ({ worksInfo }) => {
+export const IndividualWorksDetail: React.VFC<Props> = ({ worksInfo }) => {
   return (
     <StyledContainer>
       <StyledSection>
