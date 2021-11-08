@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { worksInfoArr } from 'constants/WorksInfo';
 import { theme } from 'constants/Theme';
 import { useHistory } from 'react-router';
-import { mapCoordsArr, MapModeId } from 'constants/MapCoords';
+import { Coord, mapCoordsArr, MapModeId } from 'constants/MapCoords';
 import { LayoutType } from 'constants/Layout';
 import { sideDetailWidth } from 'pages/TopPage/WorksDetail';
 import { bottomDetailHeight } from 'pages/TopPage/WorksDetailBottom';
@@ -21,6 +21,7 @@ interface Props {
   layoutRef: React.MutableRefObject<LayoutType>;
   setMapModeId: (mapMode: MapModeId) => void;
   mapModeIdRef: React.MutableRefObject<MapModeId>;
+  setCoords: (coords: Coord[]) => void;
   bgcolor?: string;
   padding?: number;
 }
@@ -42,6 +43,7 @@ export const WorksListSketch = React.memo<Props>(
     layoutRef,
     setMapModeId,
     mapModeIdRef,
+    setCoords,
     bgcolor = 'black',
     padding = 5,
   }) => {
@@ -65,6 +67,15 @@ export const WorksListSketch = React.memo<Props>(
         );
       } catch (e) {}
     }, []);
+
+    React.useEffect(() => {
+      return () => {
+        const coords: Coord[] = obstacleSystem.particles.map((particle) => {
+          return { id: particle.id, x: particle.x, y: particle.y };
+        });
+        setCoords(coords);
+      };
+    });
 
     const wheelOpt: boolean | AddEventListenerOptions = supportsPassive ? { passive: false } : false;
     const preventDefault = (e: MouseEvent | WheelEvent | TouchEvent) => e.preventDefault();

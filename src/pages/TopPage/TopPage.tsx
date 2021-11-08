@@ -2,7 +2,7 @@ import { Visited } from 'AppRoot';
 import { Header, headerHeight } from 'components/Header/Header';
 import { WorksListSketch } from 'components/Sketches/WorksListSketch';
 import { LayoutType } from 'constants/Layout';
-import { MapModeId } from 'constants/MapCoords';
+import { Coord, MapModeId } from 'constants/MapCoords';
 import React from 'react';
 import styled from 'styled-components';
 import { WorksDetail } from './WorksDetail';
@@ -18,6 +18,7 @@ interface Props {
   layout: LayoutType;
   isShowHamburgerRef: React.MutableRefObject<boolean>;
   setIsShowHamburger: (isShowHamburger: boolean) => void;
+  setCoords: (coords: Coord[]) => void;
 }
 
 export const TopPage: React.VFC<Props> = ({
@@ -29,6 +30,7 @@ export const TopPage: React.VFC<Props> = ({
   layout,
   isShowHamburgerRef,
   setIsShowHamburger,
+  setCoords,
 }) => {
   const selectIdRef = React.useRef<number>(0);
   const [isShowDetail, setIsShowDetail] = React.useState<boolean>(false);
@@ -65,6 +67,7 @@ export const TopPage: React.VFC<Props> = ({
             layoutRef={layoutRef}
             setMapModeId={setMapModeId}
             mapModeIdRef={mapModeIdRef}
+            setCoords={setCoords}
             bgcolor="#0e0e0e"
           ></WorksListSketch>
           <StyledLoading isNarrowLayout={layout === 'NARROW'} id="p5_loading">
