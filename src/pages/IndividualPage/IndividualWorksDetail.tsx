@@ -5,6 +5,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { CreatorDescription } from './CreatorDescription';
 import { SuggestedWorks } from './SuggestedWorks';
+import { convertDeviceString } from 'utils/convertDeviceString';
 
 interface Props {
   worksInfo: WorksInfo;
@@ -18,6 +19,10 @@ export const IndividualWorksDetail: React.VFC<Props> = ({ worksInfo, suggestIds,
       <StyledSection>
         <h4>作品名</h4>
         <p>{worksInfo.title}</p>
+      </StyledSection>
+      <StyledSection>
+        <h4>対応デバイス</h4>
+        <p>{convertDeviceString(worksInfo.device)}</p>
       </StyledSection>
       <StyledSection>
         <h4>制作者</h4>
