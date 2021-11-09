@@ -35,12 +35,20 @@ export const Header: React.VFC<Props> = ({
           </StyledLeftHalf>
           <StyledRightHalf>
             {(layout === 'MID' || !isFull) && (
-              <StyledButton>
-                <StyledLinkToOuterPage href={QUESTIONNAIRE_URL}>
+              <StyledQuestionnaireButton>
+                <StyledSVG width="128" height="46" viewBox="0 0 128 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M0 0H21.8295H128V46H21.8295H0L21.8295 23L0 0Z"
+                    fill="#E94C60"
+                  />
+                </StyledSVG>
+                <StyledLinkToQuestionnaire href={QUESTIONNAIRE_URL}>
                   <p className="narrow">全体アンケート</p>
                   <StyledUnderBar id="underbar"></StyledUnderBar>
-                </StyledLinkToOuterPage>
-              </StyledButton>
+                </StyledLinkToQuestionnaire>
+              </StyledQuestionnaireButton>
             )}
             {isFull && setIsFull && (
               <StyledButton onClick={() => setIsFull(false)}>
@@ -72,6 +80,10 @@ export const Header: React.VFC<Props> = ({
         <StyledButton>
           <StyledLinkToOuterPage href={QUESTIONNAIRE_URL}>
             <p>全体アンケート</p>
+            <svg width="158" height="65" viewBox="0 0 158 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fillRule="evenodd" clipRule="evenodd" d="M158 0H0V48V65L79 48L158 65V48V0Z" fill="#E94C60" />
+            </svg>
+
             <StyledUnderBar id="underbar"></StyledUnderBar>
           </StyledLinkToOuterPage>
         </StyledButton>
@@ -120,6 +132,10 @@ const StyledLogo = styled.a`
   }
 `;
 
+const StyledSVG = styled.svg`
+  height: 100%;
+`;
+
 const StyledNavigationContainer = styled.div`
   display: flex;
   align-items: center;
@@ -129,7 +145,7 @@ const StyledNavigationContainer = styled.div`
 
   &.narrow {
     margin-left: 15px;
-    margin-right: 10px;
+    padding-right: 0px;
     justify-content: space-between;
   }
 `;
@@ -171,6 +187,31 @@ const StyledButton = styled.button`
   }
 `;
 
+const StyledQuestionnaireButton = styled.button`
+  background-color: transparent;
+  outline: none;
+  border: none;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  z-index: 40;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 9px;
+  right: 0px;
+  &:hover {
+    cursor: pointer;
+    background-color: #474747;
+    #underbar {
+      width: 100%;
+    }
+  }
+  & p.narrow {
+    font-size: 11px;
+  }
+`;
+
 const StyledUnderBar = styled.div`
   width: 0%;
   height: 1px;
@@ -185,6 +226,20 @@ const StyledLinkToOuterPage = styled.a`
   justify-content: center;
   text-decoration: none;
   color: white;
+`;
+
+const StyledLinkToQuestionnaire = styled.a`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-decoration: none;
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 60%;
+  transform: translate(-50%, -50%);
 `;
 
 const StyledLinkToTop = styled(Link)`
