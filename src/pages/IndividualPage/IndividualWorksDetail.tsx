@@ -1,8 +1,9 @@
 import { Visited } from 'AppRoot';
 import { Caption } from 'components/Caption/Caption';
-import { WorksInfo } from 'constants/WorksInfo';
+import { Creator, WorksInfo } from 'constants/WorksInfo';
 import React from 'react';
 import styled from 'styled-components';
+import { CreatorDescription } from './CreatorDescription';
 import { SuggestedWorks } from './SuggestedWorks';
 
 interface Props {
@@ -20,7 +21,11 @@ export const IndividualWorksDetail: React.VFC<Props> = ({ worksInfo, suggestIds,
       </StyledSection>
       <StyledSection>
         <h4>制作者</h4>
-        <p>{worksInfo.creators.join(', ')}</p>
+        <StyledCreatorsContainer>
+          {worksInfo.creators.map((worksCreator, idx) => {
+            return <CreatorDescription creator={worksCreator} key={idx}></CreatorDescription>;
+          })}
+        </StyledCreatorsContainer>
       </StyledSection>
       <StyledSection>
         <h4>作品説明</h4>
@@ -53,8 +58,12 @@ const StyledSection = styled.section`
     margin-bottom: 3px;
   }
 `;
-
 const StyledSuggestWorksContainer = styled.div`
+  width: 100%;
+  display: flex;
+`;
+
+const StyledCreatorsContainer = styled.div`
   width: 100%;
   display: flex;
 `;
