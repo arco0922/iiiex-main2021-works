@@ -1,3 +1,8 @@
+export interface Creator {
+  name: string;
+  affiliation: string;
+}
+
 export interface WorksInfo {
   id: number;
   title: string;
@@ -5,10 +10,7 @@ export interface WorksInfo {
   srcUrlPc?: string;
   srcUrlSp?: string;
   aspectRatio?: number;
-  creators: {
-    name: string;
-    affiliation: string;
-  }[];
+  creators: Creator[];
   caption: string;
 }
 
