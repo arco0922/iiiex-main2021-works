@@ -43,10 +43,6 @@ export const WorksDetail: React.VFC<Props> = ({ selectId, visited, isShowDetail,
           <p>{info.creators.map((creator) => creator.name).join(', ')}</p>
         </StyledSection>
         <StyledSection>
-          <h4>制作者</h4>
-          <Creator creatorText={info.creators}></Creator>
-        </StyledSection>
-        <StyledSection>
           <h4>作品説明</h4>
           <Caption captionText={info.caption}></Caption>
         </StyledSection>
