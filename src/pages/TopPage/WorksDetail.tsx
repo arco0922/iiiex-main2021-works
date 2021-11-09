@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import CloseIcon from '@mui/icons-material/Close';
 import { sideMenuWidth } from './WorksListMenu';
 import { LayoutType } from 'constants/Layout';
+import { convertDeviceString } from 'utils/convertDeviceString';
 
 interface Props {
   selectId: number;
@@ -38,6 +39,10 @@ export const WorksDetail: React.VFC<Props> = ({ selectId, visited, isShowDetail,
           <StyledSection>
             <h4>作品名</h4>
             <p>{info.title}</p>
+          </StyledSection>
+          <StyledSection>
+            <h4>対応デバイス</h4>
+            <p>{convertDeviceString(info.device)}</p>
           </StyledSection>
           <StyledSection>
             <h4>制作者</h4>
