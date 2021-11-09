@@ -6,7 +6,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { worksInfoArr } from 'constants/WorksInfo';
 import useLocalStorage from 'use-local-storage';
-import { MapModeId } from 'constants/MapCoords';
+import { Coord, mapCoordsArr, MapModeId } from 'constants/MapCoords';
 import { layoutBorder, LayoutType } from 'constants/Layout';
 import { useWindowDimensions } from 'hooks/useWindowDimensions';
 import styled from 'styled-components';
@@ -58,6 +58,10 @@ export const AppRoot: React.VFC = () => {
     isShowHamburgerRef.current = isShowHamburger;
   }, [isShowHamburger]);
 
+  const [coords, setCoords] = React.useState<Coord[]>(
+    mapCoordsArr.filter(({ modeId }) => modeId === mapModeId)[0].coords,
+  );
+
   return (
     <StyledRoot containerWidth={width} containerHeight={height}>
       <Router>
@@ -78,6 +82,7 @@ export const AppRoot: React.VFC = () => {
               layout={layout}
               isShowHamburgerRef={isShowHamburgerRef}
               setIsShowHamburger={setIsShowHamburger}
+              setCoords={setCoords}
             />
           </Route>
           <Route path="/works/:id" exact>
@@ -87,6 +92,7 @@ export const AppRoot: React.VFC = () => {
               setSelectId={setSelectId}
               layout={layout}
               setIsShowHamburger={setIsShowHamburger}
+              coords={coords}
             />
           </Route>
           {!isProd && (

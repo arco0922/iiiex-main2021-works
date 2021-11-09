@@ -4,11 +4,13 @@ import { worksInfoArr } from 'constants/WorksInfo';
 import React from 'react';
 import { RouteComponentProps, useHistory, withRouter } from 'react-router';
 import styled from 'styled-components';
-import { IndividualWorksCaption } from './IndividualWorksDetail';
+import { IndividualWorksDetail } from './IndividualWorksDetail';
 import { IndividualWorksWindow } from './IndividualWorksWindow';
 import { isMobile } from 'react-device-detect';
 import { Visited } from 'AppRoot';
 import { LayoutType } from 'constants/Layout';
+import { Coord } from 'constants/MapCoords';
+import { sortWorksByDistance } from 'utils/sortWorks';
 
 interface Params {
   id: string;
@@ -19,6 +21,7 @@ interface Props {
   visited: Visited;
   layout: LayoutType;
   setIsShowHamburger: (isShowHamburger: boolean) => void;
+  coords: Coord[];
 }
 
 const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = ({
@@ -28,6 +31,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   visited,
   layout,
   setIsShowHamburger,
+  coords,
 }) => {
   const worksId = Number(match.params.id);
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
@@ -52,10 +56,16 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
     setVisited({ ...visited, [worksId.toString()]: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [worksId, setVisited]);
+
+  const suggestIds = React.useMemo<number[]>(() => {
+    const notVisitedSortedIds = sortWorksByDistance(worksId, coords).filter((id) => !visited[id] && id !== worksId);
+    const visitedSortedIds = sortWorksByDistance(worksId, coords).filter((id) => visited[id] && id !== worksId);
+    return notVisitedSortedIds.concat(visitedSortedIds);
+  }, [worksId, coords, visited]);
+
   if (worksInfo === undefined) {
     return <></>;
   }
-
   return (
     <StyledRoot>
       <Header
@@ -74,7 +84,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
             isFull={isFull}
             setIsFull={setIsFull}
           />
-          {!isFull && <IndividualWorksCaption worksInfo={worksInfo} />}
+          {!isFull && <IndividualWorksDetail worksInfo={worksInfo} suggestIds={suggestIds} visited={visited} />}
         </StyledWorksContainer>
       </StyledContentContainer>
     </StyledRoot>
