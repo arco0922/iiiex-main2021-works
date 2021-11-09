@@ -5,14 +5,23 @@ import styled from 'styled-components';
 import { worksInfoArr } from 'constants/WorksInfo';
 import { theme } from 'constants/Theme';
 import { useHistory } from 'react-router';
-import { mapCoordsArr, MapModeId } from 'constants/MapCoords';
+import { Coord, mapCoordsArr, MapModeId } from 'constants/MapCoords';
+import { LayoutType } from 'constants/Layout';
+import { sideDetailWidth } from 'pages/TopPage/WorksDetail';
+import { bottomDetailHeight } from 'pages/TopPage/WorksDetailBottom';
 
 interface Props {
   width: string;
   height: string;
   selectIdRef: React.MutableRefObject<number>;
   setSelectId: (id: number) => void;
+  isShowDetailRef: React.MutableRefObject<boolean>;
+  setIsShowDetail: (isShowDetail: boolean) => void;
+  isShowHamburgerRef: React.MutableRefObject<boolean>;
+  layoutRef: React.MutableRefObject<LayoutType>;
   setMapModeId: (mapMode: MapModeId) => void;
+  mapModeIdRef: React.MutableRefObject<MapModeId>;
+  setCoords: (coords: Coord[]) => void;
   bgcolor?: string;
   padding?: number;
 }
@@ -23,7 +32,21 @@ interface ParticleImage {
 }
 
 export const WorksListSketch = React.memo<Props>(
-  ({ width, height, selectIdRef, setSelectId, setMapModeId, bgcolor = 'black', padding = 5 }) => {
+  ({
+    width,
+    height,
+    selectIdRef,
+    setSelectId,
+    isShowDetailRef,
+    setIsShowDetail,
+    isShowHamburgerRef,
+    layoutRef,
+    setMapModeId,
+    mapModeIdRef,
+    setCoords,
+    bgcolor = 'black',
+    padding = 5,
+  }) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
     const history = useHistory();
 
@@ -45,6 +68,15 @@ export const WorksListSketch = React.memo<Props>(
       } catch (e) {}
     }, []);
 
+    React.useEffect(() => {
+      return () => {
+        const coords: Coord[] = obstacleSystem.particles.map((particle) => {
+          return { id: particle.id, x: particle.x, y: particle.y };
+        });
+        setCoords(coords);
+      };
+    });
+
     const wheelOpt: boolean | AddEventListenerOptions = supportsPassive ? { passive: false } : false;
     const preventDefault = (e: MouseEvent | WheelEvent | TouchEvent) => e.preventDefault();
 
@@ -64,17 +96,9 @@ export const WorksListSketch = React.memo<Props>(
      */
     type DragMovementType = 'Pos-Vel' | 'Pos' | 'None';
 
-    let particleSystem: ParticleSystem;
-    let particleSystem2: ParticleSystem;
     let obstacleSystem: ParticleSystem;
 
-    const particleColor = 'rgba(255,255,255,0)';
-    const particleStrokeColor = 'rgba(120,120,120,0.02)';
-    const particleTriangleColor = 'rgba(255,255,255,0.01)';
-
-    const particleColor2 = 'rgba(255,255,255,0)';
-    const particleStrokeColor2 = 'rgba(255,100,100,0.02)';
-    const particleTriangleColor2 = 'rgba(255,100,100,0.01)';
+    let grid: Grid;
 
     const obstacleColor = 'rgba(255,255,255,1)';
     const obstacleStrokeColor = 'rgba(255,255,255,1)';
@@ -86,25 +110,27 @@ export const WorksListSketch = React.memo<Props>(
     let worldOffsetY: number; // ワールドの中心がスクリーンのどこにあるか
     let worldOffsetScale: number; // ワールドのスクリーン上での縮尺
 
-    const worldWidth = 3000; // ワールドの横幅 ※canvasの横幅とは異なる
-    const worldHeight = 2000; // ワールドの縦幅 ※canvasの縦幅とは異なる
+    const worldWidth = 20000; // ワールドの横幅 ※canvasの横幅とは異なる
+    const worldHeight = 20000; // ワールドの縦幅 ※canvasの縦幅とは異なる
 
-    let worldLokked = false;
+    let isWorldLokked = false;
     let oldMouseX = 0;
     let oldMouseY = 0;
+
+    let oldTouchInterval = 0;
 
     let navigationBtn: p5Types.Element;
 
     const navigationBtnStyleChange = (p5: p5Types, isHover: boolean) => {
       if (isHover) {
-        navigationBtn.style(`cursor: pointer; background-color: #3f3f3f; color: white;`);
+        navigationBtn.style(`cursor: pointer; background-color: ${theme.color.primary}; color: white;`);
       } else {
-        navigationBtn.style(`cursor: default; background-color: white; color: black;`);
+        navigationBtn.style(`cursor: default; background-color: black; color: white;`);
       }
     };
 
     const navigateToIndividual = () => {
-      if (selectIdRef.current === null) {
+      if (selectIdRef.current === null || isWorldLokked) {
         return;
       }
       history.push(`/works/${selectIdRef.current}`);
@@ -113,7 +139,20 @@ export const WorksListSketch = React.memo<Props>(
     const calcSquaredDist = (x1: number, y1: number, x2: number, y2: number) =>
       (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
 
+    const initWorldPosScale = (p5: p5Types) => {
+      const mapCoord = mapCoordsArr.filter(({ modeId }) => modeId === mapModeIdRef.current)[0];
+      const width = p5.width;
+      const height = layoutRef.current === 'NARROW' ? p5.height - bottomDetailHeight : p5.height;
+      worldOffsetX = width / 2 - mapCoord.center.x;
+      worldOffsetY = height / 2 - mapCoord.center.y;
+      worldOffsetScale = p5.min(
+        width / p5.max(mapCoord.border.maxX - mapCoord.border.minX, 1),
+        height / p5.max(mapCoord.border.maxY - mapCoord.border.minY, 1),
+      );
+    };
+
     const zoom = (centerX: number, centerY: number, scaleDiff: number) => {
+      /** centerX, centerY は canvas座標 */
       const newOffsetScale = worldOffsetScale * (1 + scaleDiff);
       if (newOffsetScale > 4 || newOffsetScale < 0.1) {
         return;
@@ -164,10 +203,10 @@ export const WorksListSketch = React.memo<Props>(
         containerRef.current.clientHeight - padding * 2,
       ).parent(canvasParentRef);
 
-      navigationBtn = p5.createButton('作品ページへ');
+      navigationBtn = p5.createButton('作品を見る');
       navigationBtn.parent(containerRef.current);
       navigationBtn.style(
-        `padding: 2px; border: none; transform: translateX(-50%); width: fit-content; border: 1px solid ${selectColor}; border-radius: 5px; background-color: white`,
+        `padding: 4px; border: none; transform: translateX(-50%); width: fit-content; border: 2px solid ${selectColor}; background-color: black; color: white; word-break: keep-all`,
       );
       navigationBtn.mouseOver(() => navigationBtnStyleChange(p5, true));
       navigationBtn.mouseOut(() => navigationBtnStyleChange(p5, false));
@@ -186,7 +225,7 @@ export const WorksListSketch = React.memo<Props>(
       radioDescription.style(radioLabelStyle);
       radioDescription.parent(mapToggleRadios);
 
-      const initialMapModeId = Number(localStorage.getItem('mapModeId')) || 2;
+      const initialMapModeId = mapModeIdRef.current;
 
       mapCoordsArr.forEach(({ modeId, modeName }) => {
         const modeRadio = p5.createElement('input');
@@ -203,20 +242,10 @@ export const WorksListSketch = React.memo<Props>(
         }
       });
 
-      worldOffsetX = p5.width / 2;
-      worldOffsetY = p5.height / 2;
-      worldOffsetScale = p5.width / worldWidth;
+      initWorldPosScale(p5);
 
-      particleSystem = new ParticleSystem(p5, particleStrokeColor, particleTriangleColor, 180, 2, p5.width, p5.height);
-      particleSystem2 = new ParticleSystem(
-        p5,
-        particleStrokeColor2,
-        particleTriangleColor2,
-        180,
-        2,
-        p5.width,
-        p5.height,
-      );
+      grid = new Grid(p5, worldWidth, worldHeight, 100);
+
       obstacleSystem = new ParticleSystem(
         p5,
         obstacleStrokeColor,
@@ -226,20 +255,6 @@ export const WorksListSketch = React.memo<Props>(
         worldWidth,
         worldHeight,
       );
-      for (let i = 0; i < 150; i++) {
-        const x = p5.random(-p5.width / 2 + 10, p5.width / 2 - 10);
-        const y = p5.random(-p5.height / 2 + 10, p5.height / 2 - 10);
-        const velX = p5.random(-2, 2);
-        const velY = p5.random(-2, 2);
-        particleSystem.addParticle(i, x, y, 1, velX, velY, 7, particleColor, 'Inertia', 'None');
-      }
-      for (let i = 0; i < 150; i++) {
-        const x = p5.random(-p5.width / 2 + 10, p5.width / 2 - 10);
-        const y = p5.random(-p5.height / 2 + 10, p5.height / 2 - 10);
-        const velX = p5.random(-2, 2);
-        const velY = p5.random(-2, 2);
-        particleSystem2.addParticle(i, x, y, 1, velX, velY, 7, particleColor2, 'Inertia', 'None');
-      }
 
       mapCoordsArr
         .filter(({ modeId }) => modeId === Number(mapToggleRadios.value()))[0]
@@ -274,17 +289,23 @@ export const WorksListSketch = React.memo<Props>(
     };
 
     const draw = (p5: p5Types) => {
-      p5.background(bgcolor);
+      if (
+        containerRef.current !== null &&
+        (p5.width !== containerRef.current.clientWidth - padding * 2 ||
+          p5.height !== containerRef.current.clientHeight - padding * 2)
+      ) {
+        p5.resizeCanvas(
+          containerRef.current.clientWidth - padding * 2,
+          containerRef.current.clientHeight - padding * 2,
+        );
+      }
 
-      p5.push();
-      p5.translate(p5.width / 2, p5.height / 2);
-      particleSystem.display();
-      particleSystem2.display();
-      p5.pop();
+      p5.background(bgcolor);
 
       p5.push();
       p5.translate(worldOffsetX, worldOffsetY);
       p5.scale(worldOffsetScale);
+      grid.display();
       obstacleSystem.changeWorldOffset(worldOffsetX, worldOffsetY, worldOffsetScale);
       obstacleSystem.setSelectId(selectIdRef.current);
       obstacleSystem.display();
@@ -306,27 +327,57 @@ export const WorksListSketch = React.memo<Props>(
     };
 
     const mousePressed = (p5: p5Types) => {
+      if (!isCursorOnCanvas(p5) || isShowHamburgerRef.current) {
+        return;
+      }
+      if (p5.touches.length === 2) {
+        obstacleSystem.releaseParticles();
+        isWorldLokked = true;
+        const x1 = (p5.touches[0] as p5Types.Vector).x;
+        const y1 = (p5.touches[0] as p5Types.Vector).y;
+        const x2 = (p5.touches[1] as p5Types.Vector).x;
+        const y2 = (p5.touches[1] as p5Types.Vector).y;
+        oldTouchInterval = Math.sqrt(calcSquaredDist(x1, y1, x2, y2));
+        return;
+      }
       if (obstacleSystem.isCursorOnParticles()) {
         obstacleSystem.catchParticles();
-      } else if (isCursorOnCanvas(p5)) {
-        worldLokked = true;
+      } else {
+        isWorldLokked = true;
         oldMouseX = p5.mouseX;
         oldMouseY = p5.mouseY;
       }
     };
 
     const mouseDragged = (p5: p5Types) => {
-      if (isCursorOnCanvas(p5) && worldLokked) {
-        worldOffsetX += p5.mouseX - oldMouseX;
-        worldOffsetY += p5.mouseY - oldMouseY;
-        oldMouseX = p5.mouseX;
-        oldMouseY = p5.mouseY;
+      if (!isCursorOnCanvas(p5) || !isWorldLokked) {
+        return;
       }
+      if (p5.touches.length === 2) {
+        const x1 = (p5.touches[0] as p5Types.Vector).x;
+        const y1 = (p5.touches[0] as p5Types.Vector).y;
+        const x2 = (p5.touches[1] as p5Types.Vector).x;
+        const y2 = (p5.touches[1] as p5Types.Vector).y;
+        const touchInterval = Math.sqrt(calcSquaredDist(x1, y1, x2, y2));
+        zoom((x1 + x2) / 2, (y1 + y2) / 2, touchInterval / oldTouchInterval - 1);
+        oldTouchInterval = touchInterval;
+        return;
+      }
+      worldOffsetX += p5.mouseX - oldMouseX;
+      worldOffsetY += p5.mouseY - oldMouseY;
+      oldMouseX = p5.mouseX;
+      oldMouseY = p5.mouseY;
     };
 
-    const mouseReleased = () => {
+    const mouseReleased = (p5: p5Types) => {
       obstacleSystem.releaseParticles();
-      worldLokked = false;
+      if (p5.touches.length === 1) {
+        oldMouseX = (p5.touches[0] as p5Types.Vector).x;
+        oldMouseY = (p5.touches[0] as p5Types.Vector).y;
+      }
+      if (p5.touches.length === 0) {
+        isWorldLokked = false;
+      }
     };
 
     class ParticleSystem {
@@ -537,6 +588,7 @@ export const WorksListSketch = React.memo<Props>(
           if (particle.isCursorOn()) {
             document.addEventListener('touchmove', preventDefault, wheelOpt); // mobile
             setSelectId(particle.id);
+            setIsShowDetail(true);
             this.setSelectId(particle.id);
             particle.catch();
           }
@@ -892,7 +944,7 @@ export const WorksListSketch = React.memo<Props>(
         this.p5.noFill();
         this.p5.ellipse(this.x, this.y, this.radius * 2 + 20, this.radius * 2 + 20);
         const navPos = this.calcCanvasCoord(this.x, this.y + this.radius);
-        navigationBtn.style(`font-size: ${this.worldOffsetScale * 12}px;`);
+        navigationBtn.style(`font-size: ${this.worldOffsetScale * 20}px;`);
         if (isPointOnCanvas(this.p5, navPos.x, navPos.y)) {
           navigationBtn.style('display: block');
         } else {
@@ -947,6 +999,34 @@ export const WorksListSketch = React.memo<Props>(
         this.basicMovementType = this.initialBasicMovementType;
         this.dragOffsetX = 0;
         this.dragOffsetY = 0;
+      }
+    }
+
+    class Grid {
+      p5: p5Types;
+      width: number;
+      height: number;
+      interval: number;
+
+      constructor(p5: p5Types, width: number, height: number, interval: number) {
+        this.p5 = p5;
+        this.width = width;
+        this.height = height;
+        this.interval = interval;
+      }
+
+      display() {
+        this.p5.stroke(80);
+        this.p5.beginShape(this.p5.LINES);
+        for (let i = 0; i < this.width; i += this.interval) {
+          this.p5.vertex(i - this.width / 2, -this.height / 2);
+          this.p5.vertex(i - this.width / 2, this.height / 2);
+        }
+        for (let j = 0; j < this.height; j += this.interval) {
+          this.p5.vertex(-this.width / 2, j - this.height / 2);
+          this.p5.vertex(this.width / 2, j - this.height / 2);
+        }
+        this.p5.endShape();
       }
     }
 

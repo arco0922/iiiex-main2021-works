@@ -4,11 +4,13 @@ import { worksInfoArr } from 'constants/WorksInfo';
 import React from 'react';
 import { RouteComponentProps, useHistory, withRouter } from 'react-router';
 import styled from 'styled-components';
-import { IndividualWorksCaption } from './IndividualWorksDetail';
+import { IndividualWorksDetail } from './IndividualWorksDetail';
 import { IndividualWorksWindow } from './IndividualWorksWindow';
 import { isMobile } from 'react-device-detect';
 import { Visited } from 'AppRoot';
-import { useWindowDimensions } from 'hooks/useWindowDimensions';
+import { LayoutType } from 'constants/Layout';
+import { Coord } from 'constants/MapCoords';
+import { sortWorksByDistance } from 'utils/sortWorks';
 
 interface Params {
   id: string;
@@ -17,6 +19,9 @@ interface Props {
   setSelectId: (selectId: number) => void;
   setVisited: (visited: Visited) => void;
   visited: Visited;
+  layout: LayoutType;
+  setIsShowHamburger: (isShowHamburger: boolean) => void;
+  coords: Coord[];
 }
 
 const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = ({
@@ -24,6 +29,9 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   setSelectId,
   setVisited,
   visited,
+  layout,
+  setIsShowHamburger,
+  coords,
 }) => {
   const worksId = Number(match.params.id);
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
@@ -35,11 +43,10 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [worksInfo]);
   const [isFull, setIsFull] = React.useState<boolean>(false);
-  const { height, width } = useWindowDimensions();
-  const isNarrowLayout = width < 800;
-  const iframeWidth = isFull ? '100vw' : isNarrowLayout ? '95vw' : 'max(60vw , 500px)';
+  const isNarrowLayout = layout === 'MID' || layout === 'NARROW';
+  const iframeWidth = isFull ? '' : isNarrowLayout ? '95vw' : 'max(60vw , 500px)';
   const iframeHeight = isFull
-    ? `calc(100vh - ${headerHeight}px)`
+    ? ''
     : `calc( ${iframeWidth} * ${worksInfo?.aspectRatio ? worksInfo.aspectRatio : 9 / 16} )`;
 
   React.useEffect(() => {
@@ -49,13 +56,25 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
     setVisited({ ...visited, [worksId.toString()]: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [worksId, setVisited]);
+
+  const suggestIds = React.useMemo<number[]>(() => {
+    const notVisitedSortedIds = sortWorksByDistance(worksId, coords).filter((id) => !visited[id] && id !== worksId);
+    const visitedSortedIds = sortWorksByDistance(worksId, coords).filter((id) => visited[id] && id !== worksId);
+    return notVisitedSortedIds.concat(visitedSortedIds);
+  }, [worksId, coords, visited]);
+
   if (worksInfo === undefined) {
     return <></>;
   }
-
   return (
     <StyledRoot>
-      <Header showNavigationToTop={true} isFull={isFull} setIsFull={setIsFull} />
+      <Header
+        showNavigationToTop={true}
+        isFull={isFull}
+        setIsFull={setIsFull}
+        layout={layout}
+        setIsShowHamburger={setIsShowHamburger}
+      />
       <StyledContentContainer isFull={isFull}>
         <StyledWorksContainer isNarrowLayout={isNarrowLayout}>
           <IndividualWorksWindow
@@ -65,7 +84,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
             isFull={isFull}
             setIsFull={setIsFull}
           />
-          {!isFull && <IndividualWorksCaption worksInfo={worksInfo} />}
+          {!isFull && <IndividualWorksDetail worksInfo={worksInfo} suggestIds={suggestIds} visited={visited} />}
         </StyledWorksContainer>
       </StyledContentContainer>
     </StyledRoot>
@@ -76,9 +95,9 @@ export const IndividualPage = withRouter(IndividualPageComponent);
 
 const StyledRoot = styled.div`
   background-color: ${theme.color.darkGrey};
-  min-width: 100vw;
-  min-height: 100vh;
-  overflow-y: hidden;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 `;
 
 interface StyledContentContainerProps {
@@ -87,7 +106,7 @@ interface StyledContentContainerProps {
 
 const StyledContentContainer = styled.div<StyledContentContainerProps>`
   width: 100%;
-  height: calc(100vh - ${headerHeight}px);
+  height: calc(100% - ${headerHeight}px);
   padding: ${({ isFull }) => (isFull ? '0' : '20px 10px')};
   overflow-y: auto;
 `;
