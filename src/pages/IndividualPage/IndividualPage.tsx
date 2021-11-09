@@ -11,7 +11,6 @@ import { Visited } from 'AppRoot';
 import { LayoutType } from 'constants/Layout';
 import { Coord } from 'constants/MapCoords';
 import { sortWorksByDistance } from 'utils/sortWorks';
-
 interface Params {
   id: string;
 }
@@ -36,6 +35,15 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   const worksId = Number(match.params.id);
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
   const history = useHistory();
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  React.useEffect(() => {
+    console.log(worksId);
+    containerRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  }, [worksId]);
+
   React.useEffect(() => {
     if (worksInfo === undefined) {
       history.replace('/error');
@@ -76,6 +84,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
         setIsShowHamburger={setIsShowHamburger}
       />
       <StyledContentContainer isFull={isFull}>
+        <ScrollDiv ref={containerRef}></ScrollDiv>
         <StyledWorksContainer isNarrowLayout={isNarrowLayout}>
           <IndividualWorksWindow
             srcUrl={isMobile ? worksInfo.srcUrlSp : worksInfo.srcUrlPc}
@@ -110,6 +119,8 @@ const StyledContentContainer = styled.div<StyledContentContainerProps>`
   padding: ${({ isFull }) => (isFull ? '0' : '20px 10px')};
   overflow-y: auto;
 `;
+
+const ScrollDiv = styled.div``;
 
 interface StyledWorksContainerProps {
   isNarrowLayout: boolean;
