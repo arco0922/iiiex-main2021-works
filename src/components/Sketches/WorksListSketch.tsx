@@ -9,6 +9,7 @@ import { Coord, mapCoordsArr, MapModeId } from 'constants/MapCoords';
 import { LayoutType } from 'constants/Layout';
 import { sideDetailWidth } from 'pages/TopPage/WorksDetail';
 import { bottomDetailHeight } from 'pages/TopPage/WorksDetailBottom';
+import { Visited } from 'AppRoot';
 
 interface Props {
   width: string;
@@ -22,6 +23,7 @@ interface Props {
   setMapModeId: (mapMode: MapModeId) => void;
   mapModeIdRef: React.MutableRefObject<MapModeId>;
   setCoords: (coords: Coord[]) => void;
+  visitedRef: React.MutableRefObject<Visited>;
   bgcolor?: string;
   padding?: number;
 }
@@ -44,6 +46,7 @@ export const WorksListSketch = React.memo<Props>(
     setMapModeId,
     mapModeIdRef,
     setCoords,
+    visitedRef,
     bgcolor = 'black',
     padding = 5,
   }) => {
@@ -183,6 +186,7 @@ export const WorksListSketch = React.memo<Props>(
     }, []);
 
     let thumbnails: ParticleImage[];
+    let checkmark: p5Types.Image;
 
     const preload = (p5: p5Types) => {
       thumbnails = worksInfoArr.map((worksInfo) => {
@@ -191,6 +195,7 @@ export const WorksListSketch = React.memo<Props>(
           img: p5.loadImage(`/static/assets/thumbnails-cropped/${worksInfo.thumbnailBaseName}.png`),
         };
       });
+      checkmark = p5.loadImage('/static/assets/check/check_mark.png');
     };
 
     const setup = (p5: p5Types, canvasParentRef: Element) => {
@@ -271,6 +276,9 @@ export const WorksListSketch = React.memo<Props>(
           obstacleSystem.setTargetPos({ id, x, y });
         });
       obstacleSystem.setTextures(thumbnails);
+
+      obstacleSystem.setVisited(visitedRef.current);
+
       const changedHandler = () => {
         const newVal = Number(mapToggleRadios.value()) as MapModeId;
         setMapModeId(newVal);
@@ -395,6 +403,7 @@ export const WorksListSketch = React.memo<Props>(
       worldOffsetScale: number;
       selectId: number;
       textures: ParticleImage[];
+      visited: Visited | null;
 
       constructor(
         p5: p5Types,
@@ -419,6 +428,7 @@ export const WorksListSketch = React.memo<Props>(
         this.worldOffsetScale = 1;
         this.selectId = selectId;
         this.textures = [];
+        this.visited = null;
       }
 
       setSelectId(id: number) {
@@ -427,6 +437,10 @@ export const WorksListSketch = React.memo<Props>(
 
       setTextures(textures: ParticleImage[]) {
         this.textures = textures;
+      }
+
+      setVisited(visited: Visited) {
+        this.visited = visited;
       }
 
       display() {
@@ -504,6 +518,11 @@ export const WorksListSketch = React.memo<Props>(
         this.particles.forEach((particle) => {
           if (particle.id === this.selectId) {
             particle.displaySelection();
+          }
+        });
+        this.particles.forEach((particle) => {
+          if (this.visited && this.visited[particle.id]) {
+            particle.checkAsVisited();
           }
         });
       }
@@ -951,6 +970,16 @@ export const WorksListSketch = React.memo<Props>(
           navigationBtn.style('display: none');
         }
         navigationBtn.position(navPos.x + padding, navPos.y + padding);
+      }
+
+      checkAsVisited() {
+        this.p5.image(
+          checkmark,
+          this.x + this.radius * 0.5,
+          this.y + this.radius * 0.5,
+          this.radius * 0.5,
+          this.radius * 0.5,
+        );
       }
 
       isCursorOn() {
