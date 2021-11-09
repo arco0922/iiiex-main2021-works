@@ -11,6 +11,7 @@ import { Visited } from 'AppRoot';
 import { LayoutType } from 'constants/Layout';
 import { Coord } from 'constants/MapCoords';
 import { sortWorksByDistance } from 'utils/sortWorks';
+
 interface Params {
   id: string;
 }
@@ -37,7 +38,6 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   const history = useHistory();
   const containerRef = React.useRef<HTMLDivElement>(null);
   React.useEffect(() => {
-    console.log(worksId);
     containerRef.current?.scrollIntoView({
       behavior: 'smooth',
       block: 'start',
