@@ -34,22 +34,24 @@ export const WorksDetail: React.VFC<Props> = ({ selectId, visited, isShowDetail,
         <StyledButton>
           <StyledLink to={`/works/${info.id}`}>作品を見る</StyledLink>
         </StyledButton>
-        <StyledSection>
-          <h4>作品名</h4>
-          <p>{info.title}</p>
-        </StyledSection>
-        <StyledSection>
-          <h4>制作者</h4>
-          <p>{info.creators.map((creator) => creator.name).join(', ')}</p>
-        </StyledSection>
-        <StyledSection>
-          <h4>作品説明</h4>
-          <Caption captionText={info.caption}></Caption>
-        </StyledSection>
-        <StyledSection>
-          <h4>近くにある作品</h4>
-          <p>作品作品</p>
-        </StyledSection>
+        <StyledDetail>
+          <StyledSection>
+            <h4>作品名</h4>
+            <p>{info.title}</p>
+          </StyledSection>
+          <StyledSection>
+            <h4>制作者</h4>
+            <p>{info.creators.map((creator) => creator.name).join(', ')}</p>
+          </StyledSection>
+          <StyledSection>
+            <h4>作品説明</h4>
+            <Caption captionText={info.caption}></Caption>
+          </StyledSection>
+          <StyledSection>
+            <h4>近くにある作品</h4>
+            <p>作品作品</p>
+          </StyledSection>
+        </StyledDetail>
       </StyledDetailContainer>
     </StyledContainer>
   );
