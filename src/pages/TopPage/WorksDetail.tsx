@@ -47,10 +47,6 @@ export const WorksDetail: React.VFC<Props> = ({ selectId, visited, isShowDetail,
             <h4>作品説明</h4>
             <Caption captionText={info.caption}></Caption>
           </StyledSection>
-          <StyledSection>
-            <h4>近くにある作品</h4>
-            <p>作品作品</p>
-          </StyledSection>
         </StyledDetail>
       </StyledDetailContainer>
     </StyledContainer>
