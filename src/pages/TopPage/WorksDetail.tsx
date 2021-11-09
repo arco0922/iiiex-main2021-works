@@ -1,5 +1,6 @@
 import { Visited } from 'AppRoot';
 import { Caption } from 'components/Caption/Caption';
+import { Creator } from 'components/Creator/Creator';
 import { theme } from 'constants/Theme';
 import { worksInfoArr } from 'constants/WorksInfo';
 import React from 'react';

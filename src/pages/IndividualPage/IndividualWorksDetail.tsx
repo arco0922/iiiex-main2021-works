@@ -20,7 +20,7 @@ export const IndividualWorksDetail: React.VFC<Props> = ({ worksInfo, suggestIds,
       </StyledSection>
       <StyledSection>
         <h4>制作者</h4>
-        <p>{worksInfo.creators.join(', ')}</p>
+        <p>{worksInfo.creators.map((creator) => creator.name).join(', ')}</p>
       </StyledSection>
       <StyledSection>
         <h4>作品説明</h4>
