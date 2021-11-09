@@ -21,6 +21,7 @@ export const IndividualWorksDetail: React.VFC<Props> = ({ worksInfo, suggestIds,
       <StyledSection>
         <h4>制作者</h4>
         <p>{worksInfo.creators.map((creator) => creator.name).join(', ')}</p>
+        <p>{worksInfo.creators.map((creator) => creator.affiliation).join(', ')}</p>
       </StyledSection>
       <StyledSection>
         <h4>作品説明</h4>
@@ -52,7 +53,6 @@ const StyledSection = styled.section`
     margin-bottom: 3px;
   }
 `;
-
 const StyledSuggestWorksContainer = styled.div`
   width: 100%;
   display: flex;

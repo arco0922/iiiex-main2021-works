@@ -83,7 +83,7 @@ export const worksInfoArr: WorksInfo[] = [
     ],
     caption: `本作品は、赤ちゃんが周囲の環境や家族をキャリブレーションしていくゲーム作品である。前作のゼロマインドでは「0歳児パンク」をテーマに扱ったが、本作は前作の謎解き要素を秘めている。赤ちゃんは周囲の興味を引きたくて、自身のベクトルに、大人達を誘導していく。予測不可能な赤ちゃんによってキャリブレーションされる大人達。作者の息子は1歳になり、一人でよちよち歩けるようになってきた。着々と赤ちゃんから子供へと距離を縮めている。本作品は、赤ちゃんキョリブレーションに着目し、母親なりの解釈を加えた作品である。ぜひ大人も赤ちゃんとの距離を縮めて、よちよち大冒険してほしい。`,
     srcUrlPc: 'https://hardcore-nobel-4e99fe.netlify.app/',
-    srcUrlSp: 'https://koyama4konoka.github.io/ZeroToOneMind/mobile.html',
+    srcUrlSp: 'https://hardcore-nobel-4e99fe.netlify.app/mobile.html',
   },
   {
     id: 3,
@@ -343,7 +343,7 @@ export const worksInfoArr: WorksInfo[] = [
     100万行におよぶ作者の4年分の生活データと日記の内容を合わせて生成されたリズムゲームを繰り返しプレイすることで、身体的にリズムを実感するだけでなく、感覚的にも測定値と自己認識の生活のズレをシンクロさせるというキャリブレーション的なアプローチをもって、新しい「生活リズムの具現化」を提案します
     `,
     srcUrlPc: 'https://tiger0ym.github.io/iiiex/',
-    srcUrlSp: 'https://tiger0ym.github.io/iiiex/',
+    srcUrlSp: 'https://tiger0ym.github.io/iiiex/mobile.html',
   },
   {
     id: 13,
