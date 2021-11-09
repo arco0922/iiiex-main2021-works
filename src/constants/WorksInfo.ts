@@ -13,7 +13,7 @@ export interface WorksInfo {
   aspectRatio?: number;
   creators: Creator[];
   caption: string;
-  device: 'PC' | 'SP' | 'BOTH';
+  device: Device;
 }
 
 export const worksInfoArr: WorksInfo[] = [
