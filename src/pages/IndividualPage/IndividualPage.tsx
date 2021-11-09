@@ -86,9 +86,9 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
         layout={layout}
         setIsShowHamburger={setIsShowHamburger}
       />
-      <StyledContentContainer isFull={isFull}>
+      <StyledContentContainer>
         <ScrollDiv ref={containerRef}></ScrollDiv>
-        <StyledWorksContainer isNarrowLayout={isNarrowLayout}>
+        <StyledWorksContainer isFull={isFull} isNarrowLayout={isNarrowLayout}>
           <IndividualWorksWindow
             srcUrl={isMobile ? worksInfo.srcUrlSp : worksInfo.srcUrlPc}
             iframeHeight={iframeHeight}
@@ -112,14 +112,9 @@ const StyledRoot = styled.div`
   overflow: hidden;
 `;
 
-interface StyledContentContainerProps {
-  isFull: boolean;
-}
-
-const StyledContentContainer = styled.div<StyledContentContainerProps>`
+const StyledContentContainer = styled.div`
   width: 100%;
   height: calc(100% - ${headerHeight}px);
-  padding: ${({ isFull }) => (isFull ? '0' : '20px 10px')};
   overflow-y: auto;
 `;
 
@@ -127,10 +122,12 @@ const ScrollDiv = styled.div``;
 
 interface StyledWorksContainerProps {
   isNarrowLayout: boolean;
+  isFull: boolean;
 }
 
 const StyledWorksContainer = styled.div<StyledWorksContainerProps>`
   display: flex;
   justify-content: center;
   flex-direction: ${({ isNarrowLayout }) => (isNarrowLayout ? 'column' : 'row')};
+  padding: ${({ isFull }) => (isFull ? '0' : '20px 10px')};
 `;
