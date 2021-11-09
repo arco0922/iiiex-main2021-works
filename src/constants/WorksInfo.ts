@@ -22,8 +22,7 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '中川陽介',
-        affiliation: `情報理工学系研究科
-        苗村研究室 修士1年
+        affiliation: `情報理工学系研究科 苗村研究室 修士1年
         `,
       },
       {
@@ -275,8 +274,7 @@ export const worksInfoArr: WorksInfo[] = [
       },
       {
         name: '市倉愛子',
-        affiliation: `学際情報学府 
-稲葉・岡田研究室 修士1年`,
+        affiliation: `学際情報学府 稲葉・岡田研究室 修士1年`,
       },
       {
         name: '間宮竜大',
