@@ -13,10 +13,6 @@ interface Props {
 }
 
 export const IndividualWorksDetail: React.VFC<Props> = ({ worksInfo, suggestIds, visited }) => {
-  const creators = React.useMemo<Creator[]>(() => {
-    return worksInfo.creators;
-  }, [worksInfo]);
-
   return (
     <StyledContainer>
       <StyledSection>
@@ -26,7 +22,7 @@ export const IndividualWorksDetail: React.VFC<Props> = ({ worksInfo, suggestIds,
       <StyledSection>
         <h4>制作者</h4>
         <StyledCreatorsContainer>
-          {creators.map((worksCreator, idx) => {
+          {worksInfo.creators.map((worksCreator, idx) => {
             return <CreatorDescription creator={worksCreator} key={idx}></CreatorDescription>;
           })}
         </StyledCreatorsContainer>
