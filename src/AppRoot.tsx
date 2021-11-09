@@ -32,6 +32,11 @@ export const AppRoot: React.VFC = () => {
 
   const [selectId, setSelectId] = React.useState<number>(initialSelectId);
   const [visited, setVisited] = useLocalStorage<Visited>('visited', initailVisited);
+  const visitedRef = React.useRef<Visited>(initailVisited);
+  React.useEffect(() => {
+    visitedRef.current = visited;
+  }, [visited]);
+
   const [mapModeId, setMapModeId] = useLocalStorage<MapModeId>('mapModeId', 1);
   const mapModeIdRef = React.useRef<MapModeId>(1);
 
@@ -83,6 +88,7 @@ export const AppRoot: React.VFC = () => {
               isShowHamburgerRef={isShowHamburgerRef}
               setIsShowHamburger={setIsShowHamburger}
               setCoords={setCoords}
+              visitedRef={visitedRef}
             />
           </Route>
           <Route path="/works/:id" exact>
