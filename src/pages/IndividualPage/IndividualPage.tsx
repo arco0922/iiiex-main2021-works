@@ -66,10 +66,13 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   }, [worksId, setVisited]);
 
   const suggestIds = React.useMemo<number[]>(() => {
+    if (worksInfo === undefined) {
+      return [];
+    }
     const notVisitedSortedIds = sortWorksByDistance(worksId, coords).filter((id) => !visited[id] && id !== worksId);
     const visitedSortedIds = sortWorksByDistance(worksId, coords).filter((id) => visited[id] && id !== worksId);
     return notVisitedSortedIds.concat(visitedSortedIds);
-  }, [worksId, coords, visited]);
+  }, [worksId, worksInfo, coords, visited]);
 
   if (worksInfo === undefined) {
     return <></>;

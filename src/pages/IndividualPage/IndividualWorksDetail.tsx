@@ -29,9 +29,10 @@ export const IndividualWorksDetail: React.VFC<Props> = ({ worksInfo, suggestIds,
       <StyledSection>
         <h4>近くにある作品</h4>
         <StyledSuggestWorksContainer>
-          {suggestIds.slice(0, 4).map((worksId) => {
-            return <SuggestedWorks worksId={worksId} isVisited={visited[worksId]} key={worksId}></SuggestedWorks>;
-          })}
+          {suggestIds.length >= 4 &&
+            suggestIds.slice(0, 4).map((worksId) => {
+              return <SuggestedWorks worksId={worksId} isVisited={visited[worksId]} key={worksId}></SuggestedWorks>;
+            })}
         </StyledSuggestWorksContainer>
       </StyledSection>
     </StyledContainer>
