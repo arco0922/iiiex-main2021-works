@@ -3,6 +3,7 @@ export interface Creator {
   affiliation: string;
 }
 
+export type Device = 'PC' | 'SP' | 'BOTH';
 export interface WorksInfo {
   id: number;
   title: string;
