@@ -52,7 +52,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   }, [worksInfo]);
   const [isFull, setIsFull] = React.useState<boolean>(false);
   const isNarrowLayout = layout === 'MID' || layout === 'NARROW';
-  const iframeWidth = isFull ? '' : isNarrowLayout ? '95vw' : 'max(60vw , 500px)';
+  const iframeWidth = isFull ? '' : isNarrowLayout ? '95vw' : 'max(80vw , 500px)';
   const iframeHeight = isFull
     ? ''
     : `calc( ${iframeWidth} * ${worksInfo?.aspectRatio ? worksInfo.aspectRatio : 9 / 16} )`;
@@ -116,6 +116,9 @@ const StyledContentContainer = styled.div`
   width: 100%;
   height: calc(100% - ${headerHeight}px);
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const ScrollDiv = styled.div``;
@@ -126,8 +129,8 @@ interface StyledWorksContainerProps {
 }
 
 const StyledWorksContainer = styled.div<StyledWorksContainerProps>`
+  width: 80%;
   display: flex;
-  justify-content: center;
-  flex-direction: ${({ isNarrowLayout }) => (isNarrowLayout ? 'column' : 'row')};
+  flex-direction: column;
   padding: ${({ isFull }) => (isFull ? '0' : '20px 10px')};
 `;
