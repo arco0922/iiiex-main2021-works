@@ -19,6 +19,7 @@ interface Props {
   isShowHamburgerRef: React.MutableRefObject<boolean>;
   setIsShowHamburger: (isShowHamburger: boolean) => void;
   setCoords: (coords: Coord[]) => void;
+  visitedRef: React.MutableRefObject<Visited>;
 }
 
 export const TopPage: React.VFC<Props> = ({
@@ -31,6 +32,7 @@ export const TopPage: React.VFC<Props> = ({
   isShowHamburgerRef,
   setIsShowHamburger,
   setCoords,
+  visitedRef,
 }) => {
   const selectIdRef = React.useRef<number>(0);
   const [isShowDetail, setIsShowDetail] = React.useState<boolean>(false);
@@ -68,6 +70,7 @@ export const TopPage: React.VFC<Props> = ({
             setMapModeId={setMapModeId}
             mapModeIdRef={mapModeIdRef}
             setCoords={setCoords}
+            visitedRef={visitedRef}
             bgcolor="#0e0e0e"
           ></WorksListSketch>
           <StyledLoading isNarrowLayout={layout === 'NARROW'} id="p5_loading">
