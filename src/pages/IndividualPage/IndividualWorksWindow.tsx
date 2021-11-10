@@ -62,7 +62,21 @@ export const IndividualWorksWindow: React.VFC<Props> = ({ srcUrl, iframeWidth, i
         {isFull ? (
           <StyledExitFullScreenButton onClick={exitFullScreen}>全画面表示を終了する</StyledExitFullScreenButton>
         ) : (
-          <StyledFullScreenButton onClick={makeFullScreen}>作品を全画面で表示する</StyledFullScreenButton>
+          <StyledFullScreenButton onClick={makeFullScreen}>
+            <StyledSVG width="225" height="113" viewBox="0 0 225 113" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M0 0C0 62.132 50.368 112.5 112.5 112.5C174.632 112.5 225 62.132 225 0H0Z"
+                fill="#2A70B8"
+              />
+            </StyledSVG>
+            <p>
+              作品を全画面で
+              <br />
+              表示する
+            </p>
+          </StyledFullScreenButton>
         )}
       </StyledContainer>
       <StyledNavigationArea isFull={isFull}>
@@ -89,13 +103,11 @@ const StyledContainer = styled.div<StyledContainerProps>`
   min-width: ${({ iframeWidth }) => iframeWidth};
   width: ${({ iframeWidth }) => iframeWidth};
   height: ${({ iframeHeight }) => iframeHeight};
-  position: relative;
 `;
 
 const StyledIframeContainer = styled.div`
   width: 100%;
   height: 100%;
-  position: relative;
 `;
 
 const StyledIframe = styled.iframe`
@@ -134,20 +146,25 @@ const StyledSkeleton = styled.div`
 `;
 
 const StyledFullScreenButton = styled.button`
+  background-color: transparent;
   position: absolute;
-  bottom: -28px;
-  right: 0px;
+  top: 99.5%;
+  right: -3px;
   display: block;
-  height: 25px;
-  background-color: white;
   outline: none;
   border: none;
-  border-radius: 3px;
   padding: 3px;
+  color: white;
   &:hover {
     cursor: pointer;
-    background-color: gray;
-    color: white;
+  }
+  & > p {
+    position: absolute;
+    width: 100%;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 22px;
   }
 `;
 
@@ -200,4 +217,8 @@ const StyledLink = styled(Link)`
   font-size: 15px;
   text-decoration: none;
   color: white;
+`;
+
+const StyledSVG = styled.svg`
+  height: 100%;
 `;
