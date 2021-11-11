@@ -39,7 +39,7 @@ const StyledContainer = styled.div`
   min-width: ${sideMenuWidth}px;
   width: ${sideMenuWidth}px;
   height: 100%;
-  padding: 4px 0px 4px 4px;
+  padding: 10px 0px 4px 4px;
   background-color: #141414;
   color: white;
   display: flex;
@@ -51,8 +51,9 @@ const StyledContainer = styled.div`
 `;
 
 const StyledTitle = styled.h2`
-  min-height: 24px;
-  width: 95%;
+  min-height: 26px;
+  width: 100%;
+  text-align: center;
   font-size: 16px;
   font-weight: 400;
   border-bottom: 1px solid white;

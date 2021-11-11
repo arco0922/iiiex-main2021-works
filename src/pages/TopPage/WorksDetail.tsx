@@ -36,10 +36,9 @@ export const WorksDetail: React.VFC<Props> = ({ selectId, visited, isShowDetail,
           <StyledLink to={`/works/${info.id}`}>作品を見る</StyledLink>
         </StyledButton>
         <StyledDetail>
-          <StyledSection>
-            <h4>作品名</h4>
-            <p>{info.title}</p>
-          </StyledSection>
+          <StyledWorksTitle>
+            <h2>{info.title}</h2>
+          </StyledWorksTitle>
           <StyledSection>
             <h4>対応デバイス</h4>
             <p>{convertDeviceString(info.device)}</p>
@@ -86,7 +85,7 @@ const StyledContainer = styled.div<StyledContainerProps>`
 
 const StyledCloseIcon = styled(CloseIcon)`
   position: absolute;
-  top: 3px;
+  top: 6px;
   right: 5px;
   z-index: 3;
   &:hover {
@@ -95,12 +94,13 @@ const StyledCloseIcon = styled(CloseIcon)`
 `;
 
 const StyledTitle = styled.h2`
-  min-height: 24px;
-  width: 95%;
+  min-height: 26px;
+  width: 100%;
   font-size: 16px;
   font-weight: 400;
+  text-align: center;
   border-bottom: 1px solid white;
-  margin: 5px 5px 3px 5px;
+  margin: 10px 0px 3px 0px;
 `;
 
 const StyledDetailContainer = styled.div`
@@ -143,7 +143,7 @@ const StyledButton = styled.button`
   border: 2px solid ${theme.color.primary};
   padding: 3px;
   margin-bottom: 15px;
-  width: 80%;
+  width: 97%;
   &:hover {
     cursor: pointer;
     background-color: ${theme.color.primary};
@@ -168,10 +168,22 @@ const StyledDetail = styled.div`
   padding: 5px;
 `;
 
+const StyledWorksTitle = styled.section`
+  width: 100%;
+  margin-bottom: 15px;
+  & > h2 {
+    font-weight: ${theme.fontWeight.bold};
+    font-size: 22px;
+    margin-bottom: 3px;
+  }
+`;
+
 const StyledSection = styled.section`
   width: 100%;
   margin-bottom: 15px;
   & > h4 {
+    font-weight: ${theme.fontWeight.regular};
+    font-size: 14px;
     margin-bottom: 3px;
   }
 `;
