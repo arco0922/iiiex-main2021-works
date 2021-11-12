@@ -16,7 +16,8 @@ export const NavigationArea: React.VFC<Props> = ({ isFull, suggestIds, visited }
     <StyledContainer>
       <StyledButtonContainer isFull={false}>
         <StyledButton>
-          <StyledLink to="/">作品一覧へ戻る</StyledLink>
+          <StyledLink to="/">&#8810;　作品一覧へ戻る</StyledLink>
+          <StyledUnderBar id="underbar"></StyledUnderBar>
         </StyledButton>
       </StyledButtonContainer>
       <StyledSection>
@@ -50,17 +51,23 @@ const StyledButtonContainer = styled.div<StyledNavigationAreaProps>`
 
 const StyledButton = styled.button`
   display: block;
-
-  background-color: ${theme.color.primary};
+  background-color: transparent;
   outline: none;
   border: none;
-  border-radius: 3px;
   &:hover {
     cursor: pointer;
-    background-color: ${theme.color.activePrimary};
+    #underbar {
+      width: 100%;
+    }
   }
 `;
 
+const StyledUnderBar = styled.div`
+  width: 0%;
+  height: 1px;
+  border-top: 1px solid white;
+  transition: width 0.2s ease-out;
+`;
 const StyledSuggestWorksContainer = styled.div`
   width: 100%;
   display: flex;
@@ -69,7 +76,7 @@ const StyledSuggestWorksContainer = styled.div`
 const StyledLink = styled(Link)`
   display: block;
   padding: 10px;
-  font-size: 15px;
+  font-size: 18px;
   text-decoration: none;
   color: white;
 `;
