@@ -13,12 +13,12 @@ interface Props {
 
 export const NavigationArea: React.VFC<Props> = ({ isFull, suggestIds, visited }) => {
   return (
-    <div>
-      <StyledNavigationArea isFull={false}>
+    <StyledContainer>
+      <StyledButtonContainer isFull={false}>
         <StyledButton>
           <StyledLink to="/">作品一覧へ戻る</StyledLink>
         </StyledButton>
-      </StyledNavigationArea>
+      </StyledButtonContainer>
       <StyledSection>
         <h4>近くにある作品</h4>
         <StyledSuggestWorksContainer>
@@ -28,20 +28,24 @@ export const NavigationArea: React.VFC<Props> = ({ isFull, suggestIds, visited }
             })}
         </StyledSuggestWorksContainer>
       </StyledSection>
-    </div>
+    </StyledContainer>
   );
 };
+
+const StyledContainer = styled.div`
+  width: 100%;
+`;
 
 interface StyledNavigationAreaProps {
   isFull: boolean;
 }
 
-const StyledNavigationArea = styled.div<StyledNavigationAreaProps>`
+const StyledButtonContainer = styled.div<StyledNavigationAreaProps>`
   width: 100%;
   margin-top: 40px;
   display: ${({ isFull }) => (isFull ? 'none' : 'flex')};
   align-items: center;
-  justify-content: center;
+  justify-content: right;
 `;
 
 const StyledButton = styled.button`
