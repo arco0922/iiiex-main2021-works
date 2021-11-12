@@ -11,6 +11,7 @@ import { Visited } from 'AppRoot';
 import { LayoutType } from 'constants/Layout';
 import { Coord } from 'constants/MapCoords';
 import { sortWorksByDistance } from 'utils/sortWorks';
+import { NavigationArea } from './NavigationArea';
 
 interface Params {
   id: string;
@@ -96,7 +97,8 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
             isFull={isFull}
             setIsFull={setIsFull}
           />
-          {!isFull && <IndividualWorksDetail worksInfo={worksInfo} suggestIds={suggestIds} visited={visited} />}
+          {!isFull && <IndividualWorksDetail worksInfo={worksInfo} />}
+          {!isFull && <NavigationArea isFull={isFull} suggestIds={suggestIds} visited={visited} />}
         </StyledWorksContainer>
       </StyledContentContainer>
     </StyledRoot>

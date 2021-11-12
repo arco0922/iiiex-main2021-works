@@ -2,7 +2,6 @@ import { headerHeight } from 'components/Header/Header';
 import { theme } from 'constants/Theme';
 import { useWindowDimensions } from 'hooks/useWindowDimensions';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 interface Props {
@@ -79,11 +78,6 @@ export const IndividualWorksWindow: React.VFC<Props> = ({ srcUrl, iframeWidth, i
           </StyledFullScreenButton>
         )}
       </StyledContainer>
-      <StyledNavigationArea isFull={isFull}>
-        <StyledButton>
-          <StyledLink to="/">作品一覧へ戻る</StyledLink>
-        </StyledButton>
-      </StyledNavigationArea>
     </StyledRoot>
   );
 };
@@ -155,6 +149,7 @@ const StyledFullScreenButton = styled.button`
   border: none;
   padding: 3px;
   color: white;
+  z-index: 100;
   &:hover {
     cursor: pointer;
   }
@@ -184,39 +179,6 @@ const StyledExitFullScreenButton = styled.button`
     cursor: pointer;
     background-color: ${theme.color.activePrimary};
   }
-`;
-
-interface StyledNavigationAreaProps {
-  isFull: boolean;
-}
-
-const StyledNavigationArea = styled.div<StyledNavigationAreaProps>`
-  width: 100%;
-  margin-top: 40px;
-  display: ${({ isFull }) => (isFull ? 'none' : 'flex')};
-  align-items: center;
-  justify-content: center;
-`;
-
-const StyledButton = styled.button`
-  display: block;
-
-  background-color: ${theme.color.primary};
-  outline: none;
-  border: none;
-  border-radius: 3px;
-  &:hover {
-    cursor: pointer;
-    background-color: ${theme.color.activePrimary};
-  }
-`;
-
-const StyledLink = styled(Link)`
-  display: block;
-  padding: 10px;
-  font-size: 15px;
-  text-decoration: none;
-  color: white;
 `;
 
 const StyledSVG = styled.svg`
