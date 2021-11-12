@@ -52,7 +52,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   }, [worksInfo]);
   const [isFull, setIsFull] = React.useState<boolean>(false);
   const isNarrowLayout = layout === 'MID' || layout === 'NARROW';
-  const iframeWidth = isFull ? '' : isNarrowLayout ? '95vw' : 'max(80vw , 500px)';
+  const iframeWidth = isFull ? '' : isNarrowLayout ? '95vw' : 'min(1500px, max(75vw , 500px))';
   const iframeHeight = isFull
     ? ''
     : `calc( ${iframeWidth} * ${worksInfo?.aspectRatio ? worksInfo.aspectRatio : 9 / 16} )`;
