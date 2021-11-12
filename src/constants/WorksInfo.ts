@@ -78,7 +78,8 @@ export const worksInfoArr: WorksInfo[] = [
   },
   {
     id: 2,
-    title: 'Zero To One Mind～1歳児キョリブレーション～',
+    title: `Zero To One Mind
+    ～1歳児キョリブレーション～`,
     thumbnailBaseName: '2_baby-thumbnail',
     creators: [
       {
