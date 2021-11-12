@@ -6,6 +6,7 @@ import { RouteComponentProps, useHistory, withRouter } from 'react-router';
 import styled from 'styled-components';
 import { IndividualWorksDetail } from './IndividualWorksDetail';
 import { IndividualWorksWindow } from './IndividualWorksWindow';
+import { ReactionForm } from './ReactionForm';
 import { isMobile } from 'react-device-detect';
 import { Visited } from 'AppRoot';
 import { LayoutType } from 'constants/Layout';
@@ -97,6 +98,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
             setIsFull={setIsFull}
           />
           {!isFull && <IndividualWorksDetail worksInfo={worksInfo} suggestIds={suggestIds} visited={visited} />}
+          <ReactionForm worksId={worksId}></ReactionForm>
         </StyledWorksContainer>
       </StyledContentContainer>
     </StyledRoot>
