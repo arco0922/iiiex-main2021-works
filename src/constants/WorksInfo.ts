@@ -232,6 +232,7 @@ export const worksInfoArr: WorksInfo[] = [
     `,
     srcUrlPc: 'https://kurapyon31.github.io/probUT/',
     srcUrlSp: 'https://kurapyon31.github.io/probUT/',
+    aspectRatio: 16 / 9,
   },
   {
     id: 8,
