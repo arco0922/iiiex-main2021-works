@@ -258,7 +258,7 @@ export const worksInfoArr: WorksInfo[] = [
   },
   {
     id: 9,
-    title: 'KABUKU!',
+    title: 'KABUKU！',
     thumbnailBaseName: '9_kabuku_tmb800',
     creators: [
       {
