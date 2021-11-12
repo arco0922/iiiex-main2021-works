@@ -322,6 +322,7 @@ export const worksInfoArr: WorksInfo[] = [
     `,
     srcUrlPc: 'https://siyuanzh09.github.io/Home_Gallery/',
     srcUrlSp: 'https://siyuanzh09.github.io/Home_Gallery/',
+    aspectRatio: 5 / 6,
   },
   {
     id: 12,
