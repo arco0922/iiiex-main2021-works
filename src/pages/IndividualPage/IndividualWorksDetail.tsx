@@ -17,12 +17,14 @@ export const IndividualWorksDetail: React.VFC<Props> = ({ worksInfo, suggestIds,
   return (
     <StyledContainer>
       <StyledSection>
-        <h4>作品名</h4>
-        <p>{worksInfo.title}</p>
+        <p className="title">{worksInfo.title}</p>
+      </StyledSection>
+      <StyledSection>
+        <p className="caption"> {worksInfo.caption}</p>
       </StyledSection>
       <StyledSection>
         <h4>対応デバイス</h4>
-        <p>{convertDeviceString(worksInfo.device)}</p>
+        <p> {convertDeviceString(worksInfo.device)}</p>
       </StyledSection>
       <StyledSection>
         <h4>制作者</h4>
@@ -53,14 +55,24 @@ const StyledContainer = styled.div`
   margin-left: 20px;
   margin-top: 20px;
   min-width: 250px;
+  width: 60%;
 `;
 
 const StyledSection = styled.section`
   width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: 30px;
   color: white;
   & > h4 {
     margin-bottom: 3px;
+  }
+  & > p.title {
+    font-size: 40px;
+    font-weight: bold;
+    white-space: pre-line;
+  }
+  & > p.caption {
+    font-size: 20px;
+    white-space: pre-line;
   }
 `;
 const StyledSuggestWorksContainer = styled.div`
