@@ -160,7 +160,7 @@ const StyledLink = styled(Link)`
 `;
 
 const StyledCaption = styled.div`
-  white-space: ref;
+  white-space: pre-line;
 `;
 
 const StyledDetail = styled.div`
