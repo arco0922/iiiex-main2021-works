@@ -161,7 +161,7 @@ export const worksInfoArr: WorksInfo[] = [
   {
     id: 6,
     title: '矢印たち',
-    thumbnailBaseName: '6_(s)hukan',
+    thumbnailBaseName: '6_yajirushi',
     creators: [
       {
         name: '久保田愛海',
