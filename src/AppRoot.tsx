@@ -142,7 +142,7 @@ const HamburgerBackground = styled.div`
   width: 100%;
   height: 100%;
   background-color: #000000c8;
-  z-index: 8;
+  z-index: 19;
   position: absolute;
   top: 0;
   left: 0;
