@@ -26,15 +26,19 @@ export const Carousel: React.VFC<Props> = ({ mapModeId, setMapModeId }) => {
     if (centerIdx === null) {
       return;
     }
-    setCenterIdx((centerIdx + 1) % rotateLength);
-  }, [centerIdx]);
+    const newCenterIdx = (centerIdx + 1) % rotateLength;
+    setCenterIdx(newCenterIdx);
+    setMapModeId(rotateArr[newCenterIdx].modeId);
+  }, [centerIdx, setMapModeId]);
 
   const decrementHandler = React.useCallback(() => {
     if (centerIdx === null) {
       return;
     }
-    setCenterIdx((centerIdx - 1 + rotateLength) % rotateLength);
-  }, [centerIdx]);
+    const newCenterIdx = (centerIdx - 1 + rotateLength) % rotateLength;
+    setCenterIdx(newCenterIdx);
+    setMapModeId(rotateArr[newCenterIdx].modeId);
+  }, [centerIdx, setMapModeId]);
 
   return (
     <StyledRoot>
