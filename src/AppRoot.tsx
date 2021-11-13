@@ -82,6 +82,7 @@ export const AppRoot: React.VFC = () => {
               visited={visited}
               selectId={selectId}
               setSelectId={setSelectId}
+              mapModeId={mapModeId}
               setMapModeId={setMapModeId}
               mapModeIdRef={mapModeIdRef}
               layout={layout}
