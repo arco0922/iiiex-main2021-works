@@ -236,13 +236,6 @@ export const WorksListSketch = React.memo<Props>(
       navigationBtn.mouseOut(() => navigationBtnStyleChange(p5, false));
       navigationBtn.mouseClicked(() => navigateToIndividual());
 
-      type Radio = p5Types.Element & { changed: (callback: () => void) => void };
-      const mapToggleRadios: Radio = p5.createRadio() as Radio;
-      mapToggleRadios.parent(containerRef.current);
-      mapToggleRadios.style(
-        'position: absolute; display: flex; top: 0; left: 0; width: 100%; height: 40px; justify-content: center; align-items: center; background-color: #00000040',
-      );
-
       const initialMapModeId = mapModeIdRef.current;
       prevMapModeId = initialMapModeId;
 
