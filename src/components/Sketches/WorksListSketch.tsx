@@ -110,6 +110,7 @@ export const WorksListSketch = React.memo<Props>(
     const selectColor = theme.color.primary;
 
     let prevShowDetailRef = false;
+    let prevMapModeId: MapModeId;
 
     let worldOffsetX: number; // ワールドの中心がスクリーンのどこにあるか
     let worldOffsetY: number; // ワールドの中心がスクリーンのどこにあるか
@@ -196,6 +197,13 @@ export const WorksListSketch = React.memo<Props>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const mapModeIdChangeHandler = (p5: p5Types, newMapModeId: MapModeId) => {
+      initWorldPosScale(p5, newMapModeId, 'INIT');
+      mapCoordsArr
+        .filter(({ modeId }) => modeId === newMapModeId)[0]
+        .coords.forEach(({ id, x, y }) => obstacleSystem.setTargetPos({ id, x, y }));
+    };
+
     let thumbnails: ParticleImage[];
     let checkmark: p5Types.Image;
 
@@ -235,30 +243,10 @@ export const WorksListSketch = React.memo<Props>(
         'position: absolute; display: flex; top: 0; left: 0; width: 100%; height: 40px; justify-content: center; align-items: center; background-color: #00000040',
       );
 
-      const radioLabelStyle = 'color: white; margin-right: 10px; margin-left: 3px;';
-
-      const radioDescription = p5.createElement('p', '作品の並べ方：');
-      radioDescription.style(radioLabelStyle);
-      radioDescription.parent(mapToggleRadios);
-
       const initialMapModeId = mapModeIdRef.current;
+      prevMapModeId = initialMapModeId;
 
-      mapCoordsArr.forEach(({ modeId, modeName }) => {
-        const modeRadio = p5.createElement('input');
-        modeRadio.attribute('type', 'radio');
-        modeRadio.attribute('value', modeId.toString());
-        modeRadio.attribute('name', 'mapToggle');
-        modeRadio.parent(mapToggleRadios);
-        const modeRadioLabel = p5.createElement('label', modeName);
-        modeRadioLabel.parent(mapToggleRadios);
-        modeRadioLabel.style(radioLabelStyle);
-
-        if (modeId === initialMapModeId) {
-          modeRadio.attribute('checked', 'checked');
-        }
-      });
-
-      initWorldPosScale(p5, mapModeIdRef.current, 'SETUP');
+      initWorldPosScale(p5, initialMapModeId, 'SETUP');
 
       grid = new Grid(p5, worldWidth, worldHeight, 100);
 
@@ -273,7 +261,7 @@ export const WorksListSketch = React.memo<Props>(
       );
 
       mapCoordsArr
-        .filter(({ modeId }) => modeId === Number(mapToggleRadios.value()))[0]
+        .filter(({ modeId }) => modeId === initialMapModeId)[0]
         .coords.forEach(({ id, x, y }) => {
           switch (initialMapModeId) {
             case 1:
@@ -288,16 +276,6 @@ export const WorksListSketch = React.memo<Props>(
       obstacleSystem.setTextures(thumbnails);
 
       obstacleSystem.setVisited(visitedRef.current);
-
-      const changedHandler = () => {
-        const newVal = Number(mapToggleRadios.value()) as MapModeId;
-        setMapModeId(newVal);
-        initWorldPosScale(p5, newVal, 'INIT');
-        mapCoordsArr
-          .filter(({ modeId }) => modeId === newVal)[0]
-          .coords.forEach(({ id, x, y }) => obstacleSystem.setTargetPos({ id, x, y }));
-      };
-      mapToggleRadios.changed(changedHandler);
     };
 
     const windowResized = (p5: p5Types) => {
@@ -323,6 +301,11 @@ export const WorksListSketch = React.memo<Props>(
         initWorldPosScale(p5, mapModeIdRef.current, 'BAR_CHANGE');
       }
       prevShowDetailRef = isShowDetailRef.current;
+
+      if (mapModeIdRef.current !== prevMapModeId) {
+        mapModeIdChangeHandler(p5, mapModeIdRef.current);
+      }
+      prevMapModeId = mapModeIdRef.current;
 
       p5.background(bgcolor);
 
