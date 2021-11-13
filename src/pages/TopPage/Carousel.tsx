@@ -87,34 +87,37 @@ export const Carousel: React.VFC<Props> = ({ mapModeId, setMapModeId }) => {
   );
 };
 
+const carouselItemWidth = 80;
+const carouselItemGap = 25;
+
 const StyledRoot = styled.div`
   position: absolute;
-  top: 100px;
-  left: 0;
-  width: 100%;
+  top: 10px;
+  left: 10px;
   z-index: 15;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   color: white;
-  overflow: hidden;
 `;
 
 const StyledContainer = styled.div`
-  width: 350px;
+  width: ${3 * carouselItemWidth + 2 * carouselItemGap + 10}px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 5px;
+  border: 1px solid white;
+  border-radius: 10px;
+  overflow-x: hidden;
+  background-color: black;
 `;
 
 const StyledTitle = styled.h3`
-  font-size: 12px;
+  font-size: 10px;
   font-weight: ${theme.fontWeight.regular};
 `;
 
 const StyledCarouselContainer = styled.div`
   width: 100%;
-  height: 50px;
+  height: 35px;
   margin-top: 5px;
   margin-bottom: 5px;
   display: flex;
@@ -144,7 +147,7 @@ const StyledCarouselLeftItemContainer = styled(StyledCarouselFixedItemContainer)
 
 const StyledArrowRight = styled(ArrowRightSharpIcon)`
   position: absolute;
-  left: 225px;
+  left: ${2 * carouselItemWidth + carouselItemGap}px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 20;
@@ -155,7 +158,7 @@ const StyledArrowRight = styled(ArrowRightSharpIcon)`
 
 const StyledArrowLeft = styled(ArrowLeftSharpIcon)`
   position: absolute;
-  right: 225px;
+  right: ${2 * carouselItemWidth + carouselItemGap}px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 20;
@@ -168,11 +171,11 @@ const StyledCarouselItem = styled.div`
   display: none;
   position: absolute;
   top: 0px;
-  width: 100px;
+  width: ${carouselItemWidth}px;
   height: 100%;
   transition: all 500ms ease-in-out;
   color: #525252;
-  font-size: 16px;
+  font-size: 12px;
   &.show {
     display: flex;
     justify-content: center;
@@ -186,20 +189,20 @@ const StyledCarouselItem = styled.div`
     opacity: 0;
   }
   &.two-before {
-    left: -125px;
+    left: ${-(carouselItemWidth + carouselItemGap)}px;
   }
   &.one-before {
     left: 0px;
   }
   &.just {
-    left: 125px;
+    left: ${carouselItemWidth + carouselItemGap}px;
     color: white;
   }
   &.one-after {
-    left: 250px;
+    left: ${2 * (carouselItemWidth + carouselItemGap)}px;
   }
   &.two-after {
-    left: 375px;
+    left: ${3 * (carouselItemWidth + carouselItemGap)}px;
   }
 `;
 
