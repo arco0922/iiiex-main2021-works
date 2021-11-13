@@ -109,6 +109,8 @@ export const WorksListSketch = React.memo<Props>(
 
     const selectColor = theme.color.primary;
 
+    let prevShowDetailRef = false;
+
     let worldOffsetX: number; // ワールドの中心がスクリーンのどこにあるか
     let worldOffsetY: number; // ワールドの中心がスクリーンのどこにあるか
     let worldOffsetScale: number; // ワールドのスクリーン上での縮尺
@@ -142,9 +144,18 @@ export const WorksListSketch = React.memo<Props>(
     const calcSquaredDist = (x1: number, y1: number, x2: number, y2: number) =>
       (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
 
-    const initWorldPosScale = (p5: p5Types) => {
-      const mapCoord = mapCoordsArr.filter(({ modeId }) => modeId === mapModeIdRef.current)[0];
-      const width = p5.width;
+    const initWorldPosScale = (p5: p5Types, mapModeId: MapModeId, initMode: 'SETUP' | 'INIT' | 'BAR_CHANGE') => {
+      const mapCoord = mapCoordsArr.filter(({ modeId }) => modeId === mapModeId)[0];
+      let width: number;
+      if (layoutRef.current === 'NARROW' || initMode === 'INIT') {
+        width = p5.width;
+      } else if (initMode === 'SETUP') {
+        width = p5.width - sideDetailWidth;
+      } else if (initMode === 'BAR_CHANGE') {
+        width = isShowDetailRef.current ? p5.width - sideDetailWidth : p5.width + sideDetailWidth;
+      } else {
+        return; // never enter this part
+      }
       const height = layoutRef.current === 'NARROW' ? p5.height - bottomDetailHeight : p5.height;
       worldOffsetX = width / 2 - mapCoord.center.x;
       worldOffsetY = height / 2 - mapCoord.center.y;
@@ -247,7 +258,7 @@ export const WorksListSketch = React.memo<Props>(
         }
       });
 
-      initWorldPosScale(p5);
+      initWorldPosScale(p5, mapModeIdRef.current, 'SETUP');
 
       grid = new Grid(p5, worldWidth, worldHeight, 100);
 
@@ -269,9 +280,8 @@ export const WorksListSketch = React.memo<Props>(
               const randy = p5.random(-worldHeight / 6, worldHeight / 6);
               obstacleSystem.addParticle(id, x * 0.8, randy, 100, 0, 0, 1, obstacleColor, 'Gravitational', 'Pos');
               break;
-            case 2:
+            default:
               obstacleSystem.addParticle(id, x * 0.7, y * 0.7, 100, 0, 0, 1, obstacleColor, 'Gravitational', 'Pos');
-              break;
           }
           obstacleSystem.setTargetPos({ id, x, y });
         });
@@ -282,6 +292,7 @@ export const WorksListSketch = React.memo<Props>(
       const changedHandler = () => {
         const newVal = Number(mapToggleRadios.value()) as MapModeId;
         setMapModeId(newVal);
+        initWorldPosScale(p5, newVal, 'INIT');
         mapCoordsArr
           .filter(({ modeId }) => modeId === newVal)[0]
           .coords.forEach(({ id, x, y }) => obstacleSystem.setTargetPos({ id, x, y }));
@@ -307,6 +318,11 @@ export const WorksListSketch = React.memo<Props>(
           containerRef.current.clientHeight - padding * 2,
         );
       }
+
+      if (isShowDetailRef.current !== prevShowDetailRef) {
+        initWorldPosScale(p5, mapModeIdRef.current, 'BAR_CHANGE');
+      }
+      prevShowDetailRef = isShowDetailRef.current;
 
       p5.background(bgcolor);
 
