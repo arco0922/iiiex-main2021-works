@@ -1,4 +1,4 @@
-import { MapCoords, mapCoordsArr, MapModeId } from 'constants/MapCoords';
+import { mapCoordsArr, MapModeId } from 'constants/MapCoords';
 import { theme } from 'constants/Theme';
 import React from 'react';
 import styled from 'styled-components';
