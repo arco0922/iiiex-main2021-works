@@ -24,6 +24,8 @@ interface Props {
   visitedRef: React.MutableRefObject<Visited>;
 }
 
+export type InitialAnimationStatus = 'BEFORE' | 'ANIMATING' | 'END';
+
 export const TopPage: React.VFC<Props> = ({
   selectId,
   setSelectId,
@@ -39,21 +41,29 @@ export const TopPage: React.VFC<Props> = ({
 }) => {
   const selectIdRef = React.useRef<number>(0);
   const [isShowDetail, setIsShowDetail] = React.useState<boolean>(false);
-  const isShowDetailRef = React.useRef<boolean>(false);
+  const [initialAnimationStatus, setInitialAnimationStatus] = React.useState<InitialAnimationStatus>('BEFORE');
+  const initialAnimationStatusRef = React.useRef<InitialAnimationStatus>('BEFORE');
   const layoutRef = React.useRef<LayoutType>('WIDE');
 
   React.useEffect(() => {
     selectIdRef.current = selectId;
   }, [selectId]);
   React.useEffect(() => {
-    isShowDetailRef.current = isShowDetail;
-  }, [isShowDetail]);
+    initialAnimationStatusRef.current = initialAnimationStatus;
+  }, [initialAnimationStatus]);
   React.useEffect(() => {
     layoutRef.current = layout;
   }, [layout]);
 
   React.useEffect(() => {
-    setTimeout(() => setIsShowDetail(true), 300);
+    setTimeout(() => {
+      setIsShowDetail(true);
+      setInitialAnimationStatus('ANIMATING');
+    }, 300);
+  }, []);
+
+  React.useEffect(() => {
+    setTimeout(() => setInitialAnimationStatus('END'), 650);
   }, []);
 
   return (
@@ -67,7 +77,7 @@ export const TopPage: React.VFC<Props> = ({
             height="100%"
             selectIdRef={selectIdRef}
             setSelectId={setSelectId}
-            isShowDetailRef={isShowDetailRef}
+            initialAnimationStatusRef={initialAnimationStatusRef}
             setIsShowDetail={setIsShowDetail}
             isShowHamburgerRef={isShowHamburgerRef}
             layoutRef={layoutRef}
