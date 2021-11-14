@@ -5,6 +5,7 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
 
 const analyzeBundle = false;
@@ -124,6 +125,14 @@ module.exports = (_, argv) => {
       ],
     },
     plugins: [
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: path.resolve(__dirname, './src/assets'),
+            to: 'static/assets',
+          },
+        ],
+      }),
       new webpack.DefinePlugin({
         'process.env': JSON.stringify({
           ...envConfig.parsed,
