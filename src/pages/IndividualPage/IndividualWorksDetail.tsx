@@ -1,4 +1,4 @@
-import { Creator, WorksInfo } from 'constants/WorksInfo';
+import { WorksInfo } from 'constants/WorksInfo';
 import React from 'react';
 import styled from 'styled-components';
 import { CreatorDescription } from './CreatorDescription';
@@ -13,13 +13,10 @@ export const IndividualWorksDetail: React.VFC<Props> = ({ worksInfo }) => {
     <StyledContainer>
       <StyledSection>
         <p className="title">{worksInfo.title}</p>
+        <p className="device">〇対応デバイス：{convertDeviceString(worksInfo.device)}</p>
       </StyledSection>
       <StyledSection>
         <p className="caption"> {worksInfo.caption}</p>
-      </StyledSection>
-      <StyledSection>
-        <h4>対応デバイス</h4>
-        <p> {convertDeviceString(worksInfo.device)}</p>
       </StyledSection>
       <StyledSection>
         <StyledCreatorsContainer>
@@ -33,10 +30,9 @@ export const IndividualWorksDetail: React.VFC<Props> = ({ worksInfo }) => {
 };
 
 const StyledContainer = styled.div`
-  margin-left: 20px;
   margin-top: 20px;
   min-width: 250px;
-  width: 60%;
+  width: calc(100% - 235px);
 `;
 
 const StyledSection = styled.section`
@@ -52,11 +48,16 @@ const StyledSection = styled.section`
     white-space: pre-line;
   }
   & > p.caption {
-    font-size: 20px;
+    font-size: 18px;
     white-space: pre-line;
+  }
+
+  &:last-of-type {
+    margin-bottom: 0px;
   }
 `;
 const StyledCreatorsContainer = styled.div`
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
 `;
