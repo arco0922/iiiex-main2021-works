@@ -64,6 +64,9 @@ export const Header: React.VFC<Props> = ({
   }
   return (
     <StyledContainer>
+      <StyledHamburgerContainer>
+        <StyledMenuIcon onClick={() => setIsShowHamburger && setIsShowHamburger(true)}></StyledMenuIcon>
+      </StyledHamburgerContainer>
       <StyledLogo href={HOMEPAGE_URL}>
         <img src="/static/assets/logo/LOGO.png" height={`${headerHeight - 18}px`} />
       </StyledLogo>
@@ -118,9 +121,6 @@ const StyledLogo = styled.a`
   align-items: center;
   height: 100%;
   padding: 0 20px;
-  position: absolute;
-  left: 0px;
-  top: 0px;
   z-index: 5;
 
   &.narrow {
@@ -140,8 +140,6 @@ const StyledNavigationContainer = styled.div`
   align-items: center;
   flex: 1;
   height: 100%;
-  margin-left: 130px;
-
   &.narrow {
     margin-left: 15px;
     padding-right: 0px;
@@ -274,4 +272,13 @@ const StyledExitFullScreen = styled.div`
   justify-content: center;
   text-decoration: none;
   color: white;
+`;
+
+const StyledHamburgerContainer = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  color: white;
+  margin-left: 15px;
 `;
