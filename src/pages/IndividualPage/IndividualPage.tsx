@@ -17,9 +17,12 @@ interface Params {
   id: string;
 }
 interface Props {
-  setSelectId: (selectId: number) => void;
-  setVisited: (visited: Visited) => void;
   visited: Visited;
+  setVisited: (visited: Visited) => void;
+  selectId: number;
+  setSelectId: (selectId: number) => void;
+  lastVisitedId: number;
+  setLastVisitedId: (id: number) => void;
   layout: LayoutType;
   setIsShowHamburger: (isShowHamburger: boolean) => void;
   coords: Coord[];
@@ -27,9 +30,12 @@ interface Props {
 
 const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = ({
   match,
-  setSelectId,
-  setVisited,
   visited,
+  setVisited,
+  selectId,
+  setSelectId,
+  lastVisitedId,
+  setLastVisitedId,
   layout,
   setIsShowHamburger,
   coords,
@@ -37,6 +43,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   const worksId = Number(match.params.id);
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
   const history = useHistory();
+
   const scrollRef = React.useRef<HTMLDivElement>(null);
   React.useEffect(() => {
     scrollRef.current?.scrollIntoView({
@@ -59,7 +66,9 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
     : `calc( ${iframeWidth} * ${worksInfo?.aspectRatio ? worksInfo.aspectRatio : 9 / 16} )`;
 
   React.useEffect(() => {
+    setLastVisitedId(selectId);
     setSelectId(worksId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [worksId, setSelectId]);
   React.useEffect(() => {
     setVisited({ ...visited, [worksId.toString()]: true });
@@ -70,10 +79,14 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
     if (worksInfo === undefined) {
       return [];
     }
-    const notVisitedSortedIds = sortWorksByDistance(worksId, coords).filter((id) => !visited[id] && id !== worksId);
-    const visitedSortedIds = sortWorksByDistance(worksId, coords).filter((id) => visited[id] && id !== worksId);
+    const notVisitedSortedIds = sortWorksByDistance(worksId, coords).filter(
+      (id) => !visited[id] && id !== worksId && id !== lastVisitedId,
+    );
+    const visitedSortedIds = sortWorksByDistance(worksId, coords).filter(
+      (id) => visited[id] && id !== worksId && id !== lastVisitedId,
+    );
     return notVisitedSortedIds.concat(visitedSortedIds);
-  }, [worksId, worksInfo, coords, visited]);
+  }, [worksId, worksInfo, coords, visited, lastVisitedId]);
 
   if (worksInfo === undefined) {
     return <></>;

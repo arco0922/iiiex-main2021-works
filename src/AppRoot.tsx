@@ -37,6 +37,8 @@ export const AppRoot: React.VFC = () => {
     visitedRef.current = visited;
   }, [visited]);
 
+  const [lastVisitedId, setLastVisitedId] = React.useState<number>(-1);
+
   const [mapModeId, setMapModeId] = useLocalStorage<MapModeId>('mapModeId', 1);
   const mapModeIdRef = React.useRef<MapModeId>(1);
 
@@ -100,7 +102,10 @@ export const AppRoot: React.VFC = () => {
             <IndividualPage
               visited={visited}
               setVisited={setVisited}
+              selectId={selectId}
               setSelectId={setSelectId}
+              lastVisitedId={lastVisitedId}
+              setLastVisitedId={setLastVisitedId}
               layout={layout}
               setIsShowHamburger={setIsShowHamburger}
               coords={coords}
