@@ -105,7 +105,7 @@ const StyledTitle = styled.h2`
 const StyledDetailContainer = styled.div`
   flex: 1;
   width: 100%;
-  padding: 5px 5px 5px 10px;
+  padding: 5px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
