@@ -9,7 +9,7 @@ interface Props {
 export const CreatorDescription = React.memo<Props>(function CreatorDescription({ creator }) {
   return (
     <StyledContainer>
-      <p>{creator.name}</p>
+      <h4>{creator.name}</h4>
       <p>{creator.affiliation}</p>
     </StyledContainer>
   );
@@ -17,8 +17,17 @@ export const CreatorDescription = React.memo<Props>(function CreatorDescription(
 
 const StyledContainer = styled.div`
   display: block;
-  width: 150px;
-  height: 150px;
-  padding-left: 20px;
-  padding-right: 20px;
+  width: 160px;
+  height: 100px;
+  margin-right: 20px;
+  & > h4 {
+    margin-bottom: 5px;
+  }
+  & > p {
+    font-size: 13px;
+    white-space: pre-line;
+  }
+  &:last-of-type {
+    margin-right: 0px;
+  }
 `;

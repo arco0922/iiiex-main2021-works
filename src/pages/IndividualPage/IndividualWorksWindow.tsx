@@ -2,7 +2,6 @@ import { headerHeight } from 'components/Header/Header';
 import { theme } from 'constants/Theme';
 import { useWindowDimensions } from 'hooks/useWindowDimensions';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 interface Props {
@@ -62,19 +61,29 @@ export const IndividualWorksWindow: React.VFC<Props> = ({ srcUrl, iframeWidth, i
         {isFull ? (
           <StyledExitFullScreenButton onClick={exitFullScreen}>全画面表示を終了する</StyledExitFullScreenButton>
         ) : (
-          <StyledFullScreenButton onClick={makeFullScreen}>作品を全画面で表示する</StyledFullScreenButton>
+          <StyledFullScreenButton onClick={makeFullScreen}>
+            <StyledSVG width="225" height="113" viewBox="0 0 225 113" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M0 0C0 62.132 50.368 112.5 112.5 112.5C174.632 112.5 225 62.132 225 0H0Z"
+                fill="#2A70B8"
+              />
+            </StyledSVG>
+            <p>
+              作品を全画面で
+              <br />
+              表示する
+            </p>
+          </StyledFullScreenButton>
         )}
       </StyledContainer>
-      <StyledNavigationArea isFull={isFull}>
-        <StyledButton>
-          <StyledLink to="/">作品一覧へ戻る</StyledLink>
-        </StyledButton>
-      </StyledNavigationArea>
     </StyledRoot>
   );
 };
 
 const StyledRoot = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -89,13 +98,11 @@ const StyledContainer = styled.div<StyledContainerProps>`
   min-width: ${({ iframeWidth }) => iframeWidth};
   width: ${({ iframeWidth }) => iframeWidth};
   height: ${({ iframeHeight }) => iframeHeight};
-  position: relative;
 `;
 
 const StyledIframeContainer = styled.div`
   width: 100%;
   height: 100%;
-  position: relative;
 `;
 
 const StyledIframe = styled.iframe`
@@ -105,6 +112,7 @@ const StyledIframe = styled.iframe`
   border: none;
   display: block;
   background-color: white;
+  z-index: 17;
 `;
 
 interface StyledLoadingProps {
@@ -134,20 +142,26 @@ const StyledSkeleton = styled.div`
 `;
 
 const StyledFullScreenButton = styled.button`
+  background-color: transparent;
   position: absolute;
-  bottom: -28px;
-  right: 0px;
+  top: 99.5%;
+  right: -3px;
   display: block;
-  height: 25px;
-  background-color: white;
   outline: none;
   border: none;
-  border-radius: 3px;
   padding: 3px;
+  color: white;
+  z-index: 16;
   &:hover {
     cursor: pointer;
-    background-color: gray;
-    color: white;
+  }
+  & > p {
+    position: absolute;
+    width: 100%;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 22px;
   }
 `;
 
@@ -163,41 +177,13 @@ const StyledExitFullScreenButton = styled.button`
   border: none;
   border-radius: 3px;
   padding: 3px;
+  z-index: 18;
   &:hover {
     cursor: pointer;
     background-color: ${theme.color.activePrimary};
   }
 `;
 
-interface StyledNavigationAreaProps {
-  isFull: boolean;
-}
-
-const StyledNavigationArea = styled.div<StyledNavigationAreaProps>`
-  width: 100%;
-  margin-top: 40px;
-  display: ${({ isFull }) => (isFull ? 'none' : 'flex')};
-  align-items: center;
-  justify-content: center;
-`;
-
-const StyledButton = styled.button`
-  display: block;
-
-  background-color: ${theme.color.primary};
-  outline: none;
-  border: none;
-  border-radius: 3px;
-  &:hover {
-    cursor: pointer;
-    background-color: ${theme.color.activePrimary};
-  }
-`;
-
-const StyledLink = styled(Link)`
-  display: block;
-  padding: 10px;
-  font-size: 15px;
-  text-decoration: none;
-  color: white;
+const StyledSVG = styled.svg`
+  height: 100%;
 `;
