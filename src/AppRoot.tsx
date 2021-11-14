@@ -44,7 +44,7 @@ export const AppRoot: React.VFC = () => {
     mapModeIdRef.current = mapModeId;
   }, [mapModeId]);
 
-  const [layout, setLayout] = React.useState<LayoutType>('WIDE');
+  const [layout, setLayout] = React.useState<LayoutType | null>(null);
   const { height, width } = useWindowDimensions();
   React.useEffect(() => {
     if (width < layoutBorder.narrow) {
@@ -66,6 +66,10 @@ export const AppRoot: React.VFC = () => {
   const [coords, setCoords] = React.useState<Coord[]>(
     mapCoordsArr.filter(({ modeId }) => modeId === mapModeId)[0].coords,
   );
+
+  if (layout === null) {
+    return null;
+  }
 
   return (
     <StyledRoot containerWidth={width} containerHeight={height}>
