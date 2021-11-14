@@ -16,6 +16,7 @@ interface Params {
   id: string;
 }
 interface Props {
+  selectId: number;
   setSelectId: (selectId: number) => void;
   setVisited: (visited: Visited) => void;
   visited: Visited;
@@ -26,6 +27,7 @@ interface Props {
 
 const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = ({
   match,
+  selectId,
   setSelectId,
   setVisited,
   visited,
@@ -37,6 +39,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
   const history = useHistory();
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const [lastVisitedId, setLastVisitedId] = React.useState<number>(-1);
   React.useEffect(() => {
     containerRef.current?.scrollIntoView({
       behavior: 'smooth',
@@ -58,7 +61,9 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
     : `calc( ${iframeWidth} * ${worksInfo?.aspectRatio ? worksInfo.aspectRatio : 9 / 16} )`;
 
   React.useEffect(() => {
+    setLastVisitedId(selectId);
     setSelectId(worksId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [worksId, setSelectId]);
   React.useEffect(() => {
     setVisited({ ...visited, [worksId.toString()]: true });
@@ -71,8 +76,12 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
     }
     const notVisitedSortedIds = sortWorksByDistance(worksId, coords).filter((id) => !visited[id] && id !== worksId);
     const visitedSortedIds = sortWorksByDistance(worksId, coords).filter((id) => visited[id] && id !== worksId);
-    return notVisitedSortedIds.concat(visitedSortedIds);
-  }, [worksId, worksInfo, coords, visited]);
+    const filteredSuggestIds = notVisitedSortedIds.concat(visitedSortedIds);
+    if (filteredSuggestIds[0] == lastVisitedId) {
+      filteredSuggestIds.shift();
+    }
+    return filteredSuggestIds;
+  }, [worksId, worksInfo, coords, visited, lastVisitedId]);
 
   if (worksInfo === undefined) {
     return <></>;

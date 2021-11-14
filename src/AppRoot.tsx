@@ -100,6 +100,7 @@ export const AppRoot: React.VFC = () => {
             <IndividualPage
               visited={visited}
               setVisited={setVisited}
+              selectId={selectId}
               setSelectId={setSelectId}
               layout={layout}
               setIsShowHamburger={setIsShowHamburger}
