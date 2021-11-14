@@ -11,6 +11,7 @@ import { Visited } from 'AppRoot';
 import { LayoutType } from 'constants/Layout';
 import { Coord } from 'constants/MapCoords';
 import { sortWorksByDistance } from 'utils/sortWorks';
+import { NavigationArea } from './NavigationArea';
 
 interface Params {
   id: string;
@@ -36,9 +37,9 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   const worksId = Number(match.params.id);
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
   const history = useHistory();
-  const containerRef = React.useRef<HTMLDivElement>(null);
+  const scrollRef = React.useRef<HTMLDivElement>(null);
   React.useEffect(() => {
-    containerRef.current?.scrollIntoView({
+    scrollRef.current?.scrollIntoView({
       behavior: 'smooth',
       block: 'start',
     });
@@ -52,7 +53,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   }, [worksInfo]);
   const [isFull, setIsFull] = React.useState<boolean>(false);
   const isNarrowLayout = layout === 'MID' || layout === 'NARROW';
-  const iframeWidth = isFull ? '' : isNarrowLayout ? '95vw' : 'max(60vw , 500px)';
+  const iframeWidth = isFull ? '' : isNarrowLayout ? '95vw' : 'min(1000px, max(75vw , 500px))';
   const iframeHeight = isFull
     ? ''
     : `calc( ${iframeWidth} * ${worksInfo?.aspectRatio ? worksInfo.aspectRatio : 9 / 16} )`;
@@ -87,16 +88,18 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
         setIsShowHamburger={setIsShowHamburger}
       />
       <StyledContentContainer>
-        <ScrollDiv ref={containerRef}></ScrollDiv>
-        <StyledWorksContainer isFull={isFull} isNarrowLayout={isNarrowLayout}>
+        <ScrollDiv ref={scrollRef}></ScrollDiv>
+        <StyledWorksContainer isFull={isFull} isNarrowLayout={isNarrowLayout} containerWidth={iframeWidth}>
           <IndividualWorksWindow
             srcUrl={isMobile ? worksInfo.srcUrlSp : worksInfo.srcUrlPc}
             iframeHeight={iframeHeight}
             iframeWidth={iframeWidth}
             isFull={isFull}
             setIsFull={setIsFull}
+            isNarrowLayout={isNarrowLayout}
           />
-          {!isFull && <IndividualWorksDetail worksInfo={worksInfo} suggestIds={suggestIds} visited={visited} />}
+          {!isFull && <IndividualWorksDetail worksInfo={worksInfo} isNarrowLayout={isNarrowLayout} />}
+          {!isFull && <NavigationArea suggestIds={suggestIds} visited={visited} isNarrowLayout={isNarrowLayout} />}
         </StyledWorksContainer>
       </StyledContentContainer>
     </StyledRoot>
@@ -116,6 +119,9 @@ const StyledContentContainer = styled.div`
   width: 100%;
   height: calc(100% - ${headerHeight}px);
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const ScrollDiv = styled.div``;
@@ -123,11 +129,12 @@ const ScrollDiv = styled.div``;
 interface StyledWorksContainerProps {
   isNarrowLayout: boolean;
   isFull: boolean;
+  containerWidth: string;
 }
 
 const StyledWorksContainer = styled.div<StyledWorksContainerProps>`
+  width: ${({ containerWidth }) => containerWidth};
   display: flex;
-  justify-content: center;
-  flex-direction: ${({ isNarrowLayout }) => (isNarrowLayout ? 'column' : 'row')};
-  padding: ${({ isFull }) => (isFull ? '0' : '20px 10px')};
+  flex-direction: column;
+  padding: ${({ isFull }) => (isFull ? '0' : '20px 0px 50px 0px')};
 `;
