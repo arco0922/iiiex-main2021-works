@@ -190,7 +190,7 @@ const StyledExitFullScreenButton = styled.button`
   padding: 3px;
   color: white;
   z-index: 50;
-  transform: translate(0, -100%);
+  transform: translate(0, -90%);
   &:hover {
     cursor: pointer;
   }
