@@ -71,7 +71,7 @@ export const Header: React.VFC<Props> = ({
         {showNavigationToTop && (
           <StyledButton>
             <StyledLinkToTop to="/">
-              <p>作品一覧</p>
+              <p>展示空間TOP</p>
               <StyledUnderBar id="underbar"></StyledUnderBar>
             </StyledLinkToTop>
           </StyledButton>
