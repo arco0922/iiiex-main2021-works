@@ -10,17 +10,24 @@ export const CreatorDescription = React.memo<Props>(function CreatorDescription(
   return (
     <StyledContainer>
       <h4>{creator.name}</h4>
-      <p>
-        {' '}
-        <br /> {creator.affiliation}
-      </p>
+      <p>{creator.affiliation}</p>
     </StyledContainer>
   );
 });
 
 const StyledContainer = styled.div`
   display: block;
-  width: 200px;
-  height: 150px;
+  width: 160px;
+  height: 100px;
   margin-right: 20px;
+  & > h4 {
+    margin-bottom: 5px;
+  }
+  & > p {
+    font-size: 13px;
+    white-space: pre-line;
+  }
+  &:last-of-type {
+    margin-right: 0px;
+  }
 `;
