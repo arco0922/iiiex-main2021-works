@@ -61,7 +61,7 @@ export const TopPage: React.VFC<Props> = ({
       <Header layout={layout} setIsShowHamburger={setIsShowHamburger}></Header>
       <StyledContentContainer>
         <StyledSketchContainer>
-          <Carousel mapModeId={mapModeId} setMapModeId={setMapModeId}></Carousel>
+          <Carousel mapModeId={mapModeId} setMapModeId={setMapModeId} layout={layout} />
           <WorksListSketch
             width="100%"
             height="100%"

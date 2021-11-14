@@ -10,6 +10,7 @@ import { LayoutType } from 'constants/Layout';
 import { sideDetailWidth } from 'pages/TopPage/WorksDetail';
 import { bottomDetailHeight } from 'pages/TopPage/WorksDetailBottom';
 import { Visited } from 'AppRoot';
+import { carouselSpaceHeight } from 'pages/TopPage/Carousel';
 
 interface Props {
   width: string;
@@ -157,9 +158,12 @@ export const WorksListSketch = React.memo<Props>(
       } else {
         return; // never enter this part
       }
-      const height = layoutRef.current === 'NARROW' ? p5.height - bottomDetailHeight : p5.height;
+      const height = layoutRef.current === 'NARROW' ? p5.height - bottomDetailHeight - carouselSpaceHeight : p5.height;
       worldOffsetX = width / 2 - mapCoord.center.x;
       worldOffsetY = height / 2 - mapCoord.center.y;
+      if (layoutRef.current === 'NARROW') {
+        worldOffsetY += carouselSpaceHeight;
+      }
       worldOffsetScale = p5.min(
         width / p5.max(mapCoord.border.maxX - mapCoord.border.minX, 1),
         height / p5.max(mapCoord.border.maxY - mapCoord.border.minY, 1),

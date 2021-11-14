@@ -4,8 +4,10 @@ import React from 'react';
 import styled from 'styled-components';
 import ArrowRightSharpIcon from '@mui/icons-material/ArrowRightSharp';
 import ArrowLeftSharpIcon from '@mui/icons-material/ArrowLeftSharp';
+import { LayoutType } from 'constants/Layout';
 
 interface Props {
+  layout: LayoutType;
   mapModeId: MapModeId;
   setMapModeId: (mapMode: MapModeId) => void;
 }
@@ -13,7 +15,7 @@ interface Props {
 const rotateArr = mapCoordsArr.concat(mapCoordsArr);
 const rotateLength = rotateArr.length;
 
-export const Carousel: React.VFC<Props> = ({ mapModeId, setMapModeId }) => {
+export const Carousel: React.VFC<Props> = ({ layout, mapModeId, setMapModeId }) => {
   const [centerIdx, setCenterIdx] = React.useState<number | null>(null);
 
   React.useEffect(() => {
@@ -41,7 +43,7 @@ export const Carousel: React.VFC<Props> = ({ mapModeId, setMapModeId }) => {
   }, [centerIdx, setMapModeId]);
 
   return (
-    <StyledRoot>
+    <StyledRoot className={layout === 'NARROW' ? 'narrow' : ''}>
       <StyledContainer>
         <StyledTitle>作品の並べ方</StyledTitle>
         <svg width="5" height="11" viewBox="0 0 5 11" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -90,12 +92,22 @@ export const Carousel: React.VFC<Props> = ({ mapModeId, setMapModeId }) => {
 const carouselItemWidth = 80;
 const carouselItemGap = 25;
 
+export const carouselSpaceHeight = 85;
+
 const StyledRoot = styled.div`
   position: absolute;
   top: 10px;
   left: 10px;
   z-index: 15;
   color: white;
+  &.narrow {
+    top: 5px;
+    left: 0px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const StyledContainer = styled.div`
@@ -204,8 +216,4 @@ const StyledCarouselItem = styled.div`
   &.two-after {
     left: ${3 * (carouselItemWidth + carouselItemGap)}px;
   }
-`;
-
-const StyledButton = styled.button`
-  z-index: 20;
 `;
