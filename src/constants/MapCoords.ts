@@ -1,6 +1,6 @@
 import { worksInfoArr } from './WorksInfo';
 
-export type MapModeId = 1 | 2 | 3 | 4 | 5;
+export type MapModeId = 1 | 2;
 
 export interface Coord {
   id: number;
@@ -72,36 +72,6 @@ export const mapCoordsArr: MapCoords[] = [
   {
     modeId: 2,
     modeName: '順路',
-    coords: circleCoords,
-    center: {
-      x: 0,
-      y: 0,
-    },
-    border: {
-      minX: -800,
-      maxX: 800,
-      minY: -800,
-      maxY: 800,
-    },
-  },
-  {
-    modeId: 3,
-    modeName: '作品カテゴリ',
-    coords: circleCoords,
-    center: {
-      x: 0,
-      y: 0,
-    },
-    border: {
-      minX: -800,
-      maxX: 800,
-      minY: -800,
-      maxY: 800,
-    },
-  },
-  {
-    modeId: 4,
-    modeName: '対応デバイス',
     coords: circleCoords,
     center: {
       x: 0,
