@@ -6,22 +6,26 @@ import { convertDeviceString } from 'utils/convertDeviceString';
 
 interface Props {
   worksInfo: WorksInfo;
+  isNarrowLayout: boolean;
 }
 
-export const IndividualWorksDetail: React.VFC<Props> = ({ worksInfo }) => {
+export const IndividualWorksDetail: React.VFC<Props> = ({ worksInfo, isNarrowLayout }) => {
+  const narrowClassName = isNarrowLayout ? 'narrow' : '';
   return (
-    <StyledContainer>
+    <StyledContainer className={narrowClassName}>
       <StyledSection>
-        <p className="title">{worksInfo.title}</p>
-        <p className="device">〇対応デバイス：{convertDeviceString(worksInfo.device)}</p>
+        <p className={`title ${narrowClassName}`}>{worksInfo.title}</p>
+        <p className={`device ${narrowClassName}`}>〇対応デバイス：{convertDeviceString(worksInfo.device)}</p>
       </StyledSection>
       <StyledSection>
-        <p className="caption"> {worksInfo.caption}</p>
+        <p className={`caption ${narrowClassName}`}> {worksInfo.caption}</p>
       </StyledSection>
       <StyledSection>
         <StyledCreatorsContainer>
           {worksInfo.creators.map((worksCreator, idx) => {
-            return <CreatorDescription creator={worksCreator} key={idx}></CreatorDescription>;
+            return (
+              <CreatorDescription creator={worksCreator} isNarrowLayout={isNarrowLayout} key={idx}></CreatorDescription>
+            );
           })}
         </StyledCreatorsContainer>
       </StyledSection>
@@ -33,23 +37,31 @@ const StyledContainer = styled.div`
   margin-top: 20px;
   min-width: 250px;
   width: calc(100% - 235px);
+  &.narrow {
+    margin-top: 50px;
+    width: 100%;
+    padding: 0px 10px;
+  }
 `;
 
 const StyledSection = styled.section`
   width: 100%;
   margin-bottom: 30px;
   color: white;
-  & > h4 {
-    margin-bottom: 3px;
-  }
   & > p.title {
     font-size: 40px;
     font-weight: bold;
     white-space: pre-line;
+    &.narrow {
+      font-size: 20px;
+    }
   }
   & > p.caption {
     font-size: 18px;
     white-space: pre-line;
+    &.narrow {
+      font-size: 14px;
+    }
   }
 
   &:last-of-type {
