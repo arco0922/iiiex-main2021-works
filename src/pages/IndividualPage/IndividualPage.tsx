@@ -37,9 +37,9 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   const worksId = Number(match.params.id);
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
   const history = useHistory();
-  const containerRef = React.useRef<HTMLDivElement>(null);
+  const scrollRef = React.useRef<HTMLDivElement>(null);
   React.useEffect(() => {
-    containerRef.current?.scrollIntoView({
+    scrollRef.current?.scrollIntoView({
       behavior: 'smooth',
       block: 'start',
     });
@@ -88,7 +88,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
         setIsShowHamburger={setIsShowHamburger}
       />
       <StyledContentContainer>
-        <ScrollDiv ref={containerRef}></ScrollDiv>
+        <ScrollDiv ref={scrollRef}></ScrollDiv>
         <StyledWorksContainer isFull={isFull} isNarrowLayout={isNarrowLayout} containerWidth={iframeWidth}>
           <IndividualWorksWindow
             srcUrl={isMobile ? worksInfo.srcUrlSp : worksInfo.srcUrlPc}
@@ -96,9 +96,10 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
             iframeWidth={iframeWidth}
             isFull={isFull}
             setIsFull={setIsFull}
+            isNarrowLayout={isNarrowLayout}
           />
-          {!isFull && <IndividualWorksDetail worksInfo={worksInfo} />}
-          {!isFull && <NavigationArea isFull={isFull} suggestIds={suggestIds} visited={visited} />}
+          {!isFull && <IndividualWorksDetail worksInfo={worksInfo} isNarrowLayout={isNarrowLayout} />}
+          {!isFull && <NavigationArea suggestIds={suggestIds} visited={visited} isNarrowLayout={isNarrowLayout} />}
         </StyledWorksContainer>
       </StyledContentContainer>
     </StyledRoot>

@@ -6,26 +6,41 @@ import { Visited } from 'AppRoot';
 import { theme } from 'constants/Theme';
 
 interface Props {
-  isFull: boolean;
   suggestIds: number[];
   visited: Visited;
+  isNarrowLayout: boolean;
 }
 
-export const NavigationArea: React.VFC<Props> = ({ isFull, suggestIds, visited }) => {
+export const NavigationArea: React.VFC<Props> = ({ suggestIds, visited, isNarrowLayout }) => {
   return (
-    <StyledContainer>
-      <StyledButtonContainer>
-        <StyledButton>
-          <StyledLink to="/">&#8810;　作品一覧へ戻る</StyledLink>
-          <StyledUnderBar id="underbar" />
-        </StyledButton>
-      </StyledButtonContainer>
+    <StyledContainer className={isNarrowLayout ? 'narrow' : ''}>
+      {isNarrowLayout ? (
+        <StyledNarrowButtonContainer>
+          <StyledNarrowButton>
+            <StyledNarrowLink to="/">展示空間TOPへ戻る</StyledNarrowLink>
+          </StyledNarrowButton>
+        </StyledNarrowButtonContainer>
+      ) : (
+        <StyledButtonContainer>
+          <StyledButton>
+            <StyledLink to="/">&#8810;　展示空間TOPへ戻る</StyledLink>
+            <StyledUnderBar id="underbar" />
+          </StyledButton>
+        </StyledButtonContainer>
+      )}
       <StyledTitle>近くにある作品</StyledTitle>
       <StyledSuggestSection>
-        <StyledSuggestWorksContainer>
+        <StyledSuggestWorksContainer className={isNarrowLayout ? 'narrow' : ''}>
           {suggestIds.length >= 4 &&
             suggestIds.slice(0, 4).map((worksId) => {
-              return <SuggestedWorks worksId={worksId} isVisited={visited[worksId]} key={worksId} />;
+              return (
+                <SuggestedWorks
+                  worksId={worksId}
+                  isVisited={visited[worksId]}
+                  isNarrowLayout={isNarrowLayout}
+                  key={worksId}
+                />
+              );
             })}
         </StyledSuggestWorksContainer>
       </StyledSuggestSection>
@@ -35,6 +50,43 @@ export const NavigationArea: React.VFC<Props> = ({ isFull, suggestIds, visited }
 
 const StyledContainer = styled.div`
   width: 100%;
+  &.narrow {
+    padding: 0px 10px;
+  }
+`;
+
+const StyledNarrowButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0px 30px 0px;
+`;
+
+const StyledNarrowButton = styled.button`
+  display: block;
+  width: 100%;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border: 2px solid white;
+  & * {
+    color: white;
+  }
+  &:hover {
+    cursor: pointer;
+    background-color: white;
+    & * {
+      color: black;
+    }
+  }
+`;
+
+const StyledNarrowLink = styled(Link)`
+  display: block;
+  padding: 10px;
+  font-size: 18px;
+  text-decoration: none;
 `;
 
 const StyledButtonContainer = styled.div`
@@ -88,4 +140,7 @@ const StyledSuggestSection = styled.section`
 const StyledSuggestWorksContainer = styled.div`
   width: 600px;
   display: flex;
+  &.narrow {
+    width: 400px;
+  }
 `;

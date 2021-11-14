@@ -1,4 +1,5 @@
 import { headerHeight } from 'components/Header/Header';
+import { LayoutType } from 'constants/Layout';
 import { theme } from 'constants/Theme';
 import { useWindowDimensions } from 'hooks/useWindowDimensions';
 import React from 'react';
@@ -10,9 +11,17 @@ interface Props {
   iframeHeight: string;
   isFull: boolean;
   setIsFull: (isFull: boolean) => void;
+  isNarrowLayout: boolean;
 }
 
-export const IndividualWorksWindow: React.VFC<Props> = ({ srcUrl, iframeWidth, iframeHeight, isFull, setIsFull }) => {
+export const IndividualWorksWindow: React.VFC<Props> = ({
+  srcUrl,
+  iframeWidth,
+  iframeHeight,
+  isFull,
+  setIsFull,
+  isNarrowLayout,
+}) => {
   const iframeRef = React.useRef<HTMLIFrameElement>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const loadHandler = React.useCallback(() => setIsLoading(false), [setIsLoading]);
@@ -75,21 +84,38 @@ export const IndividualWorksWindow: React.VFC<Props> = ({ srcUrl, iframeWidth, i
             </p>
           </StyledExitFullScreenButton>
         ) : (
-          <StyledFullScreenButton onClick={makeFullScreen}>
-            <StyledSVG width="225" height="113" viewBox="0 0 225 113" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M0 0C0 62.132 50.368 112.5 112.5 112.5C174.632 112.5 225 62.132 225 0H0Z"
-                fill="#2A70B8"
-              />
-            </StyledSVG>
-            <p>
-              作品を全画面で
-              <br />
-              表示する
-            </p>
-          </StyledFullScreenButton>
+          <StyledFullScreenButtonContainer>
+            {isNarrowLayout ? (
+              <StyledNarrowFullScreenButton onClick={makeFullScreen}>
+                <StyledSVG width="252" height="43" viewBox="0 0 252 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M126 43L0.426331 0.25L251.574 0.25L126 43Z" fill="#E3E1E1" />
+                </StyledSVG>
+                <p>全画面表示</p>
+              </StyledNarrowFullScreenButton>
+            ) : (
+              <StyledFullScreenButton onClick={makeFullScreen}>
+                <StyledSVG
+                  width="225"
+                  height="113"
+                  viewBox="0 0 225 113"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M0 0C0 62.132 50.368 112.5 112.5 112.5C174.632 112.5 225 62.132 225 0H0Z"
+                    fill="#2A70B8"
+                  />
+                </StyledSVG>
+                <p>
+                  作品を全画面で
+                  <br />
+                  表示する
+                </p>
+              </StyledFullScreenButton>
+            )}
+          </StyledFullScreenButtonContainer>
         )}
       </StyledContainer>
     </StyledRoot>
@@ -155,15 +181,47 @@ const StyledSkeleton = styled.div`
   background-color: #b4b4b4;
 `;
 
-const StyledFullScreenButton = styled.button`
+const StyledFullScreenButtonContainer = styled.div`
+  position: absolute;
+  width: 100%;
+  top: 100%;
+  left: 0px;
+`;
+
+const StyledNarrowFullScreenButton = styled.button`
   background-color: transparent;
   position: absolute;
-  top: 99.5%;
-  right: -3px;
+  top: 0px;
+  left: 50%;
+  transform: translateX(-50%);
   display: block;
   outline: none;
   border: none;
-  padding: 3px;
+  color: black;
+  z-index: 16;
+  &:hover {
+    cursor: pointer;
+  }
+  & > p {
+    position: absolute;
+    top: 33%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    line-height: 20px;
+    font-weight: ${theme.fontWeight.bold};
+    border-bottom: 2px solid ${theme.color.primary};
+  }
+`;
+
+const StyledFullScreenButton = styled.button`
+  background-color: transparent;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  display: block;
+  outline: none;
+  border: none;
   color: white;
   z-index: 16;
   &:hover {
