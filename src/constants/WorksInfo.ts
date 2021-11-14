@@ -24,12 +24,12 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '中川陽介',
-        affiliation: `情報理工学系研究科 苗村研究室 修士1年
+        affiliation: `情報理工学系研究科\n苗村研究室\n修士1年
         `,
       },
       {
         name: '渡邊一正',
-        affiliation: `学際情報学府 葛岡・雨宮・鳴海研究室 修士1年`,
+        affiliation: `学際情報学府\n葛岡・雨宮・鳴海研究室\n修士1年`,
       },
     ],
     device: 'SP',
@@ -55,15 +55,15 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '三宅大生',
-        affiliation: `情報学環 教育部 1年`,
+        affiliation: `情報学環\n教育部 1年`,
       },
       {
         name: '道下千穂',
-        affiliation: `情報学環 教育部 1年`,
+        affiliation: `情報学環\n教育部 1年`,
       },
       {
         name: '阿部美咲',
-        affiliation: `東京藝術大学 絵画科油画専攻 2年`,
+        affiliation: `東京藝術大学\n絵画科油画専攻\n2年`,
       },
     ],
     device: 'BOTH',
@@ -84,7 +84,7 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '小山このか',
-        affiliation: `学際情報学府 石崎研究室 修士1年`,
+        affiliation: `学際情報学府\n石崎研究室\n修士1年`,
       },
     ],
     device: 'PC',
@@ -99,7 +99,7 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '望月花妃',
-        affiliation: `情報学環 教育部 2年`,
+        affiliation: `情報学環\n教育部 2年`,
       },
     ],
     device: 'BOTH',
@@ -118,11 +118,11 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '上野菜津',
-        affiliation: `情報学環教育部 1年`,
+        affiliation: `情報学環\n教育部 1年`,
       },
       {
         name: '馮楽祺',
-        affiliation: `学際情報学府 山中研究室 修士1年`,
+        affiliation: `学際情報学府\n山中研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
@@ -140,11 +140,11 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '荒巻美南海',
-        affiliation: `工学部 苗村研究室 4年`,
+        affiliation: `工学部\n苗村研究室\n4年`,
       },
       {
         name: '児玉大樹',
-        affiliation: `情報理工学系研究科 葛岡・雨宮・鳴海研究室 修士1年`,
+        affiliation: `情報理工学系研究科\n葛岡・雨宮・鳴海研究室\n修士1年`,
       },
     ],
     device: 'PC',
@@ -166,23 +166,23 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '久保田愛海',
-        affiliation: `学際情報学府 山内研究室 修士1年`,
+        affiliation: `学際情報学府\n山内研究室\n修士1年`,
       },
       {
         name: '佐々木竜太郎',
-        affiliation: `学際情報学府 植田研究室 修士1年`,
+        affiliation: `学際情報学府\n植田研究室\n修士1年`,
       },
       {
         name: '佐倉玲',
-        affiliation: `学際情報学府 筧研究室 修士1年`,
+        affiliation: `学際情報学府\n筧研究室\n修士1年`,
       },
       {
         name: '覚井優希',
-        affiliation: `情報理工学系研究科 苗村研究室 修士1年`,
+        affiliation: `情報理工学系研究科\n苗村研究室\n修士1年`,
       },
       {
         name: '藤波徹柊',
-        affiliation: `情報理工学系研究科 藤田研究室 修士1年`,
+        affiliation: `情報理工学系研究科\n藤田研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
@@ -204,19 +204,19 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '倉田将希',
-        affiliation: `学際情報学府 川越研究室 修士1年`,
+        affiliation: `学際情報学府\n川越研究室\n修士1年`,
       },
       {
         name: '久保田愛海',
-        affiliation: `学際情報学府 山内研究室 修士1年`,
+        affiliation: `学際情報学府\n山内研究室\n修士1年`,
       },
       {
         name: '富木菜穂',
-        affiliation: `学際情報学府 苗村研究室 修士1年`,
+        affiliation: `学際情報学府\n苗村研究室\n修士1年`,
       },
       {
         name: '山田瑞季',
-        affiliation: `学際情報学府 大島研究室 修士1年`,
+        affiliation: `学際情報学府\n大島研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
@@ -244,7 +244,7 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '新納大輔',
-        affiliation: `学際情報学府 葛岡・雨宮・鳴海研究室 修士1年`,
+        affiliation: `学際情報学府\n葛岡・雨宮・鳴海研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
@@ -264,19 +264,19 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '東出りさ',
-        affiliation: `情報学環 教育部 1年`,
+        affiliation: `情報学環\n教育部 1年`,
       },
       {
         name: '鈴木嵩茂',
-        affiliation: `情報理工学系研究科 葛岡・雨宮・鳴海研究室 修士1年`,
+        affiliation: `情報理工学系研究科\n葛岡・雨宮・鳴海研究室\n修士1年`,
       },
       {
         name: '日比杏南',
-        affiliation: `情報学環 教育部 1年`,
+        affiliation: `情報学環\n教育部 1年`,
       },
       {
         name: '陳施佳',
-        affiliation: `学際情報学府 伊東研究室 修士1年`,
+        affiliation: `学際情報学府\n伊東研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
@@ -291,15 +291,15 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '周寧',
-        affiliation: `学際情報学府 渡邉研究室 修士1年`,
+        affiliation: `学際情報学府\n渡邉研究室\n修士1年`,
       },
       {
         name: '市倉愛子',
-        affiliation: `学際情報学府 稲葉・岡田研究室 修士1年`,
+        affiliation: `学際情報学府\n稲葉・岡田研究室\n修士1年`,
       },
       {
         name: '間宮竜大',
-        affiliation: `学際情報学府 貞広研究室 修士1年`,
+        affiliation: `学際情報学府\n貞広研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
@@ -317,11 +317,11 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '張斯媛',
-        affiliation: `学際情報学府 Pennington研究室 修士1年`,
+        affiliation: `学際情報学府\nPennington研究室\n修士1年`,
       },
       {
         name: '江子淵',
-        affiliation: `学際情報学府 筧研究室 修士1年`,
+        affiliation: `学際情報学府\n筧研究室\n修士1年`,
       },
     ],
     device: 'PC',
@@ -338,19 +338,19 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '三上尚美',
-        affiliation: `学際情報学府 渡邉研究室 修士1年`,
+        affiliation: `学際情報学府\n渡邉研究室\n修士1年`,
       },
       {
         name: '篠田和宏',
-        affiliation: `学際情報学府 矢谷研究室 修士1年`,
+        affiliation: `学際情報学府\n矢谷研究室\n修士1年`,
       },
       {
         name: '李昌',
-        affiliation: `情報理工学系研究科 葛岡・雨宮・鳴海研究室 修士1年`,
+        affiliation: `情報理工学系研究科\n葛岡・雨宮・鳴海研究室\n修士1年`,
       },
       {
         name: '小山大嘉',
-        affiliation: `情報理工学系研究科 葛岡・雨宮・鳴海研究室 修士1年`,
+        affiliation: `情報理工学系研究科\n葛岡・雨宮・鳴海研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
@@ -376,19 +376,19 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '秋山真鈴',
-        affiliation: `学際情報学府 山口研究室 修士1年`,
+        affiliation: `学際情報学府\n山口研究室\n修士1年`,
       },
       {
         name: '韮澤雄太',
-        affiliation: `学際情報学府 小川研究室 修士1年`,
+        affiliation: `学際情報学府\n小川研究室\n修士1年`,
       },
       {
         name: '倉田将希',
-        affiliation: `学際情報学府 川越研究室 修士1年`,
+        affiliation: `学際情報学府\n川越研究室\n修士1年`,
       },
       {
         name: '稲津遥太郎',
-        affiliation: `工学系研究科 峯松・齋藤研究室 修士1年`,
+        affiliation: `工学系研究科\n峯松・齋藤研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
