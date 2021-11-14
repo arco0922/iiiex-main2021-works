@@ -32,7 +32,9 @@ export const ReactionForm: React.VFC<Props> = ({ worksId, isNarrowLayout }) => {
         <StyledForm action={REACTIONFORM_URL} ref={formRef} method="post" target="dummyIframe">
           <StyledTextArea name={worksInfo.formEntry} ref={textRef}></StyledTextArea>
         </StyledForm>
-        <StyledSubmitButton onClick={submitForm}>送信</StyledSubmitButton>
+        <StyledSubmitButton onClick={submitForm}>
+          <p>送信</p>
+        </StyledSubmitButton>
         <StyledDummyIframe name="dummyIframe" />
       </StyledFormWrapper>
       <StyledSentMessage isSent={isSent}>回答ありがとうございます</StyledSentMessage>
@@ -99,7 +101,6 @@ const StyledSubmitButton = styled.button`
   & > p {
     font-size: 16px;
     font-weight: ${theme.fontWeight.regular};
-    margin-right: 5px;
   }
 `;
 
