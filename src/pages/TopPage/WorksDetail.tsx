@@ -1,5 +1,4 @@
 import { Visited } from 'AppRoot';
-import { Caption } from 'components/Caption/Caption';
 import { theme } from 'constants/Theme';
 import { worksInfoArr } from 'constants/WorksInfo';
 import React from 'react';
@@ -49,7 +48,7 @@ export const WorksDetail: React.VFC<Props> = ({ selectId, visited, isShowDetail,
           </StyledSection>
           <StyledSection>
             <h4>作品説明</h4>
-            <Caption captionText={info.caption}></Caption>
+            <StyledCaption>{info.caption}</StyledCaption>
           </StyledSection>
         </StyledDetail>
       </StyledDetailContainer>
@@ -141,7 +140,6 @@ const StyledButton = styled.button`
   outline: none;
   border: none;
   border: 2px solid ${theme.color.primary};
-  padding: 3px;
   margin-bottom: 15px;
   width: 97%;
   &:hover {
@@ -157,7 +155,12 @@ const StyledLink = styled(Link)`
   text-decoration: none;
   color: white;
   font-size: 20px;
+  padding: 3px;
   font-weight: ${theme.fontWeight.bold};
+`;
+
+const StyledCaption = styled.div`
+  white-space: pre-line;
 `;
 
 const StyledDetail = styled.div`
