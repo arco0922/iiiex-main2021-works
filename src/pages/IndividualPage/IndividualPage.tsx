@@ -53,7 +53,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   }, [worksInfo]);
   const [isFull, setIsFull] = React.useState<boolean>(false);
   const isNarrowLayout = layout === 'MID' || layout === 'NARROW';
-  const iframeWidth = isFull ? '' : isNarrowLayout ? '95vw' : 'min(1500px, max(75vw , 500px))';
+  const iframeWidth = isFull ? '' : isNarrowLayout ? '95vw' : 'min(1000px, max(75vw , 500px))';
   const iframeHeight = isFull
     ? ''
     : `calc( ${iframeWidth} * ${worksInfo?.aspectRatio ? worksInfo.aspectRatio : 9 / 16} )`;
@@ -89,7 +89,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
       />
       <StyledContentContainer>
         <ScrollDiv ref={containerRef}></ScrollDiv>
-        <StyledWorksContainer isFull={isFull} isNarrowLayout={isNarrowLayout}>
+        <StyledWorksContainer isFull={isFull} isNarrowLayout={isNarrowLayout} containerWidth={iframeWidth}>
           <IndividualWorksWindow
             srcUrl={isMobile ? worksInfo.srcUrlSp : worksInfo.srcUrlPc}
             iframeHeight={iframeHeight}
@@ -128,11 +128,12 @@ const ScrollDiv = styled.div``;
 interface StyledWorksContainerProps {
   isNarrowLayout: boolean;
   isFull: boolean;
+  containerWidth: string;
 }
 
 const StyledWorksContainer = styled.div<StyledWorksContainerProps>`
-  width: 80%;
+  width: ${({ containerWidth }) => containerWidth};
   display: flex;
   flex-direction: column;
-  padding: ${({ isFull }) => (isFull ? '0' : '20px 10px')};
+  padding: ${({ isFull }) => (isFull ? '0' : '20px 0px 50px 0px')};
 `;
