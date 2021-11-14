@@ -5,6 +5,7 @@ import { LayoutType } from 'constants/Layout';
 import { Coord, MapModeId } from 'constants/MapCoords';
 import React from 'react';
 import styled from 'styled-components';
+import { Carousel } from './Carousel';
 import { WorksDetail } from './WorksDetail';
 import { bottomDetailHeight, WorksDetailBottom } from './WorksDetailBottom';
 import { WorksListMenu } from './WorksListMenu';
@@ -12,6 +13,7 @@ import { WorksListMenu } from './WorksListMenu';
 interface Props {
   selectId: number;
   setSelectId: (selectId: number) => void;
+  mapModeId: MapModeId;
   setMapModeId: (mapModeId: MapModeId) => void;
   mapModeIdRef: React.MutableRefObject<MapModeId>;
   visited: Visited;
@@ -25,6 +27,7 @@ interface Props {
 export const TopPage: React.VFC<Props> = ({
   selectId,
   setSelectId,
+  mapModeId,
   setMapModeId,
   mapModeIdRef,
   visited,
@@ -58,6 +61,7 @@ export const TopPage: React.VFC<Props> = ({
       <Header layout={layout} setIsShowHamburger={setIsShowHamburger}></Header>
       <StyledContentContainer>
         <StyledSketchContainer>
+          <Carousel mapModeId={mapModeId} setMapModeId={setMapModeId} layout={layout} />
           <WorksListSketch
             width="100%"
             height="100%"
