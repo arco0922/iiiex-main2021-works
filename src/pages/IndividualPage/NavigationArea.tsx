@@ -6,14 +6,14 @@ import { Visited } from 'AppRoot';
 import { theme } from 'constants/Theme';
 
 interface Props {
-  isFull: boolean;
   suggestIds: number[];
   visited: Visited;
+  isNarrowLayout: boolean;
 }
 
-export const NavigationArea: React.VFC<Props> = ({ isFull, suggestIds, visited }) => {
+export const NavigationArea: React.VFC<Props> = ({ suggestIds, visited, isNarrowLayout }) => {
   return (
-    <StyledContainer>
+    <StyledContainer className={isNarrowLayout ? 'narrow' : ''}>
       <StyledButtonContainer>
         <StyledButton>
           <StyledLink to="/">&#8810;　作品一覧へ戻る</StyledLink>
@@ -22,10 +22,17 @@ export const NavigationArea: React.VFC<Props> = ({ isFull, suggestIds, visited }
       </StyledButtonContainer>
       <StyledTitle>近くにある作品</StyledTitle>
       <StyledSuggestSection>
-        <StyledSuggestWorksContainer>
+        <StyledSuggestWorksContainer className={isNarrowLayout ? 'narrow' : ''}>
           {suggestIds.length >= 4 &&
             suggestIds.slice(0, 4).map((worksId) => {
-              return <SuggestedWorks worksId={worksId} isVisited={visited[worksId]} key={worksId} />;
+              return (
+                <SuggestedWorks
+                  worksId={worksId}
+                  isVisited={visited[worksId]}
+                  isNarrowLayout={isNarrowLayout}
+                  key={worksId}
+                />
+              );
             })}
         </StyledSuggestWorksContainer>
       </StyledSuggestSection>
@@ -35,6 +42,9 @@ export const NavigationArea: React.VFC<Props> = ({ isFull, suggestIds, visited }
 
 const StyledContainer = styled.div`
   width: 100%;
+  &.narrow {
+    padding: 0px 10px;
+  }
 `;
 
 const StyledButtonContainer = styled.div`
@@ -88,4 +98,7 @@ const StyledSuggestSection = styled.section`
 const StyledSuggestWorksContainer = styled.div`
   width: 600px;
   display: flex;
+  &.narrow {
+    width: 400px;
+  }
 `;

@@ -1,4 +1,5 @@
 import { headerHeight } from 'components/Header/Header';
+import { LayoutType } from 'constants/Layout';
 import { theme } from 'constants/Theme';
 import { useWindowDimensions } from 'hooks/useWindowDimensions';
 import React from 'react';
@@ -10,9 +11,17 @@ interface Props {
   iframeHeight: string;
   isFull: boolean;
   setIsFull: (isFull: boolean) => void;
+  isNarrowLayout: boolean;
 }
 
-export const IndividualWorksWindow: React.VFC<Props> = ({ srcUrl, iframeWidth, iframeHeight, isFull, setIsFull }) => {
+export const IndividualWorksWindow: React.VFC<Props> = ({
+  srcUrl,
+  iframeWidth,
+  iframeHeight,
+  isFull,
+  setIsFull,
+  isNarrowLayout,
+}) => {
   const iframeRef = React.useRef<HTMLIFrameElement>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const loadHandler = React.useCallback(() => setIsLoading(false), [setIsLoading]);
