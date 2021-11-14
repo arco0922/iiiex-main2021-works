@@ -17,10 +17,12 @@ interface Params {
   id: string;
 }
 interface Props {
+  visited: Visited;
+  setVisited: (visited: Visited) => void;
   selectId: number;
   setSelectId: (selectId: number) => void;
-  setVisited: (visited: Visited) => void;
-  visited: Visited;
+  lastVisitedId: number;
+  setLastVisitedId: (id: number) => void;
   layout: LayoutType;
   setIsShowHamburger: (isShowHamburger: boolean) => void;
   coords: Coord[];
@@ -28,10 +30,12 @@ interface Props {
 
 const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = ({
   match,
+  visited,
+  setVisited,
   selectId,
   setSelectId,
-  setVisited,
-  visited,
+  lastVisitedId,
+  setLastVisitedId,
   layout,
   setIsShowHamburger,
   coords,
@@ -39,7 +43,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   const worksId = Number(match.params.id);
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
   const history = useHistory();
-  const [lastVisitedId, setLastVisitedId] = React.useState<number>(-1);
+
   const scrollRef = React.useRef<HTMLDivElement>(null);
   React.useEffect(() => {
     scrollRef.current?.scrollIntoView({
