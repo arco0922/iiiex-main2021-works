@@ -1,5 +1,4 @@
 import { headerHeight } from 'components/Header/Header';
-import { LayoutType } from 'constants/Layout';
 import { theme } from 'constants/Theme';
 import { useWindowDimensions } from 'hooks/useWindowDimensions';
 import React from 'react';
