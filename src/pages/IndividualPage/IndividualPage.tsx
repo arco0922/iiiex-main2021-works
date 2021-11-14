@@ -113,6 +113,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
             isNarrowLayout={isNarrowLayout}
           />
           {!isFull && <IndividualWorksDetail worksInfo={worksInfo} isNarrowLayout={isNarrowLayout} />}
+          {!isFull && <ReactionForm worksId={worksId} isNarrowLayout={isNarrowLayout} />}
           {!isFull && <NavigationArea suggestIds={suggestIds} visited={visited} isNarrowLayout={isNarrowLayout} />}
         </StyledWorksContainer>
       </StyledContentContainer>
