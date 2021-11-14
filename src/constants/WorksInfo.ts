@@ -25,12 +25,12 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '中川陽介',
-        affiliation: `情報理工学系研究科 苗村研究室 修士1年
+        affiliation: `情報理工学系研究科\n苗村研究室\n修士1年
         `,
       },
       {
         name: '渡邊一正',
-        affiliation: `学際情報学府 葛岡・雨宮・鳴海研究室 修士1年`,
+        affiliation: `学際情報学府\n葛岡・雨宮・鳴海研究室\n修士1年`,
       },
     ],
     device: 'SP',
@@ -57,15 +57,15 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '三宅大生',
-        affiliation: `情報学環 教育部 1年`,
+        affiliation: `情報学環\n教育部 1年`,
       },
       {
         name: '道下千穂',
-        affiliation: `情報学環 教育部 1年`,
+        affiliation: `情報学環\n教育部 1年`,
       },
       {
         name: '阿部美咲',
-        affiliation: `東京藝術大学 絵画科油画専攻 2年`,
+        affiliation: `東京藝術大学\n絵画科油画専攻\n2年`,
       },
     ],
     device: 'BOTH',
@@ -81,16 +81,17 @@ export const worksInfoArr: WorksInfo[] = [
   },
   {
     id: 2,
-    title: 'ゼロマインド～1歳児キャリブレーション～',
+    title: `Zero To One Mind
+    ～1歳児キョリブレーション～`,
     thumbnailBaseName: '2_baby-thumbnail',
     creators: [
       {
         name: '小山このか',
-        affiliation: `学際情報学府 石崎研究室 修士1年`,
+        affiliation: `学際情報学府\n石崎研究室\n修士1年`,
       },
     ],
     device: 'PC',
-    caption: `本作品は、赤ちゃんが周囲の環境や家族をキャリブレーションしていくゲーム作品である。前作のゼロマインドでは「0歳児パンク」をテーマに扱ったが、本作は前作の謎解き要素を秘めている。赤ちゃんは周囲の興味を引きたくて、自身のベクトルに、大人達を誘導していく。予測不可能な赤ちゃんによってキャリブレーションされる大人達。作者の息子は1歳になり、一人でよちよち歩けるようになってきた。着々と赤ちゃんから子供へと距離を縮めている。本作品は、赤ちゃんキョリブレーションに着目し、母親なりの解釈を加えた作品である。ぜひ大人も赤ちゃんとの距離を縮めて、よちよち大冒険してほしい。`,
+    caption: `本作品は、赤ちゃんが周囲の環境や家族をキャリブレーションしてくゲーム作品である。前作のゼロマインドでは「0歳児パンク」をテーマに扱い、本作は前作の謎解き要素を秘めている。赤ちゃんは周囲の興味を引きたくて、自身のベクトルに、大人達を誘導していく。予測不可能な赤ちゃんによってキャリブレーションされる大人達。作者の息子は1歳になり、一人でよちよち歩けるようになってきた。着々と赤ちゃんから子供へと距離を縮めている。本作品は、赤ちゃんキョリブレーションに着目し、母親なりの解釈を加えた作品である。ぜひ大人も赤ちゃんとの距離を縮めて、よちよち大冒険してほしい。`,
     srcUrlPc: 'https://hardcore-nobel-4e99fe.netlify.app/',
     srcUrlSp: 'https://hardcore-nobel-4e99fe.netlify.app/mobile.html',
     formEntry: 'entry.1260241828',
@@ -102,7 +103,7 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '望月花妃',
-        affiliation: `情報学環 教育部 2年`,
+        affiliation: `情報学環\n教育部 2年`,
       },
     ],
     device: 'BOTH',
@@ -122,17 +123,17 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '上野菜津',
-        affiliation: `情報学環教育部 1年`,
+        affiliation: `情報学環\n教育部 1年`,
       },
       {
         name: '馮楽祺',
-        affiliation: `学際情報学府 山中研究室 修士1年`,
+        affiliation: `学際情報学府\n山中研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
     caption: `「アイドル」と「ファン」との関係性、それは応援される者と応援する者、恋される者と恋する者、お金を受け取る者と払う者…etc.
     しかし「アイドル」ではない大半の人間は「ファン」にしかなることができない。だって特別な人だけが「アイドル」になるからこそ「アイドル」と「ファン」の関係性が生まれるから。
-     だけど、もし誰もが「アイドル」の立場になって、この関係性に入ることができたら、「アイドル」と「ファン」との関係性に新しい見方が生まれるのではないか。「ファン」という存在に対して「アイドル」を演じながら向き合うことで、「アイドル」と「ファン」の関係における歪さ、虚しさ、面白さを発見してほしい。
+    だけど、もし誰もが「アイドル」の立場になって、この関係性に入ることができたら、「アイドル」と「ファン」との関係性に新しい見方が生まれるのではないか。「ファン」という存在に対して「アイドル」を演じながら向き合うことで、「アイドル」と「ファン」の関係における歪さ、虚しさ、面白さを発見してほしい。    
     `,
     srcUrlPc: 'https://larkin269.github.io/fikpages/',
     srcUrlSp: 'https://larkin269.github.io/fikpages/',
@@ -145,11 +146,11 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '荒巻美南海',
-        affiliation: `工学部 苗村研究室 4年`,
+        affiliation: `工学部\n苗村研究室\n4年`,
       },
       {
         name: '児玉大樹',
-        affiliation: `情報理工学系研究科 葛岡・雨宮・鳴海研究室 修士1年`,
+        affiliation: `情報理工学系研究科\n葛岡・雨宮・鳴海研究室\n修士1年`,
       },
     ],
     device: 'PC',
@@ -167,36 +168,38 @@ export const worksInfoArr: WorksInfo[] = [
   },
   {
     id: 6,
-    title: '(s)hukan',
-    thumbnailBaseName: '6_(s)hukan',
+    title: '矢印たち',
+    thumbnailBaseName: '6_yajirushi',
     creators: [
       {
         name: '久保田愛海',
-        affiliation: `学際情報学府 山内研究室 修士1年`,
+        affiliation: `学際情報学府\n山内研究室\n修士1年`,
       },
       {
         name: '佐々木竜太郎',
-        affiliation: `学際情報学府 植田研究室 修士1年`,
+        affiliation: `学際情報学府\n植田研究室\n修士1年`,
       },
       {
         name: '佐倉玲',
-        affiliation: `学際情報学府 筧研究室 修士1年`,
+        affiliation: `学際情報学府\n筧研究室\n修士1年`,
       },
       {
         name: '覚井優希',
-        affiliation: `情報理工学系研究科 苗村研究室 修士1年`,
+        affiliation: `情報理工学系研究科\n苗村研究室\n修士1年`,
       },
       {
         name: '藤波徹柊',
-        affiliation: `情報理工学系研究科 藤田研究室 修士1年`,
+        affiliation: `情報理工学系研究科\n藤田研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
-    caption: `“不思議メガネ“を介したとき、現実の世界がファンタジーに変わった経験はありませんか？
-    フィルターを通してモノゴトを見たときの世界は、別物になります。
-    普段の生活で見るモノゴトにも、視点を変えると見えてくる面白さがあります。
-     私たちは新しい視点に着目し、フィルターを仕掛けました。
-    このフィルターを通した時、あなたに見えるモノゴトはどのような世界に変わるでしょうか？
+    caption: `身の回りの様々が矢印に置き換えられる。
+    ルートや先端の動き、
+    気付かれるかは分からない、隠された連続性。
+    今のこの世界から、矢印だけを取り出す。
+    すると、指し示す対象の無くなった矢印に、私たちは何の区別も付けられない？
+    否、「矢印たち」と集合で捉えると、主観的な輪郭が現れるのだ。
+    だからあなたも何度も見返して、その輪郭を味わってみてごらん。    
     `,
     srcUrlPc: 'https://y-141.github.io/iiiex_pentagons/',
     srcUrlSp: 'https://y-141.github.io/iiiex_pentagons/',
@@ -209,19 +212,19 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '倉田将希',
-        affiliation: `学際情報学府 川越研究室 修士1年`,
+        affiliation: `学際情報学府\n川越研究室\n修士1年`,
       },
       {
         name: '久保田愛海',
-        affiliation: `学際情報学府 山内研究室 修士1年`,
+        affiliation: `学際情報学府\n山内研究室\n修士1年`,
       },
       {
         name: '富木菜穂',
-        affiliation: `学際情報学府 苗村研究室 修士1年`,
+        affiliation: `学際情報学府\n苗村研究室\n修士1年`,
       },
       {
         name: '山田瑞季',
-        affiliation: `学際情報学府 大島研究室 修士1年`,
+        affiliation: `学際情報学府\n大島研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
@@ -250,35 +253,40 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '新納大輔',
-        affiliation: `学際情報学府 葛岡・雨宮・鳴海研究室 修士1年`,
+        affiliation: `学際情報学府\n葛岡・雨宮・鳴海研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
-    caption: `ゲームは300人で5年かけてつくる。そんな常識が過去のものになりつつある。1人で3か月かけたらどこまでできるか。ゲーム開発の未来を探る。`,
+    caption: `ゲームコンテンツ開発の環境が大幅に変化している。
+    ゲームエンジンの発達により1人でもハイエンドゲーム開発ができ、これまでユーザ側であった人材がゲーム開発者になることも増え始めた。
+    また、ユーザのゲーム実況動画配信が購入判断材料になってきたことで、開発者がユーザのようにゲーム実況動画配信をするようにもなってきた。
+    ユーザが開発者に、開発者がユーザにシフトしていくことでこれまでの需給ルールが逆転していく。
+    本作は開発者側とユーザプレイ実況側の双方からアプローチを進めることで、ゲーム開発・消費の未来を探る。
+    `,
     srcUrlPc: 'https://ninonode.github.io/endragon/',
     srcUrlSp: 'https://ninonode.github.io/endragon/',
     formEntry: 'entry.1047603043',
   },
   {
     id: 9,
-    title: 'KABUKU!',
+    title: 'KABUKU！',
     thumbnailBaseName: '9_kabuku_tmb800',
     creators: [
       {
         name: '東出りさ',
-        affiliation: `情報学環 教育部 1年`,
+        affiliation: `情報学環\n教育部 1年`,
       },
       {
         name: '鈴木嵩茂',
-        affiliation: `情報理工学系研究科 葛岡・雨宮・鳴海研究室 修士1年`,
+        affiliation: `情報理工学系研究科\n葛岡・雨宮・鳴海研究室\n修士1年`,
       },
       {
         name: '日比杏南',
-        affiliation: `情報学環 教育部 1年`,
+        affiliation: `情報学環\n教育部 1年`,
       },
       {
         name: '陳施佳',
-        affiliation: `学際情報学府 伊東研究室 修士1年`,
+        affiliation: `学際情報学府\n伊東研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
@@ -294,15 +302,15 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '周寧',
-        affiliation: `学際情報学府 渡邉研究室 修士1年`,
+        affiliation: `学際情報学府\n渡邉研究室\n修士1年`,
       },
       {
         name: '市倉愛子',
-        affiliation: `学際情報学府 稲葉・岡田研究室 修士1年`,
+        affiliation: `学際情報学府\n稲葉・岡田研究室\n修士1年`,
       },
       {
         name: '間宮竜大',
-        affiliation: `学際情報学府 貞広研究室 修士1年`,
+        affiliation: `学際情報学府\n貞広研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
@@ -321,16 +329,15 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '張斯媛',
-        affiliation: `学際情報学府 Pennington研究室 修士1年`,
+        affiliation: `学際情報学府\nPennington研究室\n修士1年`,
       },
       {
         name: '江子淵',
-        affiliation: `学際情報学府 筧研究室 修士1年`,
+        affiliation: `学際情報学府\n筧研究室\n修士1年`,
       },
     ],
     device: 'PC',
-    caption: `Home_Galleryは、コロナ禍で社会との繋がりから隔離し、人を保護するHomeと非言語的対話が生じるGallery。それぞれの要素をハイブリッドした遊びの空間と同時に、社会的な繋がりのあらゆる可能性を想像する作品。作品の核心、同空間・非同時間環境中の「存在」は、記号的に抽象化した存在と考えられ、存在と環境の関係、存在の顕在・潜在化の思考のきっかけとなるだろうか。
-    空間にアクセス時体験者が球体鏡になり、独自な「カラー」が与えられ、周りを反映する「存在」となる。体験者は与えられた「カラー」を知らず、第一視点から自らの「カラー」を当てるように空間を探索し、他者を観察すると同時に他者の存在を映し出す「存在」となる。
+    caption: ` Home_Galleryは、人を保護するHomeと非言語的対話が生じるGalleryの要素をハイブリッドした遊びの空間と社会的な繋がりのあらゆる可能性を想像する作品である。作品の「存在」は、記号的に抽象化した存在と考えられ、存在の潜在が顕在化して思考のきっかけとなるのではないだろうか。体験者が球体鏡になり、独自な「カラー」が与えられるとともに、周りを反映する「存在」となる。自らの「カラー」を当たるよう空間を探索し、他者を観察する同時に 他者の存在を映し出す「存在」となってほしい。
     `,
     srcUrlPc: 'https://siyuanzh09.github.io/Home_Gallery/',
     srcUrlSp: 'https://siyuanzh09.github.io/Home_Gallery/',
@@ -344,33 +351,33 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '三上尚美',
-        affiliation: `学際情報学府 渡邉研究室 修士1年`,
+        affiliation: `学際情報学府\n渡邉研究室\n修士1年`,
       },
       {
         name: '篠田和宏',
-        affiliation: `学際情報学府 矢谷研究室 修士1年`,
+        affiliation: `学際情報学府\n矢谷研究室\n修士1年`,
       },
       {
         name: '李昌',
-        affiliation: `情報理工学系研究科 葛岡・雨宮・鳴海研究室 修士1年`,
+        affiliation: `情報理工学系研究科\n葛岡・雨宮・鳴海研究室\n修士1年`,
       },
       {
         name: '小山大嘉',
-        affiliation: `情報理工学系研究科 葛岡・雨宮・鳴海研究室 修士1年`,
+        affiliation: `情報理工学系研究科\n葛岡・雨宮・鳴海研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
     caption: `「生活リズム」という聞きなれた言葉がありますが、
-    実際に生活を「具現化されたリズム」として体感したことがありますか？
-     
-    デバイスが自動的に取得していた様々な生活のデータを可視化してみたところ、
-    時間というリズムの上に行動のメロディーが紡がれた楽譜が思い浮かぶと同時に、
-    機械によって測定された生活リズムと
-    なんとなく感じていた自分の生活リズムとの間に距離を感じました
+    実際に生活を「具現化されたリズム」として体感したことがありますか? 
+    デバイスが自動的に取得していた様々な生活のデータを可視化してみたところ、 
+    時間というリズムの上に行動のメロディーが紡がれた楽譜が思い浮かぶと同時に
+    機械によって測定された生活リズムと なんとなく感じていた自分の生活リズムとの間に距離を感じました
     過ぎていく毎日の軌跡はこの数値にこそ記録されているのか
-    それとも自己の認識と記憶こそが真実なのか
-     
-    100万行におよぶ作者の4年分の生活データと日記の内容を合わせて生成されたリズムゲームを繰り返しプレイすることで、身体的にリズムを実感するだけでなく、感覚的にも測定値と自己認識の生活のズレをシンクロさせるというキャリブレーション的なアプローチをもって、新しい「生活リズムの具現化」を提案します
+    それとも自己の認識と記憶こそが真実なのか 
+    100万行におよぶ4年分の生活・生体データをもとに生成されたリズムゲームは
+    新しい「生活リズムの具現化」を提案します 
+    ぜひプレイしながら、このリズムで暮らす人物を想起してみてください
+    あなたと彼の日常は近似ですか？相違ですか？    
     `,
     srcUrlPc: 'https://tiger0ym.github.io/iiiex/',
     srcUrlSp: 'https://tiger0ym.github.io/iiiex/mobile.html',
@@ -383,30 +390,32 @@ export const worksInfoArr: WorksInfo[] = [
     creators: [
       {
         name: '秋山真鈴',
-        affiliation: `学際情報学府 山口研究室 修士1年`,
+        affiliation: `学際情報学府\n山口研究室\n修士1年`,
       },
       {
         name: '韮澤雄太',
-        affiliation: `学際情報学府 小川研究室 修士1年`,
+        affiliation: `学際情報学府\n小川研究室\n修士1年`,
       },
       {
         name: '倉田将希',
-        affiliation: `学際情報学府 川越研究室 修士1年`,
+        affiliation: `学際情報学府\n川越研究室\n修士1年`,
       },
       {
         name: '稲津遥太郎',
-        affiliation: `工学系研究科 峯松・齋藤研究室 修士1年`,
+        affiliation: `工学系研究科\n峯松・齋藤研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
     caption: `あなたの1秒と、私の1秒。本当に、同じでしょうか？
-    心臓の拍動が生物に埋め込まれた「時計」であれば、
-    すべての生物は平等な時間を持っているはずです。
-    でも、一度は感じたことがあるのではないでしょうか。
+
+    心臓の拍動が生物に埋め込まれた「時計」であるならば、
+    すべての生物を平等な時間尺度で見ることができるかもしれません。
+    みなさんも、一度は感じたことがあるのではないでしょうか。
     時間の流れる感覚は、人によって違うかもしれない。
     感じる時間の濃密さも、生物によって異なるかもしれない。
+    
     私たちが不変であるとしてきた、物理的な時間の概念を覆し、
-    ほかの生物が感じる「時間」の流れを体感してみませんか。
+    ほかの生物が感じる「時間」の流れを体感してみませんか。    
     `,
     srcUrlPc: 'https://kurapyon31.github.io/animalClock/',
     srcUrlSp: 'https://kurapyon31.github.io/animalClock/',

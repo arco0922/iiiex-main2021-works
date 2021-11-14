@@ -10,13 +10,15 @@ import { LayoutType } from 'constants/Layout';
 import { sideDetailWidth } from 'pages/TopPage/WorksDetail';
 import { bottomDetailHeight } from 'pages/TopPage/WorksDetailBottom';
 import { Visited } from 'AppRoot';
+import { carouselSpaceHeight } from 'pages/TopPage/Carousel';
+import { InitialAnimationStatus } from 'pages/TopPage/TopPage';
 
 interface Props {
   width: string;
   height: string;
   selectIdRef: React.MutableRefObject<number>;
   setSelectId: (id: number) => void;
-  isShowDetailRef: React.MutableRefObject<boolean>;
+  initialAnimationStatusRef: React.MutableRefObject<InitialAnimationStatus>;
   setIsShowDetail: (isShowDetail: boolean) => void;
   isShowHamburgerRef: React.MutableRefObject<boolean>;
   layoutRef: React.MutableRefObject<LayoutType>;
@@ -39,7 +41,7 @@ export const WorksListSketch = React.memo<Props>(
     height,
     selectIdRef,
     setSelectId,
-    isShowDetailRef,
+    initialAnimationStatusRef,
     setIsShowDetail,
     isShowHamburgerRef,
     layoutRef,
@@ -109,6 +111,11 @@ export const WorksListSketch = React.memo<Props>(
 
     const selectColor = theme.color.primary;
 
+    let prevMapModeId: MapModeId;
+
+    let prevCanvasWidth: number;
+    let prevCanvasHeight: number;
+
     let worldOffsetX: number; // ワールドの中心がスクリーンのどこにあるか
     let worldOffsetY: number; // ワールドの中心がスクリーンのどこにあるか
     let worldOffsetScale: number; // ワールドのスクリーン上での縮尺
@@ -142,12 +149,18 @@ export const WorksListSketch = React.memo<Props>(
     const calcSquaredDist = (x1: number, y1: number, x2: number, y2: number) =>
       (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
 
-    const initWorldPosScale = (p5: p5Types) => {
-      const mapCoord = mapCoordsArr.filter(({ modeId }) => modeId === mapModeIdRef.current)[0];
-      const width = p5.width;
-      const height = layoutRef.current === 'NARROW' ? p5.height - bottomDetailHeight : p5.height;
+    const initWorldPosScale = (p5: p5Types, mapModeId: MapModeId) => {
+      const mapCoord = mapCoordsArr.filter(({ modeId }) => modeId === mapModeId)[0];
+      const width =
+        layoutRef.current !== 'NARROW' && initialAnimationStatusRef.current !== 'END'
+          ? p5.width - sideDetailWidth
+          : p5.width;
+      const height = layoutRef.current === 'NARROW' ? p5.height - bottomDetailHeight - carouselSpaceHeight : p5.height;
       worldOffsetX = width / 2 - mapCoord.center.x;
       worldOffsetY = height / 2 - mapCoord.center.y;
+      if (layoutRef.current === 'NARROW') {
+        worldOffsetY += carouselSpaceHeight;
+      }
       worldOffsetScale = p5.min(
         width / p5.max(mapCoord.border.maxX - mapCoord.border.minX, 1),
         height / p5.max(mapCoord.border.maxY - mapCoord.border.minY, 1),
@@ -185,6 +198,13 @@ export const WorksListSketch = React.memo<Props>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const mapModeIdChangeHandler = (p5: p5Types, newMapModeId: MapModeId) => {
+      initWorldPosScale(p5, newMapModeId);
+      mapCoordsArr
+        .filter(({ modeId }) => modeId === newMapModeId)[0]
+        .coords.forEach(({ id, x, y }) => obstacleSystem.setTargetPos({ id, x, y }));
+    };
+
     let thumbnails: ParticleImage[];
     let checkmark: p5Types.Image;
 
@@ -208,6 +228,9 @@ export const WorksListSketch = React.memo<Props>(
         containerRef.current.clientHeight - padding * 2,
       ).parent(canvasParentRef);
 
+      prevCanvasWidth = p5.width;
+      prevCanvasHeight = p5.height;
+
       navigationBtn = p5.createButton('作品を見る');
       navigationBtn.parent(containerRef.current);
       navigationBtn.style(
@@ -217,37 +240,10 @@ export const WorksListSketch = React.memo<Props>(
       navigationBtn.mouseOut(() => navigationBtnStyleChange(p5, false));
       navigationBtn.mouseClicked(() => navigateToIndividual());
 
-      type Radio = p5Types.Element & { changed: (callback: () => void) => void };
-      const mapToggleRadios: Radio = p5.createRadio() as Radio;
-      mapToggleRadios.parent(containerRef.current);
-      mapToggleRadios.style(
-        'position: absolute; display: flex; top: 0; left: 0; width: 100%; height: 40px; justify-content: center; align-items: center; background-color: #00000040',
-      );
-
-      const radioLabelStyle = 'color: white; margin-right: 10px; margin-left: 3px;';
-
-      const radioDescription = p5.createElement('p', '作品の並べ方：');
-      radioDescription.style(radioLabelStyle);
-      radioDescription.parent(mapToggleRadios);
-
       const initialMapModeId = mapModeIdRef.current;
+      prevMapModeId = initialMapModeId;
 
-      mapCoordsArr.forEach(({ modeId, modeName }) => {
-        const modeRadio = p5.createElement('input');
-        modeRadio.attribute('type', 'radio');
-        modeRadio.attribute('value', modeId.toString());
-        modeRadio.attribute('name', 'mapToggle');
-        modeRadio.parent(mapToggleRadios);
-        const modeRadioLabel = p5.createElement('label', modeName);
-        modeRadioLabel.parent(mapToggleRadios);
-        modeRadioLabel.style(radioLabelStyle);
-
-        if (modeId === initialMapModeId) {
-          modeRadio.attribute('checked', 'checked');
-        }
-      });
-
-      initWorldPosScale(p5);
+      initWorldPosScale(p5, initialMapModeId);
 
       grid = new Grid(p5, worldWidth, worldHeight, 100);
 
@@ -262,51 +258,44 @@ export const WorksListSketch = React.memo<Props>(
       );
 
       mapCoordsArr
-        .filter(({ modeId }) => modeId === Number(mapToggleRadios.value()))[0]
+        .filter(({ modeId }) => modeId === initialMapModeId)[0]
         .coords.forEach(({ id, x, y }) => {
           switch (initialMapModeId) {
             case 1:
               const randy = p5.random(-worldHeight / 6, worldHeight / 6);
               obstacleSystem.addParticle(id, x * 0.8, randy, 100, 0, 0, 1, obstacleColor, 'Gravitational', 'Pos');
               break;
-            case 2:
+            default:
               obstacleSystem.addParticle(id, x * 0.7, y * 0.7, 100, 0, 0, 1, obstacleColor, 'Gravitational', 'Pos');
-              break;
           }
           obstacleSystem.setTargetPos({ id, x, y });
         });
       obstacleSystem.setTextures(thumbnails);
 
       obstacleSystem.setVisited(visitedRef.current);
-
-      const changedHandler = () => {
-        const newVal = Number(mapToggleRadios.value()) as MapModeId;
-        setMapModeId(newVal);
-        mapCoordsArr
-          .filter(({ modeId }) => modeId === newVal)[0]
-          .coords.forEach(({ id, x, y }) => obstacleSystem.setTargetPos({ id, x, y }));
-      };
-      mapToggleRadios.changed(changedHandler);
-    };
-
-    const windowResized = (p5: p5Types) => {
-      if (!containerRef.current) {
-        return;
-      }
-      p5.resizeCanvas(containerRef.current.clientWidth - padding * 2, containerRef.current.clientHeight - padding * 2);
     };
 
     const draw = (p5: p5Types) => {
       if (
         containerRef.current !== null &&
-        (p5.width !== containerRef.current.clientWidth - padding * 2 ||
-          p5.height !== containerRef.current.clientHeight - padding * 2)
+        (prevCanvasWidth !== containerRef.current.clientWidth - padding * 2 ||
+          prevCanvasHeight !== containerRef.current.clientHeight - padding * 2)
       ) {
-        p5.resizeCanvas(
-          containerRef.current.clientWidth - padding * 2,
-          containerRef.current.clientHeight - padding * 2,
-        );
+        const newWidth = containerRef.current.clientWidth - padding * 2;
+        const newHeight = containerRef.current.clientHeight - padding * 2;
+        p5.resizeCanvas(newWidth, newHeight);
+        if (initialAnimationStatusRef.current === 'END') {
+          worldOffsetX += (newWidth - prevCanvasWidth) / 2;
+          worldOffsetY += (newHeight - prevCanvasHeight) / 2;
+        }
       }
+      prevCanvasWidth = p5.width;
+      prevCanvasHeight = p5.height;
+
+      if (mapModeIdRef.current !== prevMapModeId) {
+        mapModeIdChangeHandler(p5, mapModeIdRef.current);
+      }
+      prevMapModeId = mapModeIdRef.current;
 
       p5.background(bgcolor);
 
@@ -1065,7 +1054,6 @@ export const WorksListSketch = React.memo<Props>(
           preload={preload}
           setup={setup}
           draw={draw}
-          windowResized={windowResized}
           mousePressed={mousePressed}
           mouseDragged={mouseDragged}
           mouseReleased={mouseReleased}
