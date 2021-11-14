@@ -122,6 +122,9 @@ const StyledLogo = styled.a`
   height: 100%;
   padding: 0 20px;
   z-index: 5;
+  position: absolute;
+  left: 50px;
+  top: 0px;
 
   &.narrow {
     padding: 0px;
@@ -140,6 +143,7 @@ const StyledNavigationContainer = styled.div`
   align-items: center;
   flex: 1;
   height: 100%;
+  margin-left: 140px;
   &.narrow {
     margin-left: 15px;
     padding-right: 0px;
