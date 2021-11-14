@@ -6,6 +6,7 @@ import { RouteComponentProps, useHistory, withRouter } from 'react-router';
 import styled from 'styled-components';
 import { IndividualWorksDetail } from './IndividualWorksDetail';
 import { IndividualWorksWindow } from './IndividualWorksWindow';
+import { ReactionForm } from './ReactionForm';
 import { isMobile } from 'react-device-detect';
 import { Visited } from 'AppRoot';
 import { LayoutType } from 'constants/Layout';
@@ -112,6 +113,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
             isNarrowLayout={isNarrowLayout}
           />
           {!isFull && <IndividualWorksDetail worksInfo={worksInfo} isNarrowLayout={isNarrowLayout} />}
+          {!isFull && <ReactionForm worksId={worksId} isNarrowLayout={isNarrowLayout} />}
           {!isFull && <NavigationArea suggestIds={suggestIds} visited={visited} isNarrowLayout={isNarrowLayout} />}
         </StyledWorksContainer>
       </StyledContentContainer>

@@ -13,7 +13,7 @@ interface Props {
 
 export const NavigationArea: React.VFC<Props> = ({ suggestIds, visited, isNarrowLayout }) => {
   return (
-    <StyledContainer className={isNarrowLayout ? 'narrow' : ''}>
+    <StyledContainer>
       {isNarrowLayout ? (
         <StyledNarrowButtonContainer>
           <StyledNarrowButton>
@@ -28,7 +28,7 @@ export const NavigationArea: React.VFC<Props> = ({ suggestIds, visited, isNarrow
           </StyledButton>
         </StyledButtonContainer>
       )}
-      <StyledTitle>近くにある作品</StyledTitle>
+      <StyledTitle className={isNarrowLayout ? 'narrow' : ''}>近くにある作品</StyledTitle>
       <StyledSuggestSection>
         <StyledSuggestWorksContainer className={isNarrowLayout ? 'narrow' : ''}>
           {suggestIds.length >= 4 &&
@@ -50,9 +50,6 @@ export const NavigationArea: React.VFC<Props> = ({ suggestIds, visited, isNarrow
 
 const StyledContainer = styled.div`
   width: 100%;
-  &.narrow {
-    padding: 0px 10px;
-  }
 `;
 
 const StyledNarrowButtonContainer = styled.div`
@@ -61,6 +58,7 @@ const StyledNarrowButtonContainer = styled.div`
   align-items: center;
   justify-content: center;
   margin: 20px 0px 30px 0px;
+  padding: 0px 10px;
 `;
 
 const StyledNarrowButton = styled.button`
@@ -128,6 +126,9 @@ const StyledTitle = styled.h4`
   color: white;
   margin-bottom: 10px;
   font-weight: ${theme.fontWeight.regular};
+  &.narrow {
+    margin-left: 10px;
+  }
 `;
 
 const StyledSuggestSection = styled.section`
