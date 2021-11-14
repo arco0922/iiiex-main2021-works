@@ -79,13 +79,13 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
     if (worksInfo === undefined) {
       return [];
     }
-    const notVisitedSortedIds = sortWorksByDistance(worksId, coords).filter((id) => !visited[id] && id !== worksId);
-    const visitedSortedIds = sortWorksByDistance(worksId, coords).filter((id) => visited[id] && id !== worksId);
-    const filteredSuggestIds = notVisitedSortedIds.concat(visitedSortedIds);
-    if (filteredSuggestIds[0] == lastVisitedId) {
-      filteredSuggestIds.shift();
-    }
-    return filteredSuggestIds;
+    const notVisitedSortedIds = sortWorksByDistance(worksId, coords).filter(
+      (id) => !visited[id] && id !== worksId && id !== lastVisitedId,
+    );
+    const visitedSortedIds = sortWorksByDistance(worksId, coords).filter(
+      (id) => visited[id] && id !== worksId && id !== lastVisitedId,
+    );
+    return notVisitedSortedIds.concat(visitedSortedIds);
   }, [worksId, worksInfo, coords, visited, lastVisitedId]);
 
   if (worksInfo === undefined) {
