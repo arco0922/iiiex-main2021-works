@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { SuggestedWorks } from './SuggestedWorks';
-import { theme } from 'constants/Theme';
 import { Link } from 'react-router-dom';
 import { Visited } from 'AppRoot';
+import { theme } from 'constants/Theme';
 
 interface Props {
   isFull: boolean;
@@ -14,21 +14,21 @@ interface Props {
 export const NavigationArea: React.VFC<Props> = ({ isFull, suggestIds, visited }) => {
   return (
     <StyledContainer>
-      <StyledButtonContainer isFull={false}>
+      <StyledButtonContainer>
         <StyledButton>
           <StyledLink to="/">&#8810;　作品一覧へ戻る</StyledLink>
-          <StyledUnderBar id="underbar"></StyledUnderBar>
+          <StyledUnderBar id="underbar" />
         </StyledButton>
       </StyledButtonContainer>
-      <StyledSection>
-        <h4>近くにある作品</h4>
+      <StyledTitle>近くにある作品</StyledTitle>
+      <StyledSuggestSection>
         <StyledSuggestWorksContainer>
           {suggestIds.length >= 4 &&
             suggestIds.slice(0, 4).map((worksId) => {
-              return <SuggestedWorks worksId={worksId} isVisited={visited[worksId]} key={worksId}></SuggestedWorks>;
+              return <SuggestedWorks worksId={worksId} isVisited={visited[worksId]} key={worksId} />;
             })}
         </StyledSuggestWorksContainer>
-      </StyledSection>
+      </StyledSuggestSection>
     </StyledContainer>
   );
 };
@@ -37,14 +37,9 @@ const StyledContainer = styled.div`
   width: 100%;
 `;
 
-interface StyledNavigationAreaProps {
-  isFull: boolean;
-}
-
-const StyledButtonContainer = styled.div<StyledNavigationAreaProps>`
+const StyledButtonContainer = styled.div`
   width: 100%;
-  margin-top: 40px;
-  display: ${({ isFull }) => (isFull ? 'none' : 'flex')};
+  display: flex;
   align-items: center;
   justify-content: right;
 `;
@@ -62,17 +57,6 @@ const StyledButton = styled.button`
   }
 `;
 
-const StyledUnderBar = styled.div`
-  width: 0%;
-  height: 1px;
-  border-top: 1px solid white;
-  transition: width 0.2s ease-out;
-`;
-const StyledSuggestWorksContainer = styled.div`
-  width: 100%;
-  display: flex;
-`;
-
 const StyledLink = styled(Link)`
   display: block;
   padding: 10px;
@@ -81,8 +65,27 @@ const StyledLink = styled(Link)`
   color: white;
 `;
 
-const StyledSection = styled.section`
+const StyledUnderBar = styled.div`
+  width: 0%;
+  height: 1px;
+  border-top: 1px solid white;
+  transition: width 0.2s ease-out;
+`;
+
+const StyledTitle = styled.h4`
+  color: white;
+  margin-bottom: 10px;
+  font-weight: ${theme.fontWeight.regular};
+`;
+
+const StyledSuggestSection = styled.section`
   width: 100%;
   margin-bottom: 30px;
   color: white;
+  overflow-x: auto;
+`;
+
+const StyledSuggestWorksContainer = styled.div`
+  width: 600px;
+  display: flex;
 `;

@@ -83,6 +83,7 @@ export const IndividualWorksWindow: React.VFC<Props> = ({ srcUrl, iframeWidth, i
 };
 
 const StyledRoot = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -111,6 +112,7 @@ const StyledIframe = styled.iframe`
   border: none;
   display: block;
   background-color: white;
+  z-index: 17;
 `;
 
 interface StyledLoadingProps {
@@ -149,7 +151,7 @@ const StyledFullScreenButton = styled.button`
   border: none;
   padding: 3px;
   color: white;
-  z-index: 100;
+  z-index: 16;
   &:hover {
     cursor: pointer;
   }
@@ -175,6 +177,7 @@ const StyledExitFullScreenButton = styled.button`
   border: none;
   border-radius: 3px;
   padding: 3px;
+  z-index: 18;
   &:hover {
     cursor: pointer;
     background-color: ${theme.color.activePrimary};

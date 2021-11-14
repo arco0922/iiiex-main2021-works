@@ -28,6 +28,7 @@ const StyledContainer = styled(Link)`
   text-decoration: none;
   color: white;
   border-radius: 50%;
+  margin: 10px;
 `;
 
 const StyledThumbnail = styled.img`
