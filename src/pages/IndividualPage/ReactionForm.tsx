@@ -31,8 +31,10 @@ export const ReactionForm: React.VFC<Props> = ({ worksId, isNarrowLayout }) => {
       <StyledFormWrapper isSent={isSent}>
         <StyledForm action={REACTIONFORM_URL} ref={formRef} method="post" target="dummyIframe">
           <StyledTextArea name={worksInfo.formEntry} ref={textRef}></StyledTextArea>
-          <StyledSubmitButton type="button" value="送信" onClick={submitForm}></StyledSubmitButton>
         </StyledForm>
+        <StyledSubmitButton onClick={submitForm}>
+          <p>送信</p>
+        </StyledSubmitButton>
         <StyledDummyIframe name="dummyIframe" />
       </StyledFormWrapper>
       <StyledSentMessage isSent={isSent}>回答ありがとうございます</StyledSentMessage>
@@ -53,7 +55,9 @@ interface StyledFormWrapperProps {
 }
 
 const StyledFormWrapper = styled.div<StyledFormWrapperProps>`
-  display: ${({ isSent }) => (isSent ? 'none' : 'block')};
+  display: ${({ isSent }) => (isSent ? 'none' : 'flex')};
+  flex-direction: column;
+  align-items: center;
 `;
 
 const StyledTitle = styled.h4`
@@ -78,9 +82,10 @@ const StyledTextArea = styled.textarea`
   resize: none;
   border-radius: 5px;
   margin-bottom: 10px;
+  font-size: 16px;
 `;
 
-const StyledSubmitButton = styled.input`
+const StyledSubmitButton = styled.button`
   outline: none;
   border: none;
   border-radius: 5px;
@@ -96,7 +101,6 @@ const StyledSubmitButton = styled.input`
   & > p {
     font-size: 16px;
     font-weight: ${theme.fontWeight.regular};
-    margin-right: 5px;
   }
 `;
 
