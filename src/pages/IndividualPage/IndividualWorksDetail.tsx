@@ -38,6 +38,7 @@ const StyledContainer = styled.div`
   min-width: 250px;
   width: calc(100% - 235px);
   &.narrow {
+    margin-top: 50px;
     width: 100%;
     padding: 0px 10px;
   }

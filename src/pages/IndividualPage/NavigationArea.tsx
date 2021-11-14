@@ -14,12 +14,20 @@ interface Props {
 export const NavigationArea: React.VFC<Props> = ({ suggestIds, visited, isNarrowLayout }) => {
   return (
     <StyledContainer className={isNarrowLayout ? 'narrow' : ''}>
-      <StyledButtonContainer>
-        <StyledButton>
-          <StyledLink to="/">&#8810;　作品一覧へ戻る</StyledLink>
-          <StyledUnderBar id="underbar" />
-        </StyledButton>
-      </StyledButtonContainer>
+      {isNarrowLayout ? (
+        <StyledNarrowButtonContainer>
+          <StyledNarrowButton>
+            <StyledNarrowLink to="/">展示空間TOPへ戻る</StyledNarrowLink>
+          </StyledNarrowButton>
+        </StyledNarrowButtonContainer>
+      ) : (
+        <StyledButtonContainer>
+          <StyledButton>
+            <StyledLink to="/">&#8810;　展示空間TOPへ戻る</StyledLink>
+            <StyledUnderBar id="underbar" />
+          </StyledButton>
+        </StyledButtonContainer>
+      )}
       <StyledTitle>近くにある作品</StyledTitle>
       <StyledSuggestSection>
         <StyledSuggestWorksContainer className={isNarrowLayout ? 'narrow' : ''}>
@@ -45,6 +53,40 @@ const StyledContainer = styled.div`
   &.narrow {
     padding: 0px 10px;
   }
+`;
+
+const StyledNarrowButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0px 30px 0px;
+`;
+
+const StyledNarrowButton = styled.button`
+  display: block;
+  width: 100%;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  border: 2px solid white;
+  & * {
+    color: white;
+  }
+  &:hover {
+    cursor: pointer;
+    background-color: white;
+    & * {
+      color: black;
+    }
+  }
+`;
+
+const StyledNarrowLink = styled(Link)`
+  display: block;
+  padding: 10px;
+  font-size: 18px;
+  text-decoration: none;
 `;
 
 const StyledButtonContainer = styled.div`
