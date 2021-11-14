@@ -12,7 +12,7 @@ interface Props {
   setMapModeId: (mapMode: MapModeId) => void;
 }
 
-const rotateArr = mapCoordsArr.concat(mapCoordsArr);
+const rotateArr = mapCoordsArr.concat(mapCoordsArr).concat(mapCoordsArr);
 const rotateLength = rotateArr.length;
 
 export const Carousel: React.VFC<Props> = ({ layout, mapModeId, setMapModeId }) => {
