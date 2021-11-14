@@ -1,4 +1,4 @@
-import { MapCoords, mapCoordsArr, MapModeId } from 'constants/MapCoords';
+import { mapCoordsArr, MapModeId } from 'constants/MapCoords';
 import { theme } from 'constants/Theme';
 import React from 'react';
 import styled from 'styled-components';
@@ -17,6 +17,7 @@ const rotateLength = rotateArr.length;
 
 export const Carousel: React.VFC<Props> = ({ layout, mapModeId, setMapModeId }) => {
   const [centerIdx, setCenterIdx] = React.useState<number | null>(null);
+  const [isRotating, setIsRotating] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     const initialCenterIdx = mapCoordsArr.findIndex(({ modeId }) => modeId === mapModeId);
@@ -25,22 +26,26 @@ export const Carousel: React.VFC<Props> = ({ layout, mapModeId, setMapModeId }) 
   }, []);
 
   const incrementHandler = React.useCallback(() => {
-    if (centerIdx === null) {
+    if (centerIdx === null || isRotating) {
       return;
     }
+    setIsRotating(true);
     const newCenterIdx = (centerIdx + 1) % rotateLength;
     setCenterIdx(newCenterIdx);
     setMapModeId(rotateArr[newCenterIdx].modeId);
-  }, [centerIdx, setMapModeId]);
+    setTimeout(() => setIsRotating(false), 300);
+  }, [centerIdx, setMapModeId, isRotating]);
 
   const decrementHandler = React.useCallback(() => {
-    if (centerIdx === null) {
+    if (centerIdx === null || isRotating) {
       return;
     }
+    setIsRotating(true);
     const newCenterIdx = (centerIdx - 1 + rotateLength) % rotateLength;
     setCenterIdx(newCenterIdx);
     setMapModeId(rotateArr[newCenterIdx].modeId);
-  }, [centerIdx, setMapModeId]);
+    setTimeout(() => setIsRotating(false), 300);
+  }, [centerIdx, setMapModeId, isRotating]);
 
   return (
     <StyledRoot className={layout === 'NARROW' ? 'narrow' : ''}>
