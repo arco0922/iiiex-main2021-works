@@ -68,7 +68,33 @@ export const IndividualWorksWindow: React.VFC<Props> = ({
           </StyledSkeleton>
         )}
         {isFull ? (
-          <StyledExitFullScreenButton onClick={exitFullScreen}>全画面表示を終了する</StyledExitFullScreenButton>
+          <>
+            {isNarrowLayout ? (
+              <StyledNarrowExitFullScreenButton onClick={exitFullScreen}>
+                <svg width="17" height="15" viewBox="0 0 17 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 13.5L8.39348 8.14285L15.787 13.5" stroke="white" strokeWidth="2" />
+                  <path d="M1.29639 7.35714L8.68987 2L16.0834 7.35714" stroke="white" strokeWidth="2" />
+                </svg>
+                <p>全画面表示終了</p>
+              </StyledNarrowExitFullScreenButton>
+            ) : (
+              <StyledExitFullScreenButton onClick={exitFullScreen}>
+                <StyledSVG width="166" height="83" viewBox="0 0 166 83" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M166 83.5C166 37.6604 128.84 0.5 83 0.5C37.1604 0.5 0 37.6604 0 83.5L166 83.5Z"
+                    fill="#2A70B8"
+                  />
+                </StyledSVG>
+                <p>
+                  全画面表示を
+                  <br />
+                  終了する
+                </p>
+              </StyledExitFullScreenButton>
+            )}
+          </>
         ) : (
           <StyledFullScreenButtonContainer>
             {isNarrowLayout ? (
@@ -179,6 +205,7 @@ const StyledNarrowFullScreenButton = styled.button`
   position: absolute;
   top: 0px;
   left: 50%;
+  width: 250px;
   transform: translateX(-50%);
   display: block;
   outline: none;
@@ -193,7 +220,7 @@ const StyledNarrowFullScreenButton = styled.button`
     top: 33%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 18px;
+    font-size: 16px;
     line-height: 20px;
     font-weight: ${theme.fontWeight.bold};
     border-bottom: 2px solid ${theme.color.primary};
@@ -223,25 +250,53 @@ const StyledFullScreenButton = styled.button`
   }
 `;
 
-const StyledExitFullScreenButton = styled.button`
-  position: absolute;
-  bottom: 3px;
-  right: 3px;
-  display: block;
-  height: 25px;
-  background-color: ${theme.color.primary};
-  color: white;
+const StyledNarrowExitFullScreenButton = styled.button`
+  background-color: black;
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  display: flex;
   outline: none;
   border: none;
-  border-radius: 3px;
-  padding: 3px;
-  z-index: 18;
+  border: 1px solid ${theme.color.primary};
+  color: white;
+  padding: 5px 5px;
+  z-index: 50;
   &:hover {
     cursor: pointer;
-    background-color: ${theme.color.activePrimary};
+  }
+  & > p {
+    font-size: 12px;
+    margin-left: 3px;
+  }
+`;
+
+const StyledExitFullScreenButton = styled.button`
+  background-color: transparent;
+  position: fixed;
+  bottom: -3px;
+  right: -12px;
+  display: block;
+  outline: none;
+  border: none;
+  color: white;
+  height: 60px;
+  width: 120px;
+  z-index: 50;
+  &:hover {
+    cursor: pointer;
+  }
+  & > p {
+    position: absolute;
+    width: 100%;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
   }
 `;
 
 const StyledSVG = styled.svg`
+  width: 100%;
   height: 100%;
 `;
