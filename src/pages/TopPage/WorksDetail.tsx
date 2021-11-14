@@ -140,7 +140,6 @@ const StyledButton = styled.button`
   outline: none;
   border: none;
   border: 2px solid ${theme.color.primary};
-  padding: 3px;
   margin-bottom: 15px;
   width: 97%;
   &:hover {
@@ -156,6 +155,7 @@ const StyledLink = styled(Link)`
   text-decoration: none;
   color: white;
   font-size: 20px;
+  padding: 3px;
   font-weight: ${theme.fontWeight.bold};
 `;
 
