@@ -59,7 +59,21 @@ export const IndividualWorksWindow: React.VFC<Props> = ({ srcUrl, iframeWidth, i
           </StyledSkeleton>
         )}
         {isFull ? (
-          <StyledExitFullScreenButton onClick={exitFullScreen}>全画面表示を終了する</StyledExitFullScreenButton>
+          <StyledExitFullScreenButton onClick={exitFullScreen}>
+            <StyledSVG width="166" height="83" viewBox="0 0 166 83" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M166 83.5C166 37.6604 128.84 0.5 83 0.5C37.1604 0.5 0 37.6604 0 83.5L166 83.5Z"
+                fill="#2A70B8"
+              />
+            </StyledSVG>
+            <p>
+              全画面表示を
+              <br />
+              終了する
+            </p>
+          </StyledExitFullScreenButton>
         ) : (
           <StyledFullScreenButton onClick={makeFullScreen}>
             <StyledSVG width="225" height="113" viewBox="0 0 225 113" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -166,21 +180,27 @@ const StyledFullScreenButton = styled.button`
 `;
 
 const StyledExitFullScreenButton = styled.button`
+  background-color: transparent;
   position: absolute;
-  bottom: 3px;
-  right: 3px;
+  top: 100%;
+  right: -3px;
   display: block;
-  height: 25px;
-  background-color: ${theme.color.primary};
-  color: white;
   outline: none;
   border: none;
-  border-radius: 3px;
   padding: 3px;
-  z-index: 18;
+  color: white;
+  z-index: 50;
+  transform: translate(0, -100%);
   &:hover {
     cursor: pointer;
-    background-color: ${theme.color.activePrimary};
+  }
+  & > p {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
   }
 `;
 
