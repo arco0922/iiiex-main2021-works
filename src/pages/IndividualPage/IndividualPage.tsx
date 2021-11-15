@@ -47,9 +47,9 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
   const history = useHistory();
 
-  const scrollRef = React.useRef<HTMLDivElement>(null);
+  const scrollTopRef = React.useRef<HTMLDivElement>(null);
   React.useEffect(() => {
-    scrollRef.current?.scrollIntoView({
+    scrollTopRef.current?.scrollIntoView({
       behavior: 'smooth',
       block: 'start',
     });
@@ -106,7 +106,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
         setIsShowHamburger={setIsShowHamburger}
       />
       <StyledContentContainer>
-        <ScrollDiv ref={scrollRef}></ScrollDiv>
+        {!isFull && <ScrollTopDiv ref={scrollTopRef} />}
         <StyledWorksContainer isFull={isFull} isNarrowLayout={isNarrowLayout} containerWidth={iframeWidth}>
           {!isFull && nextRotationOrderWorksId !== null && (
             <TopNavigationArea nextRotationOrderWorksId={nextRotationOrderWorksId} isNarrowLayout={isNarrowLayout} />
@@ -118,6 +118,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
             isFull={isFull}
             setIsFull={setIsFull}
             isNarrowLayout={isNarrowLayout}
+            isShowButtonOnly={!isFull && isMobile && worksInfo.isSmartphoneFullscreenOnly === true}
           />
           {!isFull && <IndividualWorksDetail worksInfo={worksInfo} isNarrowLayout={isNarrowLayout} />}
           {!isFull && <ReactionForm worksId={worksId} isNarrowLayout={isNarrowLayout} />}
@@ -146,7 +147,9 @@ const StyledContentContainer = styled.div`
   align-items: center;
 `;
 
-const ScrollDiv = styled.div``;
+const ScrollTopDiv = styled.div`
+  margin-top: 2px;
+`;
 
 interface StyledWorksContainerProps {
   isNarrowLayout: boolean;
