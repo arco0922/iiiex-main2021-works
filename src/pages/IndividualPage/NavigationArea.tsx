@@ -28,7 +28,7 @@ export const NavigationArea: React.VFC<Props> = ({ suggestIds, visited, isNarrow
           </StyledButton>
         </StyledButtonContainer>
       )}
-      <StyledTitle className={isNarrowLayout ? 'narrow' : ''}>近くにある作品</StyledTitle>
+      <StyledTitle className={isNarrowLayout ? 'narrow' : ''}>近くにある作品を見る</StyledTitle>
       <StyledSuggestSection>
         <StyledSuggestWorksContainer className={isNarrowLayout ? 'narrow' : ''}>
           {suggestIds.length >= 4 &&
