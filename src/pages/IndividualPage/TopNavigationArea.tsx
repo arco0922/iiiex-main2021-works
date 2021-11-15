@@ -28,6 +28,7 @@ export const TopNavigationArea: React.VFC<Props> = ({ nextRotationOrderWorksId, 
 
 const StyledContainer = styled.div`
   width: 100%;
+  min-height: 21px;
   margin-bottom: 10px;
   display: flex;
   align-items: center;

@@ -16,6 +16,7 @@ export interface WorksInfo {
   caption: string;
   device: Device;
   isSmartphoneFullscreenOnly?: boolean;
+  deviceMemo?: string;
   formEntry: string;
 }
 
@@ -241,6 +242,7 @@ export const worksInfoArr: WorksInfo[] = [
       },
     ],
     device: 'BOTH',
+    deviceMemo: ' (スマホ推奨、PCの場合は全画面推奨)',
     caption: `あなたは数学にどんな距離を感じるだろう？好きだから近い、苦手だから遠い…。
     「日常生活は数学にあふれてる」と言うけれど、どこに隠れているのだろうか？
      

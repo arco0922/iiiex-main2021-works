@@ -148,7 +148,7 @@ const StyledContentContainer = styled.div`
 `;
 
 const ScrollTopDiv = styled.div`
-  margin-top: 2px;
+  margin-top: 1px;
 `;
 
 interface StyledWorksContainerProps {
