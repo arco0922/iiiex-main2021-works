@@ -29,12 +29,12 @@ export const HamburgerMenu = React.memo<Props>(function HamburgerMenu({
           </StyledLink>
         </StyledButton>
         <StyledButton>
-          <StyledOutLink href={HOMEPAGE_URL} onClick={() => setIsShowHamburger(false)}>
+          <StyledOutLink href={HOMEPAGE_URL} target="_blank" onClick={() => setIsShowHamburger(false)}>
             制作展ホームページ
           </StyledOutLink>
         </StyledButton>
         <StyledButton>
-          <StyledOutLink href={QUESTIONNAIRE_URL} onClick={() => setIsShowHamburger(false)}>
+          <StyledOutLink href={QUESTIONNAIRE_URL} target="_blank" onClick={() => setIsShowHamburger(false)}>
             全体アンケート
           </StyledOutLink>
         </StyledButton>

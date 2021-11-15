@@ -25,7 +25,7 @@ export const Header: React.VFC<Props> = ({
   if (layout === 'NARROW') {
     return (
       <StyledContainer>
-        <StyledLogo href={HOMEPAGE_URL} className="narrow">
+        <StyledLogo href={HOMEPAGE_URL} target="_blank" className="narrow">
           <img src="/static/assets/logo/LOGO.png" height={`${headerHeight - 18}px`} />
         </StyledLogo>
         <StyledNavigationContainer className="narrow">
@@ -51,7 +51,7 @@ export const Header: React.VFC<Props> = ({
                     fill="#E94C60"
                   />
                 </StyledSVG>
-                <StyledLinkToQuestionnaire href={QUESTIONNAIRE_URL}>
+                <StyledLinkToQuestionnaire href={QUESTIONNAIRE_URL} target="_blank">
                   <p className="narrow">全体アンケート</p>
                   <StyledUnderBar id="underbar"></StyledUnderBar>
                 </StyledLinkToQuestionnaire>
@@ -67,7 +67,7 @@ export const Header: React.VFC<Props> = ({
       <StyledHamburgerContainer>
         <StyledMenuIcon onClick={() => setIsShowHamburger && setIsShowHamburger(true)}></StyledMenuIcon>
       </StyledHamburgerContainer>
-      <StyledLogo href={HOMEPAGE_URL}>
+      <StyledLogo href={HOMEPAGE_URL} target="_blank">
         <img src="/static/assets/logo/LOGO.png" height={`${headerHeight - 18}px`} />
       </StyledLogo>
       <StyledNavigationContainer>
@@ -91,7 +91,7 @@ export const Header: React.VFC<Props> = ({
           <StyledSVG width="158" height="65" viewBox="0 0 158 65" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fillRule="evenodd" clipRule="evenodd" d="M158 0H0V48V65L79 48L158 65V48V0Z" fill="#E94C60" />
           </StyledSVG>
-          <StyledLinkToQuestionnaire className="wide" href={QUESTIONNAIRE_URL}>
+          <StyledLinkToQuestionnaire className="wide" href={QUESTIONNAIRE_URL} target="_blank">
             <p>全体アンケート</p>
             <StyledUnderBar id="underbar"></StyledUnderBar>
           </StyledLinkToQuestionnaire>
