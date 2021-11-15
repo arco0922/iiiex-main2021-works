@@ -15,6 +15,7 @@ export interface WorksInfo {
   creators: Creator[];
   caption: string;
   device: Device;
+  isSmartphoneFullscreenOnly?: boolean;
   formEntry: string;
 }
 
@@ -36,6 +37,7 @@ export const worksInfoArr: WorksInfo[] = [
       },
     ],
     device: 'SP',
+    isSmartphoneFullscreenOnly: true,
     caption: `握手、指切りげんまん ── 手と手が触れ合うと心の距離が近づくような気がする。
     手で人と触れ合う機会は元々多くはなかったが、最近ではほとんどなくなってしまった。
     onlineでも人が物理的に触れ合うofflineのような感覚を表現できないだろうか。
