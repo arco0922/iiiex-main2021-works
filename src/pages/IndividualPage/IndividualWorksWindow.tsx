@@ -47,7 +47,7 @@ export const IndividualWorksWindow: React.VFC<Props> = ({
   }, [setIsFull]);
 
   return (
-    <StyledRoot>
+    <StyledRoot iframeHeight={iframeHeight}>
       <StyledContainer
         iframeWidth={iframeWidth || `${width}px`}
         iframeHeight={iframeHeight || `${height - headerHeight}px`}
@@ -133,8 +133,13 @@ export const IndividualWorksWindow: React.VFC<Props> = ({
   );
 };
 
-const StyledRoot = styled.div`
+interface StyledRootProps {
+  iframeHeight: string;
+}
+
+const StyledRoot = styled.div<StyledRootProps>`
   width: 100%;
+  min-height: ${({ iframeHeight }) => iframeHeight};
   display: flex;
   flex-direction: column;
   align-items: center;
