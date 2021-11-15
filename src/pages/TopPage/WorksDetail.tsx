@@ -41,6 +41,7 @@ export const WorksDetail: React.VFC<Props> = ({ selectId, visited, isShowDetail,
           <StyledSection>
             <h4>対応デバイス</h4>
             <p>{convertDeviceString(info.device)}</p>
+            {info.deviceMemo && <p className="device-memo">{info.deviceMemo}</p>}
           </StyledSection>
           <StyledSection>
             <h4>制作者</h4>
@@ -188,5 +189,8 @@ const StyledSection = styled.section`
     font-weight: ${theme.fontWeight.regular};
     font-size: 14px;
     margin-bottom: 3px;
+  }
+  & > .device-memo {
+    font-size: 13px;
   }
 `;
