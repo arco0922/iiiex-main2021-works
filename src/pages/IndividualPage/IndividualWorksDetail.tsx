@@ -17,7 +17,7 @@ export const IndividualWorksDetail: React.VFC<Props> = ({ worksInfo, isNarrowLay
         <p className={`title ${narrowClassName}`}>{worksInfo.title}</p>
         <p className={`device ${narrowClassName}`}>
           〇対応デバイス：{convertDeviceString(worksInfo.device)}
-          {worksInfo.deviceMemo ? worksInfo.deviceMemo : ''}
+          {worksInfo.deviceMemo && worksInfo.deviceMemo}
         </p>
       </StyledSection>
       <StyledSection>
