@@ -158,5 +158,5 @@ const StyledWorksContainer = styled.div<StyledWorksContainerProps>`
   width: ${({ containerWidth }) => containerWidth};
   display: flex;
   flex-direction: column;
-  padding: ${({ isFull }) => (isFull ? '0' : '15px 0px 50px 0px')};
+  padding: ${({ isFull }) => (isFull ? '0' : '10px 0px 50px 0px')};
 `;

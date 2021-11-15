@@ -33,8 +33,8 @@ const StyledContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   &.wide {
-    margin-top: 10px;
-    margin-bottom: 20px;
+    margin-top: 8px;
+    margin-bottom: 13px;
   }
 `;
 
