@@ -49,7 +49,7 @@ export const IndividualWorksWindow: React.VFC<Props> = ({
   }, [setIsFull]);
 
   return (
-    <StyledRoot iframeHeight={iframeHeight}>
+    <StyledRoot iframeHeight={iframeHeight} isShowButtonOnly={isShowButtonOnly}>
       {isShowButtonOnly ? (
         <StyledOnlyButtonContainer>
           <StyledPlayButton onClick={makeFullScreen}>
@@ -157,11 +157,12 @@ export const IndividualWorksWindow: React.VFC<Props> = ({
 
 interface StyledRootProps {
   iframeHeight: string;
+  isShowButtonOnly: boolean;
 }
 
 const StyledRoot = styled.div<StyledRootProps>`
   width: 100%;
-  min-height: ${({ iframeHeight }) => iframeHeight};
+  min-height: ${({ iframeHeight, isShowButtonOnly }) => (isShowButtonOnly ? '70px' : `${iframeHeight}`)};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -232,7 +233,7 @@ const StyledLoading = styled.div<StyledLoadingProps>`
   left: 0;
   align-items: center;
   justify-content: center;
-  z-index: 17;
+  z-index: 10;
 `;
 
 const StyledSkeleton = styled.div`
