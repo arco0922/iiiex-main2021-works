@@ -6,6 +6,7 @@ export interface Creator {
 export type Device = 'PC' | 'SP' | 'BOTH';
 export interface WorksInfo {
   id: number;
+  rotationOrder: number; // 順路での順番
   title: string;
   thumbnailBaseName: string;
   srcUrlPc?: string;
@@ -14,22 +15,25 @@ export interface WorksInfo {
   creators: Creator[];
   caption: string;
   device: Device;
+  deviceMemo?: string;
+  formEntry: string;
 }
 
 export const worksInfoArr: WorksInfo[] = [
   {
     id: 0,
+    rotationOrder: 2,
     title: 'offline on line',
     thumbnailBaseName: '0_nakagawa',
     creators: [
       {
         name: '中川陽介',
-        affiliation: `情報理工学系研究科 苗村研究室 修士1年
+        affiliation: `情報理工学系研究科\n苗村研究室\n修士1年
         `,
       },
       {
         name: '渡邊一正',
-        affiliation: `学際情報学府 葛岡・雨宮・鳴海研究室 修士1年`,
+        affiliation: `学際情報学府\n葛岡・雨宮・鳴海研究室\n修士1年`,
       },
     ],
     device: 'SP',
@@ -47,23 +51,25 @@ export const worksInfoArr: WorksInfo[] = [
     `,
     srcUrlPc: 'https://gawa4423.github.io/seisakuten/',
     srcUrlSp: 'https://playcanv.as/p/3d09d3d7/',
+    formEntry: 'entry.457886068',
   },
   {
     id: 1,
+    rotationOrder: 1,
     title: '僕と、生きる',
     thumbnailBaseName: '1_miyake',
     creators: [
       {
         name: '三宅大生',
-        affiliation: `情報学環 教育部 1年`,
+        affiliation: `情報学環\n教育部 1年`,
       },
       {
         name: '道下千穂',
-        affiliation: `情報学環 教育部 1年`,
+        affiliation: `情報学環\n教育部 1年`,
       },
       {
         name: '阿部美咲',
-        affiliation: `東京藝術大学 絵画科油画専攻 2年`,
+        affiliation: `東京藝術大学\n絵画科油画専攻\n2年`,
       },
     ],
     device: 'BOTH',
@@ -75,30 +81,35 @@ export const worksInfoArr: WorksInfo[] = [
     
     たまらなく人肌が恋しくなる時がある。
     `,
+    formEntry: 'entry.1176128609',
   },
   {
     id: 2,
-    title: 'Zero To One Mind～1歳児キョリブレーション～',
+    rotationOrder: 7,
+    title: `Zero To One Mind
+    ～1歳児キョリブレーション～`,
     thumbnailBaseName: '2_baby-thumbnail',
     creators: [
       {
         name: '小山このか',
-        affiliation: `学際情報学府 石崎研究室 修士1年`,
+        affiliation: `学際情報学府\n石崎研究室\n修士1年`,
       },
     ],
     device: 'PC',
     caption: `本作品は、赤ちゃんが周囲の環境や家族をキャリブレーションしてくゲーム作品である。前作のゼロマインドでは「0歳児パンク」をテーマに扱い、本作は前作の謎解き要素を秘めている。赤ちゃんは周囲の興味を引きたくて、自身のベクトルに、大人達を誘導していく。予測不可能な赤ちゃんによってキャリブレーションされる大人達。作者の息子は1歳になり、一人でよちよち歩けるようになってきた。着々と赤ちゃんから子供へと距離を縮めている。本作品は、赤ちゃんキョリブレーションに着目し、母親なりの解釈を加えた作品である。ぜひ大人も赤ちゃんとの距離を縮めて、よちよち大冒険してほしい。`,
     srcUrlPc: 'https://hardcore-nobel-4e99fe.netlify.app/',
     srcUrlSp: 'https://hardcore-nobel-4e99fe.netlify.app/mobile.html',
+    formEntry: 'entry.1260241828',
   },
   {
     id: 3,
+    rotationOrder: 13,
     title: 'on my . (オン マイ ピリオド)',
     thumbnailBaseName: '3_mochizuki',
     creators: [
       {
         name: '望月花妃',
-        affiliation: `情報学環 教育部 2年`,
+        affiliation: `情報学環\n教育部 2年`,
       },
     ],
     device: 'BOTH',
@@ -109,19 +120,23 @@ export const worksInfoArr: WorksInfo[] = [
     「もしも」であるこの世界の体験を、現実の世界に少しでも持ち帰ってもらえたら。
     その先で、現実が”on my period” （「生理中」）の女性にとって、よりやさしい世界になったらいいなという願いを込めて制作しました。
     `,
+    srcUrlPc: 'https://hana-mochizuki.github.io/on-my-period/',
+    srcUrlSp: 'https://hana-mochizuki.github.io/on-my-period/',
+    formEntry: 'entry.805425849',
   },
   {
     id: 4,
+    rotationOrder: 10,
     title: '#FiK握手会',
     thumbnailBaseName: '4_ueno_thumbnail',
     creators: [
       {
         name: '上野菜津',
-        affiliation: `情報学環教育部 1年`,
+        affiliation: `情報学環\n教育部 1年`,
       },
       {
         name: '馮楽祺',
-        affiliation: `学際情報学府 山中研究室 修士1年`,
+        affiliation: `学際情報学府\n山中研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
@@ -131,19 +146,21 @@ export const worksInfoArr: WorksInfo[] = [
     `,
     srcUrlPc: 'https://larkin269.github.io/fikpages/',
     srcUrlSp: 'https://larkin269.github.io/fikpages/',
+    formEntry: 'entry.306737416',
   },
   {
     id: 5,
+    rotationOrder: 11,
     title: 'puppeTuber',
     thumbnailBaseName: '5_aramaki_puppeTuber',
     creators: [
       {
         name: '荒巻美南海',
-        affiliation: `工学部 苗村研究室 4年`,
+        affiliation: `工学部\n苗村研究室\n4年`,
       },
       {
         name: '児玉大樹',
-        affiliation: `情報理工学系研究科 葛岡・雨宮・鳴海研究室 修士1年`,
+        affiliation: `情報理工学系研究科\n葛岡・雨宮・鳴海研究室\n修士1年`,
       },
     ],
     device: 'PC',
@@ -157,31 +174,33 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://damakoo.github.io/PuppeTuber_WebGL/',
     srcUrlSp: 'https://damakoo.github.io/PuppeTuber_WebGL/mobile_index.html',
     aspectRatio: 10 / 16,
+    formEntry: 'entry.1774366675',
   },
   {
     id: 6,
+    rotationOrder: 3,
     title: '矢印たち',
-    thumbnailBaseName: '6_(s)hukan',
+    thumbnailBaseName: '6_yajirushi',
     creators: [
       {
         name: '久保田愛海',
-        affiliation: `学際情報学府 山内研究室 修士1年`,
+        affiliation: `学際情報学府\n山内研究室\n修士1年`,
       },
       {
         name: '佐々木竜太郎',
-        affiliation: `学際情報学府 植田研究室 修士1年`,
+        affiliation: `学際情報学府\n植田研究室\n修士1年`,
       },
       {
         name: '佐倉玲',
-        affiliation: `学際情報学府 筧研究室 修士1年`,
+        affiliation: `学際情報学府\n筧研究室\n修士1年`,
       },
       {
         name: '覚井優希',
-        affiliation: `情報理工学系研究科 苗村研究室 修士1年`,
+        affiliation: `情報理工学系研究科\n苗村研究室\n修士1年`,
       },
       {
         name: '藤波徹柊',
-        affiliation: `情報理工学系研究科 藤田研究室 修士1年`,
+        affiliation: `情報理工学系研究科\n藤田研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
@@ -195,30 +214,33 @@ export const worksInfoArr: WorksInfo[] = [
     `,
     srcUrlPc: 'https://y-141.github.io/iiiex_pentagons/',
     srcUrlSp: 'https://y-141.github.io/iiiex_pentagons/',
+    formEntry: 'entry.1126317556',
   },
   {
     id: 7,
+    rotationOrder: 6,
     title: '確率であそぼ、',
     thumbnailBaseName: '7_kurata_picture',
     creators: [
       {
         name: '倉田将希',
-        affiliation: `学際情報学府 川越研究室 修士1年`,
+        affiliation: `学際情報学府\n川越研究室\n修士1年`,
       },
       {
         name: '久保田愛海',
-        affiliation: `学際情報学府 山内研究室 修士1年`,
+        affiliation: `学際情報学府\n山内研究室\n修士1年`,
       },
       {
         name: '富木菜穂',
-        affiliation: `学際情報学府 苗村研究室 修士1年`,
+        affiliation: `学際情報学府\n苗村研究室\n修士1年`,
       },
       {
         name: '山田瑞季',
-        affiliation: `学際情報学府 大島研究室 修士1年`,
+        affiliation: `学際情報学府\n大島研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
+    deviceMemo: ' (スマホ推奨、PCの場合は全画面推奨)',
     caption: `あなたは数学にどんな距離を感じるだろう？好きだから近い、苦手だから遠い…。
     「日常生活は数学にあふれてる」と言うけれど、どこに隠れているのだろうか？
      
@@ -235,15 +257,17 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://kurapyon31.github.io/probUT/',
     srcUrlSp: 'https://kurapyon31.github.io/probUT/',
     aspectRatio: 16 / 9,
+    formEntry: 'entry.333145081',
   },
   {
     id: 8,
+    rotationOrder: 8,
     title: 'ENDRAGON',
     thumbnailBaseName: '8_ENDRAGON',
     creators: [
       {
         name: '新納大輔',
-        affiliation: `学際情報学府 葛岡・雨宮・鳴海研究室 修士1年`,
+        affiliation: `学際情報学府\n葛岡・雨宮・鳴海研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
@@ -255,50 +279,54 @@ export const worksInfoArr: WorksInfo[] = [
     `,
     srcUrlPc: 'https://ninonode.github.io/endragon/',
     srcUrlSp: 'https://ninonode.github.io/endragon/',
+    formEntry: 'entry.1047603043',
   },
   {
     id: 9,
+    rotationOrder: 12,
     title: 'KABUKU！',
     thumbnailBaseName: '9_kabuku_tmb800',
     creators: [
       {
         name: '東出りさ',
-        affiliation: `情報学環 教育部 1年`,
+        affiliation: `情報学環\n教育部 1年`,
       },
       {
         name: '鈴木嵩茂',
-        affiliation: `情報理工学系研究科 葛岡・雨宮・鳴海研究室 修士1年`,
+        affiliation: `情報理工学系研究科\n葛岡・雨宮・鳴海研究室\n修士1年`,
       },
       {
         name: '日比杏南',
-        affiliation: `情報学環 教育部 1年`,
+        affiliation: `情報学環\n教育部 1年`,
       },
       {
         name: '陳施佳',
-        affiliation: `学際情報学府 伊東研究室 修士1年`,
+        affiliation: `学際情報学府\n伊東研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
     caption: `Extra展で、浮世絵の一種である組上げ灯籠（別称、関西では立版古・たてばんこ）を実際に組み立てて紹介した。本展ではARで再現する。AR上の組上げ灯籠をいろいろな場所において、写真を撮ってシェアするなど、組上げ灯籠の世界を楽しんでほしい。
     組上げ灯籠は、江戸の文化初年頃から大正まで約100年間、芝居や観光地、建物の仕組みを伝える紙工作として発展した。北斎が手掛けた湯屋の作品などもある。盆供養の灯籠に起源があり、室町頃から台に山水・建物・人物などの細工物を飾り始めた。組み立てられた灯籠にはろうそくが置かれ、光や影を楽しんだ。 こうした組上げ灯籠は、映画などの映像文化が登場する前の視覚文化の一つであるといえ、当時最先端の映像メディアとして西洋でも流行した影絵や幻燈の影響も受けていたとされる。現在はVRやARが先端の技術として注目されているが、本作品で当時の人々が楽しんだ心を追体験！
     `,
+    formEntry: 'entry.2111132219',
   },
   {
     id: 10,
+    rotationOrder: 0,
     title: 'Memorial Stella',
     thumbnailBaseName: '10_I-mage',
     creators: [
       {
         name: '周寧',
-        affiliation: `学際情報学府 渡邉研究室 修士1年`,
+        affiliation: `学際情報学府\n渡邉研究室\n修士1年`,
       },
       {
         name: '市倉愛子',
-        affiliation: `学際情報学府 稲葉・岡田研究室 修士1年`,
+        affiliation: `学際情報学府\n稲葉・岡田研究室\n修士1年`,
       },
       {
         name: '間宮竜大',
-        affiliation: `学際情報学府 貞広研究室 修士1年`,
+        affiliation: `学際情報学府\n貞広研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
@@ -308,19 +336,21 @@ export const worksInfoArr: WorksInfo[] = [
 `,
     srcUrlPc: 'https://flask-325405.de.r.appspot.com/guest',
     srcUrlSp: 'https://flask-325405.de.r.appspot.com/guest',
+    formEntry: 'entry.839388668',
   },
   {
     id: 11,
+    rotationOrder: 9,
     title: 'Home-Gallery',
     thumbnailBaseName: '11_Siyuan_Home-Gallery',
     creators: [
       {
         name: '張斯媛',
-        affiliation: `学際情報学府 Pennington研究室 修士1年`,
+        affiliation: `学際情報学府\nPennington研究室\n修士1年`,
       },
       {
         name: '江子淵',
-        affiliation: `学際情報学府 筧研究室 修士1年`,
+        affiliation: `学際情報学府\n筧研究室\n修士1年`,
       },
     ],
     device: 'PC',
@@ -329,27 +359,29 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://siyuanzh09.github.io/Home_Gallery/',
     srcUrlSp: 'https://siyuanzh09.github.io/Home_Gallery/',
     aspectRatio: 5 / 6,
+    formEntry: 'entry.1208608827',
   },
   {
     id: 12,
     title: 'デイリズム！',
+    rotationOrder: 5,
     thumbnailBaseName: '12_mikami_dayliyrhythm',
     creators: [
       {
         name: '三上尚美',
-        affiliation: `学際情報学府 渡邉研究室 修士1年`,
+        affiliation: `学際情報学府\n渡邉研究室\n修士1年`,
       },
       {
         name: '篠田和宏',
-        affiliation: `学際情報学府 矢谷研究室 修士1年`,
+        affiliation: `学際情報学府\n矢谷研究室\n修士1年`,
       },
       {
         name: '李昌',
-        affiliation: `情報理工学系研究科 葛岡・雨宮・鳴海研究室 修士1年`,
+        affiliation: `情報理工学系研究科\n葛岡・雨宮・鳴海研究室\n修士1年`,
       },
       {
         name: '小山大嘉',
-        affiliation: `情報理工学系研究科 葛岡・雨宮・鳴海研究室 修士1年`,
+        affiliation: `情報理工学系研究科\n葛岡・雨宮・鳴海研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
@@ -367,27 +399,29 @@ export const worksInfoArr: WorksInfo[] = [
     `,
     srcUrlPc: 'https://tiger0ym.github.io/iiiex/',
     srcUrlSp: 'https://tiger0ym.github.io/iiiex/mobile.html',
+    formEntry: 'entry.1595883871',
   },
   {
     id: 13,
+    rotationOrder: 4,
     title: 'Animal Clock',
     thumbnailBaseName: '13_akiyama',
     creators: [
       {
         name: '秋山真鈴',
-        affiliation: `学際情報学府 山口研究室 修士1年`,
+        affiliation: `学際情報学府\n山口研究室\n修士1年`,
       },
       {
         name: '韮澤雄太',
-        affiliation: `学際情報学府 小川研究室 修士1年`,
+        affiliation: `学際情報学府\n小川研究室\n修士1年`,
       },
       {
         name: '倉田将希',
-        affiliation: `学際情報学府 川越研究室 修士1年`,
+        affiliation: `学際情報学府\n川越研究室\n修士1年`,
       },
       {
         name: '稲津遥太郎',
-        affiliation: `工学系研究科 峯松・齋藤研究室 修士1年`,
+        affiliation: `工学系研究科\n峯松・齋藤研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
@@ -404,5 +438,6 @@ export const worksInfoArr: WorksInfo[] = [
     `,
     srcUrlPc: 'https://kurapyon31.github.io/animalClock/',
     srcUrlSp: 'https://kurapyon31.github.io/animalClock/',
+    formEntry: 'entry.1138817257',
   },
 ];

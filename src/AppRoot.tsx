@@ -37,6 +37,8 @@ export const AppRoot: React.VFC = () => {
     visitedRef.current = visited;
   }, [visited]);
 
+  const [lastVisitedId, setLastVisitedId] = React.useState<number>(-1);
+
   const [mapModeId, setMapModeId] = useLocalStorage<MapModeId>('mapModeId', 1);
   const mapModeIdRef = React.useRef<MapModeId>(1);
 
@@ -44,7 +46,7 @@ export const AppRoot: React.VFC = () => {
     mapModeIdRef.current = mapModeId;
   }, [mapModeId]);
 
-  const [layout, setLayout] = React.useState<LayoutType>('WIDE');
+  const [layout, setLayout] = React.useState<LayoutType | null>(null);
   const { height, width } = useWindowDimensions();
   React.useEffect(() => {
     if (width < layoutBorder.narrow) {
@@ -67,6 +69,10 @@ export const AppRoot: React.VFC = () => {
     mapCoordsArr.filter(({ modeId }) => modeId === mapModeId)[0].coords,
   );
 
+  if (layout === null) {
+    return null;
+  }
+
   return (
     <StyledRoot containerWidth={width} containerHeight={height}>
       <Router>
@@ -82,6 +88,7 @@ export const AppRoot: React.VFC = () => {
               visited={visited}
               selectId={selectId}
               setSelectId={setSelectId}
+              mapModeId={mapModeId}
               setMapModeId={setMapModeId}
               mapModeIdRef={mapModeIdRef}
               layout={layout}
@@ -95,7 +102,10 @@ export const AppRoot: React.VFC = () => {
             <IndividualPage
               visited={visited}
               setVisited={setVisited}
+              selectId={selectId}
               setSelectId={setSelectId}
+              lastVisitedId={lastVisitedId}
+              setLastVisitedId={setLastVisitedId}
               layout={layout}
               setIsShowHamburger={setIsShowHamburger}
               coords={coords}

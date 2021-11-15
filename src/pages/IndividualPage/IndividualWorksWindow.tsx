@@ -2,7 +2,6 @@ import { headerHeight } from 'components/Header/Header';
 import { theme } from 'constants/Theme';
 import { useWindowDimensions } from 'hooks/useWindowDimensions';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 interface Props {
@@ -11,9 +10,17 @@ interface Props {
   iframeHeight: string;
   isFull: boolean;
   setIsFull: (isFull: boolean) => void;
+  isNarrowLayout: boolean;
 }
 
-export const IndividualWorksWindow: React.VFC<Props> = ({ srcUrl, iframeWidth, iframeHeight, isFull, setIsFull }) => {
+export const IndividualWorksWindow: React.VFC<Props> = ({
+  srcUrl,
+  iframeWidth,
+  iframeHeight,
+  isFull,
+  setIsFull,
+  isNarrowLayout,
+}) => {
   const iframeRef = React.useRef<HTMLIFrameElement>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const loadHandler = React.useCallback(() => setIsLoading(false), [setIsLoading]);
@@ -40,7 +47,7 @@ export const IndividualWorksWindow: React.VFC<Props> = ({ srcUrl, iframeWidth, i
   }, [setIsFull]);
 
   return (
-    <StyledRoot>
+    <StyledRoot iframeHeight={iframeHeight}>
       <StyledContainer
         iframeWidth={iframeWidth || `${width}px`}
         iframeHeight={iframeHeight || `${height - headerHeight}px`}
@@ -60,21 +67,79 @@ export const IndividualWorksWindow: React.VFC<Props> = ({ srcUrl, iframeWidth, i
           </StyledSkeleton>
         )}
         {isFull ? (
-          <StyledExitFullScreenButton onClick={exitFullScreen}>全画面表示を終了する</StyledExitFullScreenButton>
+          <>
+            {isNarrowLayout ? (
+              <StyledNarrowExitFullScreenButton onClick={exitFullScreen}>
+                <svg width="17" height="15" viewBox="0 0 17 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 13.5L8.39348 8.14285L15.787 13.5" stroke="white" strokeWidth="2" />
+                  <path d="M1.29639 7.35714L8.68987 2L16.0834 7.35714" stroke="white" strokeWidth="2" />
+                </svg>
+                <p>全画面表示終了</p>
+              </StyledNarrowExitFullScreenButton>
+            ) : (
+              <StyledExitFullScreenButton onClick={exitFullScreen}>
+                <StyledSVG width="166" height="83" viewBox="0 0 166 83" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M166 83.5C166 37.6604 128.84 0.5 83 0.5C37.1604 0.5 0 37.6604 0 83.5L166 83.5Z"
+                    fill="#2A70B8"
+                  />
+                </StyledSVG>
+                <p>
+                  全画面表示を
+                  <br />
+                  終了する
+                </p>
+              </StyledExitFullScreenButton>
+            )}
+          </>
         ) : (
-          <StyledFullScreenButton onClick={makeFullScreen}>作品を全画面で表示する</StyledFullScreenButton>
+          <StyledFullScreenButtonContainer>
+            {isNarrowLayout ? (
+              <StyledNarrowFullScreenButton onClick={makeFullScreen}>
+                <StyledSVG width="252" height="43" viewBox="0 0 252 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M126 43L0.426331 0.25L251.574 0.25L126 43Z" fill="#E3E1E1" />
+                </StyledSVG>
+                <p>全画面表示</p>
+              </StyledNarrowFullScreenButton>
+            ) : (
+              <StyledFullScreenButton onClick={makeFullScreen}>
+                <StyledSVG
+                  width="225"
+                  height="113"
+                  viewBox="0 0 225 113"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M0 0C0 62.132 50.368 112.5 112.5 112.5C174.632 112.5 225 62.132 225 0H0Z"
+                    fill="#2A70B8"
+                  />
+                </StyledSVG>
+                <p>
+                  作品を全画面で
+                  <br />
+                  表示する
+                </p>
+              </StyledFullScreenButton>
+            )}
+          </StyledFullScreenButtonContainer>
         )}
       </StyledContainer>
-      <StyledNavigationArea isFull={isFull}>
-        <StyledButton>
-          <StyledLink to="/">作品一覧へ戻る</StyledLink>
-        </StyledButton>
-      </StyledNavigationArea>
     </StyledRoot>
   );
 };
 
-const StyledRoot = styled.div`
+interface StyledRootProps {
+  iframeHeight: string;
+}
+
+const StyledRoot = styled.div<StyledRootProps>`
+  width: 100%;
+  min-height: ${({ iframeHeight }) => iframeHeight};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -89,13 +154,11 @@ const StyledContainer = styled.div<StyledContainerProps>`
   min-width: ${({ iframeWidth }) => iframeWidth};
   width: ${({ iframeWidth }) => iframeWidth};
   height: ${({ iframeHeight }) => iframeHeight};
-  position: relative;
 `;
 
 const StyledIframeContainer = styled.div`
   width: 100%;
   height: 100%;
-  position: relative;
 `;
 
 const StyledIframe = styled.iframe`
@@ -105,6 +168,7 @@ const StyledIframe = styled.iframe`
   border: none;
   display: block;
   background-color: white;
+  z-index: 17;
 `;
 
 interface StyledLoadingProps {
@@ -133,71 +197,110 @@ const StyledSkeleton = styled.div`
   background-color: #b4b4b4;
 `;
 
-const StyledFullScreenButton = styled.button`
+const StyledFullScreenButtonContainer = styled.div`
   position: absolute;
-  bottom: -28px;
-  right: 0px;
+  width: 100%;
+  top: 100%;
+  left: 0px;
+`;
+
+const StyledNarrowFullScreenButton = styled.button`
+  background-color: transparent;
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  width: 250px;
+  transform: translateX(-50%);
   display: block;
-  height: 25px;
-  background-color: white;
   outline: none;
   border: none;
-  border-radius: 3px;
-  padding: 3px;
+  color: black;
+  z-index: 16;
   &:hover {
     cursor: pointer;
-    background-color: gray;
-    color: white;
+  }
+  & > p {
+    position: absolute;
+    top: 33%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: ${theme.fontWeight.bold};
+    border-bottom: 2px solid ${theme.color.primary};
+  }
+`;
+
+const StyledFullScreenButton = styled.button`
+  background-color: transparent;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  display: block;
+  outline: none;
+  border: none;
+  color: white;
+  z-index: 16;
+  &:hover {
+    cursor: pointer;
+  }
+  & > p {
+    position: absolute;
+    width: 100%;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 22px;
+  }
+`;
+
+const StyledNarrowExitFullScreenButton = styled.button`
+  background-color: black;
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  display: flex;
+  outline: none;
+  border: none;
+  border: 1px solid ${theme.color.primary};
+  color: white;
+  padding: 5px 5px;
+  z-index: 50;
+  &:hover {
+    cursor: pointer;
+  }
+  & > p {
+    font-size: 12px;
+    margin-left: 3px;
   }
 `;
 
 const StyledExitFullScreenButton = styled.button`
-  position: absolute;
-  bottom: 3px;
-  right: 3px;
+  background-color: transparent;
+  position: fixed;
+  bottom: -3px;
+  right: -12px;
   display: block;
-  height: 25px;
-  background-color: ${theme.color.primary};
-  color: white;
   outline: none;
   border: none;
-  border-radius: 3px;
-  padding: 3px;
+  color: white;
+  height: 60px;
+  width: 120px;
+  z-index: 50;
   &:hover {
     cursor: pointer;
-    background-color: ${theme.color.activePrimary};
+  }
+  & > p {
+    position: absolute;
+    width: 100%;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
   }
 `;
 
-interface StyledNavigationAreaProps {
-  isFull: boolean;
-}
-
-const StyledNavigationArea = styled.div<StyledNavigationAreaProps>`
+const StyledSVG = styled.svg`
   width: 100%;
-  margin-top: 40px;
-  display: ${({ isFull }) => (isFull ? 'none' : 'flex')};
-  align-items: center;
-  justify-content: center;
-`;
-
-const StyledButton = styled.button`
-  display: block;
-
-  background-color: ${theme.color.primary};
-  outline: none;
-  border: none;
-  border-radius: 3px;
-  &:hover {
-    cursor: pointer;
-    background-color: ${theme.color.activePrimary};
-  }
-`;
-
-const StyledLink = styled(Link)`
-  display: block;
-  padding: 10px;
-  font-size: 15px;
-  text-decoration: none;
-  color: white;
+  height: 100%;
 `;

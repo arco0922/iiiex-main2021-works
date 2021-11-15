@@ -1,74 +1,78 @@
-import { Visited } from 'AppRoot';
-import { Caption } from 'components/Caption/Caption';
-import { Creator, WorksInfo } from 'constants/WorksInfo';
+import { WorksInfo } from 'constants/WorksInfo';
 import React from 'react';
 import styled from 'styled-components';
 import { CreatorDescription } from './CreatorDescription';
-import { SuggestedWorks } from './SuggestedWorks';
 import { convertDeviceString } from 'utils/convertDeviceString';
 
 interface Props {
   worksInfo: WorksInfo;
-  suggestIds: number[];
-  visited: Visited;
+  isNarrowLayout: boolean;
 }
 
-export const IndividualWorksDetail: React.VFC<Props> = ({ worksInfo, suggestIds, visited }) => {
+export const IndividualWorksDetail: React.VFC<Props> = ({ worksInfo, isNarrowLayout }) => {
+  const narrowClassName = isNarrowLayout ? 'narrow' : '';
   return (
-    <StyledContainer>
+    <StyledContainer className={narrowClassName}>
       <StyledSection>
-        <h4>作品名</h4>
-        <p>{worksInfo.title}</p>
+        <p className={`title ${narrowClassName}`}>{worksInfo.title}</p>
+        <p className={`device ${narrowClassName}`}>
+          〇対応デバイス：{convertDeviceString(worksInfo.device)}
+          {worksInfo.deviceMemo && worksInfo.deviceMemo}
+        </p>
       </StyledSection>
       <StyledSection>
-        <h4>対応デバイス</h4>
-        <p>{convertDeviceString(worksInfo.device)}</p>
+        <p className={`caption ${narrowClassName}`}> {worksInfo.caption}</p>
       </StyledSection>
       <StyledSection>
-        <h4>制作者</h4>
         <StyledCreatorsContainer>
           {worksInfo.creators.map((worksCreator, idx) => {
-            return <CreatorDescription creator={worksCreator} key={idx}></CreatorDescription>;
+            return (
+              <CreatorDescription creator={worksCreator} isNarrowLayout={isNarrowLayout} key={idx}></CreatorDescription>
+            );
           })}
         </StyledCreatorsContainer>
-      </StyledSection>
-      <StyledSection>
-        <h4>作品説明</h4>
-        <Caption captionText={worksInfo.caption}></Caption>
-      </StyledSection>
-      <StyledSection>
-        <h4>近くにある作品</h4>
-        <StyledSuggestWorksContainer>
-          {suggestIds.length >= 4 &&
-            suggestIds.slice(0, 4).map((worksId) => {
-              return <SuggestedWorks worksId={worksId} isVisited={visited[worksId]} key={worksId}></SuggestedWorks>;
-            })}
-        </StyledSuggestWorksContainer>
       </StyledSection>
     </StyledContainer>
   );
 };
 
 const StyledContainer = styled.div`
-  margin-left: 20px;
   margin-top: 20px;
   min-width: 250px;
+  width: calc(100% - 235px);
+  &.narrow {
+    margin-top: 50px;
+    width: 100%;
+    padding: 0px 10px;
+  }
 `;
 
 const StyledSection = styled.section`
   width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: 30px;
   color: white;
-  & > h4 {
-    margin-bottom: 3px;
+  & > p.title {
+    font-size: 40px;
+    font-weight: bold;
+    white-space: pre-line;
+    &.narrow {
+      font-size: 20px;
+    }
+  }
+  & > p.caption {
+    font-size: 18px;
+    white-space: pre-line;
+    &.narrow {
+      font-size: 14px;
+    }
+  }
+
+  &:last-of-type {
+    margin-bottom: 0px;
   }
 `;
-const StyledSuggestWorksContainer = styled.div`
-  width: 100%;
-  display: flex;
-`;
-
 const StyledCreatorsContainer = styled.div`
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
 `;

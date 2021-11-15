@@ -25,7 +25,7 @@ export const Header: React.VFC<Props> = ({
   if (layout === 'NARROW') {
     return (
       <StyledContainer>
-        <StyledLogo href={HOMEPAGE_URL} className="narrow">
+        <StyledLogo href={HOMEPAGE_URL} target="_blank" className="narrow">
           <img src="/static/assets/logo/LOGO.png" height={`${headerHeight - 18}px`} />
         </StyledLogo>
         <StyledNavigationContainer className="narrow">
@@ -51,7 +51,7 @@ export const Header: React.VFC<Props> = ({
                     fill="#E94C60"
                   />
                 </StyledSVG>
-                <StyledLinkToQuestionnaire href={QUESTIONNAIRE_URL}>
+                <StyledLinkToQuestionnaire href={QUESTIONNAIRE_URL} target="_blank">
                   <p className="narrow">全体アンケート</p>
                   <StyledUnderBar id="underbar"></StyledUnderBar>
                 </StyledLinkToQuestionnaire>
@@ -64,14 +64,17 @@ export const Header: React.VFC<Props> = ({
   }
   return (
     <StyledContainer>
-      <StyledLogo href={HOMEPAGE_URL}>
+      <StyledHamburgerContainer>
+        <StyledMenuIcon onClick={() => setIsShowHamburger && setIsShowHamburger(true)}></StyledMenuIcon>
+      </StyledHamburgerContainer>
+      <StyledLogo href={HOMEPAGE_URL} target="_blank">
         <img src="/static/assets/logo/LOGO.png" height={`${headerHeight - 18}px`} />
       </StyledLogo>
       <StyledNavigationContainer>
         {showNavigationToTop && (
           <StyledButton>
             <StyledLinkToTop to="/">
-              <p>作品一覧</p>
+              <p>展示空間TOP</p>
               <StyledUnderBar id="underbar"></StyledUnderBar>
             </StyledLinkToTop>
           </StyledButton>
@@ -88,7 +91,7 @@ export const Header: React.VFC<Props> = ({
           <StyledSVG width="158" height="65" viewBox="0 0 158 65" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fillRule="evenodd" clipRule="evenodd" d="M158 0H0V48V65L79 48L158 65V48V0Z" fill="#E94C60" />
           </StyledSVG>
-          <StyledLinkToQuestionnaire className="wide" href={QUESTIONNAIRE_URL}>
+          <StyledLinkToQuestionnaire className="wide" href={QUESTIONNAIRE_URL} target="_blank">
             <p>全体アンケート</p>
             <StyledUnderBar id="underbar"></StyledUnderBar>
           </StyledLinkToQuestionnaire>
@@ -118,10 +121,10 @@ const StyledLogo = styled.a`
   align-items: center;
   height: 100%;
   padding: 0 20px;
-  position: absolute;
-  left: 0px;
-  top: 0px;
   z-index: 5;
+  position: absolute;
+  left: 50px;
+  top: 0px;
 
   &.narrow {
     padding: 0px;
@@ -140,8 +143,7 @@ const StyledNavigationContainer = styled.div`
   align-items: center;
   flex: 1;
   height: 100%;
-  margin-left: 130px;
-
+  margin-left: 140px;
   &.narrow {
     margin-left: 15px;
     padding-right: 0px;
@@ -274,4 +276,13 @@ const StyledExitFullScreen = styled.div`
   justify-content: center;
   text-decoration: none;
   color: white;
+`;
+
+const StyledHamburgerContainer = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  color: white;
+  margin-left: 15px;
 `;

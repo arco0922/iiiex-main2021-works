@@ -5,6 +5,8 @@ export const theme = {
     activePrimary: '#FF2929',
     accent: '#3080FF',
     activeAccent: '#002fff',
+    blue: '#2A70B8',
+    green: '#28A752',
   },
   fontWeight: {
     bold: 700,
