@@ -13,6 +13,8 @@ import { LayoutType } from 'constants/Layout';
 import { Coord } from 'constants/MapCoords';
 import { sortWorksByDistance } from 'utils/sortWorks';
 import { NavigationArea } from './NavigationArea';
+import { TopNavigationArea } from './TopNavigationArea';
+import { calcNextRotationOrderWorksId } from 'utils/calcRotationUtils';
 
 interface Params {
   id: string;
@@ -89,6 +91,8 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
     return notVisitedSortedIds.concat(visitedSortedIds);
   }, [worksId, worksInfo, coords, visited, lastVisitedId]);
 
+  const nextRotationOrderWorksId = React.useMemo<number | null>(() => calcNextRotationOrderWorksId(worksId), [worksId]);
+
   if (worksInfo === undefined) {
     return <></>;
   }
@@ -104,6 +108,9 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
       <StyledContentContainer>
         <ScrollDiv ref={scrollRef}></ScrollDiv>
         <StyledWorksContainer isFull={isFull} isNarrowLayout={isNarrowLayout} containerWidth={iframeWidth}>
+          {!isFull && nextRotationOrderWorksId !== null && (
+            <TopNavigationArea nextRotationOrderWorksId={nextRotationOrderWorksId} isNarrowLayout={isNarrowLayout} />
+          )}
           <IndividualWorksWindow
             srcUrl={isMobile ? worksInfo.srcUrlSp : worksInfo.srcUrlPc}
             iframeHeight={iframeHeight}
@@ -151,5 +158,5 @@ const StyledWorksContainer = styled.div<StyledWorksContainerProps>`
   width: ${({ containerWidth }) => containerWidth};
   display: flex;
   flex-direction: column;
-  padding: ${({ isFull }) => (isFull ? '0' : '20px 0px 50px 0px')};
+  padding: ${({ isFull }) => (isFull ? '0' : '15px 0px 50px 0px')};
 `;
