@@ -119,6 +119,8 @@ export const worksInfoArr: WorksInfo[] = [
     「もしも」であるこの世界の体験を、現実の世界に少しでも持ち帰ってもらえたら。
     その先で、現実が”on my period” （「生理中」）の女性にとって、よりやさしい世界になったらいいなという願いを込めて制作しました。
     `,
+    srcUrlPc: 'https://hana-mochizuki.github.io/on-my-period/',
+    srcUrlSp: 'https://hana-mochizuki.github.io/on-my-period/',
     formEntry: 'entry.805425849',
   },
   {
