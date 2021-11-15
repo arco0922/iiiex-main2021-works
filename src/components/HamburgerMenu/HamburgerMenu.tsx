@@ -95,6 +95,7 @@ const StyledCloseIcon = styled(CloseIcon)`
 
 const StyledNavSection = styled.section`
   display: flex;
+  min-height: 170px;
   flex-direction: column;
   align-items: center;
   width: 100%;
@@ -110,7 +111,7 @@ const StyledWorksSection = styled.section`
   overflow-y: auto;
 `;
 
-const StyledButton = styled.button`
+const StyledButton = styled.div`
   display: block;
   outline: none;
   border: none;
@@ -120,6 +121,7 @@ const StyledButton = styled.button`
 
 const StyledLink = styled(Link)`
   padding: 20px 5px 5px 5px;
+  font-size: 13px;
   text-decoration: none;
   color: white;
   display: block;
@@ -127,6 +129,7 @@ const StyledLink = styled(Link)`
 
 const StyledOutLink = styled.a`
   padding: 20px 5px 5px 5px;
+  font-size: 13px;
   text-decoration: none;
   color: white;
   display: block;
