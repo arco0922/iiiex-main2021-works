@@ -122,6 +122,14 @@ export const WorksListSketch = React.memo<Props>(
 
     const worldWidth = 20000; // ワールドの横幅 ※canvasの横幅とは異なる
     const worldHeight = 20000; // ワールドの縦幅 ※canvasの縦幅とは異なる
+    const particleRadius = 100;
+
+    let limitWorldOffsetMinX: number;
+    let limitWorldOffsetMaxX: number;
+    let limitWorldOffsetMinY: number;
+    let limitWorldOffsetMaxY: number;
+    let limitWorldOffsetMinScale: number;
+    let limitWorldOffsetMaxScale: number;
 
     let isWorldLokked = false;
     let oldMouseX = 0;
@@ -167,10 +175,56 @@ export const WorksListSketch = React.memo<Props>(
       );
     };
 
+    const calcWorldCoord = (
+      x: number,
+      y: number,
+      worldOffsetX: number,
+      worldOffsetY: number,
+      worldOffsetScale: number,
+    ) => {
+      /** canvas座標 → ワールド座標の計算 */
+      return {
+        x: (x - worldOffsetX) / worldOffsetScale,
+        y: (y - worldOffsetY) / worldOffsetScale,
+      };
+    };
+
+    const calcWorldLimit = (p5: p5Types, mapModeId: MapModeId) => {
+      const mapCoord = mapCoordsArr.filter(({ modeId }) => modeId === mapModeId)[0];
+      limitWorldOffsetMinScale = p5.min(
+        p5.width / p5.max(mapCoord.border.maxX - mapCoord.border.minX, 1),
+        p5.height / p5.max(mapCoord.border.maxY - mapCoord.border.minY, 1),
+      );
+      limitWorldOffsetMaxScale = p5.min(p5.width, p5.height) / (particleRadius * 2);
+      limitWorldOffsetMinX = - (mapCoord.border.maxX - particleRadius * 4) * worldOffsetScale;
+      limitWorldOffsetMaxX = p5.width - (mapCoord.border.minX + particleRadius * 4) * worldOffsetScale;
+      limitWorldOffsetMinY = -(mapCoord.border.maxY - particleRadius * 4) * worldOffsetScale;
+      limitWorldOffsetMaxY = p5.height - (mapCoord.border.minY + particleRadius * 4) * worldOffsetScale; 
+    };
+
+    const limitCurrentDisplay = (p5: p5Types, mapModeId: MapModeId, mouseX: number, mouseY: number) => {
+      const mapCoord = mapCoordsArr.filter(({ modeId }) => modeId === mapModeId)[0];
+      worldOffsetScale = p5.constrain(
+        worldOffsetScale,
+        limitWorldOffsetMinScale,
+        limitWorldOffsetMaxScale,
+      );
+      worldOffsetX = p5.constrain(
+        worldOffsetX,
+        limitWorldOffsetMinX,
+        limitWorldOffsetMaxX,
+      );
+      worldOffsetY = p5.constrain(
+        worldOffsetY,
+        limitWorldOffsetMinY,
+        limitWorldOffsetMaxY,
+      );
+    };
+
     const zoom = (centerX: number, centerY: number, scaleDiff: number) => {
       /** centerX, centerY は canvas座標 */
       const newOffsetScale = worldOffsetScale * (1 + scaleDiff);
-      if (newOffsetScale > 4 || newOffsetScale < 0.1) {
+      if (newOffsetScale > limitWorldOffsetMaxScale || newOffsetScale < limitWorldOffsetMinScale) {
         return;
       }
       worldOffsetX = (newOffsetScale * worldOffsetX - (newOffsetScale - worldOffsetScale) * centerX) / worldOffsetScale;
@@ -200,6 +254,7 @@ export const WorksListSketch = React.memo<Props>(
 
     const mapModeIdChangeHandler = (p5: p5Types, newMapModeId: MapModeId) => {
       initWorldPosScale(p5, newMapModeId);
+      calcWorldLimit(p5, newMapModeId);
       const mapCoordsGroup = mapCoordsArr.filter(({ modeId }) => modeId === newMapModeId)[0];
       mapCoordsGroup.coords.forEach(({ id, x, y }) => obstacleSystem.setTargetPos({ id, x, y }));
       obstacleSystem.setDistThreshold(mapCoordsGroup.threshold.dist);
@@ -244,6 +299,7 @@ export const WorksListSketch = React.memo<Props>(
       prevMapModeId = initialMapModeId;
 
       initWorldPosScale(p5, initialMapModeId);
+      calcWorldLimit(p5, initialMapModeId);
 
       grid = new Grid(p5, worldWidth, worldHeight, 100);
 
@@ -262,10 +318,32 @@ export const WorksListSketch = React.memo<Props>(
         switch (initialMapModeId) {
           case 1:
             const randy = p5.random(-worldHeight / 6, worldHeight / 6);
-            obstacleSystem.addParticle(id, x * 0.8, randy, 100, 0, 0, 1, obstacleColor, 'Gravitational', 'Pos');
+            obstacleSystem.addParticle(
+              id,
+              x * 0.8,
+              randy,
+              particleRadius,
+              0,
+              0,
+              1,
+              obstacleColor,
+              'Gravitational',
+              'Pos',
+            );
             break;
           default:
-            obstacleSystem.addParticle(id, x * 0.7, y * 0.7, 100, 0, 0, 1, obstacleColor, 'Gravitational', 'Pos');
+            obstacleSystem.addParticle(
+              id,
+              x * 0.7,
+              y * 0.7,
+              particleRadius,
+              0,
+              0,
+              1,
+              obstacleColor,
+              'Gravitational',
+              'Pos',
+            );
         }
         obstacleSystem.setTargetPos({ id, x, y });
       });
@@ -285,6 +363,7 @@ export const WorksListSketch = React.memo<Props>(
         const newWidth = containerRef.current.clientWidth - padding * 2;
         const newHeight = containerRef.current.clientHeight - padding * 2;
         p5.resizeCanvas(newWidth, newHeight);
+        calcWorldLimit(p5, prevMapModeId);
         if (initialAnimationStatusRef.current === 'END') {
           worldOffsetX += (newWidth - prevCanvasWidth) / 2;
           worldOffsetY += (newHeight - prevCanvasHeight) / 2;
@@ -298,6 +377,7 @@ export const WorksListSketch = React.memo<Props>(
       }
       prevMapModeId = mapModeIdRef.current;
 
+      limitCurrentDisplay(p5, mapModeIdRef.current, p5.mouseX, p5.mouseY);
       p5.background(bgcolor);
 
       p5.push();
@@ -308,6 +388,7 @@ export const WorksListSketch = React.memo<Props>(
       obstacleSystem.setSelectId(selectIdRef.current);
       obstacleSystem.display();
       p5.pop();
+
 
       if (obstacleSystem.isCursorOnParticles()) {
         p5.cursor('grab');
