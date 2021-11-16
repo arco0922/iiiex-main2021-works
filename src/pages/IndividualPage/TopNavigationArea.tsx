@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { debug } from 'console';
 import { useHistory } from 'react-router';
 interface Props {
   nextRotationOrderWorksId: number;
