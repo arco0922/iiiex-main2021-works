@@ -189,6 +189,8 @@ export const WorksListSketch = React.memo<Props>(
       newTargetWorldOffsetY: number,
       newTargetWorldOffsetScale: number,
     ) => {
+      isAdjustingWorld = true;
+      isZoomEnabled = false;
       targetWorldOffsetX = newTargetWorldOffsetX;
       targetWorldOffsetY = newTargetWorldOffsetY;
       targetWorldOffsetScale = newTargetWorldOffsetScale;
@@ -204,23 +206,21 @@ export const WorksListSketch = React.memo<Props>(
           ? p5.width - sideDetailWidth
           : p5.width;
       const height = layoutRef.current === 'NARROW' ? p5.height - bottomDetailHeight - carouselSpaceHeight : p5.height;
-      const newTargetWorldOffsetX = width / 2 - mapCoord.center.x;
-      let newTargetWorldOffsetY = height / 2 - mapCoord.center.y;
-      if (layoutRef.current === 'NARROW') {
-        newTargetWorldOffsetY += carouselSpaceHeight;
-      }
       const newTargetWorldOffsetScale = p5.min(
         width / p5.max(mapCoord.border.maxX - mapCoord.border.minX, 1),
         height / p5.max(mapCoord.border.maxY - mapCoord.border.minY, 1),
       );
+      const newTargetWorldOffsetX = width / 2 - mapCoord.center.x * newTargetWorldOffsetScale;
+      let newTargetWorldOffsetY = height / 2 - mapCoord.center.y * newTargetWorldOffsetScale;
+      if (layoutRef.current === 'NARROW') {
+        newTargetWorldOffsetY += carouselSpaceHeight;
+      }
       if (!isWorldInitialized) {
         worldOffsetX = newTargetWorldOffsetX;
         worldOffsetY = newTargetWorldOffsetY;
         worldOffsetScale = newTargetWorldOffsetScale;
         isWorldInitialized = true;
       }
-      isAdjustingWorld = true;
-      isZoomEnabled = false;
       setWorldTarget(newTargetWorldOffsetX, newTargetWorldOffsetY, newTargetWorldOffsetScale);
     };
 
@@ -392,6 +392,8 @@ export const WorksListSketch = React.memo<Props>(
       });
       obstacleSystem.setTextures(thumbnails);
 
+      obstacleSystem.setSelectId(selectIdRef.current);
+
       obstacleSystem.setVisited(visitedRef.current);
 
       obstacleSystem.setDistThreshold(mapCoordsGroup.threshold.dist);
@@ -425,6 +427,11 @@ export const WorksListSketch = React.memo<Props>(
         calcWorldLimit(p5, prevMapModeId);
       }
       limitDisplayMove(p5);
+
+      if (selectIdRef.current !== obstacleSystem.selectId) {
+        obstacleSystem.setSelectIdFromOther(selectIdRef.current);
+      }
+
       p5.background(bgcolor);
 
       p5.push();
@@ -432,7 +439,6 @@ export const WorksListSketch = React.memo<Props>(
       p5.scale(worldOffsetScale);
       grid.display();
       obstacleSystem.changeWorldOffset(worldOffsetX, worldOffsetY, worldOffsetScale);
-      obstacleSystem.setSelectId(selectIdRef.current);
       obstacleSystem.display();
       p5.pop();
 
@@ -550,6 +556,18 @@ export const WorksListSketch = React.memo<Props>(
 
       setSelectId(id: number) {
         this.selectId = id;
+      }
+
+      setSelectIdFromOther(id: number) {
+        this.setSelectId(id);
+        const particle = this.particles.filter((particle) => particle.id === id)[0];
+        if (particle.targetX !== undefined && particle.targetY !== undefined) {
+          setWorldTarget(
+            particle.p5.width / 2 - (particle.targetX * limitWorldOffsetMaxScale) / 4,
+            particle.p5.height / 2 - (particle.targetY * limitWorldOffsetMaxScale) / 4,
+            limitWorldOffsetMaxScale / 4,
+          );
+        }
       }
 
       setTextures(textures: ParticleImage[]) {
@@ -727,9 +745,10 @@ export const WorksListSketch = React.memo<Props>(
         this.particles.forEach((particle) => {
           if (particle.isCursorOn()) {
             document.addEventListener('touchmove', preventDefault, wheelOpt); // mobile
+            this.setSelectId(particle.id);
+            selectIdRef.current = particle.id;
             setSelectId(particle.id);
             setIsShowDetail(true);
-            this.setSelectId(particle.id);
             particle.catch();
           }
         });
