@@ -6,12 +6,13 @@ import { Visited } from 'AppRoot';
 import { theme } from 'constants/Theme';
 
 interface Props {
+  nextRotationOrderWorksId: number;
   suggestIds: number[];
   visited: Visited;
   isNarrowLayout: boolean;
 }
 
-export const NavigationArea: React.VFC<Props> = ({ suggestIds, visited, isNarrowLayout }) => {
+export const NavigationArea: React.VFC<Props> = ({ suggestIds, visited, isNarrowLayout, nextRotationOrderWorksId }) => {
   return (
     <StyledContainer>
       {isNarrowLayout ? (
@@ -28,22 +29,37 @@ export const NavigationArea: React.VFC<Props> = ({ suggestIds, visited, isNarrow
           </StyledButton>
         </StyledButtonContainer>
       )}
-      <StyledTitle className={isNarrowLayout ? 'narrow' : ''}>近くにある作品を見る</StyledTitle>
-      <StyledSuggestSection>
-        <StyledSuggestWorksContainer className={isNarrowLayout ? 'narrow' : ''}>
-          {suggestIds.length >= 4 &&
-            suggestIds.slice(0, 4).map((worksId) => {
-              return (
-                <SuggestedWorks
-                  worksId={worksId}
-                  isVisited={visited[worksId]}
-                  isNarrowLayout={isNarrowLayout}
-                  key={worksId}
-                />
-              );
-            })}
-        </StyledSuggestWorksContainer>
-      </StyledSuggestSection>
+      <StyledSuggestRoot>
+        <StyledNextSuggestContainer>
+          <StyledNextTitle className={isNarrowLayout ? 'narrow' : ''}>次のおすすめ</StyledNextTitle>
+          <StyledSuggestSection>
+            <SuggestedWorks
+              worksId={nextRotationOrderWorksId}
+              isVisited={visited[nextRotationOrderWorksId]}
+              isNarrowLayout={isNarrowLayout}
+              key={nextRotationOrderWorksId}
+            />{' '}
+          </StyledSuggestSection>
+        </StyledNextSuggestContainer>
+        <StyledSuggestContainer>
+          <StyledTitle className={isNarrowLayout ? 'narrow' : ''}>近くにある作品を見る</StyledTitle>
+          <StyledSuggestSection>
+            <StyledSuggestWorksContainer className={isNarrowLayout ? 'narrow' : ''}>
+              {suggestIds.length >= 4 &&
+                suggestIds.slice(0, 4).map((worksId) => {
+                  return (
+                    <SuggestedWorks
+                      worksId={worksId}
+                      isVisited={visited[worksId]}
+                      isNarrowLayout={isNarrowLayout}
+                      key={worksId}
+                    />
+                  );
+                })}
+            </StyledSuggestWorksContainer>
+          </StyledSuggestSection>
+        </StyledSuggestContainer>
+      </StyledSuggestRoot>
     </StyledContainer>
   );
 };
@@ -122,13 +138,35 @@ const StyledUnderBar = styled.div`
   transition: width 0.2s ease-out;
 `;
 
+const StyledSuggestRoot = styled.div`
+  display: flex;
+`;
+
+const StyledNextSuggestContainer = styled.div`
+  padding-right: 10px;
+  border-right: solid;
+  border-color: #474747;
+  border-width: 1px;
+`;
+
+const StyledNextTitle = styled.h4`
+  color: white;
+  text-align: center;
+  margin-bottom: 10px;
+  min-width: 100px;
+  font-weight: ${theme.fontWeight.regular};
+`;
+
+const StyledSuggestContainer = styled.div`
+  overflow-x: auto;
+`;
+
 const StyledTitle = styled.h4`
   color: white;
   margin-bottom: 10px;
+  min-width: 160px;
   font-weight: ${theme.fontWeight.regular};
-  &.narrow {
-    margin-left: 10px;
-  }
+  margin-left: 10px;
 `;
 
 const StyledSuggestSection = styled.section`

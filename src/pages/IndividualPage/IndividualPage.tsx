@@ -145,7 +145,14 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
               />
               {!isFull && <IndividualWorksDetail worksInfo={worksInfo} isNarrowLayout={isNarrowLayout} />}
               {!isFull && <ReactionForm worksId={worksId} isNarrowLayout={isNarrowLayout} />}
-              {!isFull && <NavigationArea suggestIds={suggestIds} visited={visited} isNarrowLayout={isNarrowLayout} />}
+              {!isFull && nextRotationOrderWorksId !== null && (
+                <NavigationArea
+                  suggestIds={suggestIds}
+                  visited={visited}
+                  isNarrowLayout={isNarrowLayout}
+                  nextRotationOrderWorksId={nextRotationOrderWorksId}
+                />
+              )}
             </StyledWorksContainer>
           </StyledContentContainer>
         </Scroller>
