@@ -86,7 +86,6 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
       worksHistory.push(worksId);
     }
     setWorksHistory(worksHistory);
-    console.log(worksHistory);
     setSelectId(worksId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [worksId, setSelectId, setWorksHistory]);

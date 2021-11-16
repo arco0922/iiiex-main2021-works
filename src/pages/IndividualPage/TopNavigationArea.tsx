@@ -21,7 +21,6 @@ export const TopNavigationArea: React.VFC<Props> = ({
     worksHistory.pop();
     setWorksHistory(worksHistory);
     history.push(`/works/${worksHistory.slice(-1)[0]}`);
-    console.log(worksHistory);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setWorksHistory]);
   return (
