@@ -28,31 +28,6 @@ const StyledTitle = styled.h4`
   }
 `;
 
-const StyledSection = styled.section`
-  width: 100%;
-  margin-bottom: 30px;
-  color: white;
-  & > p.title {
-    font-size: 40px;
-    font-weight: bold;
-    white-space: pre-line;
-    &.narrow {
-      font-size: 20px;
-    }
-  }
-  & > p.caption {
-    font-size: 18px;
-    white-space: pre-line;
-    &.narrow {
-      font-size: 14px;
-    }
-  }
-
-  &:last-of-type {
-    margin-bottom: 0px;
-  }
-`;
-
 const StyledQuestionnaireIframe = styled.iframe`
   width: 100%;
   height: 100%;
