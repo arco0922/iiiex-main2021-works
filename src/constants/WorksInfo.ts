@@ -15,6 +15,7 @@ export interface WorksInfo {
   creators: Creator[];
   caption: string;
   device: Device;
+  ownQuestionnaireUrl?: string;
   isSmartphoneFullscreenOnly?: boolean;
   deviceMemo?: string;
   formEntry: string;
@@ -264,6 +265,8 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlSp: 'https://kurapyon31.github.io/probUT/',
     aspectRatio: 16 / 9,
     formEntry: 'entry.333145081',
+    ownQuestionnaireUrl:
+      'https://docs.google.com/forms/d/e/1FAIpQLScjVNVSwZPo3jH9yNuIhbvFrYRuIWOZTZ7cjgLbkmNEpfbOJA/viewform',
   },
   {
     id: 8,
