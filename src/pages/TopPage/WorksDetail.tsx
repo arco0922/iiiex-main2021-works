@@ -1,5 +1,4 @@
 import { Visited } from 'AppRoot';
-import { Caption } from 'components/Caption/Caption';
 import { theme } from 'constants/Theme';
 import { worksInfoArr } from 'constants/WorksInfo';
 import React from 'react';
@@ -9,6 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { sideMenuWidth } from './WorksListMenu';
 import { LayoutType } from 'constants/Layout';
 import { convertDeviceString } from 'utils/convertDeviceString';
+import { isSmoothScrollable, useFixScroll } from 'hooks/useFixScroll';
 
 interface Props {
   selectId: number;
@@ -20,6 +20,11 @@ interface Props {
 
 export const WorksDetail: React.VFC<Props> = ({ selectId, visited, isShowDetail, setIsShowDetail, layout }) => {
   const info = React.useMemo(() => worksInfoArr.filter((worksInfo) => worksInfo.id === selectId)[0], [selectId]);
+
+  const scrollContaierRef = React.useRef<HTMLDivElement>(null);
+  const scrollerRef = React.useRef<HTMLDivElement>(null);
+  useFixScroll(scrollContaierRef, scrollerRef);
+
   if (!info) {
     return <></>;
   }
@@ -27,33 +32,37 @@ export const WorksDetail: React.VFC<Props> = ({ selectId, visited, isShowDetail,
     <StyledContainer className={isShowDetail ? 'show' : ''} isWideLayout={layout === 'WIDE'}>
       <StyledCloseIcon onClick={() => setIsShowDetail(false)}></StyledCloseIcon>
       <StyledTitle>作品詳細</StyledTitle>
-      <StyledDetailContainer>
-        <StyledImgDiv>
-          <StyledThumbnail src={`/static/assets/thumbnails/${info.thumbnailBaseName}.jpg`}></StyledThumbnail>
-          {visited[selectId] && <StyledCheck src="/static/assets/check/check_mark.png" height="20%"></StyledCheck>}
-        </StyledImgDiv>
-        <StyledButton>
-          <StyledLink to={`/works/${info.id}`}>作品を見る</StyledLink>
-        </StyledButton>
-        <StyledDetail>
-          <StyledSection>
-            <h4>作品名</h4>
-            <p>{info.title}</p>
-          </StyledSection>
-          <StyledSection>
-            <h4>対応デバイス</h4>
-            <p>{convertDeviceString(info.device)}</p>
-          </StyledSection>
-          <StyledSection>
-            <h4>制作者</h4>
-            <p>{info.creators.map((creator) => creator.name).join(', ')}</p>
-          </StyledSection>
-          <StyledSection>
-            <h4>作品説明</h4>
-            <Caption captionText={info.caption}></Caption>
-          </StyledSection>
-        </StyledDetail>
-      </StyledDetailContainer>
+      <ScrollContainer ref={scrollContaierRef}>
+        <Scroller ref={scrollerRef}>
+          <StyledDetailContainer>
+            <StyledImgDiv>
+              <StyledThumbnail src={`/static/assets/thumbnails/${info.thumbnailBaseName}.jpg`}></StyledThumbnail>
+              {visited[selectId] && <StyledCheck src="/static/assets/check/check_mark.png" height="20%"></StyledCheck>}
+            </StyledImgDiv>
+            <StyledButton>
+              <StyledLink to={`/works/${info.id}`}>作品を見る</StyledLink>
+            </StyledButton>
+            <StyledDetail>
+              <StyledWorksTitle>
+                <h2>{info.title}</h2>
+              </StyledWorksTitle>
+              <StyledSection>
+                <h4>対応デバイス</h4>
+                <p>{convertDeviceString(info.device)}</p>
+                {info.deviceMemo && <p className="device-memo">{info.deviceMemo}</p>}
+              </StyledSection>
+              <StyledSection>
+                <h4>制作者</h4>
+                <p>{info.creators.map((creator) => creator.name).join(', ')}</p>
+              </StyledSection>
+              <StyledSection>
+                <h4>作品説明</h4>
+                <StyledCaption>{info.caption}</StyledCaption>
+              </StyledSection>
+            </StyledDetail>
+          </StyledDetailContainer>
+        </Scroller>
+      </ScrollContainer>
     </StyledContainer>
   );
 };
@@ -86,7 +95,7 @@ const StyledContainer = styled.div<StyledContainerProps>`
 
 const StyledCloseIcon = styled(CloseIcon)`
   position: absolute;
-  top: 3px;
+  top: 6px;
   right: 5px;
   z-index: 3;
   &:hover {
@@ -95,19 +104,27 @@ const StyledCloseIcon = styled(CloseIcon)`
 `;
 
 const StyledTitle = styled.h2`
-  min-height: 24px;
-  width: 95%;
+  min-height: 26px;
+  width: 100%;
   font-size: 16px;
   font-weight: 400;
+  text-align: center;
   border-bottom: 1px solid white;
-  margin: 5px 5px 3px 5px;
+  margin: 10px 0px 3px 0px;
+`;
+
+const ScrollContainer = styled.div`
+  flex: 1;
+  width: 100%;
+  overflow-y: auto;
+`;
+
+const Scroller = styled.div`
+  min-height: ${isSmoothScrollable ? 'calc(100% + 1px)' : '100%'};
 `;
 
 const StyledDetailContainer = styled.div`
-  flex: 1;
-  width: 100%;
-  padding: 5px 5px 5px 10px;
-  overflow-y: auto;
+  padding: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -141,9 +158,8 @@ const StyledButton = styled.button`
   outline: none;
   border: none;
   border: 2px solid ${theme.color.primary};
-  padding: 3px;
   margin-bottom: 15px;
-  width: 80%;
+  width: 97%;
   &:hover {
     cursor: pointer;
     background-color: ${theme.color.primary};
@@ -157,7 +173,12 @@ const StyledLink = styled(Link)`
   text-decoration: none;
   color: white;
   font-size: 20px;
+  padding: 3px;
   font-weight: ${theme.fontWeight.bold};
+`;
+
+const StyledCaption = styled.div`
+  white-space: pre-line;
 `;
 
 const StyledDetail = styled.div`
@@ -168,10 +189,25 @@ const StyledDetail = styled.div`
   padding: 5px;
 `;
 
+const StyledWorksTitle = styled.section`
+  width: 100%;
+  margin-bottom: 15px;
+  & > h2 {
+    font-weight: ${theme.fontWeight.bold};
+    font-size: 22px;
+    margin-bottom: 3px;
+  }
+`;
+
 const StyledSection = styled.section`
   width: 100%;
   margin-bottom: 15px;
   & > h4 {
+    font-weight: ${theme.fontWeight.regular};
+    font-size: 14px;
     margin-bottom: 3px;
+  }
+  & > .device-memo {
+    font-size: 13px;
   }
 `;

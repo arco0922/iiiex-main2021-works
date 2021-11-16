@@ -22,11 +22,10 @@ export const Header: React.VFC<Props> = ({
   layout,
   setIsShowHamburger,
 }) => {
-  const isNarrowLayout = layout === 'MID' || layout === 'NARROW';
-  if (isNarrowLayout) {
+  if (layout === 'NARROW') {
     return (
       <StyledContainer>
-        <StyledLogo href={HOMEPAGE_URL} className="narrow">
+        <StyledLogo href={HOMEPAGE_URL} target="_blank" className="narrow">
           <img src="/static/assets/logo/LOGO.png" height={`${headerHeight - 18}px`} />
         </StyledLogo>
         <StyledNavigationContainer className="narrow">
@@ -34,14 +33,6 @@ export const Header: React.VFC<Props> = ({
             <StyledMenuIcon onClick={() => setIsShowHamburger && setIsShowHamburger(true)}></StyledMenuIcon>
           </StyledLeftHalf>
           <StyledRightHalf>
-            {(layout === 'MID' || !isFull) && (
-              <StyledButton>
-                <StyledLinkToOuterPage href={QUESTIONNAIRE_URL}>
-                  <p className="narrow">全体アンケート</p>
-                  <StyledUnderBar id="underbar"></StyledUnderBar>
-                </StyledLinkToOuterPage>
-              </StyledButton>
-            )}
             {isFull && setIsFull && (
               <StyledButton onClick={() => setIsFull(false)}>
                 <StyledExitFullScreen>
@@ -50,6 +41,22 @@ export const Header: React.VFC<Props> = ({
                 </StyledExitFullScreen>
               </StyledButton>
             )}
+            {!isFull && (
+              <StyledQuestionnaireButton>
+                <StyledSVG width="128" height="46" viewBox="0 0 128 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M0 0H21.8295H128V46H21.8295H0L21.8295 23L0 0Z"
+                    fill="#E94C60"
+                  />
+                </StyledSVG>
+                <StyledLinkToQuestionnaire href={QUESTIONNAIRE_URL} target="_blank">
+                  <p className="narrow">全体アンケート</p>
+                  <StyledUnderBar id="underbar"></StyledUnderBar>
+                </StyledLinkToQuestionnaire>
+              </StyledQuestionnaireButton>
+            )}
           </StyledRightHalf>
         </StyledNavigationContainer>
       </StyledContainer>
@@ -57,24 +64,21 @@ export const Header: React.VFC<Props> = ({
   }
   return (
     <StyledContainer>
-      <StyledLogo href={HOMEPAGE_URL}>
+      <StyledHamburgerContainer>
+        <StyledMenuIcon onClick={() => setIsShowHamburger && setIsShowHamburger(true)}></StyledMenuIcon>
+      </StyledHamburgerContainer>
+      <StyledLogo href={HOMEPAGE_URL} target="_blank">
         <img src="/static/assets/logo/LOGO.png" height={`${headerHeight - 18}px`} />
       </StyledLogo>
       <StyledNavigationContainer>
         {showNavigationToTop && (
           <StyledButton>
             <StyledLinkToTop to="/">
-              <p>作品一覧</p>
+              <p>展示空間TOP</p>
               <StyledUnderBar id="underbar"></StyledUnderBar>
             </StyledLinkToTop>
           </StyledButton>
         )}
-        <StyledButton>
-          <StyledLinkToOuterPage href={QUESTIONNAIRE_URL}>
-            <p>全体アンケート</p>
-            <StyledUnderBar id="underbar"></StyledUnderBar>
-          </StyledLinkToOuterPage>
-        </StyledButton>
         {isFull && setIsFull && (
           <StyledButton onClick={() => setIsFull(false)}>
             <StyledExitFullScreen>
@@ -83,6 +87,15 @@ export const Header: React.VFC<Props> = ({
             </StyledExitFullScreen>
           </StyledButton>
         )}
+        <StyledQuestionnaireButton className={layout === 'MID' ? 'mid' : 'wide'}>
+          <StyledSVG width="158" height="65" viewBox="0 0 158 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fillRule="evenodd" clipRule="evenodd" d="M158 0H0V48V65L79 48L158 65V48V0Z" fill="#E94C60" />
+          </StyledSVG>
+          <StyledLinkToQuestionnaire className="wide" href={QUESTIONNAIRE_URL} target="_blank">
+            <p>全体アンケート</p>
+            <StyledUnderBar id="underbar"></StyledUnderBar>
+          </StyledLinkToQuestionnaire>
+        </StyledQuestionnaireButton>
       </StyledNavigationContainer>
     </StyledContainer>
   );
@@ -108,10 +121,10 @@ const StyledLogo = styled.a`
   align-items: center;
   height: 100%;
   padding: 0 20px;
-  position: absolute;
-  left: 0px;
-  top: 0px;
   z-index: 5;
+  position: absolute;
+  left: 50px;
+  top: 0px;
 
   &.narrow {
     padding: 0px;
@@ -120,16 +133,20 @@ const StyledLogo = styled.a`
   }
 `;
 
+const StyledSVG = styled.svg`
+  height: 100%;
+  width: 100%;
+`;
+
 const StyledNavigationContainer = styled.div`
   display: flex;
   align-items: center;
   flex: 1;
   height: 100%;
-  margin-left: 130px;
-
+  margin-left: 140px;
   &.narrow {
     margin-left: 15px;
-    margin-right: 10px;
+    padding-right: 0px;
     justify-content: space-between;
   }
 `;
@@ -171,6 +188,43 @@ const StyledButton = styled.button`
   }
 `;
 
+const StyledQuestionnaireButton = styled.button`
+  background-color: transparent;
+  outline: none;
+  border: none;
+  height: 50px;
+  width: 110px;
+  display: flex;
+  flex-direction: column;
+  z-index: 18;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 5px;
+  right: 0px;
+  &.mid {
+    height: 54px;
+    width: 130px;
+    right: 0px;
+    top: 0px;
+  }
+  &.wide {
+    height: 54px;
+    width: 130px;
+    right: 120px;
+    top: 0px;
+  }
+  &:hover {
+    cursor: pointer;
+    #underbar {
+      width: 80%;
+    }
+  }
+  & p.narrow {
+    font-size: 11px;
+  }
+`;
+
 const StyledUnderBar = styled.div`
   width: 0%;
   height: 1px;
@@ -185,6 +239,25 @@ const StyledLinkToOuterPage = styled.a`
   justify-content: center;
   text-decoration: none;
   color: white;
+`;
+
+const StyledLinkToQuestionnaire = styled.a`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 55%;
+  transform: translate(-50%, -50%);
+  &.wide {
+    top: 43%;
+    left: 50%;
+  }
 `;
 
 const StyledLinkToTop = styled(Link)`
@@ -203,4 +276,13 @@ const StyledExitFullScreen = styled.div`
   justify-content: center;
   text-decoration: none;
   color: white;
+`;
+
+const StyledHamburgerContainer = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  color: white;
+  margin-left: 15px;
 `;

@@ -16,7 +16,7 @@ export interface Visited {
   [key: string]: boolean;
 }
 
-const initailVisited = (() => {
+const initialVisited = (() => {
   const tmp: Visited = {};
   worksInfoArr.forEach((worksInfo) => {
     tmp[worksInfo.id.toString()] = false;
@@ -24,18 +24,24 @@ const initailVisited = (() => {
   return tmp;
 })();
 
-const initialSelectId = Math.floor(Math.random() * (worksInfoArr.length - 1));
+const initialWorks = worksInfoArr.filter((works) => {
+  return works.isInitial;
+});
+const initialSelectId = initialWorks[Math.floor(Math.random() * initialWorks.length)].id;
 
 export const AppRoot: React.VFC = () => {
   /** 本番環境用のビルドの場合は、/testのルーティングは作らない */
   const isProd = process.env.PHASE === 'production';
 
   const [selectId, setSelectId] = React.useState<number>(initialSelectId);
-  const [visited, setVisited] = useLocalStorage<Visited>('visited', initailVisited);
-  const visitedRef = React.useRef<Visited>(initailVisited);
+  const [visited, setVisited] = useLocalStorage<Visited>('visited', initialVisited);
+  const visitedRef = React.useRef<Visited>(initialVisited);
   React.useEffect(() => {
     visitedRef.current = visited;
   }, [visited]);
+
+  const [lastVisitedId, setLastVisitedId] = React.useState<number>(-1);
+  const [worksHistory, setWorksHistory] = React.useState<number[]>([]);
 
   const [mapModeId, setMapModeId] = useLocalStorage<MapModeId>('mapModeId', 1);
   const mapModeIdRef = React.useRef<MapModeId>(1);
@@ -44,7 +50,7 @@ export const AppRoot: React.VFC = () => {
     mapModeIdRef.current = mapModeId;
   }, [mapModeId]);
 
-  const [layout, setLayout] = React.useState<LayoutType>('WIDE');
+  const [layout, setLayout] = React.useState<LayoutType | null>(null);
   const { height, width } = useWindowDimensions();
   React.useEffect(() => {
     if (width < layoutBorder.narrow) {
@@ -67,6 +73,10 @@ export const AppRoot: React.VFC = () => {
     mapCoordsArr.filter(({ modeId }) => modeId === mapModeId)[0].coords,
   );
 
+  if (layout === null) {
+    return null;
+  }
+
   return (
     <StyledRoot containerWidth={width} containerHeight={height}>
       <Router>
@@ -82,6 +92,7 @@ export const AppRoot: React.VFC = () => {
               visited={visited}
               selectId={selectId}
               setSelectId={setSelectId}
+              mapModeId={mapModeId}
               setMapModeId={setMapModeId}
               mapModeIdRef={mapModeIdRef}
               layout={layout}
@@ -89,16 +100,22 @@ export const AppRoot: React.VFC = () => {
               setIsShowHamburger={setIsShowHamburger}
               setCoords={setCoords}
               visitedRef={visitedRef}
+              setWorksHistory={setWorksHistory}
             />
           </Route>
           <Route path="/works/:id" exact>
             <IndividualPage
               visited={visited}
               setVisited={setVisited}
+              selectId={selectId}
               setSelectId={setSelectId}
+              lastVisitedId={lastVisitedId}
+              setLastVisitedId={setLastVisitedId}
               layout={layout}
               setIsShowHamburger={setIsShowHamburger}
               coords={coords}
+              worksHistory={worksHistory}
+              setWorksHistory={setWorksHistory}
             />
           </Route>
           {!isProd && (
@@ -142,7 +159,7 @@ const HamburgerBackground = styled.div`
   width: 100%;
   height: 100%;
   background-color: #000000c8;
-  z-index: 8;
+  z-index: 19;
   position: absolute;
   top: 0;
   left: 0;
