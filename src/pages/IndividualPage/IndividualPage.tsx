@@ -15,6 +15,7 @@ import { sortWorksByDistance } from 'utils/sortWorks';
 import { NavigationArea } from './NavigationArea';
 import { TopNavigationArea } from './TopNavigationArea';
 import { calcNextRotationOrderWorksId } from 'utils/calcRotationUtils';
+import { isSmoothScrollable, useFixScroll } from 'hooks/useFixScroll';
 
 interface Params {
   id: string;
@@ -46,6 +47,11 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   const worksId = Number(match.params.id);
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
   const history = useHistory();
+
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+  const scrollerRef = React.useRef<HTMLDivElement>(null);
+
+  useFixScroll(scrollContainerRef, scrollerRef);
 
   const scrollTopRef = React.useRef<HTMLDivElement>(null);
   React.useEffect(() => {
@@ -105,26 +111,33 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
         layout={layout}
         setIsShowHamburger={setIsShowHamburger}
       />
-      <StyledContentContainer>
-        {!isFull && <ScrollTopDiv ref={scrollTopRef} />}
-        <StyledWorksContainer isFull={isFull} isNarrowLayout={isNarrowLayout} containerWidth={iframeWidth}>
-          {!isFull && nextRotationOrderWorksId !== null && (
-            <TopNavigationArea nextRotationOrderWorksId={nextRotationOrderWorksId} isNarrowLayout={isNarrowLayout} />
-          )}
-          <IndividualWorksWindow
-            srcUrl={isMobile ? worksInfo.srcUrlSp : worksInfo.srcUrlPc}
-            iframeHeight={iframeHeight}
-            iframeWidth={iframeWidth}
-            isFull={isFull}
-            setIsFull={setIsFull}
-            isNarrowLayout={isNarrowLayout}
-            isShowButtonOnly={!isFull && isMobile && worksInfo.isSmartphoneFullscreenOnly === true}
-          />
-          {!isFull && <IndividualWorksDetail worksInfo={worksInfo} isNarrowLayout={isNarrowLayout} />}
-          {!isFull && <ReactionForm worksId={worksId} isNarrowLayout={isNarrowLayout} />}
-          {!isFull && <NavigationArea suggestIds={suggestIds} visited={visited} isNarrowLayout={isNarrowLayout} />}
-        </StyledWorksContainer>
-      </StyledContentContainer>
+      <ScrollContainer ref={scrollContainerRef}>
+        <Scroller ref={scrollerRef}>
+          <StyledContentContainer>
+            {!isFull && <ScrollTopDiv ref={scrollTopRef} />}
+            <StyledWorksContainer isFull={isFull} isNarrowLayout={isNarrowLayout} containerWidth={iframeWidth}>
+              {!isFull && nextRotationOrderWorksId !== null && (
+                <TopNavigationArea
+                  nextRotationOrderWorksId={nextRotationOrderWorksId}
+                  isNarrowLayout={isNarrowLayout}
+                />
+              )}
+              <IndividualWorksWindow
+                srcUrl={isMobile ? worksInfo.srcUrlSp : worksInfo.srcUrlPc}
+                iframeHeight={iframeHeight}
+                iframeWidth={iframeWidth}
+                isFull={isFull}
+                setIsFull={setIsFull}
+                isNarrowLayout={isNarrowLayout}
+                isShowButtonOnly={!isFull && isMobile && worksInfo.isSmartphoneFullscreenOnly === true}
+              />
+              {!isFull && <IndividualWorksDetail worksInfo={worksInfo} isNarrowLayout={isNarrowLayout} />}
+              {!isFull && <ReactionForm worksId={worksId} isNarrowLayout={isNarrowLayout} />}
+              {!isFull && <NavigationArea suggestIds={suggestIds} visited={visited} isNarrowLayout={isNarrowLayout} />}
+            </StyledWorksContainer>
+          </StyledContentContainer>
+        </Scroller>
+      </ScrollContainer>
     </StyledRoot>
   );
 };
@@ -138,17 +151,25 @@ const StyledRoot = styled.div`
   overflow: hidden;
 `;
 
-const StyledContentContainer = styled.div`
+const ScrollContainer = styled.div`
   width: 100%;
   height: calc(100% - ${headerHeight}px);
   overflow-y: auto;
+`;
+
+const Scroller = styled.div`
+  min-height: ${isSmoothScrollable ? `calc(100% - ${headerHeight - 1}px)` : `calc(100% - ${headerHeight}px)`};
+`;
+
+const StyledContentContainer = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
 const ScrollTopDiv = styled.div`
-  margin-top: 1px;
+  margin-top: ${isSmoothScrollable ? '1px' : '0'};
 `;
 
 interface StyledWorksContainerProps {

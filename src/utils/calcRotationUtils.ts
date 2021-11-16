@@ -1,6 +1,8 @@
 import { worksInfoArr } from 'constants/WorksInfo';
 
-const rotationSortedWorksInfoArr = worksInfoArr.sort((works1, works2) => works1.rotationOrder - works2.rotationOrder);
+export const rotationSortedWorksInfoArr = worksInfoArr
+  .slice()
+  .sort((works1, works2) => works1.rotationOrder - works2.rotationOrder);
 const rotationLength = rotationSortedWorksInfoArr.length;
 
 export const calcNextRotationOrderWorksId = (id: number): number | null => {
