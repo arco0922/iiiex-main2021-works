@@ -112,6 +112,8 @@ export const AppRoot: React.VFC = () => {
               layout={layout}
               setIsShowHamburger={setIsShowHamburger}
               coords={coords}
+              worksHistory={worksHistory}
+              setWorksHistory={setWorksHistory}
             />
           </Route>
           {!isProd && (
