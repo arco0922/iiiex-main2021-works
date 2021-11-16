@@ -16,7 +16,7 @@ export interface Visited {
   [key: string]: boolean;
 }
 
-const initailVisited = (() => {
+const initialVisited = (() => {
   const tmp: Visited = {};
   worksInfoArr.forEach((worksInfo) => {
     tmp[worksInfo.id.toString()] = false;
@@ -24,20 +24,24 @@ const initailVisited = (() => {
   return tmp;
 })();
 
-const initialSelectId = Math.floor(Math.random() * (worksInfoArr.length - 1));
+const initialWorks = worksInfoArr.filter((works) => {
+  return works.isInitial;
+});
+const initialSelectId = initialWorks[Math.floor(Math.random() * initialWorks.length)].id;
 
 export const AppRoot: React.VFC = () => {
   /** 本番環境用のビルドの場合は、/testのルーティングは作らない */
   const isProd = process.env.PHASE === 'production';
 
   const [selectId, setSelectId] = React.useState<number>(initialSelectId);
-  const [visited, setVisited] = useLocalStorage<Visited>('visited', initailVisited);
-  const visitedRef = React.useRef<Visited>(initailVisited);
+  const [visited, setVisited] = useLocalStorage<Visited>('visited', initialVisited);
+  const visitedRef = React.useRef<Visited>(initialVisited);
   React.useEffect(() => {
     visitedRef.current = visited;
   }, [visited]);
 
   const [lastVisitedId, setLastVisitedId] = React.useState<number>(-1);
+  const [worksHistory, setWorksHistory] = React.useState<number[]>([]);
 
   const [mapModeId, setMapModeId] = useLocalStorage<MapModeId>('mapModeId', 1);
   const mapModeIdRef = React.useRef<MapModeId>(1);
@@ -96,6 +100,7 @@ export const AppRoot: React.VFC = () => {
               setIsShowHamburger={setIsShowHamburger}
               setCoords={setCoords}
               visitedRef={visitedRef}
+              setWorksHistory={setWorksHistory}
             />
           </Route>
           <Route path="/works/:id" exact>
@@ -109,6 +114,8 @@ export const AppRoot: React.VFC = () => {
               layout={layout}
               setIsShowHamburger={setIsShowHamburger}
               coords={coords}
+              worksHistory={worksHistory}
+              setWorksHistory={setWorksHistory}
             />
           </Route>
           {!isProd && (

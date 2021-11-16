@@ -18,6 +18,7 @@ export interface WorksInfo {
   isSmartphoneFullscreenOnly?: boolean;
   deviceMemo?: string;
   formEntry: string;
+  isInitial?: boolean;
 }
 
 export const worksInfoArr: WorksInfo[] = [
@@ -102,6 +103,7 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://hardcore-nobel-4e99fe.netlify.app/',
     srcUrlSp: 'https://hardcore-nobel-4e99fe.netlify.app/mobile.html',
     formEntry: 'entry.1260241828',
+    isInitial: true,
   },
   {
     id: 3,
@@ -149,6 +151,7 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://larkin269.github.io/fikpages/',
     srcUrlSp: 'https://larkin269.github.io/fikpages/',
     formEntry: 'entry.306737416',
+    isInitial: true,
   },
   {
     id: 5,
@@ -217,6 +220,7 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://y-141.github.io/iiiex_pentagons/',
     srcUrlSp: 'https://y-141.github.io/iiiex_pentagons/',
     formEntry: 'entry.1126317556',
+    isInitial: true,
   },
   {
     id: 7,
@@ -339,6 +343,7 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://flask-325405.de.r.appspot.com/guest',
     srcUrlSp: 'https://flask-325405.de.r.appspot.com/guest',
     formEntry: 'entry.839388668',
+    isInitial: true,
   },
   {
     id: 11,

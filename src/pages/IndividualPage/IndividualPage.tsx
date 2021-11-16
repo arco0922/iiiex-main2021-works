@@ -30,6 +30,8 @@ interface Props {
   layout: LayoutType;
   setIsShowHamburger: (isShowHamburger: boolean) => void;
   coords: Coord[];
+  worksHistory: number[];
+  setWorksHistory: (worksHistory: number[]) => void;
 }
 
 const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = ({
@@ -43,6 +45,8 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   layout,
   setIsShowHamburger,
   coords,
+  worksHistory,
+  setWorksHistory,
 }) => {
   const worksId = Number(match.params.id);
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
@@ -78,9 +82,13 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
 
   React.useEffect(() => {
     setLastVisitedId(selectId);
+    if (worksHistory.slice(-1)[0] !== worksId) {
+      worksHistory.push(worksId);
+    }
+    setWorksHistory(worksHistory);
     setSelectId(worksId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [worksId, setSelectId]);
+  }, [worksId, setSelectId, setWorksHistory]);
   React.useEffect(() => {
     setVisited({ ...visited, [worksId.toString()]: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -122,6 +130,8 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
                 <TopNavigationArea
                   nextRotationOrderWorksId={nextRotationOrderWorksId}
                   isNarrowLayout={isNarrowLayout}
+                  worksHistory={worksHistory}
+                  setWorksHistory={setWorksHistory}
                 />
               )}
               <IndividualWorksWindow

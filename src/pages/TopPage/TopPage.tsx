@@ -22,6 +22,7 @@ interface Props {
   setIsShowHamburger: (isShowHamburger: boolean) => void;
   setCoords: (coords: Coord[]) => void;
   visitedRef: React.MutableRefObject<Visited>;
+  setWorksHistory: (worksHistory: number[]) => void;
 }
 
 export type InitialAnimationStatus = 'BEFORE' | 'ANIMATING' | 'END';
@@ -38,12 +39,14 @@ export const TopPage: React.VFC<Props> = ({
   setIsShowHamburger,
   setCoords,
   visitedRef,
+  setWorksHistory,
 }) => {
   const selectIdRef = React.useRef<number>(0);
   const [isShowDetail, setIsShowDetail] = React.useState<boolean>(false);
   const [initialAnimationStatus, setInitialAnimationStatus] = React.useState<InitialAnimationStatus>('BEFORE');
   const initialAnimationStatusRef = React.useRef<InitialAnimationStatus>('BEFORE');
   const layoutRef = React.useRef<LayoutType>('WIDE');
+  const isCursorOnCarouselRef = React.useRef<boolean>(false);
 
   React.useEffect(() => {
     selectIdRef.current = selectId;
@@ -54,6 +57,9 @@ export const TopPage: React.VFC<Props> = ({
   React.useEffect(() => {
     layoutRef.current = layout;
   }, [layout]);
+  React.useEffect(() => {
+    setWorksHistory([]);
+  }, [setWorksHistory]);
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -71,7 +77,12 @@ export const TopPage: React.VFC<Props> = ({
       <Header layout={layout} setIsShowHamburger={setIsShowHamburger}></Header>
       <StyledContentContainer>
         <StyledSketchContainer>
-          <Carousel mapModeId={mapModeId} setMapModeId={setMapModeId} layout={layout} />
+          <Carousel
+            mapModeId={mapModeId}
+            setMapModeId={setMapModeId}
+            layout={layout}
+            isCursorOnCarouselRef={isCursorOnCarouselRef}
+          />
           <WorksListSketch
             width="100%"
             height="100%"
@@ -85,6 +96,7 @@ export const TopPage: React.VFC<Props> = ({
             mapModeIdRef={mapModeIdRef}
             setCoords={setCoords}
             visitedRef={visitedRef}
+            isCursorOnCarouselRef={isCursorOnCarouselRef}
             bgcolor="#0e0e0e"
           ></WorksListSketch>
           <StyledLoading isNarrowLayout={layout === 'NARROW'} id="p5_loading">
