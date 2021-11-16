@@ -44,7 +44,7 @@ export const Carousel: React.VFC<Props> = ({ layout, mapModeId, setMapModeId, is
     window.addEventListener('touchend', clickTouchEndHandler);
     return () => {
       window.removeEventListener('mouseup', clickTouchEndHandler);
-      window.addEventListener('touchend', clickTouchEndHandler);
+      window.removeEventListener('touchend', clickTouchEndHandler);
     };
   }, [clickTouchEndHandler]);
 
