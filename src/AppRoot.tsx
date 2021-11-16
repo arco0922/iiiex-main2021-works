@@ -24,7 +24,10 @@ const initailVisited = (() => {
   return tmp;
 })();
 
-const initialSelectId = Math.floor(Math.random() * (worksInfoArr.length - 1));
+const initialWorks = worksInfoArr.filter((works) => {
+  return works.isInitial;
+});
+const initialSelectId = initialWorks[Math.floor(Math.random() * initialWorks.length)].id;
 
 export const AppRoot: React.VFC = () => {
   /** 本番環境用のビルドの場合は、/testのルーティングは作らない */
