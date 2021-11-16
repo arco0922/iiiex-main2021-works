@@ -1,12 +1,14 @@
-import { isMobile } from 'react-device-detect';
+import { isMobile, isIOS, isTablet } from 'react-device-detect';
 import * as React from 'react';
+
+export const isSmoothScrollable = isIOS || isMobile || isTablet;
 
 export const useFixScroll = (
   scrollContainerRef: React.RefObject<HTMLElement>,
   scrollerRef: React.RefObject<HTMLElement>,
 ): void => {
   React.useEffect(() => {
-    if (scrollContainerRef.current === null || scrollerRef.current === null || !isMobile) {
+    if (scrollContainerRef.current === null || scrollerRef.current === null || !isSmoothScrollable) {
       return;
     }
     const scrollContainer = scrollContainerRef.current;
