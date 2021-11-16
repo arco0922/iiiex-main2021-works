@@ -200,9 +200,9 @@ export const WorksListSketch = React.memo<Props>(
 
     const mapModeIdChangeHandler = (p5: p5Types, newMapModeId: MapModeId) => {
       initWorldPosScale(p5, newMapModeId);
-      mapCoordsArr
-        .filter(({ modeId }) => modeId === newMapModeId)[0]
-        .coords.forEach(({ id, x, y }) => obstacleSystem.setTargetPos({ id, x, y }));
+      const mapCoordsGroup = mapCoordsArr.filter(({ modeId }) => modeId === newMapModeId)[0];
+      mapCoordsGroup.coords.forEach(({ id, x, y }) => obstacleSystem.setTargetPos({ id, x, y }));
+      obstacleSystem.setDistThreshold(mapCoordsGroup.threshold.dist);
     };
 
     let thumbnails: ParticleImage[];
@@ -257,22 +257,23 @@ export const WorksListSketch = React.memo<Props>(
         worldHeight,
       );
 
-      mapCoordsArr
-        .filter(({ modeId }) => modeId === initialMapModeId)[0]
-        .coords.forEach(({ id, x, y }) => {
-          switch (initialMapModeId) {
-            case 1:
-              const randy = p5.random(-worldHeight / 6, worldHeight / 6);
-              obstacleSystem.addParticle(id, x * 0.8, randy, 100, 0, 0, 1, obstacleColor, 'Gravitational', 'Pos');
-              break;
-            default:
-              obstacleSystem.addParticle(id, x * 0.7, y * 0.7, 100, 0, 0, 1, obstacleColor, 'Gravitational', 'Pos');
-          }
-          obstacleSystem.setTargetPos({ id, x, y });
-        });
+      const mapCoordsGroup = mapCoordsArr.filter(({ modeId }) => modeId === initialMapModeId)[0];
+      mapCoordsGroup.coords.forEach(({ id, x, y }) => {
+        switch (initialMapModeId) {
+          case 1:
+            const randy = p5.random(-worldHeight / 6, worldHeight / 6);
+            obstacleSystem.addParticle(id, x * 0.8, randy, 100, 0, 0, 1, obstacleColor, 'Gravitational', 'Pos');
+            break;
+          default:
+            obstacleSystem.addParticle(id, x * 0.7, y * 0.7, 100, 0, 0, 1, obstacleColor, 'Gravitational', 'Pos');
+        }
+        obstacleSystem.setTargetPos({ id, x, y });
+      });
       obstacleSystem.setTextures(thumbnails);
 
       obstacleSystem.setVisited(visitedRef.current);
+
+      obstacleSystem.setDistThreshold(mapCoordsGroup.threshold.dist);
     };
 
     const draw = (p5: p5Types) => {
@@ -430,6 +431,10 @@ export const WorksListSketch = React.memo<Props>(
 
       setVisited(visited: Visited) {
         this.visited = visited;
+      }
+
+      setDistThreshold(dist: number) {
+        this.distThreshold = dist;
       }
 
       display() {

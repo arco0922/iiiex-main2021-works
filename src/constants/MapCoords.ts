@@ -22,6 +22,9 @@ export interface MapCoords {
     minY: number;
     maxY: number;
   };
+  threshold: {
+    dist: number;
+  }
 }
 
 function random_gauss(min: number, max: number, skew: number) {
@@ -1122,7 +1125,7 @@ const kuppaCoords = ((particleRadius: number, arrangeRadius: number, dist: numbe
 })(100, 800, 500, 200);
 
 /** 新井案 */
-const araiCoords = ((particleRadius: number, arrangeRadius: number, dist: number, dist2: number, margin: number) => {
+const araiCoords = ((particleRadius: number, arrangeRadius: number, dist: number, margin: number) => {
   const l = worksInfoArr.length;
   const coords: Coord[] = worksInfoArr.map((works) => {
     if (works.id == 0) {
@@ -1218,7 +1221,7 @@ const araiCoords = ((particleRadius: number, arrangeRadius: number, dist: number
     }
   });
   return coords;
-})(100, 400, 100, 100, 400);
+})(100, 300, 100, 300);
 
 export const mapCoordsArr: MapCoords[] = [
   {
@@ -1235,6 +1238,9 @@ export const mapCoordsArr: MapCoords[] = [
       minY: -50,
       maxY: 50,
     },
+    threshold: {
+      dist: 300,
+    }
   },
   {
     modeId: 2,
@@ -1249,6 +1255,9 @@ export const mapCoordsArr: MapCoords[] = [
       maxX: 800,
       minY: -800,
       maxY: 800,
+    },
+    threshold: {
+      dist: 300,
     },
   },
   {
@@ -1265,6 +1274,9 @@ export const mapCoordsArr: MapCoords[] = [
       minY: -1000,
       maxY: 1000,
     },
+    threshold: {
+      dist: 450,
+    },
   },
   {
     modeId: 4,
@@ -1279,6 +1291,9 @@ export const mapCoordsArr: MapCoords[] = [
       maxX: 1000,
       minY: -1000,
       maxY: 1000,
+    },
+    threshold: {
+      dist: 300,
     },
   },
   {
@@ -1295,6 +1310,9 @@ export const mapCoordsArr: MapCoords[] = [
       minY: -1000,
       maxY: 1000,
     },
+    threshold: {
+      dist: 320,
+    },
   },
   {
     modeId: 6,
@@ -1310,7 +1328,11 @@ export const mapCoordsArr: MapCoords[] = [
       minY: -1000,
       maxY: 1000,
     },
+    threshold: {
+      dist: 450,
+    },
   },
+
   {
     modeId: 7,
     modeName: '所属２',
@@ -1324,6 +1346,9 @@ export const mapCoordsArr: MapCoords[] = [
       maxX: 1000,
       minY: -1000,
       maxY: 1000,
+    },
+    threshold: {
+      dist: 500,
     },
   },
   {
@@ -1339,6 +1364,9 @@ export const mapCoordsArr: MapCoords[] = [
       maxX: 800,
       minY: -800,
       maxY: 800,
+    },
+    threshold: {
+      dist: 450,
     },
   },
   // {
