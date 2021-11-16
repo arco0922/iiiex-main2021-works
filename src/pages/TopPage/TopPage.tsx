@@ -22,6 +22,8 @@ interface Props {
   setIsShowHamburger: (isShowHamburger: boolean) => void;
   setCoords: (coords: Coord[]) => void;
   visitedRef: React.MutableRefObject<Visited>;
+  worksHistory: number[];
+  setWorksHistory: (worksHistory: number[]) => void;
 }
 
 export type InitialAnimationStatus = 'BEFORE' | 'ANIMATING' | 'END';
@@ -38,6 +40,8 @@ export const TopPage: React.VFC<Props> = ({
   setIsShowHamburger,
   setCoords,
   visitedRef,
+  worksHistory,
+  setWorksHistory,
 }) => {
   const selectIdRef = React.useRef<number>(0);
   const [isShowDetail, setIsShowDetail] = React.useState<boolean>(false);
@@ -54,6 +58,9 @@ export const TopPage: React.VFC<Props> = ({
   React.useEffect(() => {
     layoutRef.current = layout;
   }, [layout]);
+  React.useEffect(() => {
+    setWorksHistory([]);
+  }, [setWorksHistory]);
 
   React.useEffect(() => {
     setTimeout(() => {
