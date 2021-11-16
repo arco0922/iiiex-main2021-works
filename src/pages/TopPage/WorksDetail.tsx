@@ -8,7 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { sideMenuWidth } from './WorksListMenu';
 import { LayoutType } from 'constants/Layout';
 import { convertDeviceString } from 'utils/convertDeviceString';
-import { useFixScroll } from 'hooks/useFixScroll';
+import { isSmoothScrollable, useFixScroll } from 'hooks/useFixScroll';
 
 interface Props {
   selectId: number;
@@ -32,7 +32,7 @@ export const WorksDetail: React.VFC<Props> = ({ selectId, visited, isShowDetail,
     <StyledContainer className={isShowDetail ? 'show' : ''} isWideLayout={layout === 'WIDE'}>
       <StyledCloseIcon onClick={() => setIsShowDetail(false)}></StyledCloseIcon>
       <StyledTitle>作品詳細</StyledTitle>
-      <StyledScrollContainer ref={scrollContaierRef}>
+      <ScrollContainer ref={scrollContaierRef}>
         <Scroller ref={scrollerRef}>
           <StyledDetailContainer>
             <StyledImgDiv>
@@ -62,7 +62,7 @@ export const WorksDetail: React.VFC<Props> = ({ selectId, visited, isShowDetail,
             </StyledDetail>
           </StyledDetailContainer>
         </Scroller>
-      </StyledScrollContainer>
+      </ScrollContainer>
     </StyledContainer>
   );
 };
@@ -113,14 +113,14 @@ const StyledTitle = styled.h2`
   margin: 10px 0px 3px 0px;
 `;
 
-const StyledScrollContainer = styled.div`
+const ScrollContainer = styled.div`
   flex: 1;
   width: 100%;
   overflow-y: auto;
 `;
 
 const Scroller = styled.div`
-  min-height: calc(100% + 1px);
+  min-height: ${isSmoothScrollable ? 'calc(100% + 1px)' : '100%'};
 `;
 
 const StyledDetailContainer = styled.div`

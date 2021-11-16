@@ -15,8 +15,7 @@ import { sortWorksByDistance } from 'utils/sortWorks';
 import { NavigationArea } from './NavigationArea';
 import { TopNavigationArea } from './TopNavigationArea';
 import { calcNextRotationOrderWorksId } from 'utils/calcRotationUtils';
-import { useWindowDimensions } from 'hooks/useWindowDimensions';
-import { useFixScroll } from 'hooks/useFixScroll';
+import { isSmoothScrollable, useFixScroll } from 'hooks/useFixScroll';
 
 interface Params {
   id: string;
@@ -49,7 +48,6 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
   const history = useHistory();
 
-  const { height } = useWindowDimensions();
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
   const scrollerRef = React.useRef<HTMLDivElement>(null);
 
@@ -113,28 +111,33 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
         layout={layout}
         setIsShowHamburger={setIsShowHamburger}
       />
-      <StyledContentContainer windowHeight={height} ref={scrollContainerRef}>
-        <Scroller windowHeight={height} ref={scrollerRef}>
-          {!isFull && <ScrollTopDiv ref={scrollTopRef} />}
-          <StyledWorksContainer isFull={isFull} isNarrowLayout={isNarrowLayout} containerWidth={iframeWidth}>
-            {!isFull && nextRotationOrderWorksId !== null && (
-              <TopNavigationArea nextRotationOrderWorksId={nextRotationOrderWorksId} isNarrowLayout={isNarrowLayout} />
-            )}
-            <IndividualWorksWindow
-              srcUrl={isMobile ? worksInfo.srcUrlSp : worksInfo.srcUrlPc}
-              iframeHeight={iframeHeight}
-              iframeWidth={iframeWidth}
-              isFull={isFull}
-              setIsFull={setIsFull}
-              isNarrowLayout={isNarrowLayout}
-              isShowButtonOnly={!isFull && isMobile && worksInfo.isSmartphoneFullscreenOnly === true}
-            />
-            {!isFull && <IndividualWorksDetail worksInfo={worksInfo} isNarrowLayout={isNarrowLayout} />}
-            {!isFull && <ReactionForm worksId={worksId} isNarrowLayout={isNarrowLayout} />}
-            {!isFull && <NavigationArea suggestIds={suggestIds} visited={visited} isNarrowLayout={isNarrowLayout} />}
-          </StyledWorksContainer>
+      <ScrollContainer ref={scrollContainerRef}>
+        <Scroller ref={scrollerRef}>
+          <StyledContentContainer>
+            {!isFull && <ScrollTopDiv ref={scrollTopRef} />}
+            <StyledWorksContainer isFull={isFull} isNarrowLayout={isNarrowLayout} containerWidth={iframeWidth}>
+              {!isFull && nextRotationOrderWorksId !== null && (
+                <TopNavigationArea
+                  nextRotationOrderWorksId={nextRotationOrderWorksId}
+                  isNarrowLayout={isNarrowLayout}
+                />
+              )}
+              <IndividualWorksWindow
+                srcUrl={isMobile ? worksInfo.srcUrlSp : worksInfo.srcUrlPc}
+                iframeHeight={iframeHeight}
+                iframeWidth={iframeWidth}
+                isFull={isFull}
+                setIsFull={setIsFull}
+                isNarrowLayout={isNarrowLayout}
+                isShowButtonOnly={!isFull && isMobile && worksInfo.isSmartphoneFullscreenOnly === true}
+              />
+              {!isFull && <IndividualWorksDetail worksInfo={worksInfo} isNarrowLayout={isNarrowLayout} />}
+              {!isFull && <ReactionForm worksId={worksId} isNarrowLayout={isNarrowLayout} />}
+              {!isFull && <NavigationArea suggestIds={suggestIds} visited={visited} isNarrowLayout={isNarrowLayout} />}
+            </StyledWorksContainer>
+          </StyledContentContainer>
         </Scroller>
-      </StyledContentContainer>
+      </ScrollContainer>
     </StyledRoot>
   );
 };
@@ -148,29 +151,25 @@ const StyledRoot = styled.div`
   overflow: hidden;
 `;
 
-interface StyledContentContainerProps {
-  windowHeight: number;
-}
-
-const StyledContentContainer = styled.div<StyledContentContainerProps>`
+const ScrollContainer = styled.div`
   width: 100%;
-  height: ${({ windowHeight }) => windowHeight - headerHeight}px;
+  height: calc(100% - ${headerHeight}px);
   overflow-y: auto;
 `;
 
-interface ScrollereProps {
-  windowHeight: number;
-}
+const Scroller = styled.div`
+  min-height: ${isSmoothScrollable ? `calc(100% - ${headerHeight - 1}px)` : `calc(100% - ${headerHeight}px)`};
+`;
 
-const Scroller = styled.div<ScrollereProps>`
+const StyledContentContainer = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: ${({ windowHeight }) => windowHeight - headerHeight + 1}px; ;
 `;
 
 const ScrollTopDiv = styled.div`
-  margin-top: ${isMobile ? '1px' : '0'};
+  margin-top: ${isSmoothScrollable ? '1px' : '0'};
 `;
 
 interface StyledWorksContainerProps {

@@ -6,7 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { worksInfoArr } from 'constants/WorksInfo';
 import { Link } from 'react-router-dom';
 import { HOMEPAGE_URL, QUESTIONNAIRE_URL } from 'constants/OutUrls';
-import { useFixScroll } from 'hooks/useFixScroll';
+import { isSmoothScrollable, useFixScroll } from 'hooks/useFixScroll';
 
 interface Props {
   isShowHamburger: boolean;
@@ -161,7 +161,7 @@ const ScrollContainer = styled.div`
 `;
 
 const Scroller = styled.div`
-  min-height: calc(100% + 1px);
+  min-height: ${isSmoothScrollable ? 'calc(100% + 1px)' : '100%'};
 `;
 
 const StyledCardsContainer = styled.div`
