@@ -24,7 +24,7 @@ export interface MapCoords {
   };
   threshold: {
     dist: number;
-  }
+  };
 }
 
 function random_gauss(min: number, max: number, skew: number) {
@@ -1240,7 +1240,7 @@ export const mapCoordsArr: MapCoords[] = [
     },
     threshold: {
       dist: 300,
-    }
+    },
   },
   {
     modeId: 2,
