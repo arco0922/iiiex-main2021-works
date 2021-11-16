@@ -16,7 +16,7 @@ export interface Visited {
   [key: string]: boolean;
 }
 
-const initailVisited = (() => {
+const initialVisited = (() => {
   const tmp: Visited = {};
   worksInfoArr.forEach((worksInfo) => {
     tmp[worksInfo.id.toString()] = false;
@@ -34,8 +34,8 @@ export const AppRoot: React.VFC = () => {
   const isProd = process.env.PHASE === 'production';
 
   const [selectId, setSelectId] = React.useState<number>(initialSelectId);
-  const [visited, setVisited] = useLocalStorage<Visited>('visited', initailVisited);
-  const visitedRef = React.useRef<Visited>(initailVisited);
+  const [visited, setVisited] = useLocalStorage<Visited>('visited', initialVisited);
+  const visitedRef = React.useRef<Visited>(initialVisited);
   React.useEffect(() => {
     visitedRef.current = visited;
   }, [visited]);
