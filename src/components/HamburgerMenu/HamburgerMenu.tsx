@@ -6,6 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { worksInfoArr } from 'constants/WorksInfo';
 import { Link } from 'react-router-dom';
 import { HOMEPAGE_URL, QUESTIONNAIRE_URL } from 'constants/OutUrls';
+import { isSmoothScrollable, useFixScroll } from 'hooks/useFixScroll';
 
 interface Props {
   isShowHamburger: boolean;
@@ -18,6 +19,11 @@ export const HamburgerMenu = React.memo<Props>(function HamburgerMenu({
   setIsShowHamburger,
   visited,
 }) {
+  const scrollContaierRef = React.useRef<HTMLDivElement>(null);
+  const scrollerRef = React.useRef<HTMLDivElement>(null);
+
+  useFixScroll(scrollContaierRef, scrollerRef);
+
   return (
     <StyledContainer className={isShowHamburger ? 'show' : ''}>
       <StyledCloseIcon onClick={() => setIsShowHamburger(false)}></StyledCloseIcon>
@@ -41,18 +47,22 @@ export const HamburgerMenu = React.memo<Props>(function HamburgerMenu({
       </StyledNavSection>
       <StyledWorksSection>
         <StyledTitle>作品一覧</StyledTitle>
-        <StyledCardsContainer>
-          {worksInfoArr.map((worksInfo) => {
-            return (
-              <HamburgerWorksCard
-                worksInfo={worksInfo}
-                key={worksInfo.id}
-                visited={visited}
-                setIsShowHamburger={setIsShowHamburger}
-              ></HamburgerWorksCard>
-            );
-          })}
-        </StyledCardsContainer>
+        <ScrollContainer ref={scrollContaierRef}>
+          <Scroller ref={scrollerRef}>
+            <StyledCardsContainer>
+              {worksInfoArr.map((worksInfo) => {
+                return (
+                  <HamburgerWorksCard
+                    worksInfo={worksInfo}
+                    key={worksInfo.id}
+                    visited={visited}
+                    setIsShowHamburger={setIsShowHamburger}
+                  ></HamburgerWorksCard>
+                );
+              })}
+            </StyledCardsContainer>
+          </Scroller>
+        </ScrollContainer>
       </StyledWorksSection>
     </StyledContainer>
   );
@@ -144,9 +154,16 @@ const StyledTitle = styled.h2`
   margin: 8px 5px 3px 5px;
 `;
 
-const StyledCardsContainer = styled.div`
+const ScrollContainer = styled.div`
   flex: 1;
   width: 100%;
   overflow-y: auto;
+`;
+
+const Scroller = styled.div`
+  min-height: ${isSmoothScrollable ? 'calc(100% + 1px)' : '100%'};
+`;
+
+const StyledCardsContainer = styled.div`
   padding: 10px;
 `;

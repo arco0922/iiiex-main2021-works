@@ -1,5 +1,6 @@
 import { Visited } from 'AppRoot';
 import { worksInfoArr } from 'constants/WorksInfo';
+import { isSmoothScrollable, useFixScroll } from 'hooks/useFixScroll';
 import React from 'react';
 import styled from 'styled-components';
 import { WorksCard } from './WorksCard';
@@ -12,23 +13,31 @@ interface Props {
 }
 
 export const WorksListMenu: React.VFC<Props> = ({ selectId, setSelectId, visited, setIsShowDetail }) => {
+  const scrollContaierRef = React.useRef<HTMLDivElement>(null);
+  const scrollerRef = React.useRef<HTMLDivElement>(null);
+  useFixScroll(scrollContaierRef, scrollerRef);
+
   return (
     <StyledContainer>
       <StyledTitle>作品一覧</StyledTitle>
-      <StyledCardsContainer>
-        {worksInfoArr.map((worksInfo) => {
-          return (
-            <WorksCard
-              worksInfo={worksInfo}
-              key={worksInfo.id}
-              selectId={selectId}
-              setSelectId={setSelectId}
-              visited={visited}
-              setIsShowDetail={setIsShowDetail}
-            ></WorksCard>
-          );
-        })}
-      </StyledCardsContainer>
+      <ScrollContainer ref={scrollContaierRef}>
+        <Scroller ref={scrollerRef}>
+          <StyledCardsContainer>
+            {worksInfoArr.map((worksInfo) => {
+              return (
+                <WorksCard
+                  worksInfo={worksInfo}
+                  key={worksInfo.id}
+                  selectId={selectId}
+                  setSelectId={setSelectId}
+                  visited={visited}
+                  setIsShowDetail={setIsShowDetail}
+                ></WorksCard>
+              );
+            })}
+          </StyledCardsContainer>
+        </Scroller>
+      </ScrollContainer>
     </StyledContainer>
   );
 };
@@ -60,8 +69,14 @@ const StyledTitle = styled.h2`
   margin-bottom: 3px;
 `;
 
-const StyledCardsContainer = styled.div`
+const ScrollContainer = styled.div`
   flex: 1;
   width: 100%;
   overflow-y: auto;
 `;
+
+const Scroller = styled.div`
+  min-height: ${isSmoothScrollable ? 'calc(100% + 1px)' : '100%'};
+`;
+
+const StyledCardsContainer = styled.div``;
