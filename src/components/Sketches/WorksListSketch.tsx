@@ -118,6 +118,8 @@ export const WorksListSketch = React.memo<Props>(
     let prevCanvasWidth: number;
     let prevCanvasHeight: number;
 
+    let isWorldInitialized = false;
+
     let worldOffsetX: number; // ワールドの中心がスクリーンのどこにあるか
     let worldOffsetY: number; // ワールドの中心がスクリーンのどこにあるか
     let worldOffsetScale: number; // ワールドのスクリーン上での縮尺
@@ -133,7 +135,8 @@ export const WorksListSketch = React.memo<Props>(
     let limitWorldOffsetMinScale: number;
     let limitWorldOffsetMaxScale: number;
 
-    let isWorldLokked = false;
+    let isWorldLocked = false;
+    let isZoomEnabled = false;
     let oldMouseX = 0;
     let oldMouseY = 0;
 
@@ -150,10 +153,45 @@ export const WorksListSketch = React.memo<Props>(
     };
 
     const navigateToIndividual = () => {
-      if (selectIdRef.current === null || isWorldLokked) {
+      if (selectIdRef.current === null || isWorldLocked) {
         return;
       }
       history.push(`/works/${selectIdRef.current}`);
+    };
+
+    let isAdjustingWorld = true;
+    let targetWorldOffsetX: number;
+    let targetWorldOffsetY: number;
+    let targetWorldOffsetScale: number;
+
+    const adjustWorldToTarget = () => {
+      if (!isAdjustingWorld) {
+        return;
+      }
+      worldOffsetX += (targetWorldOffsetX - worldOffsetX) * 0.04;
+      worldOffsetY += (targetWorldOffsetY - worldOffsetY) * 0.04;
+      worldOffsetScale += (targetWorldOffsetScale - worldOffsetScale) * 0.1;
+      if (
+        Math.max(
+          Math.abs(targetWorldOffsetX - worldOffsetX),
+          Math.abs(targetWorldOffsetY - worldOffsetY),
+          Math.abs(targetWorldOffsetScale - worldOffsetScale),
+        ) < 0.01 ||
+        isWorldLocked ||
+        isZoomEnabled
+      ) {
+        isAdjustingWorld = false;
+      }
+    };
+
+    const setWorldTarget = (
+      newTargetWorldOffsetX: number,
+      newTargetWorldOffsetY: number,
+      newTargetWorldOffsetScale: number,
+    ) => {
+      targetWorldOffsetX = newTargetWorldOffsetX;
+      targetWorldOffsetY = newTargetWorldOffsetY;
+      targetWorldOffsetScale = newTargetWorldOffsetScale;
     };
 
     const calcSquaredDist = (x1: number, y1: number, x2: number, y2: number) =>
@@ -166,15 +204,24 @@ export const WorksListSketch = React.memo<Props>(
           ? p5.width - sideDetailWidth
           : p5.width;
       const height = layoutRef.current === 'NARROW' ? p5.height - bottomDetailHeight - carouselSpaceHeight : p5.height;
-      worldOffsetX = width / 2 - mapCoord.center.x;
-      worldOffsetY = height / 2 - mapCoord.center.y;
+      const newTargetWorldOffsetX = width / 2 - mapCoord.center.x;
+      let newTargetWorldOffsetY = height / 2 - mapCoord.center.y;
       if (layoutRef.current === 'NARROW') {
-        worldOffsetY += carouselSpaceHeight;
+        newTargetWorldOffsetY += carouselSpaceHeight;
       }
-      worldOffsetScale = p5.min(
+      const newTargetWorldOffsetScale = p5.min(
         width / p5.max(mapCoord.border.maxX - mapCoord.border.minX, 1),
         height / p5.max(mapCoord.border.maxY - mapCoord.border.minY, 1),
       );
+      if (!isWorldInitialized) {
+        worldOffsetX = newTargetWorldOffsetX;
+        worldOffsetY = newTargetWorldOffsetY;
+        worldOffsetScale = newTargetWorldOffsetScale;
+        isWorldInitialized = true;
+      }
+      isAdjustingWorld = true;
+      isZoomEnabled = false;
+      setWorldTarget(newTargetWorldOffsetX, newTargetWorldOffsetY, newTargetWorldOffsetScale);
     };
 
     const calcWorldCoord = (
@@ -193,30 +240,37 @@ export const WorksListSketch = React.memo<Props>(
 
     const calcWorldLimit = (p5: p5Types, mapModeId: MapModeId) => {
       const mapCoord = mapCoordsArr.filter(({ modeId }) => modeId === mapModeId)[0];
-      limitWorldOffsetMinScale = p5.min(
-        p5.width / p5.max(mapCoord.border.maxX - mapCoord.border.minX, 1),
-        p5.height / p5.max(mapCoord.border.maxY - mapCoord.border.minY, 1),
-      );
-      limitWorldOffsetMaxScale = p5.min(p5.width, p5.height) / (particleRadius * 2);
-      limitWorldOffsetMinX = -(mapCoord.border.maxX - particleRadius * 4) * worldOffsetScale;
-      limitWorldOffsetMaxX = p5.width - (mapCoord.border.minX + particleRadius * 4) * worldOffsetScale;
-      limitWorldOffsetMinY = -(mapCoord.border.maxY - particleRadius * 4) * worldOffsetScale;
-      limitWorldOffsetMaxY = p5.height - (mapCoord.border.minY + particleRadius * 4) * worldOffsetScale;
+      const width =
+        layoutRef.current !== 'NARROW' && initialAnimationStatusRef.current !== 'END'
+          ? p5.width - sideDetailWidth
+          : p5.width;
+      const height = layoutRef.current === 'NARROW' ? p5.height - bottomDetailHeight - carouselSpaceHeight : p5.height;
+
+      limitWorldOffsetMinScale = p5.min([
+        width / p5.max(mapCoord.border.maxX - mapCoord.border.minX, 1),
+        height / p5.max(mapCoord.border.maxY - mapCoord.border.minY, 1),
+        0.25,
+      ]);
+      limitWorldOffsetMaxScale = p5.min(width, height) / (particleRadius * 2);
+      limitWorldOffsetMinX = -mapCoord.border.maxX * worldOffsetScale;
+      limitWorldOffsetMaxX = width - mapCoord.border.minX * worldOffsetScale;
+      limitWorldOffsetMinY = -mapCoord.border.maxY * worldOffsetScale;
+      limitWorldOffsetMaxY = p5.height - mapCoord.border.minY * worldOffsetScale;
     };
 
-    const limitCurrentDisplay = (p5: p5Types, mapModeId: MapModeId, mouseX: number, mouseY: number) => {
-      const mapCoord = mapCoordsArr.filter(({ modeId }) => modeId === mapModeId)[0];
-      worldOffsetScale = p5.constrain(worldOffsetScale, limitWorldOffsetMinScale, limitWorldOffsetMaxScale);
+    const limitDisplayMove = (p5: p5Types) => {
       worldOffsetX = p5.constrain(worldOffsetX, limitWorldOffsetMinX, limitWorldOffsetMaxX);
       worldOffsetY = p5.constrain(worldOffsetY, limitWorldOffsetMinY, limitWorldOffsetMaxY);
     };
 
     const zoom = (centerX: number, centerY: number, scaleDiff: number) => {
-      /** centerX, centerY は canvas座標 */
-      const newOffsetScale = worldOffsetScale * (1 + scaleDiff);
-      if (newOffsetScale > limitWorldOffsetMaxScale || newOffsetScale < limitWorldOffsetMinScale) {
+      if (!isWorldInitialized) {
         return;
       }
+      isZoomEnabled = true;
+      /** centerX, centerY は canvas座標 */
+      let newOffsetScale = worldOffsetScale * (1 + scaleDiff);
+      newOffsetScale = Math.min(Math.max(newOffsetScale, limitWorldOffsetMinScale), limitWorldOffsetMaxScale);
       worldOffsetX = (newOffsetScale * worldOffsetX - (newOffsetScale - worldOffsetScale) * centerX) / worldOffsetScale;
       worldOffsetY = (newOffsetScale * worldOffsetY - (newOffsetScale - worldOffsetScale) * centerY) / worldOffsetScale;
       worldOffsetScale = newOffsetScale;
@@ -244,7 +298,6 @@ export const WorksListSketch = React.memo<Props>(
 
     const mapModeIdChangeHandler = (p5: p5Types, newMapModeId: MapModeId) => {
       initWorldPosScale(p5, newMapModeId);
-      calcWorldLimit(p5, newMapModeId);
       const mapCoordsGroup = mapCoordsArr.filter(({ modeId }) => modeId === newMapModeId)[0];
       mapCoordsGroup.coords.forEach(({ id, x, y }) => obstacleSystem.setTargetPos({ id, x, y }));
       obstacleSystem.setDistThreshold(mapCoordsGroup.threshold.dist);
@@ -353,7 +406,6 @@ export const WorksListSketch = React.memo<Props>(
         const newWidth = containerRef.current.clientWidth - padding * 2;
         const newHeight = containerRef.current.clientHeight - padding * 2;
         p5.resizeCanvas(newWidth, newHeight);
-        calcWorldLimit(p5, prevMapModeId);
         if (initialAnimationStatusRef.current === 'END') {
           worldOffsetX += (newWidth - prevCanvasWidth) / 2;
           worldOffsetY += (newHeight - prevCanvasHeight) / 2;
@@ -367,7 +419,12 @@ export const WorksListSketch = React.memo<Props>(
       }
       prevMapModeId = mapModeIdRef.current;
 
-      limitCurrentDisplay(p5, mapModeIdRef.current, p5.mouseX, p5.mouseY);
+      adjustWorldToTarget();
+
+      if (initialAnimationStatusRef.current === 'END') {
+        calcWorldLimit(p5, prevMapModeId);
+      }
+      limitDisplayMove(p5);
       p5.background(bgcolor);
 
       p5.push();
@@ -400,7 +457,7 @@ export const WorksListSketch = React.memo<Props>(
       }
       if (p5.touches.length === 2) {
         obstacleSystem.releaseParticles();
-        isWorldLokked = true;
+        isWorldLocked = true;
         const x1 = (p5.touches[0] as p5Types.Vector).x;
         const y1 = (p5.touches[0] as p5Types.Vector).y;
         const x2 = (p5.touches[1] as p5Types.Vector).x;
@@ -411,14 +468,14 @@ export const WorksListSketch = React.memo<Props>(
       if (obstacleSystem.isCursorOnParticles()) {
         obstacleSystem.catchParticles();
       } else {
-        isWorldLokked = true;
+        isWorldLocked = true;
         oldMouseX = p5.mouseX;
         oldMouseY = p5.mouseY;
       }
     };
 
     const mouseDragged = (p5: p5Types) => {
-      if (!isCursorOnCanvas(p5) || !isWorldLokked) {
+      if (!isCursorOnCanvas(p5) || !isWorldLocked) {
         return;
       }
       if (p5.touches.length === 2) {
@@ -444,7 +501,7 @@ export const WorksListSketch = React.memo<Props>(
         oldMouseY = (p5.touches[0] as p5Types.Vector).y;
       }
       if (p5.touches.length === 0) {
-        isWorldLokked = false;
+        isWorldLocked = false;
       }
     };
 
