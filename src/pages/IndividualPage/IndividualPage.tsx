@@ -48,10 +48,12 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
   const history = useHistory();
 
+  const [isFull, setIsFull] = React.useState<boolean>(false);
+
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
   const scrollerRef = React.useRef<HTMLDivElement>(null);
 
-  useFixScroll(scrollContainerRef, scrollerRef);
+  useFixScroll(scrollContainerRef, scrollerRef, [isFull, worksId]);
 
   const scrollTopRef = React.useRef<HTMLDivElement>(null);
   React.useEffect(() => {
@@ -67,7 +69,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [worksInfo]);
-  const [isFull, setIsFull] = React.useState<boolean>(false);
+
   const isNarrowLayout = layout === 'MID' || layout === 'NARROW';
   const iframeWidth = isFull ? '' : isNarrowLayout ? '95vw' : 'min(1000px, max(75vw , 500px))';
   const iframeHeight = isFull

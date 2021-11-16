@@ -6,6 +6,8 @@ export const isSmoothScrollable = isIOS || isMobile || isTablet;
 export const useFixScroll = (
   scrollContainerRef: React.RefObject<HTMLElement>,
   scrollerRef: React.RefObject<HTMLElement>,
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  deps: any[] = [],
 ): void => {
   React.useEffect(() => {
     if (scrollContainerRef.current === null || scrollerRef.current === null || !isSmoothScrollable) {
@@ -47,15 +49,20 @@ export const useFixScroll = (
       }
     };
 
-    // 最初にページ上部にいるときは、1px下に移動する
-    if (scrollContainer.scrollTop === 0) {
-      scrollContainer.scrollTop = 1;
-    }
-
     scrollContainer.addEventListener('scroll', scrollHandler);
 
     return () => {
       scrollContainer.removeEventListener('scroll', scrollHandler);
     };
   }, [scrollContainerRef, scrollerRef]);
+
+  React.useEffect(() => {
+    if (scrollContainerRef.current === null || scrollerRef.current === null || !isSmoothScrollable) {
+      return;
+    }
+    if (scrollContainerRef.current.scrollTop === 0) {
+      scrollContainerRef.current.scrollTop = 1;
+    }
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [...deps, scrollContainerRef, scrollerRef]);
 };
