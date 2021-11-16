@@ -131,6 +131,8 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
                 <TopNavigationArea
                   nextRotationOrderWorksId={nextRotationOrderWorksId}
                   isNarrowLayout={isNarrowLayout}
+                  worksHistory={worksHistory}
+                  setWorksHistory={setWorksHistory}
                 />
               )}
               <IndividualWorksWindow
