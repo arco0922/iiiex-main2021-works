@@ -485,26 +485,26 @@ const miroCoords = ((particleRadius: number, arrangeRadius: number, sectorRadian
     if (works.id == 0) {
       return {
         id: works.id,
-        x: -800,
-        y: -800,
+        x: -700,
+        y: -700,
       };
     } else if (works.id == 2) {
       return {
         id: works.id,
-        x: Math.cos((2 * Math.PI * 1) / 3 + Math.PI / 4) * (particleRadius + arrangeRadius / 2) + 800,
-        y: Math.sin((2 * Math.PI * 1) / 3 + Math.PI / 4) * (particleRadius + arrangeRadius / 2) + 800,
+        x: Math.cos((2 * Math.PI * 1) / 3 + Math.PI / 4) * (particleRadius + arrangeRadius / 2) + 750,
+        y: Math.sin((2 * Math.PI * 1) / 3 + Math.PI / 4) * (particleRadius + arrangeRadius / 2) + 750,
       };
     } else if (works.id == 5) {
       return {
         id: works.id,
-        x: Math.cos((2 * Math.PI * 2) / 3 + Math.PI / 4) * (particleRadius + arrangeRadius / 2) + 800,
-        y: Math.sin((2 * Math.PI * 2) / 3 + Math.PI / 4) * (particleRadius + arrangeRadius / 2) + 800,
+        x: Math.cos((2 * Math.PI * 2) / 3 + Math.PI / 4) * (particleRadius + arrangeRadius / 2) + 750,
+        y: Math.sin((2 * Math.PI * 2) / 3 + Math.PI / 4) * (particleRadius + arrangeRadius / 2) + 750,
       };
     } else if (works.id == 11) {
       return {
         id: works.id,
-        x: Math.cos((2 * Math.PI * 3) / 3 + Math.PI / 4) * (particleRadius + arrangeRadius / 2) + 800,
-        y: Math.sin((2 * Math.PI * 3) / 3 + Math.PI / 4) * (particleRadius + arrangeRadius / 2) + 800,
+        x: Math.cos((2 * Math.PI * 3) / 3 + Math.PI / 4) * (particleRadius + arrangeRadius / 2) + 750,
+        y: Math.sin((2 * Math.PI * 3) / 3 + Math.PI / 4) * (particleRadius + arrangeRadius / 2) + 750,
       };
     } else if (works.id == 1) {
       return {
@@ -919,7 +919,13 @@ const puyoCoords = ((particleRadius: number, arrangeRadius: number, dist: number
 })(100, 400, 100, 100, 50);
 
 /** 飛行機の座標 */
-const airplaneCoords = ((dist: number, arrange_dist: number, margin: number) => {
+const airplaneCoords = ((
+  dist: number,
+  arrange_dist: number,
+  margin: number,
+  arrange_dist2: number,
+  margin2: number,
+) => {
   const l = worksInfoArr.length;
   const coords: Coord[] = worksInfoArr.map((works) => {
     if (works.id == 0) {
@@ -931,8 +937,8 @@ const airplaneCoords = ((dist: number, arrange_dist: number, margin: number) => 
     } else if (works.id == 1) {
       return {
         id: works.id,
-        x: -dist + margin - arrange_dist,
-        y: +dist + margin - arrange_dist,
+        x: -dist + margin2 - arrange_dist2,
+        y: +dist + margin2 - arrange_dist2,
       };
     } else if (works.id == 2) {
       return {
@@ -943,14 +949,14 @@ const airplaneCoords = ((dist: number, arrange_dist: number, margin: number) => 
     } else if (works.id == 3) {
       return {
         id: works.id,
-        x: -dist + margin * 2 - arrange_dist,
-        y: +dist + margin * 2 - arrange_dist,
+        x: -dist + margin2 * 2 - arrange_dist2,
+        y: +dist + margin2 * 2 - arrange_dist2,
       };
     } else if (works.id == 4) {
       return {
         id: works.id,
-        x: -dist - margin + arrange_dist,
-        y: +dist - margin + arrange_dist,
+        x: -dist - margin2 + arrange_dist2,
+        y: +dist - margin2 + arrange_dist2,
       };
     } else if (works.id == 5) {
       return {
@@ -979,8 +985,8 @@ const airplaneCoords = ((dist: number, arrange_dist: number, margin: number) => 
     } else if (works.id == 9) {
       return {
         id: works.id,
-        x: -dist - margin * 2 + arrange_dist,
-        y: +dist - margin * 2 + arrange_dist,
+        x: -dist - margin2 * 2 + arrange_dist2,
+        y: +dist - margin2 * 2 + arrange_dist2,
       };
     } else if (works.id == 10) {
       return {
@@ -1015,10 +1021,10 @@ const airplaneCoords = ((dist: number, arrange_dist: number, margin: number) => 
     }
   });
   return coords;
-})(400, 100, 200);
+})(400, 100, 200, 120, 240);
 
 /** クッパクラウン */
-const KuppaCoords = ((particleRadius: number, arrangeRadius: number, dist: number, rectangle_dist: number) => {
+const kuppaCoords = ((particleRadius: number, arrangeRadius: number, dist: number, rectangle_dist: number) => {
   const l = worksInfoArr.length;
   const coords: Coord[] = worksInfoArr.map((works) => {
     if (works.id == 0) {
@@ -1248,36 +1254,6 @@ export const mapCoordsArr: MapCoords[] = [
   },
   {
     modeId: 3,
-    modeName: 'カテゴリ',
-    coords: sectorCoords,
-    center: {
-      x: 200,
-      y: 200,
-    },
-    border: {
-      minX: -800,
-      maxX: 800,
-      minY: -800,
-      maxY: 800,
-    },
-  },
-  {
-    modeId: 4,
-    modeName: 'カテゴリ2',
-    coords: neuralCoords,
-    center: {
-      x: 100,
-      y: 0,
-    },
-    border: {
-      minX: -800,
-      maxX: 800,
-      minY: -1200,
-      maxY: 1200,
-    },
-  },
-  {
-    modeId: 5,
     modeName: '対応デバイス',
     coords: miroCoords,
     center: {
@@ -1292,24 +1268,9 @@ export const mapCoordsArr: MapCoords[] = [
     },
   },
   {
-    modeId: 6,
-    modeName: '多面体射影',
-    coords: projectionCoords,
-    center: {
-      x: 0,
-      y: 0,
-    },
-    border: {
-      minX: -800,
-      maxX: 800,
-      minY: -800,
-      maxY: 800,
-    },
-  },
-  {
-    modeId: 7,
+    modeId: 4,
     modeName: 'カテゴリ',
-    coords: categoryCoords,
+    coords: araiCoords,
     center: {
       x: 0,
       y: 0,
@@ -1322,23 +1283,8 @@ export const mapCoordsArr: MapCoords[] = [
     },
   },
   {
-    modeId: 8,
-    modeName: '耐えろ',
-    coords: taeroCoords,
-    center: {
-      x: 0,
-      y: 0,
-    },
-    border: {
-      minX: -1000,
-      maxX: 1000,
-      minY: -1000,
-      maxY: 1000,
-    },
-  },
-  {
-    modeId: 9,
-    modeName: '耐えてくれ',
+    modeId: 5,
+    modeName: 'カテゴリ2',
     coords: puyoCoords,
     center: {
       x: 0,
@@ -1352,12 +1298,12 @@ export const mapCoordsArr: MapCoords[] = [
     },
   },
   {
-    modeId: 10,
-    modeName: '飛行機ブーン',
+    modeId: 6,
+    modeName: '所属',
     coords: airplaneCoords,
     center: {
-      x: 0,
-      y: 0,
+      x: -60,
+      y: 60,
     },
     border: {
       minX: -1000,
@@ -1367,9 +1313,9 @@ export const mapCoordsArr: MapCoords[] = [
     },
   },
   {
-    modeId: 11,
-    modeName: 'クッパクラウン',
-    coords: KuppaCoords,
+    modeId: 7,
+    modeName: '所属２',
+    coords: kuppaCoords,
     center: {
       x: 0,
       y: 100,
@@ -1382,18 +1328,78 @@ export const mapCoordsArr: MapCoords[] = [
     },
   },
   {
-    modeId: 12,
-    modeName: 'Mr.Arai',
-    coords: araiCoords,
+    modeId: 8,
+    modeName: '多面体射影',
+    coords: projectionCoords,
     center: {
       x: 0,
       y: 0,
     },
     border: {
-      minX: -1000,
-      maxX: 1000,
-      minY: -1000,
-      maxY: 1000,
+      minX: -800,
+      maxX: 800,
+      minY: -800,
+      maxY: 800,
     },
   },
+  // {
+  //   modeId: 9,
+  //   modeName: '対応デバイス2',
+  //   coords: sectorCoords,
+  //   center: {
+  //     x: 200,
+  //     y: 200,
+  //   },
+  //   border: {
+  //     minX: -800,
+  //     maxX: 800,
+  //     minY: -800,
+  //     maxY: 800,
+  //   },
+  // },
+  // {
+  //   modeId: 10,
+  //   modeName: '対応デバイス3',
+  //   coords: neuralCoords,
+  //   center: {
+  //     x: 100,
+  //     y: 0,
+  //   },
+  //   border: {
+  //     minX: -800,
+  //     maxX: 800,
+  //     minY: -1200,
+  //     maxY: 1200,
+  //   },
+  // },
+  // {
+  //   modeId: 11,
+  //   modeName: 'カテゴリ3',
+  //   coords: categoryCoords,
+  //   center: {
+  //     x: 0,
+  //     y: 0,
+  //   },
+  //   border: {
+  //     minX: -1000,
+  //     maxX: 1000,
+  //     minY: -1000,
+  //     maxY: 1000,
+  //   },
+  // },
+  // {
+  //   modeId: 12,
+  //   modeName: 'カテゴリ4',
+  //   coords: taeroCoords,
+  //   center: {
+  //     x: 0,
+  //     y: 0,
+  //   },
+  //   border: {
+  //     minX: -1000,
+  //     maxX: 1000,
+  //     minY: -1000,
+  //     maxY: 1000,
+  //   },
+  // },
 ];
