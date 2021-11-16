@@ -97,7 +97,6 @@ export const AppRoot: React.VFC = () => {
               setIsShowHamburger={setIsShowHamburger}
               setCoords={setCoords}
               visitedRef={visitedRef}
-              worksHistory={worksHistory}
               setWorksHistory={setWorksHistory}
             />
           </Route>
