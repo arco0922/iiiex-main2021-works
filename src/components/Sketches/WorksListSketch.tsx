@@ -196,29 +196,17 @@ export const WorksListSketch = React.memo<Props>(
         p5.height / p5.max(mapCoord.border.maxY - mapCoord.border.minY, 1),
       );
       limitWorldOffsetMaxScale = p5.min(p5.width, p5.height) / (particleRadius * 2);
-      limitWorldOffsetMinX = - (mapCoord.border.maxX - particleRadius * 4) * worldOffsetScale;
+      limitWorldOffsetMinX = -(mapCoord.border.maxX - particleRadius * 4) * worldOffsetScale;
       limitWorldOffsetMaxX = p5.width - (mapCoord.border.minX + particleRadius * 4) * worldOffsetScale;
       limitWorldOffsetMinY = -(mapCoord.border.maxY - particleRadius * 4) * worldOffsetScale;
-      limitWorldOffsetMaxY = p5.height - (mapCoord.border.minY + particleRadius * 4) * worldOffsetScale; 
+      limitWorldOffsetMaxY = p5.height - (mapCoord.border.minY + particleRadius * 4) * worldOffsetScale;
     };
 
     const limitCurrentDisplay = (p5: p5Types, mapModeId: MapModeId, mouseX: number, mouseY: number) => {
       const mapCoord = mapCoordsArr.filter(({ modeId }) => modeId === mapModeId)[0];
-      worldOffsetScale = p5.constrain(
-        worldOffsetScale,
-        limitWorldOffsetMinScale,
-        limitWorldOffsetMaxScale,
-      );
-      worldOffsetX = p5.constrain(
-        worldOffsetX,
-        limitWorldOffsetMinX,
-        limitWorldOffsetMaxX,
-      );
-      worldOffsetY = p5.constrain(
-        worldOffsetY,
-        limitWorldOffsetMinY,
-        limitWorldOffsetMaxY,
-      );
+      worldOffsetScale = p5.constrain(worldOffsetScale, limitWorldOffsetMinScale, limitWorldOffsetMaxScale);
+      worldOffsetX = p5.constrain(worldOffsetX, limitWorldOffsetMinX, limitWorldOffsetMaxX);
+      worldOffsetY = p5.constrain(worldOffsetY, limitWorldOffsetMinY, limitWorldOffsetMaxY);
     };
 
     const zoom = (centerX: number, centerY: number, scaleDiff: number) => {
@@ -388,7 +376,6 @@ export const WorksListSketch = React.memo<Props>(
       obstacleSystem.setSelectId(selectIdRef.current);
       obstacleSystem.display();
       p5.pop();
-
 
       if (obstacleSystem.isCursorOnParticles()) {
         p5.cursor('grab');
