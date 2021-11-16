@@ -5,17 +5,21 @@ import styled from 'styled-components';
 import ArrowRightSharpIcon from '@mui/icons-material/ArrowRightSharp';
 import ArrowLeftSharpIcon from '@mui/icons-material/ArrowLeftSharp';
 import { LayoutType } from 'constants/Layout';
+import { isMobile, isTablet } from 'react-device-detect';
 
 interface Props {
   layout: LayoutType;
   mapModeId: MapModeId;
   setMapModeId: (mapMode: MapModeId) => void;
+  isCursorOnCarouselRef: React.MutableRefObject<boolean>;
 }
+
+const touchable = isMobile || isTablet;
 
 const rotateArr = mapCoordsArr.concat(mapCoordsArr).concat(mapCoordsArr);
 const rotateLength = rotateArr.length;
 
-export const Carousel: React.VFC<Props> = ({ layout, mapModeId, setMapModeId }) => {
+export const Carousel: React.VFC<Props> = ({ layout, mapModeId, setMapModeId, isCursorOnCarouselRef }) => {
   const [centerIdx, setCenterIdx] = React.useState<number | null>(null);
   const [isRotating, setIsRotating] = React.useState<boolean>(false);
 
@@ -25,7 +29,26 @@ export const Carousel: React.VFC<Props> = ({ layout, mapModeId, setMapModeId }) 
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const incrementHandler = React.useCallback(() => {
+  const clickTouchStartHandler = React.useCallback(
+    () => (isCursorOnCarouselRef.current = true),
+    [isCursorOnCarouselRef],
+  );
+
+  const clickTouchEndHandler = React.useCallback(
+    () => (isCursorOnCarouselRef.current = false),
+    [isCursorOnCarouselRef],
+  );
+
+  React.useEffect(() => {
+    window.addEventListener('mouseup', clickTouchEndHandler);
+    window.addEventListener('touchend', clickTouchEndHandler);
+    return () => {
+      window.removeEventListener('mouseup', clickTouchEndHandler);
+      window.addEventListener('touchend', clickTouchEndHandler);
+    };
+  }, [clickTouchEndHandler]);
+
+  const increment = React.useCallback(() => {
     if (centerIdx === null || isRotating) {
       return;
     }
@@ -36,7 +59,7 @@ export const Carousel: React.VFC<Props> = ({ layout, mapModeId, setMapModeId }) 
     setTimeout(() => setIsRotating(false), 300);
   }, [centerIdx, setMapModeId, isRotating]);
 
-  const decrementHandler = React.useCallback(() => {
+  const decrement = React.useCallback(() => {
     if (centerIdx === null || isRotating) {
       return;
     }
@@ -47,9 +70,37 @@ export const Carousel: React.VFC<Props> = ({ layout, mapModeId, setMapModeId }) 
     setTimeout(() => setIsRotating(false), 300);
   }, [centerIdx, setMapModeId, isRotating]);
 
+  const incrementClickHandler = React.useCallback(() => {
+    if (touchable) {
+      return;
+    }
+    increment();
+  }, [increment]);
+
+  const incrementTouchHandler = React.useCallback(() => {
+    if (!touchable) {
+      return;
+    }
+    increment();
+  }, [increment]);
+
+  const decrementClickHandler = React.useCallback(() => {
+    if (touchable) {
+      return;
+    }
+    decrement();
+  }, [decrement]);
+
+  const decrementTouchHandler = React.useCallback(() => {
+    if (!touchable) {
+      return;
+    }
+    decrement();
+  }, [decrement]);
+
   return (
     <StyledRoot className={layout === 'NARROW' ? 'narrow' : ''}>
-      <StyledContainer>
+      <StyledContainer onMouseDown={clickTouchStartHandler} onTouchStart={clickTouchStartHandler}>
         <StyledTitle>作品の並べ方</StyledTitle>
         <svg width="5" height="11" viewBox="0 0 5 11" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M2.5 11L0.334936 0.5H4.66506L2.5 11Z" fill="white" />
@@ -57,11 +108,22 @@ export const Carousel: React.VFC<Props> = ({ layout, mapModeId, setMapModeId }) 
 
         {centerIdx !== null && centerIdx >= 0 && (
           <StyledCarouselContainer>
-            <StyledCarouselLeftItemContainer onClick={decrementHandler} />
+            <StyledCarouselLeftItemContainer onMouseDown={decrementClickHandler} onTouchStart={decrementTouchHandler} />
             <StyledCarouselJustItemContainer />
-            <StyledCarouselRightItemContainer onClick={incrementHandler} />
-            <StyledArrowLeft fontSize="large" onClick={decrementHandler} />
-            <StyledArrowRight fontSize="large" onClick={incrementHandler} />
+            <StyledCarouselRightItemContainer
+              onMouseDown={incrementClickHandler}
+              onTouchStart={incrementTouchHandler}
+            />
+            <StyledArrowLeft
+              fontSize="large"
+              onMouseDown={decrementClickHandler}
+              onTouchStart={decrementTouchHandler}
+            />
+            <StyledArrowRight
+              fontSize="large"
+              onMouseDown={incrementClickHandler}
+              onTouchStart={incrementTouchHandler}
+            />
             {rotateArr.map(({ modeName }, idx) => {
               let className = '';
               switch (idx) {

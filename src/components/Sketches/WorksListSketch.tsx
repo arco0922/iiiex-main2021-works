@@ -26,6 +26,7 @@ interface Props {
   mapModeIdRef: React.MutableRefObject<MapModeId>;
   setCoords: (coords: Coord[]) => void;
   visitedRef: React.MutableRefObject<Visited>;
+  isCursorOnCarouselRef: React.MutableRefObject<boolean>;
   bgcolor?: string;
   padding?: number;
 }
@@ -49,6 +50,7 @@ export const WorksListSketch = React.memo<Props>(
     mapModeIdRef,
     setCoords,
     visitedRef,
+    isCursorOnCarouselRef,
     bgcolor = 'black',
     padding = 5,
   }) => {
@@ -320,7 +322,7 @@ export const WorksListSketch = React.memo<Props>(
     };
 
     const isCursorOnCanvas = (p5: p5Types) => {
-      return isPointOnCanvas(p5, p5.mouseX, p5.mouseY);
+      return isPointOnCanvas(p5, p5.mouseX, p5.mouseY) && !isCursorOnCarouselRef.current;
     };
 
     const mousePressed = (p5: p5Types) => {

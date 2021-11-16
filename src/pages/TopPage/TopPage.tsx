@@ -44,6 +44,7 @@ export const TopPage: React.VFC<Props> = ({
   const [initialAnimationStatus, setInitialAnimationStatus] = React.useState<InitialAnimationStatus>('BEFORE');
   const initialAnimationStatusRef = React.useRef<InitialAnimationStatus>('BEFORE');
   const layoutRef = React.useRef<LayoutType>('WIDE');
+  const isCursorOnCarouselRef = React.useRef<boolean>(false);
 
   React.useEffect(() => {
     selectIdRef.current = selectId;
@@ -71,7 +72,12 @@ export const TopPage: React.VFC<Props> = ({
       <Header layout={layout} setIsShowHamburger={setIsShowHamburger}></Header>
       <StyledContentContainer>
         <StyledSketchContainer>
-          <Carousel mapModeId={mapModeId} setMapModeId={setMapModeId} layout={layout} />
+          <Carousel
+            mapModeId={mapModeId}
+            setMapModeId={setMapModeId}
+            layout={layout}
+            isCursorOnCarouselRef={isCursorOnCarouselRef}
+          />
           <WorksListSketch
             width="100%"
             height="100%"
@@ -85,6 +91,7 @@ export const TopPage: React.VFC<Props> = ({
             mapModeIdRef={mapModeIdRef}
             setCoords={setCoords}
             visitedRef={visitedRef}
+            isCursorOnCarouselRef={isCursorOnCarouselRef}
             bgcolor="#0e0e0e"
           ></WorksListSketch>
           <StyledLoading isNarrowLayout={layout === 'NARROW'} id="p5_loading">
