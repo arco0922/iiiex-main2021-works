@@ -25,7 +25,7 @@ export const TopNavigationArea: React.VFC<Props> = ({
   return (
     <StyledContainer className={isNarrowLayout ? '' : 'wide'}>
       <StyledButton>
-        {worksHistory.length == 1 ? (
+        {worksHistory.length === 1 ? (
           <StyledLink to="/" className={isNarrowLayout ? 'narrow' : ''}>
             &#8810; 展示空間TOP
           </StyledLink>

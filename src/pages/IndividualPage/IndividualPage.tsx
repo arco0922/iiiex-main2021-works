@@ -82,7 +82,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
 
   React.useEffect(() => {
     setLastVisitedId(selectId);
-    if (worksHistory.slice(-1)[0] != worksId) {
+    if (worksHistory.slice(-1)[0] !== worksId) {
       worksHistory.push(worksId);
     }
     setWorksHistory(worksHistory);
