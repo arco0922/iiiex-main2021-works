@@ -1,19 +1,39 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
+import { useHistory } from 'react-router';
 interface Props {
   nextRotationOrderWorksId: number;
   isNarrowLayout: boolean;
+  worksHistory: number[];
+  setWorksHistory: (worksHistory: number[]) => void;
 }
 
-export const TopNavigationArea: React.VFC<Props> = ({ nextRotationOrderWorksId, isNarrowLayout }) => {
+export const TopNavigationArea: React.VFC<Props> = ({
+  nextRotationOrderWorksId,
+  isNarrowLayout,
+  worksHistory,
+  setWorksHistory,
+}) => {
+  const history = useHistory();
+  const popWorksHistory = React.useCallback(() => {
+    worksHistory.pop();
+    setWorksHistory(worksHistory);
+    history.push(`/works/${worksHistory.slice(-1)[0]}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setWorksHistory]);
   return (
     <StyledContainer className={isNarrowLayout ? '' : 'wide'}>
       <StyledButton>
-        <StyledLink to="/" className={isNarrowLayout ? 'narrow' : ''}>
-          &#8810; 展示空間TOP
-        </StyledLink>
+        {worksHistory.length === 1 ? (
+          <StyledLink to="/" className={isNarrowLayout ? 'narrow' : ''}>
+            &#8810; 展示空間TOP
+          </StyledLink>
+        ) : (
+          <StyledBack onClick={popWorksHistory} className={isNarrowLayout ? 'narrow' : ''}>
+            &#8810; 前の作品
+          </StyledBack>
+        )}
         <StyledUnderBar id="underbar" />
       </StyledButton>
       <StyledButton>
@@ -49,6 +69,17 @@ const StyledButton = styled.button`
     #underbar {
       width: 100%;
     }
+  }
+`;
+
+const StyledBack = styled.div`
+  display: block;
+  padding: 0px 5px;
+  font-size: 16px;
+  text-decoration: none;
+  color: white;
+  &.narrow {
+    font-size: 14px;
   }
 `;
 
