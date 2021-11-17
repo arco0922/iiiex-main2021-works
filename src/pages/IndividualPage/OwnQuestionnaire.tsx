@@ -12,7 +12,7 @@ interface Props {
 export const OwnQuestionnaire: React.VFC<Props> = ({ ownQuestionnaireUrl, isNarrowLayout }) => {
   const { height } = useWindowDimensions();
   return (
-    <StyledQuestionnaireContainer formHeight={height - headerHeight - 100}>
+    <StyledQuestionnaireContainer formHeight={height - headerHeight - 90}>
       <StyledTitle className={isNarrowLayout ? 'narrow' : ''}>個別作品アンケート</StyledTitle>
       <StyledQuestionnaireIframe src={ownQuestionnaireUrl}></StyledQuestionnaireIframe>
     </StyledQuestionnaireContainer>
@@ -25,7 +25,7 @@ interface StyledQuestionnaireContainerProps {
 
 const StyledQuestionnaireContainer = styled.div<StyledQuestionnaireContainerProps>`
   height: ${({ formHeight }) => formHeight}px;
-  min-height: ${({ formHeight }) => formHeight}px; ;
+  min-height: ${({ formHeight }) => formHeight}px;
 `;
 const StyledTitle = styled.h4`
   color: white;
@@ -38,7 +38,7 @@ const StyledTitle = styled.h4`
 
 const StyledQuestionnaireIframe = styled.iframe`
   width: 100%;
-  height: 100%;
+  height: calc(100% - 33px);
   outline: none;
   border: none;
   display: block;
