@@ -6,40 +6,51 @@ interface Props {
   nextRotationOrderWorksId: number;
   isNarrowLayout: boolean;
   worksHistory: number[];
-  setWorksHistory: (worksHistory: number[]) => void;
+  worksHistoryIndex: number | null;
+  setWorksHistoryIndex: (id: number | null) => void;
 }
 
 export const TopNavigationArea: React.VFC<Props> = ({
   nextRotationOrderWorksId,
   isNarrowLayout,
   worksHistory,
-  setWorksHistory,
+  worksHistoryIndex,
+  setWorksHistoryIndex,
 }) => {
   const history = useHistory();
-  const popWorksHistory = React.useCallback(() => {
-    worksHistory.pop();
-    setWorksHistory(worksHistory);
-    history.push(`/works/${worksHistory.slice(-1)[0]}`);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setWorksHistory]);
+  const goBackWorksHistory = React.useCallback(() => {
+    if (worksHistoryIndex === null || worksHistoryIndex === 0) {
+      return;
+    }
+    setWorksHistoryIndex(worksHistoryIndex - 1);
+    history.push(`/works/${worksHistory[worksHistoryIndex - 1]}`);
+  }, [history, worksHistory, worksHistoryIndex, setWorksHistoryIndex]);
+
+  const goForwardWorksHistory = React.useCallback(() => {
+    if (worksHistoryIndex === null) {
+      return;
+    }
+    setWorksHistoryIndex(worksHistoryIndex + 1);
+    history.push(`/works/${nextRotationOrderWorksId}`);
+  }, [history, worksHistoryIndex, setWorksHistoryIndex, nextRotationOrderWorksId]);
   return (
     <StyledContainer className={isNarrowLayout ? '' : 'wide'}>
       <StyledButton>
-        {worksHistory.length === 1 ? (
+        {worksHistoryIndex === 0 ? (
           <StyledLink to="/" className={isNarrowLayout ? 'narrow' : ''}>
             &#8810; 展示空間TOP
           </StyledLink>
         ) : (
-          <StyledBack onClick={popWorksHistory} className={isNarrowLayout ? 'narrow' : ''}>
+          <StyledBack onClick={goBackWorksHistory} className={isNarrowLayout ? 'narrow' : ''}>
             &#8810; 前の作品
           </StyledBack>
         )}
         <StyledUnderBar id="underbar" />
       </StyledButton>
       <StyledButton>
-        <StyledLink to={`/works/${nextRotationOrderWorksId}`} className={isNarrowLayout ? 'narrow' : ''}>
+        <StyledForward onClick={goForwardWorksHistory} className={isNarrowLayout ? 'narrow' : ''}>
           次の作品 &#8811;
-        </StyledLink>
+        </StyledForward>
         <StyledUnderBar id="underbar" />
       </StyledButton>
     </StyledContainer>
@@ -73,6 +84,17 @@ const StyledButton = styled.button`
 `;
 
 const StyledBack = styled.div`
+  display: block;
+  padding: 0px 5px;
+  font-size: 16px;
+  text-decoration: none;
+  color: white;
+  &.narrow {
+    font-size: 14px;
+  }
+`;
+
+const StyledForward = styled.div`
   display: block;
   padding: 0px 5px;
   font-size: 16px;

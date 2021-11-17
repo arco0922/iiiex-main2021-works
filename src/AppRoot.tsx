@@ -42,6 +42,7 @@ export const AppRoot: React.VFC = () => {
 
   const [lastVisitedId, setLastVisitedId] = React.useState<number>(-1);
   const [worksHistory, setWorksHistory] = React.useState<number[]>([]);
+  const [worksHistoryIndex, setWorksHistoryIndex] = React.useState<number | null>(null);
 
   const [mapModeId, setMapModeId] = React.useState<MapModeId>(1);
   const mapModeIdRef = React.useRef<MapModeId>(1);
@@ -108,6 +109,7 @@ export const AppRoot: React.VFC = () => {
               setCoords={setCoords}
               visitedRef={visitedRef}
               setWorksHistory={setWorksHistory}
+              setWorksHistoryIndex={setWorksHistoryIndex}
             />
           </Route>
           <Route path="/works/:id" exact>
@@ -123,6 +125,8 @@ export const AppRoot: React.VFC = () => {
               coords={coords}
               worksHistory={worksHistory}
               setWorksHistory={setWorksHistory}
+              worksHistoryIndex={worksHistoryIndex}
+              setWorksHistoryIndex={setWorksHistoryIndex}
               mapModeId={mapModeId}
             />
           </Route>

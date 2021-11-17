@@ -23,6 +23,7 @@ interface Props {
   setCoords: (coords: Coord[]) => void;
   visitedRef: React.MutableRefObject<Visited>;
   setWorksHistory: (worksHistory: number[]) => void;
+  setWorksHistoryIndex: (id: number | null) => void;
 }
 
 export type InitialAnimationStatus = 'BEFORE' | 'ANIMATING' | 'END';
@@ -40,6 +41,7 @@ export const TopPage: React.VFC<Props> = ({
   setCoords,
   visitedRef,
   setWorksHistory,
+  setWorksHistoryIndex,
 }) => {
   const selectIdRef = React.useRef<number>(0);
   const [isShowDetail, setIsShowDetail] = React.useState<boolean>(false);
@@ -63,7 +65,8 @@ export const TopPage: React.VFC<Props> = ({
   }, [layout]);
   React.useEffect(() => {
     setWorksHistory([]);
-  }, [setWorksHistory]);
+    setWorksHistoryIndex(null);
+  }, [setWorksHistory, setWorksHistoryIndex]);
 
   React.useEffect(() => {
     setTimeout(() => {

@@ -33,6 +33,8 @@ interface Props {
   coords: Coord[];
   worksHistory: number[];
   setWorksHistory: (worksHistory: number[]) => void;
+  worksHistoryIndex: number | null;
+  setWorksHistoryIndex: (id: number | null) => void;
   mapModeId: MapModeId;
 }
 
@@ -49,6 +51,8 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   coords,
   worksHistory,
   setWorksHistory,
+  worksHistoryIndex,
+  setWorksHistoryIndex,
   mapModeId,
 }) => {
   const worksId = Number(match.params.id);
@@ -85,11 +89,14 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
 
   React.useEffect(() => {
     setLastVisitedId(selectId);
-    if (worksHistory.slice(-1)[0] !== worksId) {
+    if (worksHistoryIndex === null) {
       worksHistory.push(worksId);
+      setWorksHistory(worksHistory);
+      setWorksHistoryIndex(0);
+    } else if (worksHistoryIndex === worksHistory.length) {
+      worksHistory.push(worksId);
+      setWorksHistory(worksHistory);
     }
-    setWorksHistory(worksHistory);
-    setSelectId(worksId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [worksId, setSelectId, setWorksHistory]);
   React.useEffect(() => {
@@ -121,11 +128,14 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   }, [worksId, worksInfo, coords, visited, lastVisitedId, mapModeId]);
 
   const nextRotationOrderWorksId = React.useMemo<number | null>(() => {
+    if (worksHistoryIndex !== null && worksHistoryIndex < worksHistory.length - 1) {
+      return worksHistory[worksHistoryIndex + 1];
+    }
     if (visited[suggestIds[0]]) {
       return calcNextRotationOrderWorksId(worksId);
     }
     return suggestIds[0];
-  }, [worksId, suggestIds, visited]);
+  }, [worksId, suggestIds, visited, worksHistory, worksHistoryIndex]);
 
   if (worksInfo === undefined) {
     return <></>;
@@ -149,7 +159,8 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
                   nextRotationOrderWorksId={nextRotationOrderWorksId}
                   isNarrowLayout={isNarrowLayout}
                   worksHistory={worksHistory}
-                  setWorksHistory={setWorksHistory}
+                  worksHistoryIndex={worksHistoryIndex}
+                  setWorksHistoryIndex={setWorksHistoryIndex}
                 />
               )}
               <IndividualWorksWindow
