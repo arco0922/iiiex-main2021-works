@@ -25,7 +25,7 @@ export interface WorksInfo {
 export const worksInfoArr: WorksInfo[] = [
   {
     id: 0,
-    rotationOrder: 2,
+    rotationOrder: 0,
     title: 'offline on line',
     thumbnailBaseName: '0_nakagawa',
     creators: [
@@ -56,10 +56,11 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://gawa4423.github.io/seisakuten/',
     srcUrlSp: 'https://playcanv.as/p/3d09d3d7/',
     formEntry: 'entry.457886068',
+    isInitial: true,
   },
   {
     id: 1,
-    rotationOrder: 1,
+    rotationOrder: 12,
     title: '僕と、生きる',
     thumbnailBaseName: '1_miyake',
     creators: [
@@ -91,7 +92,7 @@ export const worksInfoArr: WorksInfo[] = [
   },
   {
     id: 2,
-    rotationOrder: 7,
+    rotationOrder: 4,
     title: `Zero To One Mind
     ～1歳児キョリブレーション～`,
     thumbnailBaseName: '2_baby-thumbnail',
@@ -106,17 +107,36 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://hardcore-nobel-4e99fe.netlify.app/',
     srcUrlSp: 'https://hardcore-nobel-4e99fe.netlify.app/mobile.html',
     formEntry: 'entry.1260241828',
-    isInitial: true,
   },
   {
     id: 3,
-    rotationOrder: 13,
+    rotationOrder: 8,
     title: 'on my . (オン マイ ピリオド)',
     thumbnailBaseName: '3_mochizuki',
     creators: [
       {
         name: '望月花妃',
         affiliation: `情報学環\n教育部 2年`,
+      },
+      {
+        name: '乘濵駿平',
+        affiliation: `工学部 3年`,
+      },
+      {
+        name: '島村龍伍',
+        affiliation: `工学部 3年`,
+      },
+      {
+        name: '御手洗陽紀',
+        affiliation: `工学部 3年`,
+      },
+      {
+        name: '三村有希',
+        affiliation: `後期教養学部 4年`,
+      },
+      {
+        name: '小原和花子',
+        affiliation: `総合文化研究科\n修士2年`,
       },
     ],
     device: 'BOTH',
@@ -133,7 +153,7 @@ export const worksInfoArr: WorksInfo[] = [
   },
   {
     id: 4,
-    rotationOrder: 10,
+    rotationOrder: 7,
     title: '#FiK握手会',
     thumbnailBaseName: '4_ueno_thumbnail',
     creators: [
@@ -154,11 +174,10 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://larkin269.github.io/fikpages/',
     srcUrlSp: 'https://larkin269.github.io/fikpages/',
     formEntry: 'entry.306737416',
-    isInitial: true,
   },
   {
     id: 5,
-    rotationOrder: 11,
+    rotationOrder: 6,
     title: 'puppeTuber',
     thumbnailBaseName: '5_aramaki_puppeTuber',
     creators: [
@@ -187,7 +206,7 @@ export const worksInfoArr: WorksInfo[] = [
   },
   {
     id: 6,
-    rotationOrder: 3,
+    rotationOrder: 1,
     title: '矢印たち',
     thumbnailBaseName: '6_yajirushi',
     creators: [
@@ -224,11 +243,10 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://y-141.github.io/iiiex_pentagons/',
     srcUrlSp: 'https://y-141.github.io/iiiex_pentagons/',
     formEntry: 'entry.1126317556',
-    isInitial: true,
   },
   {
     id: 7,
-    rotationOrder: 6,
+    rotationOrder: 9,
     title: '確率であそぼ、',
     thumbnailBaseName: '7_kurata_picture',
     creators: [
@@ -273,7 +291,7 @@ export const worksInfoArr: WorksInfo[] = [
   },
   {
     id: 8,
-    rotationOrder: 8,
+    rotationOrder: 5,
     title: 'ENDRAGON',
     thumbnailBaseName: '8_ENDRAGON',
     creators: [
@@ -295,7 +313,7 @@ export const worksInfoArr: WorksInfo[] = [
   },
   {
     id: 9,
-    rotationOrder: 12,
+    rotationOrder: 10,
     title: 'KABUKU！',
     thumbnailBaseName: '9_kabuku_tmb800',
     creators: [
@@ -326,7 +344,7 @@ export const worksInfoArr: WorksInfo[] = [
   },
   {
     id: 10,
-    rotationOrder: 0,
+    rotationOrder: 11,
     title: 'Memorial Stella',
     thumbnailBaseName: '10_I-mage',
     creators: [
@@ -351,11 +369,10 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://flask-325405.de.r.appspot.com/guest',
     srcUrlSp: 'https://flask-325405.de.r.appspot.com/guest',
     formEntry: 'entry.839388668',
-    isInitial: true,
   },
   {
     id: 11,
-    rotationOrder: 9,
+    rotationOrder: 13,
     title: 'Home-Gallery',
     thumbnailBaseName: '11_Siyuan_Home-Gallery',
     creators: [
@@ -379,7 +396,7 @@ export const worksInfoArr: WorksInfo[] = [
   {
     id: 12,
     title: 'デイリズム！',
-    rotationOrder: 5,
+    rotationOrder: 3,
     thumbnailBaseName: '12_mikami_dayliyrhythm',
     creators: [
       {
@@ -397,6 +414,10 @@ export const worksInfoArr: WorksInfo[] = [
       {
         name: '小山大嘉',
         affiliation: `情報理工学系研究科\n葛岡・雨宮・鳴海研究室\n修士1年`,
+      },
+      {
+        name: '松浦祐太郎',
+        affiliation: `情報理工学系研究科\n稲葉・岡田研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
@@ -418,7 +439,7 @@ export const worksInfoArr: WorksInfo[] = [
   },
   {
     id: 13,
-    rotationOrder: 4,
+    rotationOrder: 2,
     title: 'Animal Clock',
     thumbnailBaseName: '13_akiyama',
     creators: [
