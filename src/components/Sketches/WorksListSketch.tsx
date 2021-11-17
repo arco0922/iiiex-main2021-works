@@ -119,6 +119,7 @@ export const WorksListSketch = React.memo<Props>(
     let prevCanvasHeight: number;
 
     let isWorldInitialized = false;
+    let isFirstZoomExperienced = false;
 
     let worldOffsetX: number; // ワールドの中心がスクリーンのどこにあるか
     let worldOffsetY: number; // ワールドの中心がスクリーンのどこにあるか
@@ -249,7 +250,7 @@ export const WorksListSketch = React.memo<Props>(
       limitWorldOffsetMinScale = p5.min([
         width / p5.max(mapCoord.border.maxX - mapCoord.border.minX, 1),
         height / p5.max(mapCoord.border.maxY - mapCoord.border.minY, 1),
-        0.25,
+        0.5,
       ]);
       limitWorldOffsetMaxScale = p5.min(width, height) / (particleRadius * 2);
       limitWorldOffsetMinX = -mapCoord.border.maxX * worldOffsetScale;
@@ -359,8 +360,8 @@ export const WorksListSketch = React.memo<Props>(
       const mapCoordsGroup = mapCoordsArr.filter(({ modeId }) => modeId === initialMapModeId)[0];
       mapCoordsGroup.coords.forEach(({ id, x, y }) => {
         switch (initialMapModeId) {
-          case 1:
-            const randy = p5.random(-worldHeight / 6, worldHeight / 6);
+          case 5:
+            const randy = p5.random(-200, 200);
             obstacleSystem.addParticle(
               id,
               x * 0.8,
@@ -411,6 +412,8 @@ export const WorksListSketch = React.memo<Props>(
         if (initialAnimationStatusRef.current === 'END') {
           worldOffsetX += (newWidth - prevCanvasWidth) / 2;
           worldOffsetY += (newHeight - prevCanvasHeight) / 2;
+          targetWorldOffsetX += (newWidth - prevCanvasWidth) / 2;
+          targetWorldOffsetY += (newHeight - prevCanvasHeight) / 2;
         }
       }
       prevCanvasWidth = p5.width;
@@ -428,7 +431,13 @@ export const WorksListSketch = React.memo<Props>(
       }
       limitDisplayMove(p5);
 
+      if (p5.frameCount > 20 && !isFirstZoomExperienced && layoutRef.current === 'WIDE') {
+        isFirstZoomExperienced = true;
+        obstacleSystem.setSelectIdFromOther(selectIdRef.current);
+      }
+
       if (selectIdRef.current !== obstacleSystem.selectId) {
+        isFirstZoomExperienced = true;
         obstacleSystem.setSelectIdFromOther(selectIdRef.current);
       }
 
@@ -563,9 +572,9 @@ export const WorksListSketch = React.memo<Props>(
         const particle = this.particles.filter((particle) => particle.id === id)[0];
         if (particle.targetX !== undefined && particle.targetY !== undefined) {
           setWorldTarget(
-            particle.p5.width / 2 - (particle.targetX * limitWorldOffsetMaxScale) / 4,
-            particle.p5.height / 2 - (particle.targetY * limitWorldOffsetMaxScale) / 4,
-            limitWorldOffsetMaxScale / 4,
+            particle.p5.width / 2 - (particle.targetX * limitWorldOffsetMaxScale) / 5,
+            particle.p5.height / 2 - (particle.targetY * limitWorldOffsetMaxScale) / 5,
+            limitWorldOffsetMaxScale / 5,
           );
         }
       }
