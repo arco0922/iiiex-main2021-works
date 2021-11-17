@@ -43,6 +43,7 @@ export const TopPage: React.VFC<Props> = ({
 }) => {
   const selectIdRef = React.useRef<number>(0);
   const [isShowDetail, setIsShowDetail] = React.useState<boolean>(false);
+  const isShowDetailRef = React.useRef<boolean>(false);
   const [initialAnimationStatus, setInitialAnimationStatus] = React.useState<InitialAnimationStatus>('BEFORE');
   const initialAnimationStatusRef = React.useRef<InitialAnimationStatus>('BEFORE');
   const layoutRef = React.useRef<LayoutType>('WIDE');
@@ -51,6 +52,9 @@ export const TopPage: React.VFC<Props> = ({
   React.useEffect(() => {
     selectIdRef.current = selectId;
   }, [selectId]);
+  React.useEffect(() => {
+    isShowDetailRef.current = isShowDetail;
+  }, [isShowDetail]);
   React.useEffect(() => {
     initialAnimationStatusRef.current = initialAnimationStatus;
   }, [initialAnimationStatus]);
@@ -90,6 +94,7 @@ export const TopPage: React.VFC<Props> = ({
             setSelectId={setSelectId}
             initialAnimationStatusRef={initialAnimationStatusRef}
             setIsShowDetail={setIsShowDetail}
+            isShowDetailRef={isShowDetailRef}
             isShowHamburgerRef={isShowHamburgerRef}
             layoutRef={layoutRef}
             setMapModeId={setMapModeId}

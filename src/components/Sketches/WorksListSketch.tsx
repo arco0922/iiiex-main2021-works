@@ -20,6 +20,7 @@ interface Props {
   setSelectId: (id: number) => void;
   initialAnimationStatusRef: React.MutableRefObject<InitialAnimationStatus>;
   setIsShowDetail: (isShowDetail: boolean) => void;
+  isShowDetailRef: React.MutableRefObject<boolean>;
   isShowHamburgerRef: React.MutableRefObject<boolean>;
   layoutRef: React.MutableRefObject<LayoutType>;
   setMapModeId: (mapMode: MapModeId) => void;
@@ -44,6 +45,7 @@ export const WorksListSketch = React.memo<Props>(
     setSelectId,
     initialAnimationStatusRef,
     setIsShowDetail,
+    isShowDetailRef,
     isShowHamburgerRef,
     layoutRef,
     setMapModeId,
@@ -460,7 +462,9 @@ export const WorksListSketch = React.memo<Props>(
     };
 
     const isPointOnCanvas = (p5: p5Types, x: number, y: number) => {
-      return x >= 0 && x <= p5.width && y >= 0 && y <= p5.height;
+      const height =
+        layoutRef.current === 'NARROW' && isShowDetailRef.current ? p5.height - bottomDetailHeight : p5.height;
+      return x >= 0 && x <= p5.width && y >= 0 && y <= height;
     };
 
     const isCursorOnCanvas = (p5: p5Types) => {
