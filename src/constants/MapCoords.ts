@@ -1,6 +1,7 @@
+import { rotationSortedWorksInfoArr } from 'utils/calcRotationUtils';
 import { worksInfoArr } from './WorksInfo';
 
-export type MapModeId = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+export type MapModeId = 1 | 2 | 3 | 4 | 5;
 
 export interface Coord {
   id: number;
@@ -60,12 +61,12 @@ const lineCoords = ((radius: number, margin: number) => {
 
 /** 円形の座標 */
 const circleCoords = ((particleRadius: number, arrangeRadius: number) => {
-  const l = worksInfoArr.length;
-  const coords: Coord[] = worksInfoArr.map((works) => {
+  const l = rotationSortedWorksInfoArr.length;
+  const coords: Coord[] = rotationSortedWorksInfoArr.map((works) => {
     return {
       id: works.id,
-      x: Math.cos((2 * Math.PI * works.id) / l) * (particleRadius + arrangeRadius),
-      y: Math.sin((2 * Math.PI * works.id) / l) * (particleRadius + arrangeRadius),
+      x: Math.cos(-(2 * Math.PI * works.rotationOrder) / l) * (particleRadius + arrangeRadius),
+      y: Math.sin(-(2 * Math.PI * works.rotationOrder) / l) * (particleRadius + arrangeRadius),
     };
   });
   return coords;
@@ -1226,25 +1227,7 @@ const araiCoords = ((particleRadius: number, arrangeRadius: number, dist: number
 export const mapCoordsArr: MapCoords[] = [
   {
     modeId: 1,
-    modeName: '文字コード順',
-    coords: lineCoords,
-    center: {
-      x: 0,
-      y: 0,
-    },
-    border: {
-      minX: -1500,
-      maxX: 1500,
-      minY: -50,
-      maxY: 50,
-    },
-    threshold: {
-      dist: 300,
-    },
-  },
-  {
-    modeId: 2,
-    modeName: '順路',
+    modeName: 'おすすめ順路',
     coords: circleCoords,
     center: {
       x: 0,
@@ -1257,16 +1240,16 @@ export const mapCoordsArr: MapCoords[] = [
       maxY: 800,
     },
     threshold: {
-      dist: 300,
+      dist: 400,
     },
   },
   {
-    modeId: 3,
+    modeId: 2,
     modeName: '対応デバイス',
     coords: miroCoords,
     center: {
-      x: 0,
-      y: 0,
+      x: 100,
+      y: 100,
     },
     border: {
       minX: -1000,
@@ -1279,44 +1262,8 @@ export const mapCoordsArr: MapCoords[] = [
     },
   },
   {
-    modeId: 4,
-    modeName: 'カテゴリ',
-    coords: araiCoords,
-    center: {
-      x: 0,
-      y: 0,
-    },
-    border: {
-      minX: -1000,
-      maxX: 1000,
-      minY: -1000,
-      maxY: 1000,
-    },
-    threshold: {
-      dist: 300,
-    },
-  },
-  {
-    modeId: 5,
-    modeName: 'カテゴリ2',
-    coords: puyoCoords,
-    center: {
-      x: 0,
-      y: 0,
-    },
-    border: {
-      minX: -1000,
-      maxX: 1000,
-      minY: -1000,
-      maxY: 1000,
-    },
-    threshold: {
-      dist: 320,
-    },
-  },
-  {
-    modeId: 6,
-    modeName: '所属',
+    modeId: 3,
+    modeName: '制作者の所属',
     coords: airplaneCoords,
     center: {
       x: -60,
@@ -1332,14 +1279,13 @@ export const mapCoordsArr: MapCoords[] = [
       dist: 450,
     },
   },
-
   {
-    modeId: 7,
-    modeName: '所属２',
-    coords: kuppaCoords,
+    modeId: 4,
+    modeName: '作品の題材',
+    coords: araiCoords,
     center: {
       x: 0,
-      y: 100,
+      y: 0,
     },
     border: {
       minX: -1000,
@@ -1348,27 +1294,82 @@ export const mapCoordsArr: MapCoords[] = [
       maxY: 1000,
     },
     threshold: {
-      dist: 500,
+      dist: 320,
     },
   },
   {
-    modeId: 8,
-    modeName: '多面体射影',
-    coords: projectionCoords,
+    modeId: 5,
+    modeName: '作品名',
+    coords: lineCoords,
     center: {
       x: 0,
       y: 0,
     },
     border: {
-      minX: -800,
-      maxX: 800,
-      minY: -800,
-      maxY: 800,
+      minX: -1500,
+      maxX: 1500,
+      minY: -50,
+      maxY: 50,
     },
     threshold: {
-      dist: 450,
+      dist: 300,
     },
   },
+  // {
+  //   modeId: 5,
+  //   modeName: 'カテゴリ2',
+  //   coords: puyoCoords,
+  //   center: {
+  //     x: 0,
+  //     y: 0,
+  //   },
+  //   border: {
+  //     minX: -1000,
+  //     maxX: 1000,
+  //     minY: -1000,
+  //     maxY: 1000,
+  //   },
+  //   threshold: {
+  //     dist: 320,
+  //   },
+  // },
+
+  // {
+  //   modeId: 7,
+  //   modeName: '所属２',
+  //   coords: kuppaCoords,
+  //   center: {
+  //     x: 0,
+  //     y: 100,
+  //   },
+  //   border: {
+  //     minX: -1000,
+  //     maxX: 1000,
+  //     minY: -1000,
+  //     maxY: 1000,
+  //   },
+  //   threshold: {
+  //     dist: 500,
+  //   },
+  // },
+  // {
+  //   modeId: 8,
+  //   modeName: '多面体射影',
+  //   coords: projectionCoords,
+  //   center: {
+  //     x: 0,
+  //     y: 0,
+  //   },
+  //   border: {
+  //     minX: -800,
+  //     maxX: 800,
+  //     minY: -800,
+  //     maxY: 800,
+  //   },
+  //   threshold: {
+  //     dist: 450,
+  //   },
+  // },
   // {
   //   modeId: 9,
   //   modeName: '対応デバイス2',
