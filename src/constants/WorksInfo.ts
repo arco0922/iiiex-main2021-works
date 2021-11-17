@@ -118,6 +118,26 @@ export const worksInfoArr: WorksInfo[] = [
         name: '望月花妃',
         affiliation: `情報学環\n教育部 2年`,
       },
+      {
+        name: '乘濵駿平',
+        affiliation: `工学部 3年`,
+      },
+      {
+        name: '島村龍伍',
+        affiliation: `工学部 3年`,
+      },
+      {
+        name: '御手洗陽紀',
+        affiliation: `工学部 3年`,
+      },
+      {
+        name: '三村有希',
+        affiliation: `後期教養学部 4年`,
+      },
+      {
+        name: '小原和花子',
+        affiliation: `総合文化研究科\n修士2年`,
+      },
     ],
     device: 'BOTH',
     caption: `本作品は、「ある日突然男性に生理が来たら……」という「もしも」の世界を構想したビデオアートです。
@@ -397,6 +417,10 @@ export const worksInfoArr: WorksInfo[] = [
       {
         name: '小山大嘉',
         affiliation: `情報理工学系研究科\n葛岡・雨宮・鳴海研究室\n修士1年`,
+      },
+      {
+        name: '松浦祐太郎',
+        affiliation: `情報理工学系研究科\n稲葉・岡田研究室\n修士1年`,
       },
     ],
     device: 'BOTH',
