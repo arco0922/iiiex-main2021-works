@@ -242,7 +242,7 @@ export const worksInfoArr: WorksInfo[] = [
     `,
     srcUrlPc: 'https://y-141.github.io/iiiex_pentagons/',
     srcUrlSp: 'https://y-141.github.io/iiiex_pentagons/',
-    formEntry: 'entry.1126317556' 
+    formEntry: 'entry.1126317556',
   },
   {
     id: 7,
