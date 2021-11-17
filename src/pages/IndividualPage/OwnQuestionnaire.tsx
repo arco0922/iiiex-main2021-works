@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import React from 'react';
 import { theme } from 'constants/Theme';
+import { headerHeight } from 'components/Header/Header';
+import { useWindowDimensions } from 'hooks/useWindowDimensions';
 
 interface Props {
   ownQuestionnaireUrl: string;
@@ -8,16 +10,22 @@ interface Props {
 }
 
 export const OwnQuestionnaire: React.VFC<Props> = ({ ownQuestionnaireUrl, isNarrowLayout }) => {
+  const { height } = useWindowDimensions();
   return (
-    <StyledQuestionnaireContainer>
-      　<StyledTitle className={isNarrowLayout ? 'narrow' : ''}>個別作品アンケート</StyledTitle>
+    <StyledQuestionnaireContainer formHeight={height - headerHeight - 100}>
+      <StyledTitle className={isNarrowLayout ? 'narrow' : ''}>個別作品アンケート</StyledTitle>
       <StyledQuestionnaireIframe src={ownQuestionnaireUrl}></StyledQuestionnaireIframe>
     </StyledQuestionnaireContainer>
   );
 };
 
-const StyledQuestionnaireContainer = styled.div`
-  height: 800px;
+interface StyledQuestionnaireContainerProps {
+  formHeight: number;
+}
+
+const StyledQuestionnaireContainer = styled.div<StyledQuestionnaireContainerProps>`
+  height: ${({ formHeight }) => formHeight}px;
+  min-height: ${({ formHeight }) => formHeight}px; ;
 `;
 const StyledTitle = styled.h4`
   color: white;
