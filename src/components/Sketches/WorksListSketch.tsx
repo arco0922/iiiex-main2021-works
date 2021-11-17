@@ -431,7 +431,7 @@ export const WorksListSketch = React.memo<Props>(
       }
       limitDisplayMove(p5);
 
-      if (p5.frameCount > 20 && !isFirstZoomExperienced && layoutRef.current === 'WIDE') {
+      if (p5.frameCount > 20 && !isFirstZoomExperienced) {
         isFirstZoomExperienced = true;
         obstacleSystem.setSelectIdFromOther(selectIdRef.current);
       }
@@ -571,11 +571,19 @@ export const WorksListSketch = React.memo<Props>(
         this.setSelectId(id);
         const particle = this.particles.filter((particle) => particle.id === id)[0];
         if (particle.targetX !== undefined && particle.targetY !== undefined) {
-          setWorldTarget(
-            particle.p5.width / 2 - (particle.targetX * limitWorldOffsetMaxScale) / 5,
-            particle.p5.height / 2 - (particle.targetY * limitWorldOffsetMaxScale) / 5,
-            limitWorldOffsetMaxScale / 5,
-          );
+          const width =
+            layoutRef.current !== 'NARROW' && initialAnimationStatusRef.current !== 'END'
+              ? this.p5.width - sideDetailWidth
+              : this.p5.width;
+          const height =
+            layoutRef.current === 'NARROW' ? this.p5.height - bottomDetailHeight - carouselSpaceHeight : this.p5.height;
+          const newTargetWorldOffsetScale = limitWorldOffsetMaxScale / 5;
+          const newTargetWorldOffsetX = width / 2 - particle.targetX * newTargetWorldOffsetScale;
+          let newTargetWorldOffsetY = height / 2 - particle.targetY * newTargetWorldOffsetScale;
+          if (layoutRef.current === 'NARROW') {
+            newTargetWorldOffsetY += carouselSpaceHeight;
+          }
+          setWorldTarget(newTargetWorldOffsetX, newTargetWorldOffsetY, newTargetWorldOffsetScale);
         }
       }
 
