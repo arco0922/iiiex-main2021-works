@@ -25,7 +25,7 @@ export interface WorksInfo {
 export const worksInfoArr: WorksInfo[] = [
   {
     id: 0,
-    rotationOrder: 2,
+    rotationOrder: 0,
     title: 'offline on line',
     thumbnailBaseName: '0_nakagawa',
     creators: [
@@ -59,7 +59,7 @@ export const worksInfoArr: WorksInfo[] = [
   },
   {
     id: 1,
-    rotationOrder: 1,
+    rotationOrder: 12,
     title: '僕と、生きる',
     thumbnailBaseName: '1_miyake',
     creators: [
@@ -91,7 +91,7 @@ export const worksInfoArr: WorksInfo[] = [
   },
   {
     id: 2,
-    rotationOrder: 7,
+    rotationOrder: 4,
     title: `Zero To One Mind
     ～1歳児キョリブレーション～`,
     thumbnailBaseName: '2_baby-thumbnail',
@@ -110,7 +110,7 @@ export const worksInfoArr: WorksInfo[] = [
   },
   {
     id: 3,
-    rotationOrder: 13,
+    rotationOrder: 8,
     title: 'on my . (オン マイ ピリオド)',
     thumbnailBaseName: '3_mochizuki',
     creators: [
@@ -133,7 +133,7 @@ export const worksInfoArr: WorksInfo[] = [
   },
   {
     id: 4,
-    rotationOrder: 10,
+    rotationOrder: 7,
     title: '#FiK握手会',
     thumbnailBaseName: '4_ueno_thumbnail',
     creators: [
@@ -158,7 +158,7 @@ export const worksInfoArr: WorksInfo[] = [
   },
   {
     id: 5,
-    rotationOrder: 11,
+    rotationOrder: 6,
     title: 'puppeTuber',
     thumbnailBaseName: '5_aramaki_puppeTuber',
     creators: [
@@ -187,7 +187,7 @@ export const worksInfoArr: WorksInfo[] = [
   },
   {
     id: 6,
-    rotationOrder: 3,
+    rotationOrder: 1,
     title: '矢印たち',
     thumbnailBaseName: '6_yajirushi',
     creators: [
@@ -228,7 +228,7 @@ export const worksInfoArr: WorksInfo[] = [
   },
   {
     id: 7,
-    rotationOrder: 6,
+    rotationOrder: 9,
     title: '確率であそぼ、',
     thumbnailBaseName: '7_kurata_picture',
     creators: [
@@ -273,7 +273,7 @@ export const worksInfoArr: WorksInfo[] = [
   },
   {
     id: 8,
-    rotationOrder: 8,
+    rotationOrder: 5,
     title: 'ENDRAGON',
     thumbnailBaseName: '8_ENDRAGON',
     creators: [
@@ -295,7 +295,7 @@ export const worksInfoArr: WorksInfo[] = [
   },
   {
     id: 9,
-    rotationOrder: 12,
+    rotationOrder: 10,
     title: 'KABUKU！',
     thumbnailBaseName: '9_kabuku_tmb800',
     creators: [
@@ -326,7 +326,7 @@ export const worksInfoArr: WorksInfo[] = [
   },
   {
     id: 10,
-    rotationOrder: 0,
+    rotationOrder: 11,
     title: 'Memorial Stella',
     thumbnailBaseName: '10_I-mage',
     creators: [
@@ -355,7 +355,7 @@ export const worksInfoArr: WorksInfo[] = [
   },
   {
     id: 11,
-    rotationOrder: 9,
+    rotationOrder: 13,
     title: 'Home-Gallery',
     thumbnailBaseName: '11_Siyuan_Home-Gallery',
     creators: [
@@ -379,7 +379,7 @@ export const worksInfoArr: WorksInfo[] = [
   {
     id: 12,
     title: 'デイリズム！',
-    rotationOrder: 5,
+    rotationOrder: 3,
     thumbnailBaseName: '12_mikami_dayliyrhythm',
     creators: [
       {
@@ -418,7 +418,7 @@ export const worksInfoArr: WorksInfo[] = [
   },
   {
     id: 13,
-    rotationOrder: 4,
+    rotationOrder: 2,
     title: 'Animal Clock',
     thumbnailBaseName: '13_akiyama',
     creators: [
