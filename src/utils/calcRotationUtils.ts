@@ -1,4 +1,5 @@
-import { worksInfoArr } from 'constants/WorksInfo';
+import { WorksInfo, worksInfoArr } from 'constants/WorksInfo';
+import { rotateArray } from './rotateArray';
 
 export const rotationSortedWorksInfoArr = worksInfoArr
   .slice()
@@ -11,4 +12,12 @@ export const calcNextRotationOrderWorksId = (id: number): number | null => {
     return null;
   }
   return rotationSortedWorksInfoArr[(idx + 1) % rotationLength].id;
+};
+
+export const calcRotatedOrderWorksFromSpecificId = (id: number): WorksInfo[] => {
+  const idx = rotationSortedWorksInfoArr.findIndex((worksInfo) => worksInfo.id === id);
+  if (idx < 0) {
+    return rotationSortedWorksInfoArr;
+  }
+  return rotateArray(rotationSortedWorksInfoArr, idx);
 };

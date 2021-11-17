@@ -125,6 +125,7 @@ export const AppRoot: React.VFC = () => {
               coords={coords}
               worksHistory={worksHistory}
               setWorksHistory={setWorksHistory}
+              mapModeId={mapModeId}
             />
           </Route>
           {!isProd && (

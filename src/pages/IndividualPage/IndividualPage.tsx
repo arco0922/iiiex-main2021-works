@@ -10,11 +10,11 @@ import { ReactionForm } from './ReactionForm';
 import { isMobile } from 'react-device-detect';
 import { Visited } from 'AppRoot';
 import { LayoutType } from 'constants/Layout';
-import { Coord } from 'constants/MapCoords';
+import { Coord, MapModeId } from 'constants/MapCoords';
 import { sortWorksByDistance } from 'utils/sortWorks';
 import { NavigationArea } from './NavigationArea';
 import { TopNavigationArea } from './TopNavigationArea';
-import { calcNextRotationOrderWorksId } from 'utils/calcRotationUtils';
+import { calcNextRotationOrderWorksId, calcRotatedOrderWorksFromSpecificId } from 'utils/calcRotationUtils';
 import { isSmoothScrollable, useFixScroll } from 'hooks/useFixScroll';
 
 interface Params {
@@ -32,6 +32,7 @@ interface Props {
   coords: Coord[];
   worksHistory: number[];
   setWorksHistory: (worksHistory: number[]) => void;
+  mapModeId: MapModeId;
 }
 
 const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = ({
@@ -47,6 +48,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   coords,
   worksHistory,
   setWorksHistory,
+  mapModeId,
 }) => {
   const worksId = Number(match.params.id);
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
@@ -98,6 +100,16 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
     if (worksInfo === undefined) {
       return [];
     }
+    if (mapModeId === 1) {
+      const rotateFromSelf = calcRotatedOrderWorksFromSpecificId(worksId);
+      const notVisitedRotateSortedIds = rotateFromSelf
+        .filter((info) => !visited[info.id] && info.id !== worksId && info.id !== lastVisitedId)
+        .map((info) => info.id);
+      const visitedRotateSortedIds = rotateFromSelf
+        .filter((info) => visited[info.id] && info.id !== worksId && info.id !== lastVisitedId)
+        .map((info) => info.id);
+      return notVisitedRotateSortedIds.concat(visitedRotateSortedIds);
+    }
     const notVisitedSortedIds = sortWorksByDistance(worksId, coords).filter(
       (id) => !visited[id] && id !== worksId && id !== lastVisitedId,
     );
@@ -105,9 +117,14 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
       (id) => visited[id] && id !== worksId && id !== lastVisitedId,
     );
     return notVisitedSortedIds.concat(visitedSortedIds);
-  }, [worksId, worksInfo, coords, visited, lastVisitedId]);
+  }, [worksId, worksInfo, coords, visited, lastVisitedId, mapModeId]);
 
-  const nextRotationOrderWorksId = React.useMemo<number | null>(() => calcNextRotationOrderWorksId(worksId), [worksId]);
+  const nextRotationOrderWorksId = React.useMemo<number | null>(() => {
+    if (visited[suggestIds[0]]) {
+      return calcNextRotationOrderWorksId(worksId);
+    }
+    return suggestIds[0];
+  }, [worksId, suggestIds, visited]);
 
   if (worksInfo === undefined) {
     return <></>;
