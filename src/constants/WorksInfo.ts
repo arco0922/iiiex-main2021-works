@@ -242,8 +242,7 @@ export const worksInfoArr: WorksInfo[] = [
     `,
     srcUrlPc: 'https://y-141.github.io/iiiex_pentagons/',
     srcUrlSp: 'https://y-141.github.io/iiiex_pentagons/',
-    formEntry: 'entry.1126317556',
-    isInitial: true,
+    formEntry: 'entry.1126317556' 
   },
   {
     id: 7,
@@ -370,7 +369,6 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://flask-325405.de.r.appspot.com/guest',
     srcUrlSp: 'https://flask-325405.de.r.appspot.com/guest',
     formEntry: 'entry.839388668',
-    isInitial: true,
   },
   {
     id: 11,
