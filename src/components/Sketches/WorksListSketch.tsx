@@ -432,7 +432,7 @@ export const WorksListSketch = React.memo<Props>(
       }
       limitDisplayMove(p5);
 
-      if (p5.frameCount > 20 && !isFirstZoomExperienced) {
+      if (p5.frameCount > 20 && !isFirstZoomExperienced && initialAnimationStatusRef.current === 'END') {
         isFirstZoomExperienced = true;
         obstacleSystem.setSelectIdFromOther(selectIdRef.current);
       }
@@ -580,7 +580,7 @@ export const WorksListSketch = React.memo<Props>(
             layoutRef.current === 'NARROW' ? this.p5.height - bottomDetailHeight - carouselSpaceHeight : this.p5.height;
           const newTargetWorldOffsetScale = limitWorldOffsetMaxScale / 5;
           const newTargetWorldOffsetX = width / 2 - particle.targetX * newTargetWorldOffsetScale;
-          let newTargetWorldOffsetY = height / 2 - particle.targetY * newTargetWorldOffsetScale;
+          let newTargetWorldOffsetY = height / 2 - particle.targetY * newTargetWorldOffsetScale - 20;
           if (layoutRef.current === 'NARROW') {
             newTargetWorldOffsetY += carouselSpaceHeight;
           }
