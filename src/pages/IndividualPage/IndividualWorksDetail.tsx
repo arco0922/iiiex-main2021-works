@@ -59,6 +59,13 @@ const StyledSection = styled.section`
       font-size: 20px;
     }
   }
+  & > p.device {
+    font-size: 16px;
+    white-space: pre-line;
+    &.narrow {
+      font-size: 13px;
+    }
+  }
   & > p.caption {
     font-size: 18px;
     white-space: pre-line;

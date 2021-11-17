@@ -28,7 +28,7 @@ export const HamburgerMenu = React.memo<Props>(function HamburgerMenu({
     <StyledContainer className={isShowHamburger ? 'show' : ''}>
       <StyledCloseIcon onClick={() => setIsShowHamburger(false)}></StyledCloseIcon>
       <StyledNavSection>
-        <StyledTitle>ナビゲーション一覧</StyledTitle>
+        <StyledTitle>MENU</StyledTitle>
         <StyledButton>
           <StyledLink to="/" onClick={() => setIsShowHamburger(false)}>
             展示空間TOP

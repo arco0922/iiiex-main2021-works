@@ -110,11 +110,11 @@ const StyledDetail = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
 `;
 
 const StyledSection = styled.section`
-  width: 100%;
+  width: calc(100% - 15px);
   font-weight: ${theme.fontWeight.bold};
   margin-bottom: 15px;
 `;
