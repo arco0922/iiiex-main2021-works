@@ -3,10 +3,10 @@ import { Device } from 'constants/WorksInfo';
 export const convertDeviceString = (device: Device): string => {
   switch (device) {
     case 'PC':
-      return 'PCのみ';
+      return 'PC';
     case 'SP':
-      return 'スマホのみ';
+      return 'スマホ・タブレット';
     case 'BOTH':
-      return 'PC・スマホどちらも対応';
+      return 'PC・スマホ・タブレット';
   }
 };
