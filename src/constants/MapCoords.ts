@@ -72,414 +72,414 @@ const circleCoords = ((particleRadius: number, arrangeRadius: number) => {
   return coords;
 })(100, 450);
 
-/** 扇形の座標 */
-const sectorCoords = ((particleRadius: number, arrangeRadius: number, sectorRadian: number) => {
-  const l = worksInfoArr.length;
-  const coords: Coord[] = worksInfoArr.map((works) => {
-    if (works.id == 0) {
-      return {
-        id: works.id,
-        x: 0,
-        y: 0,
-      };
-    } else if (works.id == 2) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 0) / 2 - (sectorRadian - 90) / 2)) *
-          (particleRadius + arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 0) / 2 - (sectorRadian - 90) / 2)) *
-          (particleRadius + arrangeRadius),
-      };
-    } else if (works.id == 5) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 1) / 2 - (sectorRadian - 90) / 2)) *
-          (particleRadius + arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 1) / 2 - (sectorRadian - 90) / 2)) *
-          (particleRadius + arrangeRadius),
-      };
-    } else if (works.id == 11) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 2) / 2 - (sectorRadian - 90) / 2)) *
-          (particleRadius + arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 2) / 2 - (sectorRadian - 90) / 2)) *
-          (particleRadius + arrangeRadius),
-      };
-    } else if (works.id == 1) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 0) / 9 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 0) / 9 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-      };
-    } else if (works.id == 3) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 1) / 9 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 1) / 9 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-      };
-    } else if (works.id == 4) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 2) / 9 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 2) / 9 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-      };
-    } else if (works.id == 6) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 3) / 9 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 3) / 9 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-      };
-    } else if (works.id == 7) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 4) / 9 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 4) / 9 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-      };
-    } else if (works.id == 8) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 5) / 9 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 5) / 9 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-      };
-    } else if (works.id == 9) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 6) / 9 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 6) / 9 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-      };
-    } else if (works.id == 10) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 7) / 9 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 7) / 9 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-      };
-    } else if (works.id == 12) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 8) / 9 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 8) / 9 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-      };
-    } else if (works.id == 13) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 9) / 9 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 9) / 9 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-      };
-    } else {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 9) / 9 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 9) / 9 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-      };
-    }
-  });
-  return coords;
-})(100, 450, 120);
+// /** 扇形の座標 */
+// const sectorCoords = ((particleRadius: number, arrangeRadius: number, sectorRadian: number) => {
+//   const l = worksInfoArr.length;
+//   const coords: Coord[] = worksInfoArr.map((works) => {
+//     if (works.id == 0) {
+//       return {
+//         id: works.id,
+//         x: 0,
+//         y: 0,
+//       };
+//     } else if (works.id == 2) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 0) / 2 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 0) / 2 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + arrangeRadius),
+//       };
+//     } else if (works.id == 5) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 1) / 2 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 1) / 2 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + arrangeRadius),
+//       };
+//     } else if (works.id == 11) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 2) / 2 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 2) / 2 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + arrangeRadius),
+//       };
+//     } else if (works.id == 1) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 0) / 9 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 0) / 9 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//       };
+//     } else if (works.id == 3) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 1) / 9 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 1) / 9 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//       };
+//     } else if (works.id == 4) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 2) / 9 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 2) / 9 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//       };
+//     } else if (works.id == 6) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 3) / 9 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 3) / 9 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//       };
+//     } else if (works.id == 7) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 4) / 9 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 4) / 9 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//       };
+//     } else if (works.id == 8) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 5) / 9 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 5) / 9 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//       };
+//     } else if (works.id == 9) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 6) / 9 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 6) / 9 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//       };
+//     } else if (works.id == 10) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 7) / 9 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 7) / 9 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//       };
+//     } else if (works.id == 12) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 8) / 9 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 8) / 9 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//       };
+//     } else if (works.id == 13) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 9) / 9 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 9) / 9 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//       };
+//     } else {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 9) / 9 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 9) / 9 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//       };
+//     }
+//   });
+//   return coords;
+// })(100, 450, 120);
 
-/** 多面体潰した感じ */
-const projectionCoords = ((particleRadius: number, arrangeRadius: number, sectorRadian: number) => {
-  const l = worksInfoArr.length;
-  const coords: Coord[] = worksInfoArr.map((works) => {
-    if (works.id == 0) {
-      return {
-        id: works.id,
-        x: 0,
-        y: 0,
-      };
-    } else if (works.id == 2) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 0) / 3 - (sectorRadian - 90) / 2)) *
-          (particleRadius + arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 0) / 3 - (sectorRadian - 90) / 2)) *
-          (particleRadius + arrangeRadius),
-      };
-    } else if (works.id == 5) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 1) / 3 - (sectorRadian - 90) / 2)) *
-          (particleRadius + arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 1) / 3 - (sectorRadian - 90) / 2)) *
-          (particleRadius + arrangeRadius),
-      };
-    } else if (works.id == 11) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 2) / 3 - (sectorRadian - 90) / 2)) *
-          (particleRadius + arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 2) / 3 - (sectorRadian - 90) / 2)) *
-          (particleRadius + arrangeRadius),
-      };
-    } else if (works.id == 1) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 0) / 10 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 0) / 10 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-      };
-    } else if (works.id == 3) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 1) / 10 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 1) / 10 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-      };
-    } else if (works.id == 4) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 2) / 10 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 2) / 10 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-      };
-    } else if (works.id == 6) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 3) / 10 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 3) / 10 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-      };
-    } else if (works.id == 7) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 4) / 10 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 4) / 10 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-      };
-    } else if (works.id == 8) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 5) / 10 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 5) / 10 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-      };
-    } else if (works.id == 9) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 6) / 10 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 6) / 10 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-      };
-    } else if (works.id == 10) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 7) / 10 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 7) / 10 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-      };
-    } else if (works.id == 12) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 8) / 10 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 8) / 10 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-      };
-    } else if (works.id == 13) {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 9) / 10 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 9) / 10 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-      };
-    } else {
-      return {
-        id: works.id,
-        x:
-          Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 9) / 10 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-        y:
-          Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 9) / 10 - (sectorRadian - 90) / 2)) *
-          (particleRadius + 2 * arrangeRadius),
-      };
-    }
-  });
-  return coords;
-})(100, 250, 360);
+// /** 多面体潰した感じ */
+// const projectionCoords = ((particleRadius: number, arrangeRadius: number, sectorRadian: number) => {
+//   const l = worksInfoArr.length;
+//   const coords: Coord[] = worksInfoArr.map((works) => {
+//     if (works.id == 0) {
+//       return {
+//         id: works.id,
+//         x: 0,
+//         y: 0,
+//       };
+//     } else if (works.id == 2) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 0) / 3 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 0) / 3 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + arrangeRadius),
+//       };
+//     } else if (works.id == 5) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 1) / 3 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 1) / 3 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + arrangeRadius),
+//       };
+//     } else if (works.id == 11) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 2) / 3 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 2) / 3 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + arrangeRadius),
+//       };
+//     } else if (works.id == 1) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 0) / 10 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 0) / 10 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//       };
+//     } else if (works.id == 3) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 1) / 10 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 1) / 10 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//       };
+//     } else if (works.id == 4) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 2) / 10 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 2) / 10 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//       };
+//     } else if (works.id == 6) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 3) / 10 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 3) / 10 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//       };
+//     } else if (works.id == 7) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 4) / 10 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 4) / 10 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//       };
+//     } else if (works.id == 8) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 5) / 10 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 5) / 10 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//       };
+//     } else if (works.id == 9) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 6) / 10 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 6) / 10 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//       };
+//     } else if (works.id == 10) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 7) / 10 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 7) / 10 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//       };
+//     } else if (works.id == 12) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 8) / 10 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 8) / 10 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//       };
+//     } else if (works.id == 13) {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 9) / 10 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 9) / 10 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//       };
+//     } else {
+//       return {
+//         id: works.id,
+//         x:
+//           Math.cos(((2 * Math.PI) / 360) * ((sectorRadian * 9) / 10 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//         y:
+//           Math.sin(((2 * Math.PI) / 360) * ((sectorRadian * 9) / 10 - (sectorRadian - 90) / 2)) *
+//           (particleRadius + 2 * arrangeRadius),
+//       };
+//     }
+//   });
+//   return coords;
+// })(100, 250, 360);
 
 /** neuralnetworkワロタ */
-const neuralCoords = ((particleRadius: number, arrangeRadius: number, sectorRadian: number) => {
-  const l = worksInfoArr.length;
-  const coords: Coord[] = worksInfoArr.map((works) => {
-    if (works.id == 0) {
-      return {
-        id: works.id,
-        x: -500,
-        y: 0,
-      };
-    } else if (works.id == 2) {
-      return {
-        id: works.id,
-        x: 500,
-        y: 500,
-      };
-    } else if (works.id == 5) {
-      return {
-        id: works.id,
-        x: 500,
-        y: 0,
-      };
-    } else if (works.id == 11) {
-      return {
-        id: works.id,
-        x: 500,
-        y: -500,
-      };
-    } else if (works.id == 1) {
-      return {
-        id: works.id,
-        x: 0,
-        y: 100,
-      };
-    } else if (works.id == 3) {
-      return {
-        id: works.id,
-        x: 0,
-        y: 300,
-      };
-    } else if (works.id == 4) {
-      return {
-        id: works.id,
-        x: 0,
-        y: 500,
-      };
-    } else if (works.id == 6) {
-      return {
-        id: works.id,
-        x: 0,
-        y: 700,
-      };
-    } else if (works.id == 7) {
-      return {
-        id: works.id,
-        x: 0,
-        y: 900,
-      };
-    } else if (works.id == 8) {
-      return {
-        id: works.id,
-        x: 0,
-        y: -100,
-      };
-    } else if (works.id == 9) {
-      return {
-        id: works.id,
-        x: 0,
-        y: -300,
-      };
-    } else if (works.id == 10) {
-      return {
-        id: works.id,
-        x: 0,
-        y: -500,
-      };
-    } else if (works.id == 12) {
-      return {
-        id: works.id,
-        x: 0,
-        y: -700,
-      };
-    } else if (works.id == 13) {
-      return {
-        id: works.id,
-        x: 0,
-        y: -900,
-      };
-    } else {
-      return {
-        id: works.id,
-        x: 0,
-        y: -900,
-      };
-    }
-  });
-  return coords;
-})(100, 450, 120);
+// const neuralCoords = ((particleRadius: number, arrangeRadius: number, sectorRadian: number) => {
+//   const l = worksInfoArr.length;
+//   const coords: Coord[] = worksInfoArr.map((works) => {
+//     if (works.id == 0) {
+//       return {
+//         id: works.id,
+//         x: -500,
+//         y: 0,
+//       };
+//     } else if (works.id == 2) {
+//       return {
+//         id: works.id,
+//         x: 500,
+//         y: 500,
+//       };
+//     } else if (works.id == 5) {
+//       return {
+//         id: works.id,
+//         x: 500,
+//         y: 0,
+//       };
+//     } else if (works.id == 11) {
+//       return {
+//         id: works.id,
+//         x: 500,
+//         y: -500,
+//       };
+//     } else if (works.id == 1) {
+//       return {
+//         id: works.id,
+//         x: 0,
+//         y: 100,
+//       };
+//     } else if (works.id == 3) {
+//       return {
+//         id: works.id,
+//         x: 0,
+//         y: 300,
+//       };
+//     } else if (works.id == 4) {
+//       return {
+//         id: works.id,
+//         x: 0,
+//         y: 500,
+//       };
+//     } else if (works.id == 6) {
+//       return {
+//         id: works.id,
+//         x: 0,
+//         y: 700,
+//       };
+//     } else if (works.id == 7) {
+//       return {
+//         id: works.id,
+//         x: 0,
+//         y: 900,
+//       };
+//     } else if (works.id == 8) {
+//       return {
+//         id: works.id,
+//         x: 0,
+//         y: -100,
+//       };
+//     } else if (works.id == 9) {
+//       return {
+//         id: works.id,
+//         x: 0,
+//         y: -300,
+//       };
+//     } else if (works.id == 10) {
+//       return {
+//         id: works.id,
+//         x: 0,
+//         y: -500,
+//       };
+//     } else if (works.id == 12) {
+//       return {
+//         id: works.id,
+//         x: 0,
+//         y: -700,
+//       };
+//     } else if (works.id == 13) {
+//       return {
+//         id: works.id,
+//         x: 0,
+//         y: -900,
+//       };
+//     } else {
+//       return {
+//         id: works.id,
+//         x: 0,
+//         y: -900,
+//       };
+//     }
+//   });
+//   return coords;
+// })(100, 450, 120);
 
 /** miroのお絵描きから */
 const miroCoords = ((particleRadius: number, arrangeRadius: number, sectorRadian: number) => {
@@ -624,302 +624,302 @@ const miroCoords = ((particleRadius: number, arrangeRadius: number, sectorRadian
   return coords;
 })(100, 200, 360);
 
-/** カテゴリの座標 */
-const categoryCoords = ((particleRadius: number, arrangeRadius: number, dist: number) => {
-  const l = worksInfoArr.length;
-  const coords: Coord[] = worksInfoArr.map((works) => {
-    if (works.id == 0) {
-      return {
-        id: works.id,
-        x: Math.cos(Math.PI / 6) * (particleRadius + arrangeRadius) + dist * 1,
-        y: Math.sin(Math.PI / 6) * (particleRadius + arrangeRadius) - dist * 1,
-      };
-    } else if (works.id == 1) {
-      return {
-        id: works.id,
-        x: Math.cos(Math.PI / 6) * (particleRadius + arrangeRadius) - dist * 1,
-        y: Math.sin(Math.PI / 6) * (particleRadius + arrangeRadius) + dist * 1,
-      };
-    } else if (works.id == 2) {
-      return {
-        id: works.id,
-        x: Math.cos(Math.PI / 2) * (particleRadius + arrangeRadius) + dist * 1,
-        y: Math.sin(Math.PI / 2) * (particleRadius + arrangeRadius) + dist * 1,
-      };
-    } else if (works.id == 3) {
-      return {
-        id: works.id,
-        x: Math.cos(Math.PI / 2) * (particleRadius + arrangeRadius) - dist * 1,
-        y: Math.sin(Math.PI / 2) * (particleRadius + arrangeRadius) - dist * 1,
-      };
-    } else if (works.id == 4) {
-      return {
-        id: works.id,
-        x: Math.cos(Math.PI / 2) * (particleRadius + arrangeRadius) + 2 * dist * 1,
-        y: Math.sin(Math.PI / 2) * (particleRadius + arrangeRadius) - 2 * dist * 1,
-      };
-    } else if (works.id == 5) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 5) / 6) * (particleRadius + arrangeRadius) - dist * 1,
-        y: Math.sin((Math.PI * 5) / 6) * (particleRadius + arrangeRadius) - dist * 1,
-      };
-    } else if (works.id == 6) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 5) / 6) * (particleRadius + arrangeRadius) + dist * 1,
-        y: Math.sin((Math.PI * 5) / 6) * (particleRadius + arrangeRadius) + dist * 1,
-      };
-    } else if (works.id == 7) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) + dist * 1,
-        y: Math.sin((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) + dist * 1,
-      };
-    } else if (works.id == 8) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) - dist * 1,
-        y: Math.sin((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) - dist * 1,
-      };
-    } else if (works.id == 9) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) - 2 * dist * 1,
-        y: Math.sin((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) + 2 * dist * 1,
-      };
-    } else if (works.id == 10) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 7) / 6) * (particleRadius + arrangeRadius) + dist * 1,
-        y: Math.sin((Math.PI * 7) / 6) * (particleRadius + arrangeRadius) - dist * 1,
-      };
-    } else if (works.id == 11) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 7) / 6) * (particleRadius + arrangeRadius) - dist * 1,
-        y: Math.sin((Math.PI * 7) / 6) * (particleRadius + arrangeRadius) + dist * 1,
-      };
-    } else if (works.id == 12) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 11) / 6) * (particleRadius + arrangeRadius) - dist * 1,
-        y: Math.sin((Math.PI * 11) / 6) * (particleRadius + arrangeRadius) - dist * 1,
-      };
-    } else if (works.id == 13) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 11) / 6) * (particleRadius + arrangeRadius) + dist * 1,
-        y: Math.sin((Math.PI * 11) / 6) * (particleRadius + arrangeRadius) + dist * 1,
-      };
-    } else {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 11) / 6) * (particleRadius + arrangeRadius) + dist * 1,
-        y: Math.sin((Math.PI * 11) / 6) * (particleRadius + arrangeRadius) - dist * 1,
-      };
-    }
-  });
-  return coords;
-})(100, 800, 100);
+// /** カテゴリの座標 */
+// const categoryCoords = ((particleRadius: number, arrangeRadius: number, dist: number) => {
+//   const l = worksInfoArr.length;
+//   const coords: Coord[] = worksInfoArr.map((works) => {
+//     if (works.id == 0) {
+//       return {
+//         id: works.id,
+//         x: Math.cos(Math.PI / 6) * (particleRadius + arrangeRadius) + dist * 1,
+//         y: Math.sin(Math.PI / 6) * (particleRadius + arrangeRadius) - dist * 1,
+//       };
+//     } else if (works.id == 1) {
+//       return {
+//         id: works.id,
+//         x: Math.cos(Math.PI / 6) * (particleRadius + arrangeRadius) - dist * 1,
+//         y: Math.sin(Math.PI / 6) * (particleRadius + arrangeRadius) + dist * 1,
+//       };
+//     } else if (works.id == 2) {
+//       return {
+//         id: works.id,
+//         x: Math.cos(Math.PI / 2) * (particleRadius + arrangeRadius) + dist * 1,
+//         y: Math.sin(Math.PI / 2) * (particleRadius + arrangeRadius) + dist * 1,
+//       };
+//     } else if (works.id == 3) {
+//       return {
+//         id: works.id,
+//         x: Math.cos(Math.PI / 2) * (particleRadius + arrangeRadius) - dist * 1,
+//         y: Math.sin(Math.PI / 2) * (particleRadius + arrangeRadius) - dist * 1,
+//       };
+//     } else if (works.id == 4) {
+//       return {
+//         id: works.id,
+//         x: Math.cos(Math.PI / 2) * (particleRadius + arrangeRadius) + 2 * dist * 1,
+//         y: Math.sin(Math.PI / 2) * (particleRadius + arrangeRadius) - 2 * dist * 1,
+//       };
+//     } else if (works.id == 5) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 5) / 6) * (particleRadius + arrangeRadius) - dist * 1,
+//         y: Math.sin((Math.PI * 5) / 6) * (particleRadius + arrangeRadius) - dist * 1,
+//       };
+//     } else if (works.id == 6) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 5) / 6) * (particleRadius + arrangeRadius) + dist * 1,
+//         y: Math.sin((Math.PI * 5) / 6) * (particleRadius + arrangeRadius) + dist * 1,
+//       };
+//     } else if (works.id == 7) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) + dist * 1,
+//         y: Math.sin((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) + dist * 1,
+//       };
+//     } else if (works.id == 8) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) - dist * 1,
+//         y: Math.sin((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) - dist * 1,
+//       };
+//     } else if (works.id == 9) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) - 2 * dist * 1,
+//         y: Math.sin((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) + 2 * dist * 1,
+//       };
+//     } else if (works.id == 10) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 7) / 6) * (particleRadius + arrangeRadius) + dist * 1,
+//         y: Math.sin((Math.PI * 7) / 6) * (particleRadius + arrangeRadius) - dist * 1,
+//       };
+//     } else if (works.id == 11) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 7) / 6) * (particleRadius + arrangeRadius) - dist * 1,
+//         y: Math.sin((Math.PI * 7) / 6) * (particleRadius + arrangeRadius) + dist * 1,
+//       };
+//     } else if (works.id == 12) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 11) / 6) * (particleRadius + arrangeRadius) - dist * 1,
+//         y: Math.sin((Math.PI * 11) / 6) * (particleRadius + arrangeRadius) - dist * 1,
+//       };
+//     } else if (works.id == 13) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 11) / 6) * (particleRadius + arrangeRadius) + dist * 1,
+//         y: Math.sin((Math.PI * 11) / 6) * (particleRadius + arrangeRadius) + dist * 1,
+//       };
+//     } else {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 11) / 6) * (particleRadius + arrangeRadius) + dist * 1,
+//         y: Math.sin((Math.PI * 11) / 6) * (particleRadius + arrangeRadius) - dist * 1,
+//       };
+//     }
+//   });
+//   return coords;
+// })(100, 800, 100);
 
-/** カテゴリの座標 */
-const taeroCoords = ((particleRadius: number, arrangeRadius: number, dist: number, dist2: number, margin: number) => {
-  const l = worksInfoArr.length;
-  const coords: Coord[] = worksInfoArr.map((works) => {
-    if (works.id == 0) {
-      return {
-        id: works.id,
-        x: Math.cos(Math.PI / 6) * (particleRadius + arrangeRadius) - dist * 1 - margin,
-        y: Math.sin(Math.PI / 6) * (particleRadius + arrangeRadius) - dist * 1 - margin,
-      };
-    } else if (works.id == 1) {
-      return {
-        id: works.id,
-        x: Math.cos(Math.PI / 6) * (particleRadius + arrangeRadius) + dist * 1 + 60 - margin,
-        y: Math.sin(Math.PI / 6) * (particleRadius + arrangeRadius) + dist * 1 - 60 - margin,
-      };
-    } else if (works.id == 2) {
-      return {
-        id: works.id,
-        x: Math.cos(Math.PI / 2) * (particleRadius + arrangeRadius) + dist2 * 1,
-        y: Math.sin(Math.PI / 2) * (particleRadius + arrangeRadius) + dist2 * 1,
-      };
-    } else if (works.id == 3) {
-      return {
-        id: works.id,
-        x: Math.cos(Math.PI / 2) * (particleRadius + arrangeRadius) - dist2 * 1,
-        y: Math.sin(Math.PI / 2) * (particleRadius + arrangeRadius) - dist2 * 1,
-      };
-    } else if (works.id == 4) {
-      return {
-        id: works.id,
-        x: Math.cos(Math.PI / 2) * (particleRadius + arrangeRadius) + 2 * dist2 * 1,
-        y: Math.sin(Math.PI / 2) * (particleRadius + arrangeRadius) - 2 * dist2 * 1,
-      };
-    } else if (works.id == 5) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 5) / 6) * (particleRadius + arrangeRadius) + dist * 1,
-        y: Math.sin((Math.PI * 5) / 6) * (particleRadius + arrangeRadius) - dist * 1,
-      };
-    } else if (works.id == 6) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 5) / 6) * (particleRadius + arrangeRadius) - dist * 1,
-        y: Math.sin((Math.PI * 5) / 6) * (particleRadius + arrangeRadius) + dist * 1,
-      };
-    } else if (works.id == 7) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) + dist2 * 1,
-        y: Math.sin((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) + dist2 * 1,
-      };
-    } else if (works.id == 8) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) - dist2 * 1,
-        y: Math.sin((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) - dist2 * 1,
-      };
-    } else if (works.id == 9) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) - 2 * dist2 * 1,
-        y: Math.sin((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) + 2 * dist2 * 1,
-      };
-    } else if (works.id == 10) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 7) / 6) * (particleRadius + arrangeRadius) - dist * 1 - 60,
-        y: Math.sin((Math.PI * 7) / 6) * (particleRadius + arrangeRadius) - dist * 1 + 60,
-      };
-    } else if (works.id == 11) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 7) / 6) * (particleRadius + arrangeRadius) + dist * 1,
-        y: Math.sin((Math.PI * 7) / 6) * (particleRadius + arrangeRadius) + dist * 1,
-      };
-    } else if (works.id == 12) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 11) / 6) * (particleRadius + arrangeRadius) + dist * 1 - margin,
-        y: Math.sin((Math.PI * 11) / 6) * (particleRadius + arrangeRadius) - dist * 1 - margin,
-      };
-    } else if (works.id == 13) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 11) / 6) * (particleRadius + arrangeRadius) - dist * 1 - margin,
-        y: Math.sin((Math.PI * 11) / 6) * (particleRadius + arrangeRadius) + dist * 1 - margin,
-      };
-    } else {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 11) / 6) * (particleRadius + arrangeRadius) + dist * 1,
-        y: Math.sin((Math.PI * 11) / 6) * (particleRadius + arrangeRadius) - dist * 1,
-      };
-    }
-  });
-  return coords;
-})(100, 500, 100, 100, 50);
+// /** カテゴリの座標 */
+// const taeroCoords = ((particleRadius: number, arrangeRadius: number, dist: number, dist2: number, margin: number) => {
+//   const l = worksInfoArr.length;
+//   const coords: Coord[] = worksInfoArr.map((works) => {
+//     if (works.id == 0) {
+//       return {
+//         id: works.id,
+//         x: Math.cos(Math.PI / 6) * (particleRadius + arrangeRadius) - dist * 1 - margin,
+//         y: Math.sin(Math.PI / 6) * (particleRadius + arrangeRadius) - dist * 1 - margin,
+//       };
+//     } else if (works.id == 1) {
+//       return {
+//         id: works.id,
+//         x: Math.cos(Math.PI / 6) * (particleRadius + arrangeRadius) + dist * 1 + 60 - margin,
+//         y: Math.sin(Math.PI / 6) * (particleRadius + arrangeRadius) + dist * 1 - 60 - margin,
+//       };
+//     } else if (works.id == 2) {
+//       return {
+//         id: works.id,
+//         x: Math.cos(Math.PI / 2) * (particleRadius + arrangeRadius) + dist2 * 1,
+//         y: Math.sin(Math.PI / 2) * (particleRadius + arrangeRadius) + dist2 * 1,
+//       };
+//     } else if (works.id == 3) {
+//       return {
+//         id: works.id,
+//         x: Math.cos(Math.PI / 2) * (particleRadius + arrangeRadius) - dist2 * 1,
+//         y: Math.sin(Math.PI / 2) * (particleRadius + arrangeRadius) - dist2 * 1,
+//       };
+//     } else if (works.id == 4) {
+//       return {
+//         id: works.id,
+//         x: Math.cos(Math.PI / 2) * (particleRadius + arrangeRadius) + 2 * dist2 * 1,
+//         y: Math.sin(Math.PI / 2) * (particleRadius + arrangeRadius) - 2 * dist2 * 1,
+//       };
+//     } else if (works.id == 5) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 5) / 6) * (particleRadius + arrangeRadius) + dist * 1,
+//         y: Math.sin((Math.PI * 5) / 6) * (particleRadius + arrangeRadius) - dist * 1,
+//       };
+//     } else if (works.id == 6) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 5) / 6) * (particleRadius + arrangeRadius) - dist * 1,
+//         y: Math.sin((Math.PI * 5) / 6) * (particleRadius + arrangeRadius) + dist * 1,
+//       };
+//     } else if (works.id == 7) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) + dist2 * 1,
+//         y: Math.sin((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) + dist2 * 1,
+//       };
+//     } else if (works.id == 8) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) - dist2 * 1,
+//         y: Math.sin((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) - dist2 * 1,
+//       };
+//     } else if (works.id == 9) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) - 2 * dist2 * 1,
+//         y: Math.sin((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) + 2 * dist2 * 1,
+//       };
+//     } else if (works.id == 10) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 7) / 6) * (particleRadius + arrangeRadius) - dist * 1 - 60,
+//         y: Math.sin((Math.PI * 7) / 6) * (particleRadius + arrangeRadius) - dist * 1 + 60,
+//       };
+//     } else if (works.id == 11) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 7) / 6) * (particleRadius + arrangeRadius) + dist * 1,
+//         y: Math.sin((Math.PI * 7) / 6) * (particleRadius + arrangeRadius) + dist * 1,
+//       };
+//     } else if (works.id == 12) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 11) / 6) * (particleRadius + arrangeRadius) + dist * 1 - margin,
+//         y: Math.sin((Math.PI * 11) / 6) * (particleRadius + arrangeRadius) - dist * 1 - margin,
+//       };
+//     } else if (works.id == 13) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 11) / 6) * (particleRadius + arrangeRadius) - dist * 1 - margin,
+//         y: Math.sin((Math.PI * 11) / 6) * (particleRadius + arrangeRadius) + dist * 1 - margin,
+//       };
+//     } else {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 11) / 6) * (particleRadius + arrangeRadius) + dist * 1,
+//         y: Math.sin((Math.PI * 11) / 6) * (particleRadius + arrangeRadius) - dist * 1,
+//       };
+//     }
+//   });
+//   return coords;
+// })(100, 500, 100, 100, 50);
 
-/** カテゴリの座標 */
-const puyoCoords = ((particleRadius: number, arrangeRadius: number, dist: number, dist2: number, margin: number) => {
-  const l = worksInfoArr.length;
-  const coords: Coord[] = worksInfoArr.map((works) => {
-    if (works.id == 0) {
-      return {
-        id: works.id,
-        x: Math.cos(Math.PI / 6) * (particleRadius + arrangeRadius - dist),
-        y: Math.sin(Math.PI / 6) * (particleRadius + arrangeRadius - dist),
-      };
-    } else if (works.id == 1) {
-      return {
-        id: works.id,
-        x: Math.cos(Math.PI / 6) * (particleRadius + arrangeRadius + 2 * dist),
-        y: Math.sin(Math.PI / 6) * (particleRadius + arrangeRadius + 2 * dist),
-      };
-    } else if (works.id == 2) {
-      return {
-        id: works.id,
-        x: Math.cos(Math.PI / 2) * (particleRadius + arrangeRadius),
-        y: Math.sin(Math.PI / 2) * (particleRadius + arrangeRadius) - dist2 * 0.8,
-      };
-    } else if (works.id == 3) {
-      return {
-        id: works.id,
-        x: Math.cos(Math.PI / 2) * (particleRadius + arrangeRadius) - Math.sqrt(3) * dist2 * 0.8,
-        y: Math.sin(Math.PI / 2) * (particleRadius + arrangeRadius) + 2 * dist2 * 0.8,
-      };
-    } else if (works.id == 4) {
-      return {
-        id: works.id,
-        x: Math.cos(Math.PI / 2) * (particleRadius + arrangeRadius) + Math.sqrt(3) * dist2 * 0.8,
-        y: Math.sin(Math.PI / 2) * (particleRadius + arrangeRadius) + 2 * dist2 * 0.8,
-      };
-    } else if (works.id == 5) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 5) / 6) * (particleRadius + arrangeRadius + 2 * dist),
-        y: Math.sin((Math.PI * 5) / 6) * (particleRadius + arrangeRadius + 2 * dist),
-      };
-    } else if (works.id == 6) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 5) / 6) * (particleRadius + arrangeRadius - dist),
-        y: Math.sin((Math.PI * 5) / 6) * (particleRadius + arrangeRadius - dist),
-      };
-    } else if (works.id == 7) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 3) / 2) * (particleRadius + arrangeRadius),
-        y: Math.sin((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) + dist2 * 0.8,
-      };
-    } else if (works.id == 8) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) - Math.sqrt(3) * dist2 * 0.8,
-        y: Math.sin((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) - 2 * dist2 * 0.8,
-      };
-    } else if (works.id == 9) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) + Math.sqrt(3) * dist2 * 0.8,
-        y: Math.sin((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) - 2 * dist2 * 0.8,
-      };
-    } else if (works.id == 10) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 7) / 6) * (particleRadius + arrangeRadius - dist),
-        y: Math.sin((Math.PI * 7) / 6) * (particleRadius + arrangeRadius - dist),
-      };
-    } else if (works.id == 11) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 7) / 6) * (particleRadius + arrangeRadius + 2 * dist),
-        y: Math.sin((Math.PI * 7) / 6) * (particleRadius + arrangeRadius + 2 * dist),
-      };
-    } else if (works.id == 12) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 11) / 6) * (particleRadius + arrangeRadius + 2 * dist),
-        y: Math.sin((Math.PI * 11) / 6) * (particleRadius + arrangeRadius + 2 * dist),
-      };
-    } else if (works.id == 13) {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 11) / 6) * (particleRadius + arrangeRadius - dist),
-        y: Math.sin((Math.PI * 11) / 6) * (particleRadius + arrangeRadius - dist),
-      };
-    } else {
-      return {
-        id: works.id,
-        x: Math.cos((Math.PI * 11) / 6) * (particleRadius + arrangeRadius),
-        y: Math.sin((Math.PI * 11) / 6) * (particleRadius + arrangeRadius),
-      };
-    }
-  });
-  return coords;
-})(100, 400, 100, 100, 50);
+// /** カテゴリの座標 */
+// const puyoCoords = ((particleRadius: number, arrangeRadius: number, dist: number, dist2: number, margin: number) => {
+//   const l = worksInfoArr.length;
+//   const coords: Coord[] = worksInfoArr.map((works) => {
+//     if (works.id == 0) {
+//       return {
+//         id: works.id,
+//         x: Math.cos(Math.PI / 6) * (particleRadius + arrangeRadius - dist),
+//         y: Math.sin(Math.PI / 6) * (particleRadius + arrangeRadius - dist),
+//       };
+//     } else if (works.id == 1) {
+//       return {
+//         id: works.id,
+//         x: Math.cos(Math.PI / 6) * (particleRadius + arrangeRadius + 2 * dist),
+//         y: Math.sin(Math.PI / 6) * (particleRadius + arrangeRadius + 2 * dist),
+//       };
+//     } else if (works.id == 2) {
+//       return {
+//         id: works.id,
+//         x: Math.cos(Math.PI / 2) * (particleRadius + arrangeRadius),
+//         y: Math.sin(Math.PI / 2) * (particleRadius + arrangeRadius) - dist2 * 0.8,
+//       };
+//     } else if (works.id == 3) {
+//       return {
+//         id: works.id,
+//         x: Math.cos(Math.PI / 2) * (particleRadius + arrangeRadius) - Math.sqrt(3) * dist2 * 0.8,
+//         y: Math.sin(Math.PI / 2) * (particleRadius + arrangeRadius) + 2 * dist2 * 0.8,
+//       };
+//     } else if (works.id == 4) {
+//       return {
+//         id: works.id,
+//         x: Math.cos(Math.PI / 2) * (particleRadius + arrangeRadius) + Math.sqrt(3) * dist2 * 0.8,
+//         y: Math.sin(Math.PI / 2) * (particleRadius + arrangeRadius) + 2 * dist2 * 0.8,
+//       };
+//     } else if (works.id == 5) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 5) / 6) * (particleRadius + arrangeRadius + 2 * dist),
+//         y: Math.sin((Math.PI * 5) / 6) * (particleRadius + arrangeRadius + 2 * dist),
+//       };
+//     } else if (works.id == 6) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 5) / 6) * (particleRadius + arrangeRadius - dist),
+//         y: Math.sin((Math.PI * 5) / 6) * (particleRadius + arrangeRadius - dist),
+//       };
+//     } else if (works.id == 7) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 3) / 2) * (particleRadius + arrangeRadius),
+//         y: Math.sin((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) + dist2 * 0.8,
+//       };
+//     } else if (works.id == 8) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) - Math.sqrt(3) * dist2 * 0.8,
+//         y: Math.sin((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) - 2 * dist2 * 0.8,
+//       };
+//     } else if (works.id == 9) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) + Math.sqrt(3) * dist2 * 0.8,
+//         y: Math.sin((Math.PI * 3) / 2) * (particleRadius + arrangeRadius) - 2 * dist2 * 0.8,
+//       };
+//     } else if (works.id == 10) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 7) / 6) * (particleRadius + arrangeRadius - dist),
+//         y: Math.sin((Math.PI * 7) / 6) * (particleRadius + arrangeRadius - dist),
+//       };
+//     } else if (works.id == 11) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 7) / 6) * (particleRadius + arrangeRadius + 2 * dist),
+//         y: Math.sin((Math.PI * 7) / 6) * (particleRadius + arrangeRadius + 2 * dist),
+//       };
+//     } else if (works.id == 12) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 11) / 6) * (particleRadius + arrangeRadius + 2 * dist),
+//         y: Math.sin((Math.PI * 11) / 6) * (particleRadius + arrangeRadius + 2 * dist),
+//       };
+//     } else if (works.id == 13) {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 11) / 6) * (particleRadius + arrangeRadius - dist),
+//         y: Math.sin((Math.PI * 11) / 6) * (particleRadius + arrangeRadius - dist),
+//       };
+//     } else {
+//       return {
+//         id: works.id,
+//         x: Math.cos((Math.PI * 11) / 6) * (particleRadius + arrangeRadius),
+//         y: Math.sin((Math.PI * 11) / 6) * (particleRadius + arrangeRadius),
+//       };
+//     }
+//   });
+//   return coords;
+// })(100, 400, 100, 100, 50);
 
 /** 飛行機の座標 */
 const airplaneCoords = ((
@@ -1026,104 +1026,104 @@ const airplaneCoords = ((
   return coords;
 })(400, 100, 200, 120, 240);
 
-/** クッパクラウン */
-const kuppaCoords = ((particleRadius: number, arrangeRadius: number, dist: number, rectangle_dist: number) => {
-  const l = worksInfoArr.length;
-  const coords: Coord[] = worksInfoArr.map((works) => {
-    if (works.id == 0) {
-      return {
-        id: works.id,
-        x: dist,
-        y: -dist,
-      };
-    } else if (works.id == 1) {
-      return {
-        id: works.id,
-        x: rectangle_dist,
-        y: 0,
-      };
-    } else if (works.id == 2) {
-      return {
-        id: works.id,
-        x: Math.cos(((2 * Math.PI) / 360) * (20 * 1)) * (particleRadius + arrangeRadius),
-        y: Math.sin(((2 * Math.PI) / 360) * (20 * 1)) * (particleRadius + arrangeRadius),
-      };
-    } else if (works.id == 3) {
-      return {
-        id: works.id,
-        x: 0,
-        y: rectangle_dist,
-      };
-    } else if (works.id == 4) {
-      return {
-        id: works.id,
-        x: 0,
-        y: -rectangle_dist,
-      };
-    } else if (works.id == 5) {
-      return {
-        id: works.id,
-        x: -dist,
-        y: -dist,
-      };
-    } else if (works.id == 6) {
-      return {
-        id: works.id,
-        x: Math.cos(((2 * Math.PI) / 360) * (20 * 2)) * (particleRadius + arrangeRadius),
-        y: Math.sin(((2 * Math.PI) / 360) * (20 * 2)) * (particleRadius + arrangeRadius),
-      };
-    } else if (works.id == 7) {
-      return {
-        id: works.id,
-        x: Math.cos(((2 * Math.PI) / 360) * (20 * 3)) * (particleRadius + arrangeRadius),
-        y: Math.sin(((2 * Math.PI) / 360) * (20 * 3)) * (particleRadius + arrangeRadius),
-      };
-    } else if (works.id == 8) {
-      return {
-        id: works.id,
-        x: Math.cos(((2 * Math.PI) / 360) * (20 * 4)) * (particleRadius + arrangeRadius),
-        y: Math.sin(((2 * Math.PI) / 360) * (20 * 4)) * (particleRadius + arrangeRadius),
-      };
-    } else if (works.id == 9) {
-      return {
-        id: works.id,
-        x: -rectangle_dist,
-        y: 0,
-      };
-    } else if (works.id == 10) {
-      return {
-        id: works.id,
-        x: Math.cos(((2 * Math.PI) / 360) * (20 * 5)) * (particleRadius + arrangeRadius),
-        y: Math.sin(((2 * Math.PI) / 360) * (20 * 5)) * (particleRadius + arrangeRadius),
-      };
-    } else if (works.id == 11) {
-      return {
-        id: works.id,
-        x: Math.cos(((2 * Math.PI) / 360) * (20 * 6)) * (particleRadius + arrangeRadius),
-        y: Math.sin(((2 * Math.PI) / 360) * (20 * 6)) * (particleRadius + arrangeRadius),
-      };
-    } else if (works.id == 12) {
-      return {
-        id: works.id,
-        x: Math.cos(((2 * Math.PI) / 360) * (20 * 7)) * (particleRadius + arrangeRadius),
-        y: Math.sin(((2 * Math.PI) / 360) * (20 * 7)) * (particleRadius + arrangeRadius),
-      };
-    } else if (works.id == 13) {
-      return {
-        id: works.id,
-        x: Math.cos(((2 * Math.PI) / 360) * (20 * 8)) * (particleRadius + arrangeRadius),
-        y: Math.sin(((2 * Math.PI) / 360) * (20 * 8)) * (particleRadius + arrangeRadius),
-      };
-    } else {
-      return {
-        id: works.id,
-        x: Math.cos(((2 * Math.PI) / 360) * (20 * 9)) * (particleRadius + arrangeRadius),
-        y: Math.sin(((2 * Math.PI) / 360) * (20 * 9)) * (particleRadius + arrangeRadius),
-      };
-    }
-  });
-  return coords;
-})(100, 800, 500, 200);
+// /** クッパクラウン */
+// const kuppaCoords = ((particleRadius: number, arrangeRadius: number, dist: number, rectangle_dist: number) => {
+//   const l = worksInfoArr.length;
+//   const coords: Coord[] = worksInfoArr.map((works) => {
+//     if (works.id == 0) {
+//       return {
+//         id: works.id,
+//         x: dist,
+//         y: -dist,
+//       };
+//     } else if (works.id == 1) {
+//       return {
+//         id: works.id,
+//         x: rectangle_dist,
+//         y: 0,
+//       };
+//     } else if (works.id == 2) {
+//       return {
+//         id: works.id,
+//         x: Math.cos(((2 * Math.PI) / 360) * (20 * 1)) * (particleRadius + arrangeRadius),
+//         y: Math.sin(((2 * Math.PI) / 360) * (20 * 1)) * (particleRadius + arrangeRadius),
+//       };
+//     } else if (works.id == 3) {
+//       return {
+//         id: works.id,
+//         x: 0,
+//         y: rectangle_dist,
+//       };
+//     } else if (works.id == 4) {
+//       return {
+//         id: works.id,
+//         x: 0,
+//         y: -rectangle_dist,
+//       };
+//     } else if (works.id == 5) {
+//       return {
+//         id: works.id,
+//         x: -dist,
+//         y: -dist,
+//       };
+//     } else if (works.id == 6) {
+//       return {
+//         id: works.id,
+//         x: Math.cos(((2 * Math.PI) / 360) * (20 * 2)) * (particleRadius + arrangeRadius),
+//         y: Math.sin(((2 * Math.PI) / 360) * (20 * 2)) * (particleRadius + arrangeRadius),
+//       };
+//     } else if (works.id == 7) {
+//       return {
+//         id: works.id,
+//         x: Math.cos(((2 * Math.PI) / 360) * (20 * 3)) * (particleRadius + arrangeRadius),
+//         y: Math.sin(((2 * Math.PI) / 360) * (20 * 3)) * (particleRadius + arrangeRadius),
+//       };
+//     } else if (works.id == 8) {
+//       return {
+//         id: works.id,
+//         x: Math.cos(((2 * Math.PI) / 360) * (20 * 4)) * (particleRadius + arrangeRadius),
+//         y: Math.sin(((2 * Math.PI) / 360) * (20 * 4)) * (particleRadius + arrangeRadius),
+//       };
+//     } else if (works.id == 9) {
+//       return {
+//         id: works.id,
+//         x: -rectangle_dist,
+//         y: 0,
+//       };
+//     } else if (works.id == 10) {
+//       return {
+//         id: works.id,
+//         x: Math.cos(((2 * Math.PI) / 360) * (20 * 5)) * (particleRadius + arrangeRadius),
+//         y: Math.sin(((2 * Math.PI) / 360) * (20 * 5)) * (particleRadius + arrangeRadius),
+//       };
+//     } else if (works.id == 11) {
+//       return {
+//         id: works.id,
+//         x: Math.cos(((2 * Math.PI) / 360) * (20 * 6)) * (particleRadius + arrangeRadius),
+//         y: Math.sin(((2 * Math.PI) / 360) * (20 * 6)) * (particleRadius + arrangeRadius),
+//       };
+//     } else if (works.id == 12) {
+//       return {
+//         id: works.id,
+//         x: Math.cos(((2 * Math.PI) / 360) * (20 * 7)) * (particleRadius + arrangeRadius),
+//         y: Math.sin(((2 * Math.PI) / 360) * (20 * 7)) * (particleRadius + arrangeRadius),
+//       };
+//     } else if (works.id == 13) {
+//       return {
+//         id: works.id,
+//         x: Math.cos(((2 * Math.PI) / 360) * (20 * 8)) * (particleRadius + arrangeRadius),
+//         y: Math.sin(((2 * Math.PI) / 360) * (20 * 8)) * (particleRadius + arrangeRadius),
+//       };
+//     } else {
+//       return {
+//         id: works.id,
+//         x: Math.cos(((2 * Math.PI) / 360) * (20 * 9)) * (particleRadius + arrangeRadius),
+//         y: Math.sin(((2 * Math.PI) / 360) * (20 * 9)) * (particleRadius + arrangeRadius),
+//       };
+//     }
+//   });
+//   return coords;
+// })(100, 800, 500, 200);
 
 /** 新井案 */
 const araiCoords = ((particleRadius: number, arrangeRadius: number, dist: number, margin: number) => {
