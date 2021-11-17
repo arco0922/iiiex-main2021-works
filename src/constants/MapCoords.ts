@@ -65,8 +65,8 @@ const circleCoords = ((particleRadius: number, arrangeRadius: number) => {
   const coords: Coord[] = rotationSortedWorksInfoArr.map((works) => {
     return {
       id: works.id,
-      x: Math.cos(-(2 * Math.PI * works.rotationOrder) / l) * (particleRadius + arrangeRadius),
-      y: Math.sin(-(2 * Math.PI * works.rotationOrder) / l) * (particleRadius + arrangeRadius),
+      x: Math.cos((2 * Math.PI * works.rotationOrder) / l - Math.PI / 2) * (particleRadius + arrangeRadius),
+      y: Math.sin((2 * Math.PI * works.rotationOrder) / l - Math.PI / 2) * (particleRadius + arrangeRadius),
     };
   });
   return coords;
