@@ -6,6 +6,7 @@ import { RouteComponentProps, useHistory, withRouter } from 'react-router';
 import styled from 'styled-components';
 import { IndividualWorksDetail } from './IndividualWorksDetail';
 import { IndividualWorksWindow } from './IndividualWorksWindow';
+import { OwnQuestionnaire } from './OwnQuestionnaire';
 import { ReactionForm } from './ReactionForm';
 import { isMobile } from 'react-device-detect';
 import { Visited } from 'AppRoot';
@@ -163,6 +164,12 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
               {!isFull && <IndividualWorksDetail worksInfo={worksInfo} isNarrowLayout={isNarrowLayout} />}
               {!isFull && <ReactionForm worksId={worksId} isNarrowLayout={isNarrowLayout} />}
               {!isFull && <NavigationArea suggestIds={suggestIds} visited={visited} isNarrowLayout={isNarrowLayout} />}
+              {!isFull && worksInfo.ownQuestionnaireUrl && (
+                <OwnQuestionnaire
+                  ownQuestionnaireUrl={worksInfo.ownQuestionnaireUrl}
+                  isNarrowLayout={isNarrowLayout}
+                ></OwnQuestionnaire>
+              )}
             </StyledWorksContainer>
           </StyledContentContainer>
         </Scroller>
