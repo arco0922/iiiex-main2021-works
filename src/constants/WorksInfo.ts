@@ -85,6 +85,8 @@ export const worksInfoArr: WorksInfo[] = [
     
     たまらなく人肌が恋しくなる時がある。
     `,
+    srcUrlPc: 'https://daiki330.github.io/bokutoikiru/',
+    srcUrlSp: 'https://daiki330.github.io/bokutoikiru/',
     formEntry: 'entry.1176128609',
   },
   {
