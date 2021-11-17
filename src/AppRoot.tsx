@@ -47,6 +47,15 @@ export const AppRoot: React.VFC = () => {
   const mapModeIdRef = React.useRef<MapModeId>(1);
 
   React.useEffect(() => {
+    if (isProd) {
+      return;
+    }
+    setMapModeId(1);
+    setVisited(initialVisited);
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  React.useEffect(() => {
     mapModeIdRef.current = mapModeId;
   }, [mapModeId]);
 

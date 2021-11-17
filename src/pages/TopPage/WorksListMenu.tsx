@@ -1,8 +1,8 @@
 import { Visited } from 'AppRoot';
-import { worksInfoArr } from 'constants/WorksInfo';
 import { isSmoothScrollable, useFixScroll } from 'hooks/useFixScroll';
 import React from 'react';
 import styled from 'styled-components';
+import { rotationSortedWorksInfoArr } from 'utils/calcRotationUtils';
 import { WorksCard } from './WorksCard';
 
 interface Props {
@@ -23,7 +23,7 @@ export const WorksListMenu: React.VFC<Props> = ({ selectId, setSelectId, visited
       <ScrollContainer ref={scrollContaierRef}>
         <Scroller ref={scrollerRef}>
           <StyledCardsContainer>
-            {worksInfoArr.map((worksInfo) => {
+            {rotationSortedWorksInfoArr.map((worksInfo) => {
               return (
                 <WorksCard
                   worksInfo={worksInfo}

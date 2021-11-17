@@ -3,12 +3,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { theme } from 'constants/Theme';
+import { isMobile, isTablet } from 'react-device-detect';
 
 interface Props {
   worksId: number;
   isVisited: boolean;
   isNarrowLayout: boolean;
 }
+
+const isPC = !(isMobile || isTablet);
 
 export const SuggestedWorks = React.memo<Props>(function SuggestedWorks({ worksId, isVisited, isNarrowLayout }) {
   const [isHover, setIsHover] = React.useState<boolean>(false);
@@ -31,7 +34,7 @@ export const SuggestedWorks = React.memo<Props>(function SuggestedWorks({ worksI
       <StyledThumbnailContainer>
         <StyledThumbnail
           src={`/static/assets/thumbnails/${thumbnailBaseName}.jpg`}
-          className="thumbnail"
+          className={isPC ? 'pc-thumbnail' : ''}
         ></StyledThumbnail>
       </StyledThumbnailContainer>
       {isVisited && <StyledCheck src="/static/assets/check/check_mark.png" height="20%"></StyledCheck>}
@@ -52,7 +55,7 @@ const StyledContainer = styled(Link)`
     height: 90px;
     margin: 5px;
   }
-  &:hover .thumbnail {
+  &:hover .pc-thumbnail {
     transform: scale(1.1, 1.1);
   }
 `;
@@ -71,7 +74,6 @@ const StyledHoverDiv = styled.div`
   justify-content: center;
   z-index: 20;
   border-radius: 50%;
-  ///border: 3px solid ${theme.color.primary};
   & > p {
     font-weight: ${theme.fontWeight.bold};
     font-size: 16px;

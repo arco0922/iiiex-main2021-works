@@ -169,6 +169,7 @@ export const worksInfoArr: WorksInfo[] = [
       },
     ],
     device: 'PC',
+    deviceMemo: ' (Chrome推奨)',
     caption: `パペットとは、手の動きを体全体の動きへと拡張して操作を行う人形のことです。
     手の自由度は体全体の自由度に遠く及びませんが、手を「人形」という型にはめることで、画一的・直感的な操作方法を実現しています。
     それでは、その型を取り払ったとき、人は手を用いてどのように体の操作を試みるでしょうか。
@@ -443,7 +444,7 @@ export const worksInfoArr: WorksInfo[] = [
     私たちが不変であるとしてきた、物理的な時間の概念を覆し、
     ほかの生物が感じる「時間」の流れを体感してみませんか。    
     `,
-    srcUrlPc: 'https://kurapyon31.github.io/animalClock/',
+    srcUrlPc: 'https://kurapyon31.github.io/animalClock_pc/',
     srcUrlSp: 'https://kurapyon31.github.io/animalClock/',
     formEntry: 'entry.1138817257',
   },
