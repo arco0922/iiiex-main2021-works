@@ -302,6 +302,7 @@ export const WorksListSketch = React.memo<Props>(
       const mapCoordsGroup = mapCoordsArr.filter(({ modeId }) => modeId === newMapModeId)[0];
       mapCoordsGroup.coords.forEach(({ id, x, y }) => obstacleSystem.setTargetPos({ id, x, y }));
       obstacleSystem.setDistThreshold(mapCoordsGroup.threshold.dist);
+      setIsShowDetail(true);
     };
 
     let thumbnails: ParticleImage[];
