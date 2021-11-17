@@ -43,7 +43,7 @@ export const AppRoot: React.VFC = () => {
   const [lastVisitedId, setLastVisitedId] = React.useState<number>(-1);
   const [worksHistory, setWorksHistory] = React.useState<number[]>([]);
 
-  const [mapModeId, setMapModeId] = useLocalStorage<MapModeId>('mapModeId', 1);
+  const [mapModeId, setMapModeId] = React.useState<MapModeId>(1);
   const mapModeIdRef = React.useRef<MapModeId>(1);
 
   React.useEffect(() => {
@@ -78,9 +78,7 @@ export const AppRoot: React.VFC = () => {
     isShowHamburgerRef.current = isShowHamburger;
   }, [isShowHamburger]);
 
-  const [coords, setCoords] = React.useState<Coord[]>(
-    mapCoordsArr.filter(({ modeId }) => modeId === mapModeId)[0].coords,
-  );
+  const [coords, setCoords] = React.useState<Coord[]>(mapCoordsArr.filter(({ modeId }) => modeId === 1)[0].coords);
 
   if (layout === null) {
     return null;
