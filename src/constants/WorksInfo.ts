@@ -56,6 +56,7 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://gawa4423.github.io/seisakuten/',
     srcUrlSp: 'https://playcanv.as/p/3d09d3d7/',
     formEntry: 'entry.457886068',
+    isInitial: true,
   },
   {
     id: 1,
@@ -106,7 +107,6 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://hardcore-nobel-4e99fe.netlify.app/',
     srcUrlSp: 'https://hardcore-nobel-4e99fe.netlify.app/mobile.html',
     formEntry: 'entry.1260241828',
-    isInitial: true,
   },
   {
     id: 3,
@@ -174,7 +174,6 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://larkin269.github.io/fikpages/',
     srcUrlSp: 'https://larkin269.github.io/fikpages/',
     formEntry: 'entry.306737416',
-    isInitial: true,
   },
   {
     id: 5,
