@@ -8,7 +8,7 @@ import { IndividualWorksDetail } from './IndividualWorksDetail';
 import { IndividualWorksWindow } from './IndividualWorksWindow';
 import { OwnQuestionnaire } from './OwnQuestionnaire';
 import { ReactionForm } from './ReactionForm';
-import { isMobile } from 'react-device-detect';
+import { isMobile, isTablet } from 'react-device-detect';
 import { Visited } from 'AppRoot';
 import { LayoutType } from 'constants/Layout';
 import { Coord, MapModeId } from 'constants/MapCoords';
@@ -37,6 +37,8 @@ interface Props {
   setWorksHistoryIndex: (id: number | null) => void;
   mapModeId: MapModeId;
 }
+
+const touchable = isMobile || isTablet;
 
 const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = ({
   match,
@@ -164,13 +166,13 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
                 />
               )}
               <IndividualWorksWindow
-                srcUrl={isMobile ? worksInfo.srcUrlSp : worksInfo.srcUrlPc}
+                srcUrl={touchable ? worksInfo.srcUrlSp : worksInfo.srcUrlPc}
                 iframeHeight={iframeHeight}
                 iframeWidth={iframeWidth}
                 isFull={isFull}
                 setIsFull={setIsFull}
                 isNarrowLayout={isNarrowLayout}
-                isShowButtonOnly={!isFull && isMobile && worksInfo.isSmartphoneFullscreenOnly === true}
+                isShowButtonOnly={!isFull && touchable && worksInfo.isSmartphoneFullscreenOnly === true}
                 showLoading={worksInfo.showLoading || false}
               />
               {!isFull && <IndividualWorksDetail worksInfo={worksInfo} isNarrowLayout={isNarrowLayout} />}
