@@ -88,7 +88,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
     : `calc( ${iframeWidth} * ${worksInfo?.aspectRatio ? worksInfo.aspectRatio : 9 / 16} )`;
 
   React.useEffect(() => {
-    setLastVisitedId(worksId);
+    setLastVisitedId(selectId);
     setSelectId(worksId);
     if (worksHistoryIndex === null || worksHistoryIndex === worksHistory.length) {
       worksHistory.push(worksId);
