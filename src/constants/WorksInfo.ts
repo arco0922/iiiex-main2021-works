@@ -386,7 +386,7 @@ export const worksInfoArr: WorksInfo[] = [
   {
     id: 11,
     rotationOrder: 13,
-    title: 'Home-Gallery',
+    title: 'Home_Gallery',
     thumbnailBaseName: '11_Siyuan_Home-Gallery',
     creators: [
       {
