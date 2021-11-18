@@ -9,7 +9,7 @@ import { Coord, mapCoordsArr, MapModeId } from 'constants/MapCoords';
 import { LayoutType } from 'constants/Layout';
 import { sideDetailWidth } from 'pages/TopPage/WorksDetail';
 import { bottomDetailHeight } from 'pages/TopPage/WorksDetailBottom';
-import { Visited } from 'AppRoot';
+import { initialSelectId, Visited, initialMapModeId } from 'AppRoot';
 import { carouselSpaceHeight } from 'pages/TopPage/Carousel';
 import { InitialAnimationStatus } from 'pages/TopPage/TopPage';
 
@@ -20,12 +20,14 @@ interface Props {
   setSelectId: (id: number) => void;
   initialAnimationStatusRef: React.MutableRefObject<InitialAnimationStatus>;
   setIsShowDetail: (isShowDetail: boolean) => void;
+  isShowDetailRef: React.MutableRefObject<boolean>;
   isShowHamburgerRef: React.MutableRefObject<boolean>;
   layoutRef: React.MutableRefObject<LayoutType>;
   setMapModeId: (mapMode: MapModeId) => void;
   mapModeIdRef: React.MutableRefObject<MapModeId>;
   setCoords: (coords: Coord[]) => void;
   visitedRef: React.MutableRefObject<Visited>;
+  isCursorOnCarouselRef: React.MutableRefObject<boolean>;
   bgcolor?: string;
   padding?: number;
 }
@@ -43,12 +45,14 @@ export const WorksListSketch = React.memo<Props>(
     setSelectId,
     initialAnimationStatusRef,
     setIsShowDetail,
+    isShowDetailRef,
     isShowHamburgerRef,
     layoutRef,
     setMapModeId,
     mapModeIdRef,
     setCoords,
     visitedRef,
+    isCursorOnCarouselRef,
     bgcolor = 'black',
     padding = 5,
   }) => {
@@ -116,14 +120,28 @@ export const WorksListSketch = React.memo<Props>(
     let prevCanvasWidth: number;
     let prevCanvasHeight: number;
 
+    let isWorldInitialized = false;
+    let isFirstZoomExperienced = false;
+
+    let animationDelayCount = 0;
+
     let worldOffsetX: number; // ワールドの中心がスクリーンのどこにあるか
     let worldOffsetY: number; // ワールドの中心がスクリーンのどこにあるか
     let worldOffsetScale: number; // ワールドのスクリーン上での縮尺
 
     const worldWidth = 20000; // ワールドの横幅 ※canvasの横幅とは異なる
     const worldHeight = 20000; // ワールドの縦幅 ※canvasの縦幅とは異なる
+    const particleRadius = 100;
 
-    let isWorldLokked = false;
+    let limitWorldOffsetMinX: number;
+    let limitWorldOffsetMaxX: number;
+    let limitWorldOffsetMinY: number;
+    let limitWorldOffsetMaxY: number;
+    let limitWorldOffsetMinScale: number;
+    let limitWorldOffsetMaxScale: number;
+
+    let isWorldLocked = false;
+    let isZoomEnabled = false;
     let oldMouseX = 0;
     let oldMouseY = 0;
 
@@ -140,10 +158,47 @@ export const WorksListSketch = React.memo<Props>(
     };
 
     const navigateToIndividual = () => {
-      if (selectIdRef.current === null || isWorldLokked) {
+      if (selectIdRef.current === null || isWorldLocked) {
         return;
       }
       history.push(`/works/${selectIdRef.current}`);
+    };
+
+    let isAdjustingWorld = true;
+    let targetWorldOffsetX: number;
+    let targetWorldOffsetY: number;
+    let targetWorldOffsetScale: number;
+
+    const adjustWorldToTarget = () => {
+      if (!isAdjustingWorld) {
+        return;
+      }
+      worldOffsetX += (targetWorldOffsetX - worldOffsetX) * 0.04;
+      worldOffsetY += (targetWorldOffsetY - worldOffsetY) * 0.04;
+      worldOffsetScale += (targetWorldOffsetScale - worldOffsetScale) * 0.1;
+      if (
+        Math.max(
+          Math.abs(targetWorldOffsetX - worldOffsetX),
+          Math.abs(targetWorldOffsetY - worldOffsetY),
+          Math.abs(targetWorldOffsetScale - worldOffsetScale),
+        ) < 0.01 ||
+        isWorldLocked ||
+        isZoomEnabled
+      ) {
+        isAdjustingWorld = false;
+      }
+    };
+
+    const setWorldTarget = (
+      newTargetWorldOffsetX: number,
+      newTargetWorldOffsetY: number,
+      newTargetWorldOffsetScale: number,
+    ) => {
+      isAdjustingWorld = true;
+      isZoomEnabled = false;
+      targetWorldOffsetX = newTargetWorldOffsetX;
+      targetWorldOffsetY = newTargetWorldOffsetY;
+      targetWorldOffsetScale = newTargetWorldOffsetScale;
     };
 
     const calcSquaredDist = (x1: number, y1: number, x2: number, y2: number) =>
@@ -156,23 +211,71 @@ export const WorksListSketch = React.memo<Props>(
           ? p5.width - sideDetailWidth
           : p5.width;
       const height = layoutRef.current === 'NARROW' ? p5.height - bottomDetailHeight - carouselSpaceHeight : p5.height;
-      worldOffsetX = width / 2 - mapCoord.center.x;
-      worldOffsetY = height / 2 - mapCoord.center.y;
-      if (layoutRef.current === 'NARROW') {
-        worldOffsetY += carouselSpaceHeight;
-      }
-      worldOffsetScale = p5.min(
+      const newTargetWorldOffsetScale = p5.min(
         width / p5.max(mapCoord.border.maxX - mapCoord.border.minX, 1),
         height / p5.max(mapCoord.border.maxY - mapCoord.border.minY, 1),
       );
+      const newTargetWorldOffsetX = width / 2 - mapCoord.center.x * newTargetWorldOffsetScale;
+      let newTargetWorldOffsetY = height / 2 - mapCoord.center.y * newTargetWorldOffsetScale;
+      if (layoutRef.current === 'NARROW') {
+        newTargetWorldOffsetY += carouselSpaceHeight;
+      }
+      if (!isWorldInitialized) {
+        worldOffsetX = newTargetWorldOffsetX;
+        worldOffsetY = newTargetWorldOffsetY;
+        worldOffsetScale = newTargetWorldOffsetScale;
+        isWorldInitialized = true;
+      }
+      setWorldTarget(newTargetWorldOffsetX, newTargetWorldOffsetY, newTargetWorldOffsetScale);
+    };
+
+    const calcWorldCoord = (
+      x: number,
+      y: number,
+      worldOffsetX: number,
+      worldOffsetY: number,
+      worldOffsetScale: number,
+    ) => {
+      /** canvas座標 → ワールド座標の計算 */
+      return {
+        x: (x - worldOffsetX) / worldOffsetScale,
+        y: (y - worldOffsetY) / worldOffsetScale,
+      };
+    };
+
+    const calcWorldLimit = (p5: p5Types, mapModeId: MapModeId) => {
+      const mapCoord = mapCoordsArr.filter(({ modeId }) => modeId === mapModeId)[0];
+      const width =
+        layoutRef.current !== 'NARROW' && initialAnimationStatusRef.current !== 'END'
+          ? p5.width - sideDetailWidth
+          : p5.width;
+      const height = layoutRef.current === 'NARROW' ? p5.height - bottomDetailHeight - carouselSpaceHeight : p5.height;
+
+      limitWorldOffsetMinScale = p5.min([
+        width / p5.max(mapCoord.border.maxX - mapCoord.border.minX, 1),
+        height / p5.max(mapCoord.border.maxY - mapCoord.border.minY, 1),
+        0.5,
+      ]);
+      limitWorldOffsetMaxScale = p5.min(width, height) / (particleRadius * 2);
+      limitWorldOffsetMinX = -mapCoord.border.maxX * worldOffsetScale;
+      limitWorldOffsetMaxX = width - mapCoord.border.minX * worldOffsetScale;
+      limitWorldOffsetMinY = -mapCoord.border.maxY * worldOffsetScale;
+      limitWorldOffsetMaxY = p5.height - mapCoord.border.minY * worldOffsetScale;
+    };
+
+    const limitDisplayMove = (p5: p5Types) => {
+      worldOffsetX = p5.constrain(worldOffsetX, limitWorldOffsetMinX, limitWorldOffsetMaxX);
+      worldOffsetY = p5.constrain(worldOffsetY, limitWorldOffsetMinY, limitWorldOffsetMaxY);
     };
 
     const zoom = (centerX: number, centerY: number, scaleDiff: number) => {
-      /** centerX, centerY は canvas座標 */
-      const newOffsetScale = worldOffsetScale * (1 + scaleDiff);
-      if (newOffsetScale > 4 || newOffsetScale < 0.1) {
+      if (!isWorldInitialized) {
         return;
       }
+      isZoomEnabled = true;
+      /** centerX, centerY は canvas座標 */
+      let newOffsetScale = worldOffsetScale * (1 + scaleDiff);
+      newOffsetScale = Math.min(Math.max(newOffsetScale, limitWorldOffsetMinScale), limitWorldOffsetMaxScale);
       worldOffsetX = (newOffsetScale * worldOffsetX - (newOffsetScale - worldOffsetScale) * centerX) / worldOffsetScale;
       worldOffsetY = (newOffsetScale * worldOffsetY - (newOffsetScale - worldOffsetScale) * centerY) / worldOffsetScale;
       worldOffsetScale = newOffsetScale;
@@ -200,9 +303,15 @@ export const WorksListSketch = React.memo<Props>(
 
     const mapModeIdChangeHandler = (p5: p5Types, newMapModeId: MapModeId) => {
       initWorldPosScale(p5, newMapModeId);
-      mapCoordsArr
-        .filter(({ modeId }) => modeId === newMapModeId)[0]
-        .coords.forEach(({ id, x, y }) => obstacleSystem.setTargetPos({ id, x, y }));
+      const mapCoordsGroup = mapCoordsArr.filter(({ modeId }) => modeId === newMapModeId)[0];
+      mapCoordsGroup.coords.forEach(({ id, x, y }) => obstacleSystem.setTargetPos({ id, x, y }));
+      obstacleSystem.setDistThreshold(mapCoordsGroup.threshold.dist);
+      setIsShowDetail(true);
+      if (newMapModeId === initialMapModeId) {
+        animationDelayCount = -50;
+        isFirstZoomExperienced = false;
+        obstacleSystem.setSelectId(initialSelectId);
+      }
     };
 
     let thumbnails: ParticleImage[];
@@ -244,6 +353,7 @@ export const WorksListSketch = React.memo<Props>(
       prevMapModeId = initialMapModeId;
 
       initWorldPosScale(p5, initialMapModeId);
+      calcWorldLimit(p5, initialMapModeId);
 
       grid = new Grid(p5, worldWidth, worldHeight, 100);
 
@@ -257,25 +367,52 @@ export const WorksListSketch = React.memo<Props>(
         worldHeight,
       );
 
-      mapCoordsArr
-        .filter(({ modeId }) => modeId === initialMapModeId)[0]
-        .coords.forEach(({ id, x, y }) => {
-          switch (initialMapModeId) {
-            case 1:
-              const randy = p5.random(-worldHeight / 6, worldHeight / 6);
-              obstacleSystem.addParticle(id, x * 0.8, randy, 100, 0, 0, 1, obstacleColor, 'Gravitational', 'Pos');
-              break;
-            default:
-              obstacleSystem.addParticle(id, x * 0.7, y * 0.7, 100, 0, 0, 1, obstacleColor, 'Gravitational', 'Pos');
-          }
-          obstacleSystem.setTargetPos({ id, x, y });
-        });
+      const mapCoordsGroup = mapCoordsArr.filter(({ modeId }) => modeId === initialMapModeId)[0];
+      mapCoordsGroup.coords.forEach(({ id, x, y }) => {
+        switch (initialMapModeId) {
+          case 5:
+            const randy = p5.random(-200, 200);
+            obstacleSystem.addParticle(
+              id,
+              x * 0.8,
+              randy,
+              particleRadius,
+              0,
+              0,
+              1,
+              obstacleColor,
+              'Gravitational',
+              'Pos',
+            );
+            break;
+          default:
+            obstacleSystem.addParticle(
+              id,
+              x * 0.7,
+              y * 0.7,
+              particleRadius,
+              0,
+              0,
+              1,
+              obstacleColor,
+              'Gravitational',
+              'Pos',
+            );
+        }
+        obstacleSystem.setTargetPos({ id, x, y });
+      });
       obstacleSystem.setTextures(thumbnails);
 
+      obstacleSystem.setSelectId(selectIdRef.current);
+
       obstacleSystem.setVisited(visitedRef.current);
+
+      obstacleSystem.setDistThreshold(mapCoordsGroup.threshold.dist);
     };
 
     const draw = (p5: p5Types) => {
+      animationDelayCount += 1;
+
       if (
         containerRef.current !== null &&
         (prevCanvasWidth !== containerRef.current.clientWidth - padding * 2 ||
@@ -287,6 +424,8 @@ export const WorksListSketch = React.memo<Props>(
         if (initialAnimationStatusRef.current === 'END') {
           worldOffsetX += (newWidth - prevCanvasWidth) / 2;
           worldOffsetY += (newHeight - prevCanvasHeight) / 2;
+          targetWorldOffsetX += (newWidth - prevCanvasWidth) / 2;
+          targetWorldOffsetY += (newHeight - prevCanvasHeight) / 2;
         }
       }
       prevCanvasWidth = p5.width;
@@ -297,6 +436,23 @@ export const WorksListSketch = React.memo<Props>(
       }
       prevMapModeId = mapModeIdRef.current;
 
+      adjustWorldToTarget();
+
+      if (initialAnimationStatusRef.current === 'END') {
+        calcWorldLimit(p5, prevMapModeId);
+      }
+      limitDisplayMove(p5);
+
+      if (animationDelayCount > 20 && !isFirstZoomExperienced && initialAnimationStatusRef.current === 'END') {
+        isFirstZoomExperienced = true;
+        obstacleSystem.setSelectIdFromOther(selectIdRef.current);
+      }
+
+      if (animationDelayCount > 20 && selectIdRef.current !== obstacleSystem.selectId) {
+        isFirstZoomExperienced = true;
+        obstacleSystem.setSelectIdFromOther(selectIdRef.current);
+      }
+
       p5.background(bgcolor);
 
       p5.push();
@@ -304,7 +460,6 @@ export const WorksListSketch = React.memo<Props>(
       p5.scale(worldOffsetScale);
       grid.display();
       obstacleSystem.changeWorldOffset(worldOffsetX, worldOffsetY, worldOffsetScale);
-      obstacleSystem.setSelectId(selectIdRef.current);
       obstacleSystem.display();
       p5.pop();
 
@@ -316,11 +471,13 @@ export const WorksListSketch = React.memo<Props>(
     };
 
     const isPointOnCanvas = (p5: p5Types, x: number, y: number) => {
-      return x >= 0 && x <= p5.width && y >= 0 && y <= p5.height;
+      const height =
+        layoutRef.current === 'NARROW' && isShowDetailRef.current ? p5.height - bottomDetailHeight : p5.height;
+      return x >= 0 && x <= p5.width && y >= 0 && y <= height;
     };
 
     const isCursorOnCanvas = (p5: p5Types) => {
-      return isPointOnCanvas(p5, p5.mouseX, p5.mouseY);
+      return isPointOnCanvas(p5, p5.mouseX, p5.mouseY) && !isCursorOnCarouselRef.current;
     };
 
     const mousePressed = (p5: p5Types) => {
@@ -329,7 +486,7 @@ export const WorksListSketch = React.memo<Props>(
       }
       if (p5.touches.length === 2) {
         obstacleSystem.releaseParticles();
-        isWorldLokked = true;
+        isWorldLocked = true;
         const x1 = (p5.touches[0] as p5Types.Vector).x;
         const y1 = (p5.touches[0] as p5Types.Vector).y;
         const x2 = (p5.touches[1] as p5Types.Vector).x;
@@ -340,14 +497,14 @@ export const WorksListSketch = React.memo<Props>(
       if (obstacleSystem.isCursorOnParticles()) {
         obstacleSystem.catchParticles();
       } else {
-        isWorldLokked = true;
+        isWorldLocked = true;
         oldMouseX = p5.mouseX;
         oldMouseY = p5.mouseY;
       }
     };
 
     const mouseDragged = (p5: p5Types) => {
-      if (!isCursorOnCanvas(p5) || !isWorldLokked) {
+      if (!isCursorOnCanvas(p5) || !isWorldLocked) {
         return;
       }
       if (p5.touches.length === 2) {
@@ -373,7 +530,7 @@ export const WorksListSketch = React.memo<Props>(
         oldMouseY = (p5.touches[0] as p5Types.Vector).y;
       }
       if (p5.touches.length === 0) {
-        isWorldLokked = false;
+        isWorldLocked = false;
       }
     };
 
@@ -422,6 +579,27 @@ export const WorksListSketch = React.memo<Props>(
 
       setSelectId(id: number) {
         this.selectId = id;
+        setSelectId(id);
+      }
+
+      setSelectIdFromOther(id: number) {
+        this.setSelectId(id);
+        const particle = this.particles.filter((particle) => particle.id === id)[0];
+        if (particle.targetX !== undefined && particle.targetY !== undefined) {
+          const width =
+            layoutRef.current !== 'NARROW' && initialAnimationStatusRef.current !== 'END'
+              ? this.p5.width - sideDetailWidth
+              : this.p5.width;
+          const height =
+            layoutRef.current === 'NARROW' ? this.p5.height - bottomDetailHeight - carouselSpaceHeight : this.p5.height;
+          const newTargetWorldOffsetScale = limitWorldOffsetMaxScale / 5;
+          const newTargetWorldOffsetX = width / 2 - particle.targetX * newTargetWorldOffsetScale;
+          let newTargetWorldOffsetY = height / 2 - particle.targetY * newTargetWorldOffsetScale - 20;
+          if (layoutRef.current === 'NARROW') {
+            newTargetWorldOffsetY += carouselSpaceHeight;
+          }
+          setWorldTarget(newTargetWorldOffsetX, newTargetWorldOffsetY, newTargetWorldOffsetScale);
+        }
       }
 
       setTextures(textures: ParticleImage[]) {
@@ -430,6 +608,10 @@ export const WorksListSketch = React.memo<Props>(
 
       setVisited(visited: Visited) {
         this.visited = visited;
+      }
+
+      setDistThreshold(dist: number) {
+        this.distThreshold = dist;
       }
 
       display() {
@@ -595,9 +777,10 @@ export const WorksListSketch = React.memo<Props>(
         this.particles.forEach((particle) => {
           if (particle.isCursorOn()) {
             document.addEventListener('touchmove', preventDefault, wheelOpt); // mobile
+            this.setSelectId(particle.id);
+            selectIdRef.current = particle.id;
             setSelectId(particle.id);
             setIsShowDetail(true);
-            this.setSelectId(particle.id);
             particle.catch();
           }
         });

@@ -6,6 +6,7 @@ export interface Creator {
 export type Device = 'PC' | 'SP' | 'BOTH';
 export interface WorksInfo {
   id: number;
+  rotationOrder: number; // 順路での順番
   title: string;
   thumbnailBaseName: string;
   srcUrlPc?: string;
@@ -14,11 +15,18 @@ export interface WorksInfo {
   creators: Creator[];
   caption: string;
   device: Device;
+  ownQuestionnaireUrl?: string;
+  isSmartphoneFullscreenOnly?: boolean;
+  deviceMemo?: string;
+  formEntry: string;
+  isInitial?: boolean;
+  showLoading?: boolean;
 }
 
 export const worksInfoArr: WorksInfo[] = [
   {
     id: 0,
+    rotationOrder: 0,
     title: 'offline on line',
     thumbnailBaseName: '0_nakagawa',
     creators: [
@@ -33,6 +41,7 @@ export const worksInfoArr: WorksInfo[] = [
       },
     ],
     device: 'SP',
+    isSmartphoneFullscreenOnly: true,
     caption: `握手、指切りげんまん ── 手と手が触れ合うと心の距離が近づくような気がする。
     手で人と触れ合う機会は元々多くはなかったが、最近ではほとんどなくなってしまった。
     onlineでも人が物理的に触れ合うofflineのような感覚を表現できないだろうか。
@@ -47,9 +56,13 @@ export const worksInfoArr: WorksInfo[] = [
     `,
     srcUrlPc: 'https://gawa4423.github.io/seisakuten/',
     srcUrlSp: 'https://playcanv.as/p/3d09d3d7/',
+    formEntry: 'entry.457886068',
+    isInitial: true,
+    showLoading: true,
   },
   {
     id: 1,
+    rotationOrder: 12,
     title: '僕と、生きる',
     thumbnailBaseName: '1_miyake',
     creators: [
@@ -75,9 +88,13 @@ export const worksInfoArr: WorksInfo[] = [
     
     たまらなく人肌が恋しくなる時がある。
     `,
+    srcUrlPc: 'https://daiki330.github.io/bokutoikiru/',
+    srcUrlSp: 'https://daiki330.github.io/bokutoikiru/',
+    formEntry: 'entry.1176128609',
   },
   {
     id: 2,
+    rotationOrder: 4,
     title: `Zero To One Mind
     ～1歳児キョリブレーション～`,
     thumbnailBaseName: '2_baby-thumbnail',
@@ -91,15 +108,38 @@ export const worksInfoArr: WorksInfo[] = [
     caption: `本作品は、赤ちゃんが周囲の環境や家族をキャリブレーションしてくゲーム作品である。前作のゼロマインドでは「0歳児パンク」をテーマに扱い、本作は前作の謎解き要素を秘めている。赤ちゃんは周囲の興味を引きたくて、自身のベクトルに、大人達を誘導していく。予測不可能な赤ちゃんによってキャリブレーションされる大人達。作者の息子は1歳になり、一人でよちよち歩けるようになってきた。着々と赤ちゃんから子供へと距離を縮めている。本作品は、赤ちゃんキョリブレーションに着目し、母親なりの解釈を加えた作品である。ぜひ大人も赤ちゃんとの距離を縮めて、よちよち大冒険してほしい。`,
     srcUrlPc: 'https://hardcore-nobel-4e99fe.netlify.app/',
     srcUrlSp: 'https://hardcore-nobel-4e99fe.netlify.app/mobile.html',
+    formEntry: 'entry.1260241828',
+    showLoading: true,
   },
   {
     id: 3,
+    rotationOrder: 8,
     title: 'on my . (オン マイ ピリオド)',
     thumbnailBaseName: '3_mochizuki',
     creators: [
       {
         name: '望月花妃',
         affiliation: `情報学環\n教育部 2年`,
+      },
+      {
+        name: '乘濵駿平',
+        affiliation: `工学部 3年`,
+      },
+      {
+        name: '島村龍伍',
+        affiliation: `工学部 3年`,
+      },
+      {
+        name: '御手洗陽紀',
+        affiliation: `工学部 3年`,
+      },
+      {
+        name: '三村有希',
+        affiliation: `後期教養学部 4年`,
+      },
+      {
+        name: '小原和花子',
+        affiliation: `総合文化研究科\n修士2年`,
       },
     ],
     device: 'BOTH',
@@ -110,9 +150,14 @@ export const worksInfoArr: WorksInfo[] = [
     「もしも」であるこの世界の体験を、現実の世界に少しでも持ち帰ってもらえたら。
     その先で、現実が”on my period” （「生理中」）の女性にとって、よりやさしい世界になったらいいなという願いを込めて制作しました。
     `,
+    srcUrlPc: 'https://hana-mochizuki.github.io/on-my-period/',
+    srcUrlSp: 'https://hana-mochizuki.github.io/on-my-period/',
+    formEntry: 'entry.805425849',
+    showLoading: true,
   },
   {
     id: 4,
+    rotationOrder: 7,
     title: '#FiK握手会',
     thumbnailBaseName: '4_ueno_thumbnail',
     creators: [
@@ -132,9 +177,12 @@ export const worksInfoArr: WorksInfo[] = [
     `,
     srcUrlPc: 'https://larkin269.github.io/fikpages/',
     srcUrlSp: 'https://larkin269.github.io/fikpages/',
+    formEntry: 'entry.306737416',
+    showLoading: true,
   },
   {
     id: 5,
+    rotationOrder: 6,
     title: 'puppeTuber',
     thumbnailBaseName: '5_aramaki_puppeTuber',
     creators: [
@@ -148,6 +196,7 @@ export const worksInfoArr: WorksInfo[] = [
       },
     ],
     device: 'PC',
+    deviceMemo: ' (Chrome推奨)',
     caption: `パペットとは、手の動きを体全体の動きへと拡張して操作を行う人形のことです。
     手の自由度は体全体の自由度に遠く及びませんが、手を「人形」という型にはめることで、画一的・直感的な操作方法を実現しています。
     それでは、その型を取り払ったとき、人は手を用いてどのように体の操作を試みるでしょうか。
@@ -158,9 +207,12 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://damakoo.github.io/PuppeTuber_WebGL/',
     srcUrlSp: 'https://damakoo.github.io/PuppeTuber_WebGL/mobile_index.html',
     aspectRatio: 10 / 16,
+    formEntry: 'entry.1774366675',
+    showLoading: true,
   },
   {
     id: 6,
+    rotationOrder: 1,
     title: '矢印たち',
     thumbnailBaseName: '6_yajirushi',
     creators: [
@@ -196,9 +248,12 @@ export const worksInfoArr: WorksInfo[] = [
     `,
     srcUrlPc: 'https://y-141.github.io/iiiex_pentagons/',
     srcUrlSp: 'https://y-141.github.io/iiiex_pentagons/',
+    formEntry: 'entry.1126317556',
+    showLoading: true,
   },
   {
     id: 7,
+    rotationOrder: 9,
     title: '確率であそぼ、',
     thumbnailBaseName: '7_kurata_picture',
     creators: [
@@ -220,6 +275,7 @@ export const worksInfoArr: WorksInfo[] = [
       },
     ],
     device: 'BOTH',
+    deviceMemo: ' (スマホ推奨、PCの場合は全画面推奨)',
     caption: `あなたは数学にどんな距離を感じるだろう？好きだから近い、苦手だから遠い…。
     「日常生活は数学にあふれてる」と言うけれど、どこに隠れているのだろうか？
      
@@ -236,9 +292,14 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://kurapyon31.github.io/probUT/',
     srcUrlSp: 'https://kurapyon31.github.io/probUT/',
     aspectRatio: 16 / 9,
+    formEntry: 'entry.333145081',
+    ownQuestionnaireUrl:
+      'https://docs.google.com/forms/d/e/1FAIpQLScjVNVSwZPo3jH9yNuIhbvFrYRuIWOZTZ7cjgLbkmNEpfbOJA/viewform',
+    showLoading: true,
   },
   {
     id: 8,
+    rotationOrder: 5,
     title: 'ENDRAGON',
     thumbnailBaseName: '8_ENDRAGON',
     creators: [
@@ -256,9 +317,12 @@ export const worksInfoArr: WorksInfo[] = [
     `,
     srcUrlPc: 'https://ninonode.github.io/endragon/',
     srcUrlSp: 'https://ninonode.github.io/endragon/',
+    formEntry: 'entry.1047603043',
+    showLoading: true,
   },
   {
     id: 9,
+    rotationOrder: 10,
     title: 'KABUKU！',
     thumbnailBaseName: '9_kabuku_tmb800',
     creators: [
@@ -283,9 +347,14 @@ export const worksInfoArr: WorksInfo[] = [
     caption: `Extra展で、浮世絵の一種である組上げ灯籠（別称、関西では立版古・たてばんこ）を実際に組み立てて紹介した。本展ではARで再現する。AR上の組上げ灯籠をいろいろな場所において、写真を撮ってシェアするなど、組上げ灯籠の世界を楽しんでほしい。
     組上げ灯籠は、江戸の文化初年頃から大正まで約100年間、芝居や観光地、建物の仕組みを伝える紙工作として発展した。北斎が手掛けた湯屋の作品などもある。盆供養の灯籠に起源があり、室町頃から台に山水・建物・人物などの細工物を飾り始めた。組み立てられた灯籠にはろうそくが置かれ、光や影を楽しんだ。 こうした組上げ灯籠は、映画などの映像文化が登場する前の視覚文化の一つであるといえ、当時最先端の映像メディアとして西洋でも流行した影絵や幻燈の影響も受けていたとされる。現在はVRやARが先端の技術として注目されているが、本作品で当時の人々が楽しんだ心を追体験！
     `,
+    srcUrlPc: 'https://tuckersarge.github.io/kabuku/',
+    srcUrlSp: 'https://tuckersarge.github.io/kabuku/',
+    formEntry: 'entry.2111132219',
+    showLoading: true,
   },
   {
     id: 10,
+    rotationOrder: 11,
     title: 'Memorial Stella',
     thumbnailBaseName: '10_I-mage',
     creators: [
@@ -309,9 +378,12 @@ export const worksInfoArr: WorksInfo[] = [
 `,
     srcUrlPc: 'https://flask-325405.de.r.appspot.com/guest',
     srcUrlSp: 'https://flask-325405.de.r.appspot.com/guest',
+    formEntry: 'entry.839388668',
+    showLoading: true,
   },
   {
     id: 11,
+    rotationOrder: 13,
     title: 'Home-Gallery',
     thumbnailBaseName: '11_Siyuan_Home-Gallery',
     creators: [
@@ -330,10 +402,13 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://siyuanzh09.github.io/Home_Gallery/',
     srcUrlSp: 'https://siyuanzh09.github.io/Home_Gallery/',
     aspectRatio: 5 / 6,
+    formEntry: 'entry.1208608827',
+    showLoading: true,
   },
   {
     id: 12,
     title: 'デイリズム！',
+    rotationOrder: 3,
     thumbnailBaseName: '12_mikami_dayliyrhythm',
     creators: [
       {
@@ -352,6 +427,10 @@ export const worksInfoArr: WorksInfo[] = [
         name: '小山大嘉',
         affiliation: `情報理工学系研究科\n葛岡・雨宮・鳴海研究室\n修士1年`,
       },
+      {
+        name: '松浦祐太郎',
+        affiliation: `情報理工学系研究科\n稲葉・岡田研究室\n修士1年`,
+      },
     ],
     device: 'BOTH',
     caption: `「生活リズム」という聞きなれた言葉がありますが、
@@ -368,9 +447,12 @@ export const worksInfoArr: WorksInfo[] = [
     `,
     srcUrlPc: 'https://tiger0ym.github.io/iiiex/',
     srcUrlSp: 'https://tiger0ym.github.io/iiiex/mobile.html',
+    formEntry: 'entry.1595883871',
+    showLoading: true,
   },
   {
     id: 13,
+    rotationOrder: 2,
     title: 'Animal Clock',
     thumbnailBaseName: '13_akiyama',
     creators: [
@@ -403,7 +485,9 @@ export const worksInfoArr: WorksInfo[] = [
     私たちが不変であるとしてきた、物理的な時間の概念を覆し、
     ほかの生物が感じる「時間」の流れを体感してみませんか。    
     `,
-    srcUrlPc: 'https://kurapyon31.github.io/animalClock/',
+    srcUrlPc: 'https://kurapyon31.github.io/animalClock_pc/',
     srcUrlSp: 'https://kurapyon31.github.io/animalClock/',
+    formEntry: 'entry.1138817257',
+    showLoading: true,
   },
 ];

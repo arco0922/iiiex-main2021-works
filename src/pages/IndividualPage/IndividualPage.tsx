@@ -6,12 +6,17 @@ import { RouteComponentProps, useHistory, withRouter } from 'react-router';
 import styled from 'styled-components';
 import { IndividualWorksDetail } from './IndividualWorksDetail';
 import { IndividualWorksWindow } from './IndividualWorksWindow';
+import { OwnQuestionnaire } from './OwnQuestionnaire';
+import { ReactionForm } from './ReactionForm';
 import { isMobile } from 'react-device-detect';
 import { Visited } from 'AppRoot';
 import { LayoutType } from 'constants/Layout';
-import { Coord } from 'constants/MapCoords';
+import { Coord, MapModeId } from 'constants/MapCoords';
 import { sortWorksByDistance } from 'utils/sortWorks';
 import { NavigationArea } from './NavigationArea';
+import { TopNavigationArea } from './TopNavigationArea';
+import { calcNextRotationOrderWorksId, calcRotatedOrderWorksFromSpecificId } from 'utils/calcRotationUtils';
+import { isSmoothScrollable, useFixScroll } from 'hooks/useFixScroll';
 
 interface Params {
   id: string;
@@ -26,6 +31,11 @@ interface Props {
   layout: LayoutType;
   setIsShowHamburger: (isShowHamburger: boolean) => void;
   coords: Coord[];
+  worksHistory: number[];
+  setWorksHistory: (worksHistory: number[]) => void;
+  worksHistoryIndex: number | null;
+  setWorksHistoryIndex: (id: number | null) => void;
+  mapModeId: MapModeId;
 }
 
 const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = ({
@@ -39,14 +49,26 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   layout,
   setIsShowHamburger,
   coords,
+  worksHistory,
+  setWorksHistory,
+  worksHistoryIndex,
+  setWorksHistoryIndex,
+  mapModeId,
 }) => {
   const worksId = Number(match.params.id);
   const worksInfo = React.useMemo(() => worksInfoArr.filter((info) => info.id === worksId)[0], [worksId]);
   const history = useHistory();
 
-  const scrollRef = React.useRef<HTMLDivElement>(null);
+  const [isFull, setIsFull] = React.useState<boolean>(false);
+
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+  const scrollerRef = React.useRef<HTMLDivElement>(null);
+
+  useFixScroll(scrollContainerRef, scrollerRef, [isFull, worksId]);
+
+  const scrollTopRef = React.useRef<HTMLDivElement>(null);
   React.useEffect(() => {
-    scrollRef.current?.scrollIntoView({
+    scrollTopRef.current?.scrollIntoView({
       behavior: 'smooth',
       block: 'start',
     });
@@ -58,7 +80,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [worksInfo]);
-  const [isFull, setIsFull] = React.useState<boolean>(false);
+
   const isNarrowLayout = layout === 'MID' || layout === 'NARROW';
   const iframeWidth = isFull ? '' : isNarrowLayout ? '95vw' : 'min(1000px, max(75vw , 500px))';
   const iframeHeight = isFull
@@ -68,8 +90,15 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   React.useEffect(() => {
     setLastVisitedId(selectId);
     setSelectId(worksId);
+    if (worksHistoryIndex === null || worksHistoryIndex === worksHistory.length) {
+      worksHistory.push(worksId);
+      setWorksHistory(worksHistory);
+    }
+    if (worksHistoryIndex === null) {
+      setWorksHistoryIndex(0);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [worksId, setSelectId]);
+  }, [worksId, setSelectId, setWorksHistory, setLastVisitedId, setWorksHistoryIndex]);
   React.useEffect(() => {
     setVisited({ ...visited, [worksId.toString()]: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -79,6 +108,16 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
     if (worksInfo === undefined) {
       return [];
     }
+    if (mapModeId === 1) {
+      const rotateFromSelf = calcRotatedOrderWorksFromSpecificId(worksId);
+      const notVisitedRotateSortedIds = rotateFromSelf
+        .filter((info) => !visited[info.id] && info.id !== worksId && info.id !== lastVisitedId)
+        .map((info) => info.id);
+      const visitedRotateSortedIds = rotateFromSelf
+        .filter((info) => visited[info.id] && info.id !== worksId && info.id !== lastVisitedId)
+        .map((info) => info.id);
+      return notVisitedRotateSortedIds.concat(visitedRotateSortedIds);
+    }
     const notVisitedSortedIds = sortWorksByDistance(worksId, coords).filter(
       (id) => !visited[id] && id !== worksId && id !== lastVisitedId,
     );
@@ -86,7 +125,17 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
       (id) => visited[id] && id !== worksId && id !== lastVisitedId,
     );
     return notVisitedSortedIds.concat(visitedSortedIds);
-  }, [worksId, worksInfo, coords, visited, lastVisitedId]);
+  }, [worksId, worksInfo, coords, visited, lastVisitedId, mapModeId]);
+
+  const nextRotationOrderWorksId = React.useMemo<number | null>(() => {
+    if (worksHistoryIndex !== null && worksHistoryIndex < worksHistory.length - 1) {
+      return worksHistory[worksHistoryIndex + 1];
+    }
+    if (visited[suggestIds[0]]) {
+      return calcNextRotationOrderWorksId(worksId);
+    }
+    return suggestIds[0];
+  }, [worksId, suggestIds, visited, worksHistory, worksHistoryIndex]);
 
   if (worksInfo === undefined) {
     return <></>;
@@ -100,21 +149,43 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
         layout={layout}
         setIsShowHamburger={setIsShowHamburger}
       />
-      <StyledContentContainer>
-        <ScrollDiv ref={scrollRef}></ScrollDiv>
-        <StyledWorksContainer isFull={isFull} isNarrowLayout={isNarrowLayout} containerWidth={iframeWidth}>
-          <IndividualWorksWindow
-            srcUrl={isMobile ? worksInfo.srcUrlSp : worksInfo.srcUrlPc}
-            iframeHeight={iframeHeight}
-            iframeWidth={iframeWidth}
-            isFull={isFull}
-            setIsFull={setIsFull}
-            isNarrowLayout={isNarrowLayout}
-          />
-          {!isFull && <IndividualWorksDetail worksInfo={worksInfo} isNarrowLayout={isNarrowLayout} />}
-          {!isFull && <NavigationArea suggestIds={suggestIds} visited={visited} isNarrowLayout={isNarrowLayout} />}
-        </StyledWorksContainer>
-      </StyledContentContainer>
+      <ScrollContainer ref={scrollContainerRef}>
+        <Scroller ref={scrollerRef}>
+          <StyledContentContainer>
+            {!isFull && <ScrollTopDiv ref={scrollTopRef} />}
+            <StyledWorksContainer isFull={isFull} isNarrowLayout={isNarrowLayout} containerWidth={iframeWidth}>
+              {!isFull && nextRotationOrderWorksId !== null && (
+                <TopNavigationArea
+                  nextRotationOrderWorksId={nextRotationOrderWorksId}
+                  isNarrowLayout={isNarrowLayout}
+                  worksHistory={worksHistory}
+                  worksHistoryIndex={worksHistoryIndex}
+                  setWorksHistoryIndex={setWorksHistoryIndex}
+                />
+              )}
+              <IndividualWorksWindow
+                srcUrl={isMobile ? worksInfo.srcUrlSp : worksInfo.srcUrlPc}
+                iframeHeight={iframeHeight}
+                iframeWidth={iframeWidth}
+                isFull={isFull}
+                setIsFull={setIsFull}
+                isNarrowLayout={isNarrowLayout}
+                isShowButtonOnly={!isFull && isMobile && worksInfo.isSmartphoneFullscreenOnly === true}
+                showLoading={worksInfo.showLoading || false}
+              />
+              {!isFull && <IndividualWorksDetail worksInfo={worksInfo} isNarrowLayout={isNarrowLayout} />}
+              {!isFull && <ReactionForm worksId={worksId} isNarrowLayout={isNarrowLayout} />}
+              {!isFull && <NavigationArea suggestIds={suggestIds} visited={visited} isNarrowLayout={isNarrowLayout} />}
+              {!isFull && worksInfo.ownQuestionnaireUrl && (
+                <OwnQuestionnaire
+                  ownQuestionnaireUrl={worksInfo.ownQuestionnaireUrl}
+                  isNarrowLayout={isNarrowLayout}
+                ></OwnQuestionnaire>
+              )}
+            </StyledWorksContainer>
+          </StyledContentContainer>
+        </Scroller>
+      </ScrollContainer>
     </StyledRoot>
   );
 };
@@ -128,16 +199,26 @@ const StyledRoot = styled.div`
   overflow: hidden;
 `;
 
-const StyledContentContainer = styled.div`
+const ScrollContainer = styled.div`
   width: 100%;
   height: calc(100% - ${headerHeight}px);
   overflow-y: auto;
+`;
+
+const Scroller = styled.div`
+  min-height: ${isSmoothScrollable ? `calc(100% - ${headerHeight - 1}px)` : `calc(100% - ${headerHeight}px)`};
+`;
+
+const StyledContentContainer = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
-const ScrollDiv = styled.div``;
+const ScrollTopDiv = styled.div`
+  margin-top: ${isSmoothScrollable ? '1px' : '0'};
+`;
 
 interface StyledWorksContainerProps {
   isNarrowLayout: boolean;
@@ -149,5 +230,5 @@ const StyledWorksContainer = styled.div<StyledWorksContainerProps>`
   width: ${({ containerWidth }) => containerWidth};
   display: flex;
   flex-direction: column;
-  padding: ${({ isFull }) => (isFull ? '0' : '20px 0px 50px 0px')};
+  padding: ${({ isFull }) => (isFull ? '0' : '10px 0px 50px 0px')};
 `;
