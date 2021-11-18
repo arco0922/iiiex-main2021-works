@@ -89,13 +89,12 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
 
   React.useEffect(() => {
     setLastVisitedId(selectId);
+    if (worksHistoryIndex === null || worksHistoryIndex === worksHistory.length) {
+      worksHistory.push(worksId);
+      setWorksHistory(worksHistory);
+    }
     if (worksHistoryIndex === null) {
-      worksHistory.push(worksId);
-      setWorksHistory(worksHistory);
       setWorksHistoryIndex(0);
-    } else if (worksHistoryIndex === worksHistory.length) {
-      worksHistory.push(worksId);
-      setWorksHistory(worksHistory);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [worksId, setSelectId, setWorksHistory]);
