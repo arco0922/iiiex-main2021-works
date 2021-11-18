@@ -42,7 +42,7 @@ const StyledContainer = styled.div`
   min-width: 250px;
   width: calc(100% - ${wideFullScreenButtonWidth}px);
   &.narrow {
-    margin-top: 35px;
+    margin-top: 45px;
     width: 100%;
     padding: 0px 10px;
   }
