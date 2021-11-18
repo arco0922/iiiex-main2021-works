@@ -32,6 +32,7 @@ export const WorksListMenu: React.VFC<Props> = ({ selectId, setSelectId, visited
                   setSelectId={setSelectId}
                   visited={visited}
                   setIsShowDetail={setIsShowDetail}
+                  scrollContainerRef={scrollContaierRef}
                 ></WorksCard>
               );
             })}
