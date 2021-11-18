@@ -1,4 +1,5 @@
 import { headerHeight } from 'components/Header/Header';
+import { LoadingSpinner } from 'components/Loading/LoadingSpinner';
 import { theme } from 'constants/Theme';
 import { useWindowDimensions } from 'hooks/useWindowDimensions';
 import React from 'react';
@@ -12,6 +13,7 @@ interface Props {
   setIsFull: (isFull: boolean) => void;
   isNarrowLayout: boolean;
   isShowButtonOnly: boolean;
+  showLoading: boolean;
 }
 
 export const IndividualWorksWindow: React.VFC<Props> = ({
@@ -22,6 +24,7 @@ export const IndividualWorksWindow: React.VFC<Props> = ({
   setIsFull,
   isNarrowLayout,
   isShowButtonOnly,
+  showLoading,
 }) => {
   const iframeRef = React.useRef<HTMLIFrameElement>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
@@ -67,8 +70,11 @@ export const IndividualWorksWindow: React.VFC<Props> = ({
                 src={srcUrl}
                 allow="fullscreen *; autoplay *; camera *; microphone *"
                 ref={iframeRef}
+                isLoading={isLoading}
               ></StyledIframe>
-              <StyledLoading isLoading={isLoading}>Loading...</StyledLoading>
+              <StyledLoading isLoading={isLoading && showLoading}>
+                <LoadingSpinner />
+              </StyledLoading>
             </StyledIframeContainer>
           ) : (
             <StyledSkeleton>
@@ -208,22 +214,22 @@ const StyledIframeContainer = styled.div`
   height: 100%;
 `;
 
-const StyledIframe = styled.iframe`
+interface StyledLoadingProps {
+  isLoading: boolean;
+}
+
+const StyledIframe = styled.iframe<StyledLoadingProps>`
   width: 100%;
   height: 100%;
   outline: none;
   border: none;
   display: block;
-  background-color: white;
+  background-color: ${({ isLoading }) => (isLoading ? 'black' : 'white')};
   z-index: 17;
 `;
 
-interface StyledLoadingProps {
-  isLoading: boolean;
-}
-
 const StyledLoading = styled.div<StyledLoadingProps>`
-  background-color: black;
+  background-color: #000000a4;
   color: white;
   display: ${({ isLoading }) => (isLoading ? 'flex' : 'none')};
   position: absolute;
@@ -233,7 +239,7 @@ const StyledLoading = styled.div<StyledLoadingProps>`
   left: 0;
   align-items: center;
   justify-content: center;
-  z-index: 10;
+  z-index: 17;
 `;
 
 const StyledSkeleton = styled.div`

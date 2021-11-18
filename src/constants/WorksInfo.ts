@@ -20,6 +20,7 @@ export interface WorksInfo {
   deviceMemo?: string;
   formEntry: string;
   isInitial?: boolean;
+  showLoading?: boolean;
 }
 
 export const worksInfoArr: WorksInfo[] = [
@@ -57,6 +58,7 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlSp: 'https://playcanv.as/p/3d09d3d7/',
     formEntry: 'entry.457886068',
     isInitial: true,
+    showLoading: true,
   },
   {
     id: 1,
@@ -107,6 +109,7 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://hardcore-nobel-4e99fe.netlify.app/',
     srcUrlSp: 'https://hardcore-nobel-4e99fe.netlify.app/mobile.html',
     formEntry: 'entry.1260241828',
+    showLoading: true,
   },
   {
     id: 3,
@@ -150,6 +153,7 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://hana-mochizuki.github.io/on-my-period/',
     srcUrlSp: 'https://hana-mochizuki.github.io/on-my-period/',
     formEntry: 'entry.805425849',
+    showLoading: true,
   },
   {
     id: 4,
@@ -174,6 +178,7 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://larkin269.github.io/fikpages/',
     srcUrlSp: 'https://larkin269.github.io/fikpages/',
     formEntry: 'entry.306737416',
+    showLoading: true,
   },
   {
     id: 5,
@@ -203,6 +208,7 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlSp: 'https://damakoo.github.io/PuppeTuber_WebGL/mobile_index.html',
     aspectRatio: 10 / 16,
     formEntry: 'entry.1774366675',
+    showLoading: true,
   },
   {
     id: 6,
@@ -243,6 +249,7 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://y-141.github.io/iiiex_pentagons/',
     srcUrlSp: 'https://y-141.github.io/iiiex_pentagons/',
     formEntry: 'entry.1126317556',
+    showLoading: true,
   },
   {
     id: 7,
@@ -288,6 +295,7 @@ export const worksInfoArr: WorksInfo[] = [
     formEntry: 'entry.333145081',
     ownQuestionnaireUrl:
       'https://docs.google.com/forms/d/e/1FAIpQLScjVNVSwZPo3jH9yNuIhbvFrYRuIWOZTZ7cjgLbkmNEpfbOJA/viewform',
+    showLoading: true,
   },
   {
     id: 8,
@@ -310,6 +318,7 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://ninonode.github.io/endragon/',
     srcUrlSp: 'https://ninonode.github.io/endragon/',
     formEntry: 'entry.1047603043',
+    showLoading: true,
   },
   {
     id: 9,
@@ -341,6 +350,7 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://tuckersarge.github.io/kabuku/',
     srcUrlSp: 'https://tuckersarge.github.io/kabuku/',
     formEntry: 'entry.2111132219',
+    showLoading: true,
   },
   {
     id: 10,
@@ -369,6 +379,7 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://flask-325405.de.r.appspot.com/guest',
     srcUrlSp: 'https://flask-325405.de.r.appspot.com/guest',
     formEntry: 'entry.839388668',
+    showLoading: true,
   },
   {
     id: 11,
@@ -392,6 +403,7 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlSp: 'https://siyuanzh09.github.io/Home_Gallery/',
     aspectRatio: 5 / 6,
     formEntry: 'entry.1208608827',
+    showLoading: true,
   },
   {
     id: 12,
@@ -436,6 +448,7 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://tiger0ym.github.io/iiiex/',
     srcUrlSp: 'https://tiger0ym.github.io/iiiex/mobile.html',
     formEntry: 'entry.1595883871',
+    showLoading: true,
   },
   {
     id: 13,
@@ -475,5 +488,6 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://kurapyon31.github.io/animalClock_pc/',
     srcUrlSp: 'https://kurapyon31.github.io/animalClock/',
     formEntry: 'entry.1138817257',
+    showLoading: true,
   },
 ];

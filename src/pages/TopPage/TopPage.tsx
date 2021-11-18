@@ -1,5 +1,6 @@
 import { Visited } from 'AppRoot';
 import { Header, headerHeight } from 'components/Header/Header';
+import { LoadingSpinner } from 'components/Loading/LoadingSpinner';
 import { WorksListSketch } from 'components/Sketches/WorksListSketch';
 import { LayoutType } from 'constants/Layout';
 import { Coord, MapModeId } from 'constants/MapCoords';
@@ -108,7 +109,7 @@ export const TopPage: React.VFC<Props> = ({
             bgcolor="#0e0e0e"
           ></WorksListSketch>
           <StyledLoading isNarrowLayout={layout === 'NARROW'} id="p5_loading">
-            <p>Loading...</p>
+            <LoadingSpinner />
           </StyledLoading>
           {layout === 'NARROW' ? (
             <WorksDetailBottom
@@ -178,9 +179,4 @@ const StyledLoading = styled.div<StyledLoadingProps>`
   display: flex;
   align-items: center;
   justify-content: center;
-
-  & > p {
-    color: white;
-    font-size: 15px;
-  }
 `;
