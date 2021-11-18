@@ -27,7 +27,9 @@ const initialVisited = (() => {
 const initialWorks = worksInfoArr.filter((works) => {
   return works.isInitial;
 });
-const initialSelectId = initialWorks[Math.floor(Math.random() * initialWorks.length)].id;
+export const initialSelectId = initialWorks[Math.floor(Math.random() * initialWorks.length)].id;
+
+export const initialMapModeId: MapModeId = 1;
 
 export const AppRoot: React.VFC = () => {
   /** 本番環境用のビルドの場合は、/testのルーティングは作らない */
@@ -44,14 +46,13 @@ export const AppRoot: React.VFC = () => {
   const [worksHistory, setWorksHistory] = React.useState<number[]>([]);
   const [worksHistoryIndex, setWorksHistoryIndex] = React.useState<number | null>(null);
 
-  const [mapModeId, setMapModeId] = React.useState<MapModeId>(1);
-  const mapModeIdRef = React.useRef<MapModeId>(1);
+  const [mapModeId, setMapModeId] = React.useState<MapModeId>(initialMapModeId);
+  const mapModeIdRef = React.useRef<MapModeId>(initialMapModeId);
 
   React.useEffect(() => {
     if (isProd) {
       return;
     }
-    setMapModeId(1);
     setVisited(initialVisited);
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
