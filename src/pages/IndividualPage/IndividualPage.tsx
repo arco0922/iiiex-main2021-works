@@ -171,6 +171,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
                 setIsFull={setIsFull}
                 isNarrowLayout={isNarrowLayout}
                 isShowButtonOnly={!isFull && isMobile && worksInfo.isSmartphoneFullscreenOnly === true}
+                showLoading={worksInfo.showLoading || false}
               />
               {!isFull && <IndividualWorksDetail worksInfo={worksInfo} isNarrowLayout={isNarrowLayout} />}
               {!isFull && <ReactionForm worksId={worksId} isNarrowLayout={isNarrowLayout} />}
