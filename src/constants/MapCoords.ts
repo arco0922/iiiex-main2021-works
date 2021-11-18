@@ -1245,42 +1245,6 @@ export const mapCoordsArr: MapCoords[] = [
   },
   {
     modeId: 2,
-    modeName: '対応デバイス',
-    coords: miroCoords,
-    center: {
-      x: 100,
-      y: 100,
-    },
-    border: {
-      minX: -1000,
-      maxX: 1000,
-      minY: -1200,
-      maxY: 1200,
-    },
-    threshold: {
-      dist: 450,
-    },
-  },
-  {
-    modeId: 3,
-    modeName: '制作者の所属',
-    coords: airplaneCoords,
-    center: {
-      x: -60,
-      y: 60,
-    },
-    border: {
-      minX: -1000,
-      maxX: 1000,
-      minY: -1200,
-      maxY: 1200,
-    },
-    threshold: {
-      dist: 450,
-    },
-  },
-  {
-    modeId: 4,
     modeName: '作品の題材',
     coords: araiCoords,
     center: {
@@ -1298,7 +1262,7 @@ export const mapCoordsArr: MapCoords[] = [
     },
   },
   {
-    modeId: 5,
+    modeId: 3,
     modeName: '作品名',
     coords: lineCoords,
     center: {
@@ -1315,6 +1279,43 @@ export const mapCoordsArr: MapCoords[] = [
       dist: 300,
     },
   },
+  {
+    modeId: 4,
+    modeName: '対応デバイス',
+    coords: miroCoords,
+    center: {
+      x: 100,
+      y: 100,
+    },
+    border: {
+      minX: -1000,
+      maxX: 1000,
+      minY: -1200,
+      maxY: 1200,
+    },
+    threshold: {
+      dist: 450,
+    },
+  },
+  {
+    modeId: 5,
+    modeName: '制作者の所属',
+    coords: airplaneCoords,
+    center: {
+      x: -60,
+      y: 60,
+    },
+    border: {
+      minX: -1000,
+      maxX: 1000,
+      minY: -1200,
+      maxY: 1200,
+    },
+    threshold: {
+      dist: 450,
+    },
+  },
+
   // {
   //   modeId: 5,
   //   modeName: 'カテゴリ2',
