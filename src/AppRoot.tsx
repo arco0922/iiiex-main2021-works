@@ -11,6 +11,8 @@ import { layoutBorder, LayoutType } from 'constants/Layout';
 import { useWindowDimensions } from 'hooks/useWindowDimensions';
 import styled from 'styled-components';
 import { HamburgerMenu } from 'components/HamburgerMenu/HamburgerMenu';
+import { useTracking } from 'hooks/useTracking';
+import { Tracker } from 'Tracker';
 
 export interface Visited {
   [key: string]: boolean;
@@ -27,7 +29,9 @@ const initialVisited = (() => {
 const initialWorks = worksInfoArr.filter((works) => {
   return works.isInitial;
 });
-const initialSelectId = initialWorks[Math.floor(Math.random() * initialWorks.length)].id;
+export const initialSelectId = initialWorks[Math.floor(Math.random() * initialWorks.length)].id;
+
+export const initialMapModeId: MapModeId = 1;
 
 export const AppRoot: React.VFC = () => {
   /** 本番環境用のビルドの場合は、/testのルーティングは作らない */
@@ -42,15 +46,15 @@ export const AppRoot: React.VFC = () => {
 
   const [lastVisitedId, setLastVisitedId] = React.useState<number>(-1);
   const [worksHistory, setWorksHistory] = React.useState<number[]>([]);
+  const [worksHistoryIndex, setWorksHistoryIndex] = React.useState<number | null>(null);
 
-  const [mapModeId, setMapModeId] = useLocalStorage<MapModeId>('mapModeId', 1);
-  const mapModeIdRef = React.useRef<MapModeId>(1);
+  const [mapModeId, setMapModeId] = React.useState<MapModeId>(initialMapModeId);
+  const mapModeIdRef = React.useRef<MapModeId>(initialMapModeId);
 
   React.useEffect(() => {
     if (isProd) {
       return;
     }
-    setMapModeId(1);
     setVisited(initialVisited);
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -78,9 +82,7 @@ export const AppRoot: React.VFC = () => {
     isShowHamburgerRef.current = isShowHamburger;
   }, [isShowHamburger]);
 
-  const [coords, setCoords] = React.useState<Coord[]>(
-    mapCoordsArr.filter(({ modeId }) => modeId === mapModeId)[0].coords,
-  );
+  const [coords, setCoords] = React.useState<Coord[]>(mapCoordsArr.filter(({ modeId }) => modeId === 1)[0].coords);
 
   if (layout === null) {
     return null;
@@ -89,6 +91,7 @@ export const AppRoot: React.VFC = () => {
   return (
     <StyledRoot containerWidth={width} containerHeight={height}>
       <Router>
+        <Tracker />
         <HamburgerMenu
           isShowHamburger={isShowHamburger}
           setIsShowHamburger={setIsShowHamburger}
@@ -110,6 +113,7 @@ export const AppRoot: React.VFC = () => {
               setCoords={setCoords}
               visitedRef={visitedRef}
               setWorksHistory={setWorksHistory}
+              setWorksHistoryIndex={setWorksHistoryIndex}
             />
           </Route>
           <Route path="/works/:id" exact>
@@ -125,6 +129,8 @@ export const AppRoot: React.VFC = () => {
               coords={coords}
               worksHistory={worksHistory}
               setWorksHistory={setWorksHistory}
+              worksHistoryIndex={worksHistoryIndex}
+              setWorksHistoryIndex={setWorksHistoryIndex}
               mapModeId={mapModeId}
             />
           </Route>

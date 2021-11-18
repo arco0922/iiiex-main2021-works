@@ -4,6 +4,7 @@ import { WorksInfo } from 'constants/WorksInfo';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { judgeElementInContainerViewPort } from 'utils/judgeElementInContainerViewPort';
 
 interface Props {
   worksInfo: WorksInfo;
@@ -11,15 +12,28 @@ interface Props {
   setSelectId: (id: number) => void;
   visited: Visited;
   setIsShowDetail: (isShowDetail: boolean) => void;
+  scrollContainerRef: React.RefObject<HTMLElement>;
 }
 
-export const WorksCard: React.VFC<Props> = ({ worksInfo, selectId, setSelectId, visited, setIsShowDetail }) => {
+export const WorksCard: React.VFC<Props> = ({
+  worksInfo,
+  selectId,
+  setSelectId,
+  visited,
+  setIsShowDetail,
+  scrollContainerRef,
+}) => {
   const cardContainerRef = React.useRef<HTMLDivElement>(null);
   React.useEffect(() => {
-    if (worksInfo.id === selectId && cardContainerRef.current) {
+    if (
+      worksInfo.id === selectId &&
+      cardContainerRef.current &&
+      scrollContainerRef.current &&
+      judgeElementInContainerViewPort(cardContainerRef, scrollContainerRef) === false
+    ) {
       cardContainerRef.current.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
     }
-  }, [worksInfo, selectId]);
+  }, [worksInfo, selectId, scrollContainerRef]);
   const [isHover, setIsHover] = React.useState<boolean>(false);
   const isSelect = worksInfo.id === selectId;
   const onClickHandler = React.useCallback(() => {

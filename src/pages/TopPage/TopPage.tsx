@@ -1,5 +1,6 @@
 import { Visited } from 'AppRoot';
 import { Header, headerHeight } from 'components/Header/Header';
+import { LoadingSpinner } from 'components/Loading/LoadingSpinner';
 import { WorksListSketch } from 'components/Sketches/WorksListSketch';
 import { LayoutType } from 'constants/Layout';
 import { Coord, MapModeId } from 'constants/MapCoords';
@@ -23,6 +24,7 @@ interface Props {
   setCoords: (coords: Coord[]) => void;
   visitedRef: React.MutableRefObject<Visited>;
   setWorksHistory: (worksHistory: number[]) => void;
+  setWorksHistoryIndex: (id: number | null) => void;
 }
 
 export type InitialAnimationStatus = 'BEFORE' | 'ANIMATING' | 'END';
@@ -40,9 +42,11 @@ export const TopPage: React.VFC<Props> = ({
   setCoords,
   visitedRef,
   setWorksHistory,
+  setWorksHistoryIndex,
 }) => {
   const selectIdRef = React.useRef<number>(0);
   const [isShowDetail, setIsShowDetail] = React.useState<boolean>(false);
+  const isShowDetailRef = React.useRef<boolean>(false);
   const [initialAnimationStatus, setInitialAnimationStatus] = React.useState<InitialAnimationStatus>('BEFORE');
   const initialAnimationStatusRef = React.useRef<InitialAnimationStatus>('BEFORE');
   const layoutRef = React.useRef<LayoutType>('WIDE');
@@ -52,6 +56,9 @@ export const TopPage: React.VFC<Props> = ({
     selectIdRef.current = selectId;
   }, [selectId]);
   React.useEffect(() => {
+    isShowDetailRef.current = isShowDetail;
+  }, [isShowDetail]);
+  React.useEffect(() => {
     initialAnimationStatusRef.current = initialAnimationStatus;
   }, [initialAnimationStatus]);
   React.useEffect(() => {
@@ -59,7 +66,8 @@ export const TopPage: React.VFC<Props> = ({
   }, [layout]);
   React.useEffect(() => {
     setWorksHistory([]);
-  }, [setWorksHistory]);
+    setWorksHistoryIndex(null);
+  }, [setWorksHistory, setWorksHistoryIndex]);
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -90,6 +98,7 @@ export const TopPage: React.VFC<Props> = ({
             setSelectId={setSelectId}
             initialAnimationStatusRef={initialAnimationStatusRef}
             setIsShowDetail={setIsShowDetail}
+            isShowDetailRef={isShowDetailRef}
             isShowHamburgerRef={isShowHamburgerRef}
             layoutRef={layoutRef}
             setMapModeId={setMapModeId}
@@ -100,7 +109,7 @@ export const TopPage: React.VFC<Props> = ({
             bgcolor="#0e0e0e"
           ></WorksListSketch>
           <StyledLoading isNarrowLayout={layout === 'NARROW'} id="p5_loading">
-            <p>Loading...</p>
+            <LoadingSpinner />
           </StyledLoading>
           {layout === 'NARROW' ? (
             <WorksDetailBottom
@@ -170,9 +179,4 @@ const StyledLoading = styled.div<StyledLoadingProps>`
   display: flex;
   align-items: center;
   justify-content: center;
-
-  & > p {
-    color: white;
-    font-size: 15px;
-  }
 `;

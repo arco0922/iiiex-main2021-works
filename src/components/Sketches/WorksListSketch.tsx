@@ -9,7 +9,7 @@ import { Coord, mapCoordsArr, MapModeId } from 'constants/MapCoords';
 import { LayoutType } from 'constants/Layout';
 import { sideDetailWidth } from 'pages/TopPage/WorksDetail';
 import { bottomDetailHeight } from 'pages/TopPage/WorksDetailBottom';
-import { Visited } from 'AppRoot';
+import { initialSelectId, Visited, initialMapModeId } from 'AppRoot';
 import { carouselSpaceHeight } from 'pages/TopPage/Carousel';
 import { InitialAnimationStatus } from 'pages/TopPage/TopPage';
 
@@ -20,6 +20,7 @@ interface Props {
   setSelectId: (id: number) => void;
   initialAnimationStatusRef: React.MutableRefObject<InitialAnimationStatus>;
   setIsShowDetail: (isShowDetail: boolean) => void;
+  isShowDetailRef: React.MutableRefObject<boolean>;
   isShowHamburgerRef: React.MutableRefObject<boolean>;
   layoutRef: React.MutableRefObject<LayoutType>;
   setMapModeId: (mapMode: MapModeId) => void;
@@ -44,6 +45,7 @@ export const WorksListSketch = React.memo<Props>(
     setSelectId,
     initialAnimationStatusRef,
     setIsShowDetail,
+    isShowDetailRef,
     isShowHamburgerRef,
     layoutRef,
     setMapModeId,
@@ -120,6 +122,8 @@ export const WorksListSketch = React.memo<Props>(
 
     let isWorldInitialized = false;
     let isFirstZoomExperienced = false;
+
+    let animationDelayCount = 0;
 
     let worldOffsetX: number; // ワールドの中心がスクリーンのどこにあるか
     let worldOffsetY: number; // ワールドの中心がスクリーンのどこにあるか
@@ -303,6 +307,11 @@ export const WorksListSketch = React.memo<Props>(
       mapCoordsGroup.coords.forEach(({ id, x, y }) => obstacleSystem.setTargetPos({ id, x, y }));
       obstacleSystem.setDistThreshold(mapCoordsGroup.threshold.dist);
       setIsShowDetail(true);
+      if (newMapModeId === initialMapModeId) {
+        animationDelayCount = -50;
+        isFirstZoomExperienced = false;
+        obstacleSystem.setSelectId(initialSelectId);
+      }
     };
 
     let thumbnails: ParticleImage[];
@@ -402,6 +411,8 @@ export const WorksListSketch = React.memo<Props>(
     };
 
     const draw = (p5: p5Types) => {
+      animationDelayCount += 1;
+
       if (
         containerRef.current !== null &&
         (prevCanvasWidth !== containerRef.current.clientWidth - padding * 2 ||
@@ -432,12 +443,12 @@ export const WorksListSketch = React.memo<Props>(
       }
       limitDisplayMove(p5);
 
-      if (p5.frameCount > 20 && !isFirstZoomExperienced && initialAnimationStatusRef.current === 'END') {
+      if (animationDelayCount > 20 && !isFirstZoomExperienced && initialAnimationStatusRef.current === 'END') {
         isFirstZoomExperienced = true;
         obstacleSystem.setSelectIdFromOther(selectIdRef.current);
       }
 
-      if (selectIdRef.current !== obstacleSystem.selectId) {
+      if (animationDelayCount > 20 && selectIdRef.current !== obstacleSystem.selectId) {
         isFirstZoomExperienced = true;
         obstacleSystem.setSelectIdFromOther(selectIdRef.current);
       }
@@ -460,7 +471,9 @@ export const WorksListSketch = React.memo<Props>(
     };
 
     const isPointOnCanvas = (p5: p5Types, x: number, y: number) => {
-      return x >= 0 && x <= p5.width && y >= 0 && y <= p5.height;
+      const height =
+        layoutRef.current === 'NARROW' && isShowDetailRef.current ? p5.height - bottomDetailHeight : p5.height;
+      return x >= 0 && x <= p5.width && y >= 0 && y <= height;
     };
 
     const isCursorOnCanvas = (p5: p5Types) => {
@@ -566,6 +579,7 @@ export const WorksListSketch = React.memo<Props>(
 
       setSelectId(id: number) {
         this.selectId = id;
+        setSelectId(id);
       }
 
       setSelectIdFromOther(id: number) {

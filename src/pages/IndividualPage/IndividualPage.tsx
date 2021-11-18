@@ -33,6 +33,8 @@ interface Props {
   coords: Coord[];
   worksHistory: number[];
   setWorksHistory: (worksHistory: number[]) => void;
+  worksHistoryIndex: number | null;
+  setWorksHistoryIndex: (id: number | null) => void;
   mapModeId: MapModeId;
 }
 
@@ -51,6 +53,8 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   coords,
   worksHistory,
   setWorksHistory,
+  worksHistoryIndex,
+  setWorksHistoryIndex,
   mapModeId,
 }) => {
   const worksId = Number(match.params.id);
@@ -87,13 +91,16 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
 
   React.useEffect(() => {
     setLastVisitedId(selectId);
-    if (worksHistory.slice(-1)[0] !== worksId) {
-      worksHistory.push(worksId);
-    }
-    setWorksHistory(worksHistory);
     setSelectId(worksId);
+    if (worksHistoryIndex === null || worksHistoryIndex === worksHistory.length) {
+      worksHistory.push(worksId);
+      setWorksHistory(worksHistory);
+    }
+    if (worksHistoryIndex === null) {
+      setWorksHistoryIndex(0);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [worksId, setSelectId, setWorksHistory]);
+  }, [worksId, setSelectId, setWorksHistory, setLastVisitedId, setWorksHistoryIndex]);
   React.useEffect(() => {
     setVisited({ ...visited, [worksId.toString()]: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -123,11 +130,14 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   }, [worksId, worksInfo, coords, visited, lastVisitedId, mapModeId]);
 
   const nextRotationOrderWorksId = React.useMemo<number | null>(() => {
+    if (worksHistoryIndex !== null && worksHistoryIndex < worksHistory.length - 1) {
+      return worksHistory[worksHistoryIndex + 1];
+    }
     if (visited[suggestIds[0]]) {
       return calcNextRotationOrderWorksId(worksId);
     }
     return suggestIds[0];
-  }, [worksId, suggestIds, visited]);
+  }, [worksId, suggestIds, visited, worksHistory, worksHistoryIndex]);
 
   if (worksInfo === undefined) {
     return <></>;
@@ -151,7 +161,8 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
                   nextRotationOrderWorksId={nextRotationOrderWorksId}
                   isNarrowLayout={isNarrowLayout}
                   worksHistory={worksHistory}
-                  setWorksHistory={setWorksHistory}
+                  worksHistoryIndex={worksHistoryIndex}
+                  setWorksHistoryIndex={setWorksHistoryIndex}
                 />
               )}
               <IndividualWorksWindow
@@ -162,6 +173,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
                 setIsFull={setIsFull}
                 isNarrowLayout={isNarrowLayout}
                 isShowButtonOnly={!isFull && touchable && worksInfo.isSmartphoneFullscreenOnly === true}
+                showLoading={worksInfo.showLoading || false}
               />
               {!isFull && <IndividualWorksDetail worksInfo={worksInfo} isNarrowLayout={isNarrowLayout} />}
               {!isFull && <ReactionForm worksId={worksId} isNarrowLayout={isNarrowLayout} />}
