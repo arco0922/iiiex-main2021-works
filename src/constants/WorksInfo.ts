@@ -87,6 +87,9 @@ export const worksInfoArr: WorksInfo[] = [
     一人になってみたけど、
     
     たまらなく人肌が恋しくなる時がある。
+
+
+    ● 映像作品・アニメーション
     `,
     srcUrlPc: 'https://daiki330.github.io/bokutoikiru/',
     srcUrlSp: 'https://daiki330.github.io/bokutoikiru/',
