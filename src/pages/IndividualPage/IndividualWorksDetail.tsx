@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { CreatorDescription } from './CreatorDescription';
 import { convertDeviceString } from 'utils/convertDeviceString';
+import { wideFullScreenButtonWidth } from './IndividualWorksWindow';
 
 interface Props {
   worksInfo: WorksInfo;
@@ -39,9 +40,9 @@ export const IndividualWorksDetail: React.VFC<Props> = ({ worksInfo, isNarrowLay
 const StyledContainer = styled.div`
   margin-top: 20px;
   min-width: 250px;
-  width: calc(100% - 235px);
+  width: calc(100% - ${wideFullScreenButtonWidth}px);
   &.narrow {
-    margin-top: 50px;
+    margin-top: 35px;
     width: 100%;
     padding: 0px 10px;
   }

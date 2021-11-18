@@ -120,13 +120,18 @@ export const IndividualWorksWindow: React.VFC<Props> = ({
               {isNarrowLayout ? (
                 <StyledNarrowFullScreenButton onClick={makeFullScreen}>
                   <StyledSVG
-                    width="252"
-                    height="43"
-                    viewBox="0 0 252 43"
+                    width="225"
+                    height="113"
+                    viewBox="0 0 225 113"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <path d="M126 43L0.426331 0.25L251.574 0.25L126 43Z" fill="#E3E1E1" />
+                    <path
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                      d="M0 0C0 62.132 50.368 112.5 112.5 112.5C174.632 112.5 225 62.132 225 0H0Z"
+                      fill="#2A70B8"
+                    />
                   </StyledSVG>
                   <p>全画面表示</p>
                 </StyledNarrowFullScreenButton>
@@ -258,38 +263,14 @@ const StyledFullScreenButtonContainer = styled.div`
   left: 0px;
 `;
 
+export const narrowFullScreenButtonWidth = 90;
+
 const StyledNarrowFullScreenButton = styled.button`
   background-color: transparent;
   position: absolute;
   top: 0px;
-  left: 50%;
-  width: 250px;
-  transform: translateX(-50%);
-  display: block;
-  outline: none;
-  border: none;
-  color: black;
-  z-index: 16;
-  &:hover {
-    cursor: pointer;
-  }
-  & > p {
-    position: absolute;
-    top: 33%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 16px;
-    line-height: 20px;
-    font-weight: ${theme.fontWeight.bold};
-    border-bottom: 2px solid ${theme.color.primary};
-  }
-`;
-
-const StyledFullScreenButton = styled.button`
-  background-color: transparent;
-  position: absolute;
-  top: 0px;
   right: 0px;
+  width: ${narrowFullScreenButtonWidth}px;
   display: block;
   outline: none;
   border: none;
@@ -304,7 +285,33 @@ const StyledFullScreenButton = styled.button`
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 22px;
+    font-size: 11px;
+  }
+`;
+
+export const wideFullScreenButtonWidth = 130;
+
+const StyledFullScreenButton = styled.button`
+  background-color: transparent;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: ${wideFullScreenButtonWidth}px;
+  display: block;
+  outline: none;
+  border: none;
+  color: white;
+  z-index: 16;
+  &:hover {
+    cursor: pointer;
+  }
+  & > p {
+    position: absolute;
+    width: 100%;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 13px;
   }
 `;
 
