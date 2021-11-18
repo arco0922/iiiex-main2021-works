@@ -146,7 +146,6 @@ module.exports = (_, argv) => {
         : undefined,
       new HtmlWebpackPlugin({
         template: path.resolve(__dirname, './public/index.html'),
-        // templateParameters: { G_ID: process.env.G_ID, UA_ID: process.env.UA_ID },
       }),
       analyzeBundle ? new BundleAnalyzerPlugin() : undefined,
     ].filter((plugin) => plugin),
