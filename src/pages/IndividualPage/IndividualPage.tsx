@@ -88,7 +88,8 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
     : `calc( ${iframeWidth} * ${worksInfo?.aspectRatio ? worksInfo.aspectRatio : 9 / 16} )`;
 
   React.useEffect(() => {
-    setLastVisitedId(selectId);
+    setLastVisitedId(worksId);
+    setSelectId(worksId);
     if (worksHistoryIndex === null || worksHistoryIndex === worksHistory.length) {
       worksHistory.push(worksId);
       setWorksHistory(worksHistory);
@@ -97,7 +98,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
       setWorksHistoryIndex(0);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [worksId, setSelectId, setWorksHistory]);
+  }, [worksId, setSelectId, setWorksHistory, setLastVisitedId, setWorksHistoryIndex]);
   React.useEffect(() => {
     setVisited({ ...visited, [worksId.toString()]: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
