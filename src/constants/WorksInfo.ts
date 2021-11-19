@@ -113,7 +113,7 @@ export const worksInfoArr: WorksInfo[] = [
     srcUrlPc: 'https://hardcore-nobel-4e99fe.netlify.app/',
     srcUrlSp: 'https://hardcore-nobel-4e99fe.netlify.app/mobile.html',
     formEntry: 'entry.1260241828',
-    showLoading: true,
+    showLoading: false,
   },
   {
     id: 3,
@@ -344,6 +344,10 @@ export const worksInfoArr: WorksInfo[] = [
         name: '陳施佳',
         affiliation: `学際情報学府\n伊東研究室\n修士1年`,
       },
+      {
+        name: '髙橋初来',
+        affiliation: `総合文化研究科\n金井研究室\n修士1年`,
+      },
     ],
     device: 'BOTH',
     caption: `Extra展で、浮世絵の一種である組上げ灯籠（別称、関西では立版古・たてばんこ）を実際に組み立てて紹介した。本展ではARで再現する。AR上の組上げ灯籠をいろいろな場所において、写真を撮ってシェアするなど、組上げ灯籠の世界を楽しんでほしい。
@@ -351,6 +355,7 @@ export const worksInfoArr: WorksInfo[] = [
     `,
     srcUrlPc: 'https://tuckersarge.github.io/kabuku/',
     srcUrlSp: 'https://tuckersarge.github.io/kabuku/',
+    aspectRatio: 1 / 1,
     formEntry: 'entry.2111132219',
     showLoading: true,
   },
