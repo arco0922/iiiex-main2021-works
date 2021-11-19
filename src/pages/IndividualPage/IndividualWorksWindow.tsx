@@ -70,7 +70,7 @@ export const IndividualWorksWindow: React.VFC<Props> = ({
                 src={srcUrl}
                 allow="fullscreen *; autoplay *; camera *; microphone *"
                 ref={iframeRef}
-                isLoading={isLoading}
+                isLoading={isLoading && showLoading}
               ></StyledIframe>
               <StyledLoading isLoading={isLoading && showLoading}>
                 <LoadingSpinner />
