@@ -370,7 +370,7 @@ export const WorksListSketch = React.memo<Props>(
       const mapCoordsGroup = mapCoordsArr.filter(({ modeId }) => modeId === initialMapModeId)[0];
       mapCoordsGroup.coords.forEach(({ id, x, y }) => {
         switch (initialMapModeId) {
-          case 5:
+          case 3:
             const randy = p5.random(-200, 200);
             obstacleSystem.addParticle(
               id,
