@@ -345,7 +345,7 @@ export const worksInfoArr: WorksInfo[] = [
         affiliation: `学際情報学府\n伊東研究室\n修士1年`,
       },
       {
-        name: '高橋初来',
+        name: '髙橋初来',
         affiliation: `総合文化研究科\n金井研究室\n修士1年`,
       },
     ],
