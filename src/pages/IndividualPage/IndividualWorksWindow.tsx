@@ -14,6 +14,8 @@ interface Props {
   isNarrowLayout: boolean;
   isShowButtonOnly: boolean;
   showLoading: boolean;
+  isOpen: boolean;
+  thumbnailBaseName: string;
 }
 
 export const IndividualWorksWindow: React.VFC<Props> = ({
@@ -25,6 +27,8 @@ export const IndividualWorksWindow: React.VFC<Props> = ({
   isNarrowLayout,
   isShowButtonOnly,
   showLoading,
+  isOpen,
+  thumbnailBaseName,
 }) => {
   const iframeRef = React.useRef<HTMLIFrameElement>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
@@ -50,6 +54,20 @@ export const IndividualWorksWindow: React.VFC<Props> = ({
   const exitFullScreen = React.useCallback(() => {
     setIsFull(false);
   }, [setIsFull]);
+
+  if (!isOpen) {
+    return (
+      <StyledContainer
+        iframeWidth={iframeWidth || `${width}px`}
+        iframeHeight={iframeHeight || `${height - headerHeight}px`}
+      >
+        <StyledEndSkeleton>
+          <StyledEndThumbnail src={`/static/assets/thumbnails/${thumbnailBaseName}.jpg`} height="60%" />
+          <p>公開期間は終了しました</p>
+        </StyledEndSkeleton>
+      </StyledContainer>
+    );
+  }
 
   return (
     <StyledRoot iframeHeight={iframeHeight} isShowButtonOnly={isShowButtonOnly}>
@@ -212,6 +230,21 @@ const StyledContainer = styled.div<StyledContainerProps>`
   min-width: ${({ iframeWidth }) => iframeWidth};
   width: ${({ iframeWidth }) => iframeWidth};
   height: ${({ iframeHeight }) => iframeHeight};
+`;
+
+const StyledEndSkeleton = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+`;
+
+const StyledEndThumbnail = styled.img`
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  margin-bottom: 20px;
 `;
 
 const StyledIframeContainer = styled.div`
