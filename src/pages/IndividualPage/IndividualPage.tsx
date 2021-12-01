@@ -182,7 +182,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
               {!isFull && <IndividualWorksDetail worksInfo={worksInfo} isNarrowLayout={isNarrowLayout} />}
               {!isFull && isOpen && <ReactionForm worksId={worksId} isNarrowLayout={isNarrowLayout} />}
               {!isFull && <NavigationArea suggestIds={suggestIds} visited={visited} isNarrowLayout={isNarrowLayout} />}
-              {!isFull && worksInfo.ownQuestionnaireUrl && (
+              {!isFull && isOpen && worksInfo.ownQuestionnaireUrl && (
                 <OwnQuestionnaire
                   ownQuestionnaireUrl={worksInfo.ownQuestionnaireUrl}
                   isNarrowLayout={isNarrowLayout}
