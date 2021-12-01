@@ -22,6 +22,7 @@ interface Params {
   id: string;
 }
 interface Props {
+  isOpen: boolean;
   visited: Visited;
   setVisited: (visited: Visited) => void;
   selectId: number;
@@ -41,6 +42,7 @@ interface Props {
 const touchable = isMobile || isTablet;
 
 const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = ({
+  isOpen,
   match,
   visited,
   setVisited,
@@ -87,7 +89,7 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
   const iframeWidth = isFull ? '' : isNarrowLayout ? '95vw' : 'min(1000px, max(75vw , 500px))';
   const iframeHeight = isFull
     ? ''
-    : `calc( ${iframeWidth} * ${worksInfo?.aspectRatio ? worksInfo.aspectRatio : 9 / 16} )`;
+    : `calc( ${iframeWidth} * ${worksInfo?.aspectRatio && isOpen ? worksInfo.aspectRatio : 9 / 16} )`;
 
   React.useEffect(() => {
     setLastVisitedId(selectId);
@@ -174,11 +176,13 @@ const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = 
                 isNarrowLayout={isNarrowLayout}
                 isShowButtonOnly={!isFull && touchable && worksInfo.isSmartphoneFullscreenOnly === true}
                 showLoading={worksInfo.showLoading || false}
+                isOpen={isOpen}
+                thumbnailBaseName={worksInfo.thumbnailBaseName}
               />
               {!isFull && <IndividualWorksDetail worksInfo={worksInfo} isNarrowLayout={isNarrowLayout} />}
-              {!isFull && <ReactionForm worksId={worksId} isNarrowLayout={isNarrowLayout} />}
+              {!isFull && isOpen && <ReactionForm worksId={worksId} isNarrowLayout={isNarrowLayout} />}
               {!isFull && <NavigationArea suggestIds={suggestIds} visited={visited} isNarrowLayout={isNarrowLayout} />}
-              {!isFull && worksInfo.ownQuestionnaireUrl && (
+              {!isFull && isOpen && worksInfo.ownQuestionnaireUrl && (
                 <OwnQuestionnaire
                   ownQuestionnaireUrl={worksInfo.ownQuestionnaireUrl}
                   isNarrowLayout={isNarrowLayout}
