@@ -1,4 +1,4 @@
-export const HOMEPAGE_URL = 'https://iiiexhibition.com/';
+export const HOMEPAGE_URL = 'https://iiiexhibition.com/log/i3e23';
 
 export const QUESTIONNAIRE_URL = 'https://forms.gle/nr9dbCYVvHvduLbo8';
 
