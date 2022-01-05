@@ -11,7 +11,6 @@ import { layoutBorder, LayoutType } from 'constants/Layout';
 import { useWindowDimensions } from 'hooks/useWindowDimensions';
 import styled from 'styled-components';
 import { HamburgerMenu } from 'components/HamburgerMenu/HamburgerMenu';
-import { useTracking } from 'hooks/useTracking';
 import { Tracker } from 'Tracker';
 
 export interface Visited {
@@ -34,8 +33,6 @@ export const initialSelectId = initialWorks[Math.floor(Math.random() * initialWo
 export const initialMapModeId: MapModeId = 1;
 
 export const AppRoot: React.VFC = () => {
-  const isOpen = false; // 公開期間かどうか
-
   /** 本番環境用のビルドの場合は、/testのルーティングは作らない */
   const isProd = process.env.PHASE === 'production';
 
@@ -120,7 +117,6 @@ export const AppRoot: React.VFC = () => {
           </Route>
           <Route path="/works/:id" exact>
             <IndividualPage
-              isOpen={isOpen}
               visited={visited}
               setVisited={setVisited}
               selectId={selectId}

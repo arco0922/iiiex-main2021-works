@@ -7,6 +7,7 @@ import { worksInfoArr } from 'constants/WorksInfo';
 import { Link } from 'react-router-dom';
 import { HOMEPAGE_URL, QUESTIONNAIRE_URL } from 'constants/OutUrls';
 import { isSmoothScrollable, useFixScroll } from 'hooks/useFixScroll';
+import { isOpen } from 'constants/BasicInfo';
 
 interface Props {
   isShowHamburger: boolean;
@@ -39,11 +40,13 @@ export const HamburgerMenu = React.memo<Props>(function HamburgerMenu({
             制作展ホームページ
           </StyledOutLink>
         </StyledButton>
-        <StyledButton>
-          <StyledOutLink href={QUESTIONNAIRE_URL} target="_blank" onClick={() => setIsShowHamburger(false)}>
-            全体アンケート
-          </StyledOutLink>
-        </StyledButton>
+        {isOpen && (
+          <StyledButton>
+            <StyledOutLink href={QUESTIONNAIRE_URL} target="_blank" onClick={() => setIsShowHamburger(false)}>
+              全体アンケート
+            </StyledOutLink>
+          </StyledButton>
+        )}
       </StyledNavSection>
       <StyledWorksSection>
         <StyledTitle>作品一覧</StyledTitle>
@@ -105,7 +108,7 @@ const StyledCloseIcon = styled(CloseIcon)`
 
 const StyledNavSection = styled.section`
   display: flex;
-  min-height: 170px;
+  min-height: ${isOpen ? '170px' : '130px'};
   flex-direction: column;
   align-items: center;
   width: 100%;
