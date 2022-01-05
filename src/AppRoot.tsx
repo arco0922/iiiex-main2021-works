@@ -11,7 +11,6 @@ import { layoutBorder, LayoutType } from 'constants/Layout';
 import { useWindowDimensions } from 'hooks/useWindowDimensions';
 import styled from 'styled-components';
 import { HamburgerMenu } from 'components/HamburgerMenu/HamburgerMenu';
-import { useTracking } from 'hooks/useTracking';
 import { Tracker } from 'Tracker';
 
 export interface Visited {
