@@ -17,12 +17,12 @@ import { NavigationArea } from './NavigationArea';
 import { TopNavigationArea } from './TopNavigationArea';
 import { calcNextRotationOrderWorksId, calcRotatedOrderWorksFromSpecificId } from 'utils/calcRotationUtils';
 import { isSmoothScrollable, useFixScroll } from 'hooks/useFixScroll';
+import { isOpen } from 'constants/BasicInfo';
 
 interface Params {
   id: string;
 }
 interface Props {
-  isOpen: boolean;
   visited: Visited;
   setVisited: (visited: Visited) => void;
   selectId: number;
@@ -42,7 +42,6 @@ interface Props {
 const touchable = isMobile || isTablet;
 
 const IndividualPageComponent: React.VFC<RouteComponentProps<Params> & Props> = ({
-  isOpen,
   match,
   visited,
   setVisited,

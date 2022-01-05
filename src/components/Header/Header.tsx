@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import MenuIcon from '@mui/icons-material/Menu';
 import { HOMEPAGE_URL, QUESTIONNAIRE_URL } from 'constants/OutUrls';
+import { isOpen } from 'constants/BasicInfo';
 
 export const headerHeight = 48;
 
@@ -41,7 +42,7 @@ export const Header: React.VFC<Props> = ({
                 </StyledExitFullScreen>
               </StyledButton>
             )}
-            {!isFull && (
+            {!isFull && isOpen && (
               <StyledQuestionnaireButton>
                 <StyledSVG width="128" height="46" viewBox="0 0 128 46" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
@@ -87,15 +88,17 @@ export const Header: React.VFC<Props> = ({
             </StyledExitFullScreen>
           </StyledButton>
         )}
-        <StyledQuestionnaireButton className={layout === 'MID' ? 'mid' : 'wide'}>
-          <StyledSVG width="158" height="65" viewBox="0 0 158 65" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path fillRule="evenodd" clipRule="evenodd" d="M158 0H0V48V65L79 48L158 65V48V0Z" fill="#E94C60" />
-          </StyledSVG>
-          <StyledLinkToQuestionnaire className="wide" href={QUESTIONNAIRE_URL} target="_blank">
-            <p>全体アンケート</p>
-            <StyledUnderBar id="underbar"></StyledUnderBar>
-          </StyledLinkToQuestionnaire>
-        </StyledQuestionnaireButton>
+        {isOpen && (
+          <StyledQuestionnaireButton className={layout === 'MID' ? 'mid' : 'wide'}>
+            <StyledSVG width="158" height="65" viewBox="0 0 158 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fillRule="evenodd" clipRule="evenodd" d="M158 0H0V48V65L79 48L158 65V48V0Z" fill="#E94C60" />
+            </StyledSVG>
+            <StyledLinkToQuestionnaire className="wide" href={QUESTIONNAIRE_URL} target="_blank">
+              <p>全体アンケート</p>
+              <StyledUnderBar id="underbar"></StyledUnderBar>
+            </StyledLinkToQuestionnaire>
+          </StyledQuestionnaireButton>
+        )}
       </StyledNavigationContainer>
     </StyledContainer>
   );
